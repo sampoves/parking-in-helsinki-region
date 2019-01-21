@@ -37,6 +37,18 @@ columnNames = ["park_datetime", "park_search_dur", "park_freq", "spot_type",
 data = data.drop(removeCols, axis=1)
 data.columns = columnNames
 
+
+def convertToDatetime(dataframe, columnName):
+    '''
+    declutter code
+    '''
+    return pd.to_datetime(dataframe[columnName], format="%m/%d/%Y %I:%M:%S %p") 
+
+
+data["park_datetime"] = convertToDatetime(data, "park_datetime")
+data["survey_answered"] = convertToDatetime(data, "survey_answered")
+
+
 # Datetimes to datetime format
 data["park_datetime"] = pd.to_datetime(
         data["park_datetime"], format="%m/%d/%Y %I:%M:%S %p") 
@@ -67,51 +79,19 @@ orig["park_datetime"] = [str(val) for val in orig["park_datetime"]]
 orig = coord_transform(orig)
 orig.crs = from_epsg(3067)
 orig = orig.to_crs(epsg=3067)
-orig.to_file("origin_points.shp")
+orig.to_file(wd + "origin_points.shp")
 
 dest = data.loc[:, data.columns != "geometry"].copy()
 dest = dest.rename(columns={"dest_geom": "geometry"})
 dest["survey_answered"] = [str(val) for val in dest["survey_answered"]]
 dest["park_datetime"] = [str(val) for val in dest["park_datetime"]]
 dest = coord_transform(dest)
-dest.to_file("destination_points.shp")
-
-
-# Transformation for loop
-def coord_transform(dataframe):
-    '''
-    grdtgdf
-    '''
-    result = dataframe.copy()
-    project = partial(
-            pyproj.transform,
-            pyproj.Proj(init="epsg:4326"),
-            pyproj.Proj(init="epsg:3067"))
-    
-    for idx, point in enumerate(dataframe.geometry):
-        point2 = transform(project, point)
-        result.loc[idx, "geometry"] = point2
-        
-    return result
+dest.crs = from_epsg(3067)
+dest = dest.to_crs(epsg=3067)
+dest.to_file(wd + "destination_points.shp")
 
 
 
-#### TEST TRANSFORMATION
-from functools import partial
-import pyproj
-from shapely.ops import transform
-
-point1 = orig.iloc[1].geometry
-print (point1)
-
-project = partial(
-    pyproj.transform,
-    pyproj.Proj(init="epsg:4326"),
-    pyproj.Proj(init="epsg:3067"))
-
-point2 = transform(project, point1)
-print (point2)
-plot_polygon([grid.unary_union, point2]) # TOIMII
 
 
 

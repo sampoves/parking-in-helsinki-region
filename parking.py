@@ -53,56 +53,14 @@ data = gpd.GeoDataFrame(data, geometry="geometry")
 #removeCols = ["park_x", "park_y", "dest_x", "dest_y"]
 #data = data.drop(removeCols, axis=1)
 
-# CANT PUT POINTS TO FINLAND NOW
-#data.crs = from_epsg(4326)
-#data = data.to_crs(epsg=4326)
-#data.crs = grid.crs
-
-
-
-def prepareForExport(dataframe, removeGeomCol):
-    '''
-    do stuff to declutter code
-    '''
-    result = dataframe.loc[:, dataframe.columns != removeGeomCol].copy()
-    
-    if removeGeomCol == "geometry":
-        result = result.rename(columns={"dest_geom": "geometry"})
-    
-    result["survey_answered"] = [str(val) for val in result["survey_answered"]]
-    result["park_datetime"] = [str(val) for val in result["park_datetime"]]
-    result = coord_transform(result)
-    result.crs = from_epsg(3067)
-    result = result.to_crs(epsg=3067)
-    
-    return result
-
+# Separate origin and destination data to their own gdfs
 orig = prepareForExport(data, removeGeomCol="dest_geom")
-orig.to_file(wd + "origin_points.shp")
-
 dest = prepareForExport(data, removeGeomCol="geometry")
-dest.to_file(wd + "destination_points.shp")
 
-
-
-
-# preliminary data check
-orig = data.loc[:, data.columns != "dest_geom"].copy()
-orig["survey_answered"] = [str(val) for val in orig["survey_answered"]]
-orig["park_datetime"] = [str(val) for val in orig["park_datetime"]]
-orig = coord_transform(orig)
-orig.crs = from_epsg(3067)
-orig = orig.to_crs(epsg=3067)
+# Export to shp
 orig.to_file(wd + "origin_points.shp")
-
-dest = data.loc[:, data.columns != "geometry"].copy()
-dest = dest.rename(columns={"dest_geom": "geometry"})
-dest["survey_answered"] = [str(val) for val in dest["survey_answered"]]
-dest["park_datetime"] = [str(val) for val in dest["park_datetime"]]
-dest = coord_transform(dest)
-dest.crs = from_epsg(3067)
-dest = dest.to_crs(epsg=3067)
 dest.to_file(wd + "destination_points.shp")
+
 
 
 
@@ -110,7 +68,7 @@ dest.to_file(wd + "destination_points.shp")
 
 
 # TEST
-plot_polygon([grid.unary_union, data.geometry[2]])
+plot_polygon([grid.unary_union, orig.geometry[2]])
 plot_polygon([grid.unary_union, dest.iloc[1].geometry])
 coords = (data["park_y"][2], data["park_x"][2])
 results = rg.search(coords)

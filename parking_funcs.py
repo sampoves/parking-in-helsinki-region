@@ -18,6 +18,7 @@ from functools import partial
 import pyproj
 from shapely.ops import transform
 import pandas as pd
+from fiona.crs import from_epsg
 
 
 def plot_polygon(polygonList):
@@ -128,3 +129,22 @@ def convertToDatetime(dataframe, columnName):
     declutter code
     '''
     return pd.to_datetime(dataframe[columnName], format="%m/%d/%Y %I:%M:%S %p") 
+
+
+
+def prepareForExport(dataframe, removeGeomCol):
+    '''
+    do stuff to declutter code
+    '''
+    result = dataframe.loc[:, dataframe.columns != removeGeomCol].copy()
+    
+    if removeGeomCol == "geometry":
+        result = result.rename(columns={"dest_geom": "geometry"})
+    
+    result["survey_answered"] = [str(val) for val in result["survey_answered"]]
+    result["park_datetime"] = [str(val) for val in result["park_datetime"]]
+    result = coord_transform(result)
+    result.crs = from_epsg(3067)
+    result = result.to_crs(epsg=3067)
+    
+    return result

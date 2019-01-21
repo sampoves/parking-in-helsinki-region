@@ -108,6 +108,10 @@ def getLength(inputted):
 # Transformation for loop
 def coord_transform(dataframe):
     '''
+    Survey123 coordinates are in WGS84 Lat Lon, need to transform:
+    https://doc.arcgis.com/en/survey123/desktop/create-surveys/geopoints.htm
+    
+    Idea from here
     https://stackoverflow.com/questions/27943093/library-to-perform-coordinate-system-transformations
     '''
     result = dataframe.copy()

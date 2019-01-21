@@ -77,9 +77,22 @@ print(results)
 
 
 
+
+#"Reverse Geocode takes a latitude / longitude coordinate and returns the 
+#country and city"
+# RG may be unusable if coordinates are transformed
+def pointToTuple(point):
+    '''
+    '''
+    for x, y in tuple(point.coords):
+        return (y, x)
+
 # Reverse geocoder testing. NB! ordering is YX
+pelel=data.iloc[3].geometry
+coords = pointToTuple(pelel)
 coords = (data["park_y"][0], data["park_x"][0])
-coords_dest = (data["dest_y"][0], data["dest_x"][0])
+
+
 results = rg.search(coords)
 currentLoc = "{0}, {1}, Finland".format(results[0]["name"], results[0]["admin2"])
 

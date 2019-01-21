@@ -14,6 +14,11 @@ import shapely
 import geopandas as gpd
 import numpy as np
 import math
+from functools import partial
+import pyproj
+from shapely.ops import transform
+import pandas as pd
+
 
 def plot_polygon(polygonList):
     '''
@@ -96,3 +101,30 @@ def getLength(inputted):
     
     else:
         raise Exception('Error: LineString or Polygon geometries required!')  
+        
+        
+        
+# Transformation for loop
+def coord_transform(dataframe):
+    '''
+    https://stackoverflow.com/questions/27943093/library-to-perform-coordinate-system-transformations
+    '''
+    result = dataframe.copy()
+    project = partial(
+            pyproj.transform,
+            pyproj.Proj(init="epsg:4326"),
+            pyproj.Proj(init="epsg:3067"))
+    
+    for idx, point in enumerate(dataframe.geometry):
+        point2 = transform(project, point)
+        result.loc[idx, "geometry"] = point2
+        
+    return result
+
+
+
+def convertToDatetime(dataframe, columnName):
+    '''
+    declutter code
+    '''
+    return pd.to_datetime(dataframe[columnName], format="%m/%d/%Y %I:%M:%S %p") 

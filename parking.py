@@ -37,23 +37,9 @@ columnNames = ["park_datetime", "park_search_dur", "park_freq", "spot_type",
 data = data.drop(removeCols, axis=1)
 data.columns = columnNames
 
-
-def convertToDatetime(dataframe, columnName):
-    '''
-    declutter code
-    '''
-    return pd.to_datetime(dataframe[columnName], format="%m/%d/%Y %I:%M:%S %p") 
-
-
+# Datetimes to datetime format
 data["park_datetime"] = convertToDatetime(data, "park_datetime")
 data["survey_answered"] = convertToDatetime(data, "survey_answered")
-
-
-# Datetimes to datetime format
-data["park_datetime"] = pd.to_datetime(
-        data["park_datetime"], format="%m/%d/%Y %I:%M:%S %p") 
-data["survey_answered"] = pd.to_datetime(
-        data["survey_answered"], format="%m/%d/%Y %I:%M:%S %p") 
 
 # To shapely geometries and gdf
 data["geometry"] = [Point(park_x, park_y) for park_x, park_y in zip(
@@ -71,6 +57,34 @@ data = gpd.GeoDataFrame(data, geometry="geometry")
 #data.crs = from_epsg(4326)
 #data = data.to_crs(epsg=4326)
 #data.crs = grid.crs
+
+
+
+def prepareForExport(dataframe, removeGeomCol):
+    '''
+    do stuff to declutter code
+    '''
+    result = dataframe.loc[:, dataframe.columns != removeGeomCol].copy()
+    
+    if removeGeomCol == "geometry":
+        result = result.rename(columns={"dest_geom": "geometry"})
+    
+    result["survey_answered"] = [str(val) for val in result["survey_answered"]]
+    result["park_datetime"] = [str(val) for val in result["park_datetime"]]
+    result = coord_transform(result)
+    result.crs = from_epsg(3067)
+    result = result.to_crs(epsg=3067)
+    
+    return result
+
+orig = prepareForExport(data, removeGeomCol="dest_geom")
+orig.to_file(wd + "origin_points.shp")
+
+dest = prepareForExport(data, removeGeomCol="geometry")
+dest.to_file(wd + "destination_points.shp")
+
+
+
 
 # preliminary data check
 orig = data.loc[:, data.columns != "dest_geom"].copy()

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <script>L_PREFER_CANVAS=false; L_NO_TOUCH=false; L_DISABLE_3D=false;</script>
+        
+        <!-- import leaflet and leaflet.draw-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
+        
+        <meta name="viewport" content="width=device-width,
+            initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+        
+        <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+        <style>#mymap {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+        
+        <style>#mymap {
+            position: relative;
+            width: 100.0%;
+            height: 100.0%;
+            left: 0.0%;
+            top: 0.0%;
+            }
+        </style>    
+
+        
+    </head>
+    <body>
+        <div class="testailuu" id="mymap" ></div>
+        
+        <script>
+            var bounds = null;
+            
+            var mymap = L.map(
+                'mymap', {
+                center: [60.1743, 24.8036],
+                zoom: 13,
+                maxBounds: bounds,
+                layers: [],
+                worldCopyJump: false,
+                crs: L.CRS.EPSG3857,
+                zoomControl: true
+            });
+            
+            var tileLayer = L.tileLayer(
+                    'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png',
+                    {
+                    "attribution": null,
+                    "detectRetina": false,
+                    "maxNativeZoom": 18,
+                    "maxZoom": 18,
+                    "minZoom": 0,
+                    "noWrap": false,
+                    "opacity": 1,
+                    "subdomains": "abc",
+                    "tms": false
+            }).addTo(mymap);
+            
+            // FeatureGroup is to store editable layers.
+            var drawnItems = new L.featureGroup().addTo(mymap);
+            
+            var draw_control = new L.Control.Draw({
+                "edit": {"featureGroup": drawnItems}
+                }).addTo(mymap);
+                
+            mymap.on(L.Draw.Event.CREATED, function (event) {
+                var layer = event.layer,
+                    type = event.layerType,
+                    coords;
+                    
+                var coords = JSON.stringify(layer.toGeoJSON());
+                
+                layer.on('click', function() {
+                    alert(coords);
+                    console.log(coords);
+                    });
+                    drawnItems.addLayer(layer);
+                });
+
+        mymap.on('draw:created', function(e) {
+            drawnItems.addLayer(e.layer);
+        });
+
+        document.getElementById('export').onclick = function(e) {
+            var data = drawnItems.toGeoJSON();
+            var convertedData = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data));
+            document.getElementById('export').setAttribute('href', 'data:' + convertedData);
+            document.getElementById('export').setAttribute('download','data.geojson');
+        };
+		
+		
+        // Object created - bind popup to layer, add to feature group
+        mymap.on(L.Draw.Event.CREATED, function(event) {
+            var layer = event.layer;
+            var content = getPopupContent(layer);
+            if (content !== null) {
+                layer.bindPopup(content);
+            }
+            drawnItems.addLayer(layer);
+        });
+
+        // Object(s) edited - update popups
+        mymap.on(L.Draw.Event.EDITED, function(event) {
+            var layers = event.layers,
+                content = null;
+                
+            layers.eachLayer(function(layer) {
+                content = getPopupContent(layer);
+                if (content !== null) {
+                    layer.setPopupContent(content);
+                }
+            });
+        });
+            
+            
+        </script>
+    </body>
+</html>

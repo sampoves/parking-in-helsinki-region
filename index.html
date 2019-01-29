@@ -20,9 +20,6 @@ and open the template in the editor.
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.4.0/easy-button.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
         
-        
-        
-        
         <!-- font -->
         <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
         
@@ -252,68 +249,49 @@ and open the template in the editor.
                 drawnItems.addLayer(layer);
             });
 
-        mymap.on('draw:created', function(e) {
-            drawnItems.addLayer(e.layer);
-        });
-
-        document.getElementById('export').onclick = function(e) {
-            var data = drawnItems.toGeoJSON();
-            var convertedData = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data));
-            document.getElementById('export').setAttribute('href', 'data:' + convertedData);
-            document.getElementById('export').setAttribute('download','data.geojson');
-        };
-   
-        // Truncate value based on number of decimals
-        var _round = function(num, len) {
-            return Math.round(num*(Math.pow(10, len)))/(Math.pow(10, len));
-        };
-        
-        // Helper method to format LatLng object (x.xxxxxx, y.yyyyyy)
-        var strLatLng = function(latlng) {
-            return "("+_round(latlng.lat, 6)+", "+_round(latlng.lng, 6)+")";
-        };
-    
-        // Generate popup content based on layer type
-        // - Returns HTML string, or null if unknown object
-        var getPopupContent = function(layer) {
-            
-            // Marker - add lat/long
-            if (layer instanceof L.Marker || layer instanceof L.CircleMarker) {
-                return strLatLng(layer.getLatLng());
-                
-            // Circle - lat/long, radius TÄTÄ EI SYNNY MUN SKRIPTISSÄ
-            } else if (layer instanceof L.Circle) {
-                var center = layer.getLatLng(),
-                    radius = layer.getRadius();
-                return "Center: "+strLatLng(center)+"<br />"
-                      +"Radius: "+_round(radius, 2)+" m";
-            } 
-            return null;
-        };	
-    
-    
-        // Object created - bind popup to layer, add to feature group
-        mymap.on(L.Draw.Event.CREATED, function(event) {
-            var layer = event.layer;
-            var content = getPopupContent(layer);
-            if (content !== null) {
-                layer.bindPopup(content);
-            }
-            drawnItems.addLayer(layer);
-        });
-
-        // Object(s) edited - update popups
-        mymap.on(L.Draw.Event.EDITED, function(event) {
-            var layers = event.layers,
-                content = null;
-                
-            layers.eachLayer(function(layer) {
-                content = getPopupContent(layer);
-                if (content !== null) {
-                    layer.setPopupContent(content);
-                }
+            mymap.on('draw:created', function(e) {
+                drawnItems.addLayer(e.layer);
             });
-        });
+
+            document.getElementById('export').onclick = function(e) {
+                var data = drawnItems.toGeoJSON();
+                var convertedData = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data));
+                document.getElementById('export').setAttribute('href', 'data:' + convertedData);
+                document.getElementById('export').setAttribute('download','data.geojson');
+            };
+
+            // Truncate value based on number of decimals
+            var _round = function(num, len) {
+                return Math.round(num*(Math.pow(10, len)))/(Math.pow(10, len));
+            };
+
+            // Helper method to format LatLng object (x.xxxxxx, y.yyyyyy)
+            var strLatLng = function(latlng) {
+                return "("+_round(latlng.lat, 6)+", "+_round(latlng.lng, 6)+")";
+            };
+
+            // Object created - bind popup to layer, add to feature group
+            mymap.on(L.Draw.Event.CREATED, function(event) {
+                var layer = event.layer;
+                var content = strLatLng(layer.getLatLng());
+                if (content !== null) {
+                    layer.bindPopup(content);
+                }
+                drawnItems.addLayer(layer);
+            });
+
+            // Object(s) edited - update popups
+            mymap.on(L.Draw.Event.EDITED, function(event) {
+                var layers = event.layers,
+                    content = null;
+
+                layers.eachLayer(function(layer) {
+                    content = getPopupContent(layer);
+                    if (content !== null) {
+                        layer.setPopupContent(content);
+                    }
+                });
+            });
         </script>
     </body>
 </html>

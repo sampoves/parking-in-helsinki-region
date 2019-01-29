@@ -248,10 +248,6 @@ and open the template in the editor.
                 
                   layer.on('click', onMapClick);
                 
-//                layer.on('click', function() {
-//                    alert(coords);
-//                    console.log(coords);
-//                    });
                     
                 drawnItems.addLayer(layer);
             });
@@ -266,8 +262,7 @@ and open the template in the editor.
             document.getElementById('export').setAttribute('href', 'data:' + convertedData);
             document.getElementById('export').setAttribute('download','data.geojson');
         };
-
-        
+   
         // Truncate value based on number of decimals
         var _round = function(num, len) {
             return Math.round(num*(Math.pow(10, len)))/(Math.pow(10, len));
@@ -286,32 +281,13 @@ and open the template in the editor.
             if (layer instanceof L.Marker || layer instanceof L.CircleMarker) {
                 return strLatLng(layer.getLatLng());
                 
-            // Circle - lat/long, radius
+            // Circle - lat/long, radius TÄTÄ EI SYNNY MUN SKRIPTISSÄ
             } else if (layer instanceof L.Circle) {
                 var center = layer.getLatLng(),
                     radius = layer.getRadius();
                 return "Center: "+strLatLng(center)+"<br />"
                       +"Radius: "+_round(radius, 2)+" m";
-              
-            // Rectangle/Polygon - area
-            } else if (layer instanceof L.Polygon) {
-                var latlngs = layer._defaultShape ? layer._defaultShape() : layer.getLatLngs(),
-                    area = L.GeometryUtil.geodesicArea(latlngs);
-                return "Area: "+L.GeometryUtil.readableArea(area, true);
-                
-            // Polyline - distance
-            } else if (layer instanceof L.Polyline) {
-                var latlngs = layer._defaultShape ? layer._defaultShape() : layer.getLatLngs(),
-                    distance = 0;
-                if (latlngs.length < 2) {
-                    return "Distance: N/A";
-                } else {
-                    for (var i = 0; i < latlngs.length-1; i++) {
-                        distance += latlngs[i].distanceTo(latlngs[i+1]);
-                    }
-                    return "Distance: "+_round(distance, 2)+" m";
-                }
-            }
+            } 
             return null;
         };	
     
@@ -338,8 +314,6 @@ and open the template in the editor.
                 }
             });
         });
-            
-            
         </script>
     </body>
 </html>

@@ -120,6 +120,12 @@ and open the template in the editor.
             .infotext p {
                 font-size: small;
             }
+            
+            .likert li {
+                float: left;
+                list-style-type: none;
+            }
+            
         </style>
 
     </head>
@@ -215,9 +221,16 @@ and open the template in the editor.
                 },
                 "draw": {
                     marker: {
+                        icon: new L.Icon({
+                            iconUrl: 'http://cdn.leafletjs.com/leaflet-0.6.4/images/marker-icon.png',
+                            shadowUrl: 'http://cdn.leafletjs.com/leaflet-0.6.4/images/marker-shadow.png',
+                            iconAnchor: [12, 40],
+                            popupAnchor: [0, -41]
+                        }),
                         shapeOptions: {
                             clickable: true
                         }
+                        
                     },
                     polyline: false,
                     polygon: false,
@@ -227,12 +240,23 @@ and open the template in the editor.
                 }
                 }).addTo(mymap);
             
+            //https://stackoverflow.com/questions/3623038/a-likert-scale-in-html
+            //https://stackoverflow.com/questions/32940123/concatenate-html-element-with-html-string-for-leaflets-bindpopup
+            var htmlstring = '<ul class="likert">\
+                <li> Not Guilty </li>\
+                <li><input type="radio" name="guilty" value="1" /></li>\
+                <li><input type="radio" name="guilty" value="2" /></li>\
+                <li><input type="radio" name="guilty" value="3" /></li>\
+                <li><input type="radio" name="guilty" value="4" /></li>\
+                <li><input type="radio" name="guilty" value="5" /></li>\
+                <li> Very Guilty </li>\
+                </ul>';
             
             //determine behaviour of popups
             var popup = L.popup();
             
             function onMapClick(e){
-                popup.setLatLng(e.latlng).setContent("dfsfsd " + e.latlng.toString())
+                popup.setLatLng(e.latlng).setContent(htmlstring + e.latlng.toString())
                         .openOn(mymap);
             }
             
@@ -243,7 +267,7 @@ and open the template in the editor.
                     
                 var coords = JSON.stringify(layer.toGeoJSON());
                 
-                  layer.on('click', onMapClick);
+                  layer.on('click', onMapClick); //"mouseover", "click"
                 
                     
                 drawnItems.addLayer(layer);

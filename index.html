@@ -6,33 +6,125 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Leaflet-megakysely</title>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <script>L_PREFER_CANVAS=false; L_NO_TOUCH=false; L_DISABLE_3D=false;</script>
         
         <!-- import leaflet and leaflet.draw-->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.css"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.js"></script>
-        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.4.0/easy-button.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+        
+        <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.4.0/easy-button.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
+        
+        
+        
+        
+        <!-- font -->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
         
         <meta name="viewport" content="width=device-width,
             initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
         
-        <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
-        <style>#mymap {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
-        
-        <style>#mymap {
-            position: relative;
-            width: 100.0%;
-            height: 100.0%;
-            left: 0.0%;
-            top: 0.0%;
+        <style type="text/css">
+            body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
             }
-        </style>    
+            html,
+            body,
+            #mymap {
+                height: 100%;
+            }
+            
+            p {
+                font-family: 'Montserrat', sans-serif;
+            }
+                        
+            .leaflet-left .leaflet-control {
+                margin-left: 13px;
+            }
+            
+            .leaflet-container .leaflet-control-zoom {
+                margin-left: 13px;
+                margin-top: 70px;
+            }
+            
+            .leaflet-bottom .leaflet-control {
+                margin-bottom: 0px;
+            }
+            
+            #mymap {
+                position: relative;
+                width: 100.0%;
+                height: 100.0%;
+                left: 0.0%;
+                top: 0.0%;
+            }
+            
+            #mymap {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+            }
+  
+            .infoheader {
+                z-index: 2;
+                width: 210px;
+                position: absolute;
+                left: 50%;
+                margin-left: -125px;
+                padding: 10px 20px;
+                background: white;
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+                border-radius: 5px;
+            }
+            
+            .infoheader p {
+                margin: 0 0 5px;
+                font-size: 14px;
+                float: left;
+                margin-top: 5px;
+                margin-left: 20px;
+                margin-bottom: 0px;
+                color: black;
+            }
+            
+            .infoheader h1 {
+                float: left;
+                font-family: 'Quicksand', sans-serif;
+                font-size: 20px;
+                letter-spacing: 15px;
+                margin-bottom: 0px;
+                margin-left: 14px;
+                margin-top: 0px;
+            }
+            
+            .infobox {
+                padding: 6px 8px;
+                font: 14px/16px Arial, Helvetica, sans-serif;
+                background: white;
+                background: rgba(255, 255, 255, 0.8);
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+                border-radius: 5px;
+            }
 
-        
+            .infobox p {
+                line-height: 200%;
+            }
+
+            .infotext p {
+                font-size: large;
+            }
+        </style>
+
     </head>
     <body>
         <div class="testailuu" id="mymap" ></div>
@@ -71,6 +163,50 @@ and open the template in the editor.
                     "subdomains": "abc",
                     "tms": false
             }).addTo(mymap);
+
+    
+            // infotext and infobutton and associated stuff    
+            var infoText = L.control({position: 'bottomleft'});
+            infoText.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'infotext');
+                this.update("");
+                return this._div;
+            };
+            
+            infoText.update = function(text){
+                this._div.innerHTML = text;
+            };
+            
+            infoText.addTo(mymap);
+
+            var infoBox = L.control({position: 'bottomleft'});
+            infoBox.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'infobox');
+                this._div.innerHTML = 'Did you ever hear the tragedy of Darth Plagueis The Wise? I thought not. It\'s not a story the Jedi would tell you. It\'s a Sith legend. Darth Plagueis was a Dark Lord of the Sith, so powerful and so wise he could use the Force to influence the midichlorians to create life… He had such a knowledge of the dark side that he could even keep the ones he cared about from dying. The dark side of the Force is a pathway to many abilities some consider to be unnatural. He became so powerful… the only thing he was afraid of was losing his power, which eventually, of course, he did. Unfortunately, he taught his apprentice everything he knew, then his apprentice killed him in his sleep. Ironic. He could save others from death, but not himself.';
+                return this._div;
+            };
+            
+            var infoButton = L.easyButton({
+                states: [{
+                    stateName: 'infoOpen',
+                    icon: 'fa fa-info',
+                    title: 'Avaa info',
+                    onClick: function (btn, map) {
+                        infoBox.addTo(map);
+                        btn.state('infoClose');
+                    }
+                }, {
+                    stateName: 'infoClose',
+                    icon: 'fa fa-info',
+                    title: 'Sulje info',
+                    onClick: function (btn, map) {
+                        infoBox.removeFrom(map);
+                        btn.state('infoOpen');
+                    }
+                }
+                ]
+            });
+            infoButton.addTo(mymap);
             
             // FeatureGroup is to store editable layers.
             var drawnItems = new L.featureGroup().addTo(mymap);
@@ -130,7 +266,8 @@ and open the template in the editor.
             document.getElementById('export').setAttribute('href', 'data:' + convertedData);
             document.getElementById('export').setAttribute('download','data.geojson');
         };
-	
+
+        
         // Truncate value based on number of decimals
         var _round = function(num, len) {
             return Math.round(num*(Math.pow(10, len)))/(Math.pow(10, len));

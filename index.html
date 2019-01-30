@@ -258,6 +258,25 @@ and open the template in the editor.
                     '<label class="control-label col-sm-5"><strong>Date: </strong></label>'+
                     '<input type="date" placeholder="Required" id="date" name="date" class="form-control"/>'+ 
                 '</div>'+
+                
+                '<div class="row">'+
+                    '<div class="small-2 column text-right">'+
+                        '<p>strongly agree</p>'+
+                    '</div>'+
+                    '<div class="small-3 column">'+
+                        '<ul class="small-block-grid-5">'+
+                            '<li><input name="likert" type="radio"></li>'+
+                            '<li><input name="likert" type="radio"></li>'+
+                            '<li><input name="likert" type="radio"></li>'+
+                            '<li><input name="likert" type="radio"></li>'+
+                            '<li><input name="likert" type="radio"></li>'+
+                        '</ul>'+
+                    '</div>'+
+                    '<div class="small-2 column end">'+
+                        '<p>strongly disagree</p>'+
+                    '</div>'+
+                '</div>'+
+                
                 '<div class="form-group">'+
                     '<label class="control-label col-sm-5"><strong>Gender: </strong></label>'+
                     '<select class="form-control" id="gender" name="gender">'+
@@ -266,6 +285,7 @@ and open the template in the editor.
                       '<option value="Other">Other</option>'+
                     '</select>'+ 
                 '</div>'+
+                
                 '<div class="form-group">'+
                     '<label class="control-label col-sm-5"><strong>Age: </strong></label>'+
                     '<input type="number" min="0" class="form-control" id="age" name="age">'+ 
@@ -276,7 +296,7 @@ and open the template in the editor.
             var popup = L.popup();
             
             function onMapClick(e){
-                popup.setLatLng(e.latlng).setContent(popupContent2 + e.latlng.toString())
+                popup.setLatLng(e.latlng).setContent(popupContent + e.latlng.toString())
                         .openOn(mymap);
             }
             

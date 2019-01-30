@@ -15,6 +15,10 @@ and open the template in the editor.
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.4.0/easy-button.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
         
+        <!-- my css stylesheet -->
+        <link rel="stylesheet" href="style.css">
+        
+        <!-- other stylesheets -->
         <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.4.0/easy-button.css"/>
@@ -26,108 +30,6 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width,
             initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
         
-        <style type="text/css">
-            body {
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-            }
-            html,
-            body,
-            #mymap {
-                height: 100%;
-            }
-            
-            p {
-                font-family: 'Montserrat', sans-serif;
-            }
-                        
-            .leaflet-left .leaflet-control {
-                margin-left: 13px;
-            }
-            
-            .leaflet-container .leaflet-control-zoom {
-                margin-left: 13px;
-                margin-top: 70px;
-            }
-            
-            .leaflet-bottom .leaflet-control {
-                margin-bottom: 5px;
-            }
-            
-            #mymap {
-                position: relative;
-                width: 100.0%;
-                height: 100.0%;
-                left: 0.0%;
-                top: 0.0%;
-            }
-            
-            #mymap {
-                position:absolute;
-                top:0;
-                bottom:0;
-                right:0;
-                left:0;
-            }
-  
-            .infoheader {
-                z-index: 2;
-                width: 210px;
-                position: absolute;
-                left: 50%;
-                margin-left: -125px;
-                padding: 10px 20px;
-                background: white;
-                box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-                border-radius: 5px;
-            }
-            
-            .infoheader p {
-                margin: 0 0 5px;
-                font-size: 14px;
-                float: left;
-                margin-top: 5px;
-                margin-left: 20px;
-                margin-bottom: 0px;
-                color: black;
-            }
-            
-            .infoheader h1 {
-                float: left;
-                font-family: 'Quicksand', sans-serif;
-                font-size: 20px;
-                letter-spacing: 15px;
-                margin-bottom: 0px;
-                margin-left: 14px;
-                margin-top: 0px;
-            }
-            
-            .infobox {
-                width: 400px;
-                padding: 6px 8px;
-                font-family: 'Montserrat', sans-serif;
-                background: rgba(255, 255, 255, 0.8);
-                box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
-                border-radius: 5px;
-            }
-
-            .infobox p {
-                line-height: 600%;
-            }
-
-            .infotext p {
-                font-size: small;
-            }
-            
-            .likert li {
-                float: none;
-                list-style-type: none;
-            }
-            
-        </style>
-
     </head>
     <body>
         <div class="" id="mymap" ></div>
@@ -166,6 +68,49 @@ and open the template in the editor.
                     "tms": false
             }).addTo(mymap);
 
+            //try to initialise geojson layer
+            var geojson = L.geoJson({
+                "type": "FeatureCollection",
+                "features": [{
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [24.9,60.15]
+                        },
+                        "properties":{
+                            "parktime": 3
+                        }
+                }]
+            }, {
+                onEachFeature: function (feature, layer){
+                    layer.on('click', layerClickHandler);
+                }
+            }).addTo(mymap);
+            
+                        
+            function layerClickHandler (e) {
+                var marker = e.target,
+                        properties = e.target.feature.properties;
+                
+                if(marker.hasOwnProperty('_popup')){
+                    marker.unbindPopup();
+                }
+                marker.bindPopup(popupContent);
+                marker.openPopup();
+                
+                L.DomUtil.get('parktime').textContent = properties.parktime;
+                
+                var parkTime = L.DomUtil.get('parktime');
+                parkTime.value = properties.parktime;
+                L.DomEvent.addListener(parkTime, "change", function (e){
+                    properties.parktime = e.target.value;
+                });
+                
+                var buttonSubmit = L.DomUtil.get('button-submit');
+                L.DomEvent.addListener(buttonSubmit, "click", function (e){
+                    marker.closePopup();
+                });
+            }
     
             // infotext and infobutton and associated stuff    
             var infoText = L.control({position: 'bottomleft'});
@@ -297,6 +242,8 @@ and open the template in the editor.
                     '</select>'+ 
                 '</div>'+
                 
+                '<button id="button-submit" type="button">Save Changes</button>'+
+                
                 '</form>';
                   
             //determine behaviour of popups
@@ -315,49 +262,71 @@ and open the template in the editor.
                 drawnItems.addLayer(layer);
             });
 
+            //try to code remembering buttons
+            var buttonSubmit = L.DomUtil.get('button-submit');
+                L.DomEvent.addListener(buttonSubmit, 'click', function (e) {
+                popup.closePopup();
+            });
+
+            // tutki formia: http://embed.plnkr.co/8qVoW5/
             mymap.on('draw:created', function(e) {
                 drawnItems.addLayer(e.layer);
+//                e.layer.on('click', function(){
+//                    if(e.layer.hello){
+//                        e.layer.bindPopup(e.layer.hello).openPopup();
+//                    } else {
+//                        popUpFields = "<button class='add_content'>Add content</button><div class='content_container'></div><button class='popup_save'>Save</button>";
+//                        e.layer.bindPopup(popUpFields).openPopup();
+//                        $(document).on("click", ".add_content", function(){
+//                            $(this).next(".content_container").append("Hello popup!");
+//                        });
+//                        $('.popup_save').click(function(){
+//                            e.layer.hello = $(this).prev().html();
+//                        });
+//                    };
+//                });
             });
-
-            document.getElementById('export').onclick = function(e) {
-                var data = drawnItems.toGeoJSON();
-                var convertedData = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data));
-                document.getElementById('export').setAttribute('href', 'data:' + convertedData);
-                document.getElementById('export').setAttribute('download','data.geojson');
-            };
-
-            // Truncate value based on number of decimals
-            var _round = function(num, len) {
-                return Math.round(num*(Math.pow(10, len)))/(Math.pow(10, len));
-            };
-
-            // Helper method to format LatLng object (x.xxxxxx, y.yyyyyy)
-            var strLatLng = function(latlng) {
-                return "("+_round(latlng.lat, 6)+", "+_round(latlng.lng, 6)+")";
-            };
-
-            // Object created - bind popup to layer, add to feature group
-            mymap.on(L.Draw.Event.CREATED, function(event) {
-                var layer = event.layer;
-                var content = strLatLng(layer.getLatLng());
-                if (content !== null) {
-                    layer.bindPopup(content);
-                }
-                drawnItems.addLayer(layer);
-            });
-
-            // Object(s) edited - update popups
-            mymap.on(L.Draw.Event.EDITED, function(event) {
-                var layers = event.layers,
-                    content = null;
-
-                layers.eachLayer(function(layer) {
-                    content = getPopupContent(layer);
-                    if (content !== null) {
-                        layer.setPopupContent(content);
-                    }
-                });
-            });
+            
+            // DO I NEED THIS FUNCTIONALITY
+//            document.getElementById('export').onclick = function(e) {
+//                var data = drawnItems.toGeoJSON();
+//                var convertedData = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data));
+//                document.getElementById('export').setAttribute('href', 'data:' + convertedData);
+//                document.getElementById('export').setAttribute('download','data.geojson');
+//            };
+//            
+//            // Truncate value based on number of decimals
+//            var _round = function(num, len) {
+//                return Math.round(num*(Math.pow(10, len)))/(Math.pow(10, len));
+//            };
+//
+//            // Helper method to format LatLng object (x.xxxxxx, y.yyyyyy)
+//            var strLatLng = function(latlng) {
+//                return "("+_round(latlng.lat, 6)+", "+_round(latlng.lng, 6)+")";
+//            };
+//
+//            // Object created - bind popup to layer, add to feature group
+//            mymap.on(L.Draw.Event.CREATED, function(event) {
+//                var layer = event.layer;
+//                var content = strLatLng(layer.getLatLng());
+//                if (content !== null) {
+//                    layer.bindPopup(content);
+//                }
+//                drawnItems.addLayer(layer);
+//            });
+//
+//            // Object(s) edited - update popups
+//            mymap.on(L.Draw.Event.EDITED, function(event) {
+//                var layers = event.layers,
+//                    content = null;
+//
+//                layers.eachLayer(function(layer) {
+//                    content = getPopupContent(layer);
+//                    if (content !== null) {
+//                        layer.setPopupContent(content);
+//                    }
+//                });
+//            });
         </script>
     </body>
 </html>

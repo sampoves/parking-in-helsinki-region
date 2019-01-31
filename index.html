@@ -81,7 +81,7 @@ and open the template in the editor.
                             "coordinates": [24.9,60.15]
                         },
                         "properties":{
-                            "parktime": 3
+                            "parktime": null
                         }
                 }]
             }, {
@@ -188,98 +188,58 @@ and open the template in the editor.
                 }
                 }).addTo(mymap);
             
-            
-            //create a simple form, data is not permanent
-//            var popupContent = '<form role="form" id="form" enctype="multipart/form-data" class = "form-horizontal" onsubmit="addMarker()">'+
-//                //datetime
-//                '<div class="form-group">'+
-//                    '<label class="control-label col-sm-5"><strong>Pysäköintisi päivämäärä ja kellonaika</strong></label>'+
-//                    '<input type="date" placeholder="Required" id="date" name="date" class="form-control"/>'+ 
-//                '</div>'+
-//                
-//                //time to search parking
-//                '<div class="form-group">'+
-//                    '<label class="control-label col-sm-5"><strong>Kuinka pitkään etsit pysäköintipaikkaa (minuuteissa)?: </strong></label>'+
-//                    '<input type="number" min="0" max="120" class="form-control" id="parktime" name="parktime">'+ 
-//                '</div>'+
-//                
-//                //likert familiarity of parking area
-//                '<div class="row">'+
-//                    '<label class="control-label col-sm-5"><strong>Kuinka usein olet pysäköinyt autosi tälle alueelle?</strong></label>'+
-//                    '<div class="small-2 column text-right">'+
-//                        '<p>strongly agree</p>'+
-//                    '</div>'+
-//                    '<div class="small-3 column">'+
-//                        '<ul class="likert">'+
-//                            '<li><input value="1" name="likert" type="radio">Erittäin usein</li>'+
-//                            '<li><input value="2" name="likert" type="radio">Usein</li>'+
-//                            '<li><input value="3" name="likert" type="radio">Toisinaan</li>'+
-//                            '<li><input value="4" name="likert" type="radio">Harvoin</li>'+
-//                            '<li><input value="5" name="likert" type="radio">En koskaan</li>'+
-//                        '</ul>'+
-//                    '</div>'+
-//                    '<div class="small-2 column end">'+
-//                        '<p>strongly disagree</p>'+
-//                    '</div>'+
-//                '</div>'+
-//                
-//                //type of parking spot
-//                '<div class="form-group">'+
-//                    '<label class="control-label col-sm-5"><strong>Minkätyyppinen pysäköintipaikka oli kyseessä?</strong></label>'+
-//                    '<select class="form-control" id="parkspottype" name="parkspottype">'+
-//                        '<option value="1">Kadunvarsipaikka</option>'+
-//                        '<option value="2">Pysäköintialue (parkkipaikka)</option>'+
-//                        '<option value="3">Pysäköintihalli</option>'+
-//                        '<option value="4">Muu</option>'+
-//                    '</select>'+ 
-//                '</div>'+
-//                
-//                '<button id="button-submit" type="button">Save Changes</button>'+
-//                
-//                '</form>';
-                  
+              
             //determine behaviour of popups
             var popup = L.popup();
             
             function onMapClick(e){
-                popup.setLatLng(e.latlng).setContent(e.latlng.toString() + popupContent)
-                        .openOn(mymap);
+                popup.setLatLng(e.latlng).setContent(e.latlng.toString() + popupContent).openOn(mymap);
             }
             
-            mymap.on(L.Draw.Event.CREATED, function (event) {
-                var layer = event.layer;
+            // JÄIN JUMIIN 310119 siihen, että en saa siirrettyy drawnitemsiä
+            // geojsoniin, jotta tiedot tallentuisivat muistiin. tää onnistuis
+            // ehkä myös featuregroupin avulla
+            
+            mymap.on(L.Draw.Event.CREATED, function (e) {
+                var layer = e.layer;
                 var coords = JSON.stringify(layer.toGeoJSON());
+                var geojsonFeature = [{
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [24.85,60.15]
+                        },
+                        "properties":{
+                            "parktime": null
+                        }
+                }];
+                geojson.addData(geojsonFeature);
                 
                 layer.on('click', onMapClick); //"mouseover", "click"
+                
                 drawnItems.addLayer(layer);
             });
 
-            //try to code remembering buttons
-            var buttonSubmit = L.DomUtil.get('button-submit');
-                L.DomEvent.addListener(buttonSubmit, 'click', function (e) {
-                popup.closePopup();
-            });
+//            //try to code remembering buttons
+//            var buttonSubmit = L.DomUtil.get('button-submit');
+//                L.DomEvent.addListener(buttonSubmit, 'click', function (e) {
+//                popup.closePopup();
+//            });
+
+
+
 
             // tutki formia: http://embed.plnkr.co/8qVoW5/
             mymap.on('draw:created', function(e) {
                 drawnItems.addLayer(e.layer);
-//                e.layer.on('click', function(){
-//                    if(e.layer.hello){
-//                        e.layer.bindPopup(e.layer.hello).openPopup();
-//                    } else {
-//                        popUpFields = "<button class='add_content'>Add content</button><div class='content_container'></div><button class='popup_save'>Save</button>";
-//                        e.layer.bindPopup(popUpFields).openPopup();
-//                        $(document).on("click", ".add_content", function(){
-//                            $(this).next(".content_container").append("Hello popup!");
-//                        });
-//                        $('.popup_save').click(function(){
-//                            e.layer.hello = $(this).prev().html();
-//                        });
-//                    };
-//                });
             });
             
-            // DO I NEED THIS FUNCTIONALITY
+            
+            
+            
+            
+            
+            // DO I NEED THIS FUNCTIONALITY??
 //            document.getElementById('export').onclick = function(e) {
 //                var data = drawnItems.toGeoJSON();
 //                var convertedData = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data));
@@ -287,15 +247,15 @@ and open the template in the editor.
 //                document.getElementById('export').setAttribute('download','data.geojson');
 //            };
 //            
-//            // Truncate value based on number of decimals
-//            var _round = function(num, len) {
-//                return Math.round(num*(Math.pow(10, len)))/(Math.pow(10, len));
-//            };
-//
-//            // Helper method to format LatLng object (x.xxxxxx, y.yyyyyy)
-//            var strLatLng = function(latlng) {
-//                return "("+_round(latlng.lat, 6)+", "+_round(latlng.lng, 6)+")";
-//            };
+            // Truncate value based on number of decimals
+            var _round = function(num, len) {
+                return Math.round(num*(Math.pow(10, len)))/(Math.pow(10, len));
+            };
+
+            // Helper method to format LatLng object (x.xxxxxx, y.yyyyyy)
+            var strLatLng = function(latlng) {
+                return "("+_round(latlng.lat, 6)+", "+_round(latlng.lng, 6)+")";
+            };
 //
 //            // Object created - bind popup to layer, add to feature group
 //            mymap.on(L.Draw.Event.CREATED, function(event) {

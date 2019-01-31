@@ -36,7 +36,7 @@ and open the template in the editor.
     </head>
     <body>
         <div class="" id="mymap" ></div>
-        
+            
         <script>
             // INITIALISE MAP AND LAYERS
             //bounds variables
@@ -82,7 +82,8 @@ and open the template in the editor.
                             "coordinates": [24.9,60.15]
                         },
                         "properties":{
-                            "parktime": null
+                            "parktime": null,
+                            "testtext": null
                         }
                 }]
             }, {
@@ -91,7 +92,7 @@ and open the template in the editor.
                 }
             }).addTo(mymap);
             
-            //Listen to changes in popup
+            //Listen to changes in form
             function layerClickHandler (e) {
                 var marker = e.target,
                         properties = e.target.feature.properties;
@@ -102,12 +103,19 @@ and open the template in the editor.
                 marker.bindPopup(popupContent);
                 marker.openPopup();
                 
+                //event listeners
                 L.DomUtil.get('parktime').textContent = properties.parktime;
-                
                 var parkTime = L.DomUtil.get('parktime');
                 parkTime.value = properties.parktime;
                 L.DomEvent.addListener(parkTime, "change", function (e){
                     properties.parktime = e.target.value;
+                });
+                
+                L.DomUtil.get('testtext').textContent = properties.testtext;
+                var testText = L.DomUtil.get('testtext');
+                testText.value = properties.testtext;
+                L.DomEvent.addListener(testText, "change", function (e){
+                    properties.testtext = e.target.value;
                 });
                 
                 var buttonSubmit = L.DomUtil.get('button-submit');
@@ -203,24 +211,25 @@ and open the template in the editor.
             // JÄIN JUMIIN 310119 siihen, että en saa siirrettyy drawnitemsiä
             // geojsoniin, jotta tiedot tallentuisivat muistiin. tää onnistuis
             // ehkä myös featuregroupin avulla
-            
             mymap.on(L.Draw.Event.CREATED, function (e) {
                 var layer = e.layer;
-                var coords = JSON.stringify(layer.toGeoJSON());
-                var geojsonFeature = [{
+                var lat = layer.getLatLng().lat;
+                var lng = layer.getLatLng().lng;
+                //var coords = JSON.stringify(layer.toGeoJSON());
+           
+                var geojsonFeature = {
                         "type": "Feature",
                         "geometry": {
                             "type": "Point",
-                            "coordinates": [24.85,60.15]
+                            "coordinates": [lng, lat]
                         },
                         "properties":{
-                            "parktime": null
+                            "parktime": 4343,
+                            "testtext": [lng, lat]
                         }
-                }];
+                };
                 geojson.addData(geojsonFeature);
-                
                 layer.on('click', onMapClick); //"mouseover", "click"
-                
                 drawnItems.addLayer(layer);
             });
 

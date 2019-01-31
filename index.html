@@ -38,6 +38,7 @@ and open the template in the editor.
         <div class="" id="mymap" ></div>
         
         <script>
+            // INITIALISE MAP AND LAYERS
             //bounds variables
             var corner1 = [60.371108, 24.598389];
             var corner2 = [60.086763, 25.405884];
@@ -90,7 +91,7 @@ and open the template in the editor.
                 }
             }).addTo(mymap);
             
-                        
+            //Listen to changes in popup
             function layerClickHandler (e) {
                 var marker = e.target,
                         properties = e.target.feature.properties;
@@ -115,6 +116,7 @@ and open the template in the editor.
                 });
             }
     
+            // INFOTEXT AND INFOBUTTON
             // infotext and infobutton and associated stuff    
             var infoText = L.control({position: 'bottomleft'});
             
@@ -158,6 +160,8 @@ and open the template in the editor.
                 }]
             });
             infoButton.addTo(mymap);
+            
+            
             
             // FeatureGroup is to store editable layers.
             var drawnItems = new L.featureGroup().addTo(mymap);
@@ -219,14 +223,6 @@ and open the template in the editor.
                 
                 drawnItems.addLayer(layer);
             });
-
-//            //try to code remembering buttons
-//            var buttonSubmit = L.DomUtil.get('button-submit');
-//                L.DomEvent.addListener(buttonSubmit, 'click', function (e) {
-//                popup.closePopup();
-//            });
-
-
 
 
             // tutki formia: http://embed.plnkr.co/8qVoW5/

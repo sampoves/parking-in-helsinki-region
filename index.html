@@ -93,6 +93,7 @@ and open the template in the editor.
             }).addTo(mymap);
             
             //Listen to changes in form
+            //this listener idea from: http://embed.plnkr.co/8qVoW5/
             function layerClickHandler (e) {
                 var marker = e.target,
                         properties = e.target.feature.properties;
@@ -172,7 +173,7 @@ and open the template in the editor.
             
             
             // FeatureGroup is to store editable layers.
-            var drawnItems = new L.featureGroup().addTo(mymap);
+            //var drawnItems = new L.featureGroup().addTo(mymap);
             
             //initialise drawing tools, disable a bunch
             var draw_control = new L.Control.Draw({
@@ -209,9 +210,7 @@ and open the template in the editor.
                 popup.setLatLng(e.latlng).setContent(e.latlng.toString() + popupContent).openOn(mymap);
             }
             
-            // JÄIN JUMIIN 310119 siihen, että en saa siirrettyy drawnitemsiä
-            // geojsoniin, jotta tiedot tallentuisivat muistiin. tää onnistuis
-            // ehkä myös featuregroupin avulla
+
             mymap.on(L.Draw.Event.CREATED, function (e) {
                 var layer = e.layer;
                 var lat = layer.getLatLng().lat;
@@ -235,8 +234,6 @@ and open the template in the editor.
                 //drawnItems.addLayer(layer);
             });
 
-
-            // tutki formia: http://embed.plnkr.co/8qVoW5/
             mymap.on('draw:created', function(e) {
                 //drawnItems.addLayer(e.layer);
                 
@@ -259,10 +256,7 @@ and open the template in the editor.
             });
             
             
-            
-            
-            
-            
+             
             // DO I NEED THIS FUNCTIONALITY??
 //            document.getElementById('export').onclick = function(e) {
 //                var data = drawnItems.toGeoJSON();

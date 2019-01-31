@@ -72,25 +72,35 @@ and open the template in the editor.
                     "tms": false
             }).addTo(mymap);
 
-            //try to initialise geojson layer
+            // import empty GeoJSON to be populated by user
             var geojson = L.geoJson({
                 "type": "FeatureCollection",
-                "features": [{
-                        "type": "Feature",
-                        "geometry": {
-                            "type": "Point",
-                            "coordinates": [24.9,60.15]
-                        },
-                        "properties":{
-                            "parktime": null,
-                            "testtext": null
-                        }
-                }]
-            }, {
-                onEachFeature: function (feature, layer){
+                "features": []
+                },{
+                    onEachFeature: function (feature, layer){
                     layer.on('click', layerClickHandler);
                 }
-            }).addTo(mymap);
+                }).addTo(mymap);
+
+            //try to initialise geojson layer
+//            var geojson = L.geoJson({
+//                "type": "FeatureCollection",
+//                "features": [{
+//                        "type": "Feature",
+//                        "geometry": {
+//                            "type": "Point",
+//                            "coordinates": [24.9,60.15]
+//                        },
+//                        "properties":{
+//                            "parktime": null,
+//                            "testtext": null
+//                        }
+//                }]
+//            }, {
+//                onEachFeature: function (feature, layer){
+//                    layer.on('click', layerClickHandler);
+//                }
+//            }).addTo(mymap);
             
             //Listen to changes in form
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
@@ -172,9 +182,6 @@ and open the template in the editor.
             
             
             
-            // FeatureGroup is to store editable layers.
-            //var drawnItems = new L.featureGroup().addTo(mymap);
-            
             //initialise drawing tools, disable a bunch
             var draw_control = new L.Control.Draw({
                 "edit": {
@@ -202,21 +209,19 @@ and open the template in the editor.
                 }).addTo(mymap);
             
               
+              
             //determine behaviour of popups
             var popup = L.popup();
             
             function onMapClick(e){
-                //popup.setLatLng(e.latlng).setContent(e.latlng.toString() + popupContent).openOn(mymap);
                 popup.setLatLng(e.latlng).setContent(e.latlng.toString() + popupContent).openOn(mymap);
             }
             
-
             mymap.on(L.Draw.Event.CREATED, function (e) {
                 var layer = e.layer;
                 var lat = layer.getLatLng().lat;
                 var lng = layer.getLatLng().lng;
                 //var coords = JSON.stringify(layer.toGeoJSON());
-           
                 var geojsonFeature = {
                         "type": "Feature",
                         "geometry": {
@@ -228,19 +233,15 @@ and open the template in the editor.
                             "testtext": [lng, lat]
                         }
                 };
-                geojson.addData(geojsonFeature);
-                layer.on('click', layerClickHandler); //"mouseover", "click"
                 
-                //drawnItems.addLayer(layer);
+                layer.on('click', layerClickHandler); //"mouseover", "click"
+                geojson.addData(geojsonFeature);
             });
 
             mymap.on('draw:created', function(e) {
-                //drawnItems.addLayer(e.layer);
-                
                 var layer = e.layer;
                 var lat = layer.getLatLng().lat;
                 var lng = layer.getLatLng().lng;
-           
                 var geojsonFeature = {
                         "type": "Feature",
                         "geometry": {
@@ -252,7 +253,9 @@ and open the template in the editor.
                             "testtext": [lng, lat]
                         }
                 };
-                geojson.addData(geojsonFeature);
+                //geojson.addData(geojsonFeature); //JOS TÄÄ OLI KÄYTÖSSÄ, 
+                // L.GEOJSONIIN SYNTYY TUPLAT JOKA MERKINNÄSTÄ
+                
             });
             
             

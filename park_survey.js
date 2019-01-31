@@ -4,17 +4,18 @@
  * and open the template in the editor.
  */
 
+// TSEKKAA MIKÄ ADDMARKER() TUOLLA LOPUSSA ON EKALLA RIVIL
 var popupContent = '<form role="form" id="form" enctype="multipart/form-data" class = "form-horizontal" onsubmit="addMarker()">'+
     //datetime
     '<div class="form-group">'+
         '<label class="control-label col-sm-5"><strong>Pysäköintisi päivämäärä ja kellonaika</strong></label>'+
-        '<input type="date" placeholder="Required" id="date" name="date" class="form-control"/>'+ 
+        '<input type="datetime-local" placeholder="Required" id="date" name="date" class="form-control"/>'+ 
     '</div>'+
 
     //time to search parking
     '<div class="form-group">'+
         '<label class="control-label col-sm-5"><strong>Kuinka pitkään etsit pysäköintipaikkaa (minuuteissa)?: </strong></label>'+
-        '<input type="number" min="0" max="120" class="form-control" id="parktime" name="parktime">'+ 
+        '<input type="number" min="0" max="120" placeholder="Required" class="form-control" id="parktime" name="parktime">'+ 
     '</div>'+
 
     //likert familiarity of parking area
@@ -40,14 +41,19 @@ var popupContent = '<form role="form" id="form" enctype="multipart/form-data" cl
     //type of parking spot
     '<div class="form-group">'+
         '<label class="control-label col-sm-5"><strong>Minkätyyppinen pysäköintipaikka oli kyseessä?</strong></label>'+
-        '<select class="form-control" id="parkspottype" name="parkspottype">'+
+        '<select class="form-control" placeholder="Required" id="parkspottype" name="parkspottype">'+
             '<option value="1">Kadunvarsipaikka</option>'+
             '<option value="2">Pysäköintialue (parkkipaikka)</option>'+
             '<option value="3">Pysäköintihalli</option>'+
             '<option value="4">Muu</option>'+
         '</select>'+ 
     '</div>'+
-
+    
+    //text box for testing
+    '<div class="form-group">'+
+        'jeje: <input type="text" placeholder="Required" id="testtext" name="testtext">'+
+    '</div>'+
+    
+    //submit button
     '<button id="button-submit" type="button">Save Changes</button>'+
-
 '</form>';

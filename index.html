@@ -123,14 +123,18 @@ and open the template in the editor.
                 // TAI AINAKIN TOISELLA TAVALLA TÄMÄN MUN LISTENERIN KANSSA
                 // LIKERT MENEE GEOJSONIIN, MUTTA EI NÄY POPUPISSA
                 
+                // opittua:
+                // document.myform.likert jne tuntuu toimivan tollaisen
+                // function (e) sisällä. mulle on edelleen tosi mysteeri,
+                // että miten pääsen käsiksi mun formin sisältöön ja tsekkaamaan
+                // että miten toi likert voisi säilyy popupissa
+                
                 //LIKERT
                 //idea http://jsfiddle.net/XFc2j/
-                var mostRecent;
                 $(document).ready(function(){
                     $('input[name=likert]').click(function(){
                         //alert(this.value);
                         properties.likert = this.value;
-                        window.mostRecent = this.value;
                         console.log(this.value);
                     });
                 });

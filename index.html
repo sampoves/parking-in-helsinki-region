@@ -14,6 +14,7 @@ and open the template in the editor.
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.4.0/easy-button.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
         
         <!--import parking survey variable -->
         <script type="text/javascript" src="park_survey.js"></script>
@@ -81,32 +82,18 @@ and open the template in the editor.
                     layer.on('click', layerClickHandler);
                 }
                 }).addTo(mymap);
-
-            //try to initialise geojson layer
-//            var geojson = L.geoJson({
-//                "type": "FeatureCollection",
-//                "features": [{
-//                        "type": "Feature",
-//                        "geometry": {
-//                            "type": "Point",
-//                            "coordinates": [24.9,60.15]
-//                        },
-//                        "properties":{
-//                            "parktime": null,
-//                            "testtext": null
-//                        }
-//                }]
-//            }, {
-//                onEachFeature: function (feature, layer){
-//                    layer.on('click', layerClickHandler);
-//                }
-//            }).addTo(mymap);
+            
+            function myfunction() {
+                var sub = $('#input').val();
+                //console.log(sub);
+            }
             
             //Listen to changes in form
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
             function layerClickHandler (e) {
                 var marker = e.target,
                         properties = e.target.feature.properties;
+                        console.log(properties);
                 
                 if(marker.hasOwnProperty('_popup')){
                     marker.unbindPopup();
@@ -115,6 +102,15 @@ and open the template in the editor.
                 marker.openPopup();
                 
                 //event listeners
+                //DATETIME
+                L.DomUtil.get('datetime').textContent = properties.datetime;
+                var dateTime = L.DomUtil.get('datetime');
+                dateTime.value = properties.datetime;
+                L.DomEvent.addListener(dateTime, "change", function (e){
+                    properties.datetime = e.target.value;
+                });
+                
+                //PARKING TIME
                 L.DomUtil.get('parktime').textContent = properties.parktime;
                 var parkTime = L.DomUtil.get('parktime');
                 parkTime.value = properties.parktime;
@@ -122,6 +118,34 @@ and open the template in the editor.
                     properties.parktime = e.target.value;
                 });
                 
+                // 01022019
+                // JÄIN JUMIIN SIIHEN, ETTÄ RADIO JA OPTION TOIMII OUDOSTI
+                // TAI AINAKIN TOISELLA TAVALLA TÄMÄN MUN LISTENERIN KANSSA
+                // LIKERT MENEE GEOJSONIIN, MUTTA EI NÄY POPUPISSA
+                
+                //LIKERT
+                //idea http://jsfiddle.net/XFc2j/
+                var mostRecent;
+                $(document).ready(function(){
+                    $('input[name=likert]').click(function(){
+                        //alert(this.value);
+                        properties.likert = this.value;
+                        window.mostRecent = this.value;
+                        console.log(this.value);
+                    });
+                });
+
+                //PARK SPOT TYPE
+                //TÄMÄ MUUTTAA PARKSPOTIN NÄKYMÄTTÖMÄKSI
+                L.DomUtil.get('parkspot').textContent = properties.parkspot;
+                var parkSpot = L.DomUtil.get('parkspot');
+                console.log(parkSpot);
+                parkSpot.value = properties.parkspot;
+                L.DomEvent.addListener(parkSpot, "change", function (e){
+                    properties.parkspot = e.target.value;
+                });
+                
+                //TEST
                 L.DomUtil.get('testtext').textContent = properties.testtext;
                 var testText = L.DomUtil.get('testtext');
                 testText.value = properties.testtext;
@@ -129,6 +153,7 @@ and open the template in the editor.
                     properties.testtext = e.target.value;
                 });
                 
+                //SAVE BUTTON
                 var buttonSubmit = L.DomUtil.get('button-submit');
                 L.DomEvent.addListener(buttonSubmit, "click", function (e){
                     marker.closePopup();
@@ -229,7 +254,10 @@ and open the template in the editor.
                             "coordinates": [lng, lat]
                         },
                         "properties":{
-                            "parktime": 4343,
+                            "datetime": null,
+                            "parktime": null,
+                            "likert": null,
+                            "parkspot": "Muu",
                             "testtext": [lng, lat]
                         }
                 };

@@ -57,10 +57,9 @@ and open the template in the editor.
                 crs: L.CRS.EPSG3857,
                 zoomControl: true
             });
-            
-            //global temp id apptempt
-            var tempID = 1;
-            
+ 
+            var currentStop;
+ 
             //initialise background tiles
             var tileLayer = L.tileLayer(
                     'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png',
@@ -87,9 +86,7 @@ and open the template in the editor.
                             }
                 }).addTo(mymap);
             
-            
-            // POSSIBLE TO FIND FEATURE DATA WITH INTERNAL LAYER ID
-            //geojson.getLayer(113).feature.properties.parktime
+           
             
             function myfunction() {
                 var sub = $('#input').val();
@@ -101,14 +98,14 @@ and open the template in the editor.
             function layerClickHandler (e) {
                 var marker = e.target,
                         properties = e.target.feature.properties;
-                        console.log(properties);
+                        //console.log(properties);
                 
                 if(marker.hasOwnProperty('_popup')){
                     marker.unbindPopup();
                 }
                 marker.bindPopup(popupContent);
                 marker.openPopup();
-                
+
                 //event listeners
                 //DATETIME
                 L.DomUtil.get('datetime').textContent = properties.datetime;
@@ -149,11 +146,7 @@ and open the template in the editor.
                 //BEN MELVILLE LIKERT
                 $(L.DomUtil.get('likert')).find(
                         "input[value='" + properties.likert+ "']").attr('checked', true);
-                
-                //console.log(JSON.stringify($(L.DomUtil.get('likert'))) + " likert tää ja kaks alas");                
-                //console.log($(L.DomUtil.get('likert')).find("input[option='" + properties.likert+ "']"));
-                //console.log($(L.DomUtil.get('likert')).find("input[option='" + properties.likert+ "']").attr('checked', true));
-
+                console.log(properties.likert + " liekrtt");
                 $(document).ready(function(){
                     $('input[name=likert]').click(function(){
                         properties.likert = this.value;
@@ -172,21 +165,16 @@ and open the template in the editor.
 //                });
                 
                 
+                // TÄLLÄ LÖYTÄÄ PARKSTOPIN VALUEN
+                //console.log($(document).find("option[value")[2].value);
                 
                 //BEN MELVILLE PARKSPOT
-//                $(L.DomUtil.get('parkspot')).find(
-//                        "input[value='" + properties.parkspot+ "']").attr('checked', true);
-//
-//                //console.log(JSON.stringify($(L.DomUtil.get('likert'))) + " likert tää ja kaks alas");                
-//                //console.log($(L.DomUtil.get('likert')).find("input[option='" + properties.likert+ "']"));
-//                //console.log($(L.DomUtil.get('likert')).find("input[option='" + properties.likert+ "']").attr('checked', true));
-//
-//                $(document).ready(function(){
-//                    $('input[name=parkspot]').click(function(){
-//                        properties.parkspot = this.value;
-//                        console.log(this.value);
-//                    });
-//                });
+                
+                console.log(window.currentValue + " toimiiks parkspot currentValue isossa scopessa?");
+                console.log($(document).find("option[value")[2].value + " parkstop value");
+                $(L.DomUtil.get('parkstop')).find(
+                        "option[value='" + properties.parkstop+ "']").attr('selected', true);
+                
                 
                 
                 
@@ -205,14 +193,33 @@ and open the template in the editor.
                 });
             }
     
-            function onParkspotChange(obj){                
-                console.log(obj);
-                console.log(obj.value + " objvalue");
-                console.log($(document).find("input[value='" + obj.value+"']").selected === true);
-                //console.log($(L.DomUtil.get("parkspot")).find("input[value='" + obj.value+"']").attr("selected", true));
-                $(document).find("input[value='" + obj.value+"']").selected === true;
-                geojson.feature.properties.parkspot = obj.value;
-                console.log("parkspot value set to " + obj.value);
+    
+    
+            // POSSIBLE TO FIND FEATURE DATA WITH INTERNAL LAYER ID
+            //geojson.getLayer(113).feature.properties.parktime
+            //ORIGINAL SEKOILU
+            function onParkspotChange(event){
+
+
+                //UUTTA sekoiluu
+                // parametrin ptiää olla näissä event
+//                listLayers = geojson._layers;
+//                
+//                for (layerID in listLayers){  
+//                    console.log("layerID " +layerID + ", " + geojson.getLayer(layerID).feature.properties.parkstop + " parkstop value in for loop");
+//                }
+//                console.log(event);
+//                console.log(event.target.feature + " featu");
+//                console.log(event.srcElement._leaflet_id + " dfd");
+//                console.log(event.target._leaflet_id + " sekoiluu");
+                currentValue = event.target.value;
+                console.log("parkspot value set to " + event.target.value);
+                //console.log(event.target.selectedOptions.parkspot.selected + " selected state");
+                
+                
+                
+                // vanhaa sekoiluu
+                //geojson.feature.properties.parkspot = obj.value;
                 //console.log(L.DomUtil.get('parkspot').value = properties.parkspot);
                 //properties.parkspot = obj.value;
 //                if(obj.value === "3"){

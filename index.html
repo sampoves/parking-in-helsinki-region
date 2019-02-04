@@ -195,13 +195,13 @@ and open the template in the editor.
                 
                 
                 
-                //TEST
-                L.DomUtil.get('testtext').textContent = properties.testtext;
-                var testText = L.DomUtil.get('testtext');
-                testText.value = properties.testtext;
-                L.DomEvent.addListener(testText, "change", function (e){
-                    properties.testtext = e.target.value;
-                });
+                //TEST deprecated
+//                L.DomUtil.get('testtext').textContent = properties.testtext;
+//                var testText = L.DomUtil.get('testtext');
+//                testText.value = properties.testtext;
+//                L.DomEvent.addListener(testText, "change", function (e){
+//                    properties.testtext = e.target.value;
+//                });
                 
                 //SAVE BUTTON
                 var buttonSubmit = L.DomUtil.get('button-submit');
@@ -344,8 +344,8 @@ and open the template in the editor.
                             "datetime": null,
                             "parktime": null,
                             "likert": null,
-                            "parkspot": null,
-                            "testtext": [lng, lat]
+                            "parkspot": null
+                            //"testtext": [lng, lat]
                         }
                 };
                 
@@ -364,8 +364,8 @@ and open the template in the editor.
                             "coordinates": [lng, lat]
                         },
                         "properties":{
-                            "parktime": 4343,
-                            "testtext": [lng, lat]
+                            "parktime": null
+                            //"testtext": [lng, lat]
                         }
                 };
                 //geojson.addData(geojsonFeature); //JOS TÄÄ OLI KÄYTÖSSÄ, 

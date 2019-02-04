@@ -9,3 +9,5 @@ Leaflet.js Parking survey consists of
 
 Old stuff:
 Currently vacationing, it'll be back. Python script to refine and analyse data produced in parking field survey
+* parking.py - main script
+* parking_func.py - auxiliary functions

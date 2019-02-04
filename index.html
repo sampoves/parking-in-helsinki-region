@@ -85,12 +85,6 @@ and open the template in the editor.
                 }).addTo(mymap);
             
            
-            
-            function myfunction() {
-                var sub = $('#input').val();
-                //console.log(sub);
-            }
-            
             //Listen to changes in form
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
             function layerClickHandler (e) {
@@ -121,10 +115,8 @@ and open the template in the editor.
                     properties.parktime = e.target.value;
                 });
                 
-                // 01022019
-                // JÄIN JUMIIN SIIHEN, ETTÄ RADIO JA OPTION TOIMII OUDOSTI
-                // TAI AINAKIN TOISELLA TAVALLA TÄMÄN MUN LISTENERIN KANSSA
-                // LIKERT MENEE GEOJSONIIN, MUTTA EI NÄY POPUPISSA
+                // 050219: PARKSPOT EI KOSKAAN HYVÄKSY ENSIMMÄISTÄ TÄYTTÖÄ.
+                // KAIKKI MYÖHEMMÄT ONNISTUU.
                 
                 // opittua:
                 // document.myform.likert jne tuntuu toimivan tollaisen
@@ -132,15 +124,7 @@ and open the template in the editor.
                 // että miten pääsen käsiksi mun formin sisältöön ja tsekkaamaan
                 // että miten toi likert voisi säilyy popupissa
                 
-                //MUN LIKERT
-                //idea http://jsfiddle.net/XFc2j/
-//                $(document).ready(function(){
-//                    $('input[name=likert]').click(function(){
-//                        properties.likert = this.value;
-//                        console.log(this.value);
-//                    });
-//                });
-                
+
                 //BEN MELVILLE LIKERT
                 $(L.DomUtil.get('likert')).find(
                         "input[value='" + properties.likert+ "']").attr('checked', true);
@@ -152,20 +136,7 @@ and open the template in the editor.
                     });
                 });
 
-                //PARK SPOT TYPE
-                //TÄMÄ MUUTTAA PARKSPOTIN NÄKYMÄTTÖMÄKSI
-//                L.DomUtil.get('parkspot').textContent = properties.parkspot;
-//                var parkSpot = L.DomUtil.get('parkspot');
-//                console.log(parkSpot);
-//                parkSpot.value = properties.parkspot;
-//                L.DomEvent.addListener(parkSpot, "change", function (e){
-//                    properties.parkspot = e.target.value;
-//                });
-                
-                
-                
-                
-                
+
                 // TÄLLÄ LÖYTÄÄ PARKSTOPIN VALUEN
                 //console.log($(document).find("option[value")[2].value);
                 
@@ -180,29 +151,12 @@ and open the template in the editor.
                     parkSpot.value = properties.parkspot;
                     L.DomEvent.addListener(parkSpot, "change", function(e){
                         properties.parkspot = e.target.value;
-                        console.log("METGA");
+                        console.log("MEGAJEE");
                     });
                 } else {
                     //not defined, do nothi       
                 }
 
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                //TEST deprecated
-//                L.DomUtil.get('testtext').textContent = properties.testtext;
-//                var testText = L.DomUtil.get('testtext');
-//                testText.value = properties.testtext;
-//                L.DomEvent.addListener(testText, "change", function (e){
-//                    properties.testtext = e.target.value;
-//                });
-                
                 //SAVE BUTTON
                 var buttonSubmit = L.DomUtil.get('button-submit');
                 L.DomEvent.addListener(buttonSubmit, "click", function (e){
@@ -210,14 +164,12 @@ and open the template in the editor.
                 });
             }
     
-    
-    
+
             // POSSIBLE TO FIND FEATURE DATA WITH INTERNAL LAYER ID
             //geojson.getLayer(113).feature.properties.parktime
             //ORIGINAL SEKOILU
             function onParkspotChange(event){
-
-
+                
                 //UUTTA sekoiluu
                 // parametrin ptiää olla näissä event
 //                listLayers = geojson._layers;
@@ -345,7 +297,6 @@ and open the template in the editor.
                             "parktime": null,
                             "likert": null,
                             "parkspot": null
-                            //"testtext": [lng, lat]
                         }
                 };
                 
@@ -365,7 +316,6 @@ and open the template in the editor.
                         },
                         "properties":{
                             "parktime": null
-                            //"testtext": [lng, lat]
                         }
                 };
                 //geojson.addData(geojsonFeature); //JOS TÄÄ OLI KÄYTÖSSÄ, 

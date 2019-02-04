@@ -46,11 +46,6 @@ var popupContent = '<form name="myform" role="form" id="form" enctype="multipart
         '</div>'+
     '</div>'+
     
-    //text box for testing
-    '<div class="form-group">'+
-        'jeje: <input type="text" placeholder="Required" id="testtext" name="testtext">'+
-    '</div>'+
-    
     //submit button
     '<button id="button-submit" type="button">Save Changes</button>'+
 '</form>';

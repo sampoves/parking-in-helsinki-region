@@ -22,7 +22,7 @@ var popupContent = '<form name="myform" role="form" id="form" enctype="multipart
     '<div class="row">'+
         '<label class="control-label col-sm-5"><strong>Kuinka usein olet pysäköinyt autosi tälle alueelle?</strong></label>'+
         '<div class="small-3 column">'+
-            '<ul class="likert" id="likert" onclick="myfunction()">'+
+            '<ul class="likert" id="likert">'+
                 '<li><input value="1" name="likert" type="radio">Erittäin usein</li>'+
                 '<li><input value="2" name="likert" type="radio">Usein</li>'+
                 '<li><input value="3" name="likert" type="radio">Toisinaan</li>'+
@@ -36,7 +36,7 @@ var popupContent = '<form name="myform" role="form" id="form" enctype="multipart
     '<div class="row">'+
         '<label class="control-label col-sm-5">Minkätyyppinen pysäköintipaikka oli kyseessä?<br></label>'+
         '<div class="small-3 column">'+
-            '<select id="parkspot" onchange="onParkspotChange(this)">'+
+            '<select id="parkspot" onchange="onParkspotChange(event)">'+
                 '<li><option value="0" name="parkspot" selected disabled value> -- select an option -- </option></li>'+
                 '<li><option value="1" name="parkspot">Kadunvarsipaikka</option></li>'+
                 '<li><option value="2" name="parkspot">Pysäköintialue (parkkipaikka)</option></li>'+

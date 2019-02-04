@@ -58,8 +58,6 @@ and open the template in the editor.
                 zoomControl: true
             });
  
-            var currentStop;
- 
             //initialise background tiles
             var tileLayer = L.tileLayer(
                     'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png',
@@ -165,15 +163,33 @@ and open the template in the editor.
 //                });
                 
                 
+                
+                
+                
                 // TÄLLÄ LÖYTÄÄ PARKSTOPIN VALUEN
                 //console.log($(document).find("option[value")[2].value);
                 
                 //BEN MELVILLE PARKSPOT
-                
                 console.log(window.currentValue + " toimiiks parkspot currentValue isossa scopessa?");
-                console.log($(document).find("option[value")[2].value + " parkstop value");
-                $(L.DomUtil.get('parkstop')).find(
-                        "option[value='" + properties.parkstop+ "']").attr('selected', true);
+                if(typeof currentValue !== 'undefined'){
+                    console.log($(document).find("option[value")[currentValue].value + " document find parkstop value currentValue");
+                    $(L.DomUtil.get('parkstop')).find(
+                            "option[value='" + currentValue+ "']").attr('selected', true);
+                    var parkSpot = L.DomUtil.get('parkspot');
+                    parkSpot.value = properties.parkstop;
+                    L.DomEvent.addListener(parkSpot, "change", function(e){
+                        properties.parkstop = e.target.value;
+                        console.log("METGA");
+                    });
+                } else {
+                    //not defined, do nothi       
+                }
+
+                
+                
+                
+                
+                
                 
                 
                 

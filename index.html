@@ -170,15 +170,16 @@ and open the template in the editor.
                 //console.log($(document).find("option[value")[2].value);
                 
                 //BEN MELVILLE PARKSPOT
+                //MODATTU BEN MELVILLE PARKSPOT TOIMII
                 console.log(window.currentValue + " toimiiks parkspot currentValue isossa scopessa?");
                 if(typeof currentValue !== 'undefined'){
-                    console.log($(document).find("option[value")[currentValue].value + " document find parkstop value currentValue");
-                    $(L.DomUtil.get('parkstop')).find(
+                    console.log($(document).find("option[value")[currentValue].value + " document find parkspot value currentValue");
+                    $(L.DomUtil.get('parkspot')).find(
                             "option[value='" + currentValue+ "']").attr('selected', true);
                     var parkSpot = L.DomUtil.get('parkspot');
-                    parkSpot.value = properties.parkstop;
+                    parkSpot.value = properties.parkspot;
                     L.DomEvent.addListener(parkSpot, "change", function(e){
-                        properties.parkstop = e.target.value;
+                        properties.parkspot = e.target.value;
                         console.log("METGA");
                     });
                 } else {

@@ -58,6 +58,9 @@ and open the template in the editor.
                 zoomControl: true
             });
             
+            //global temp id apptempt
+            var tempID = 1;
+            
             //initialise background tiles
             var tileLayer = L.tileLayer(
                     'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png',
@@ -78,10 +81,15 @@ and open the template in the editor.
                 "type": "FeatureCollection",
                 "features": []
                 },{
-                    onEachFeature: function (feature, layer){
-                    layer.on('click', layerClickHandler);
-                }
+                    onEachFeature: 
+                            function (feature, layer){
+                                layer.on('click', layerClickHandler);
+                            }
                 }).addTo(mymap);
+            
+            
+            // POSSIBLE TO FIND FEATURE DATA WITH INTERNAL LAYER ID
+            //geojson.getLayer(113).feature.properties.parktime
             
             function myfunction() {
                 var sub = $('#input').val();
@@ -129,11 +137,25 @@ and open the template in the editor.
                 // että miten pääsen käsiksi mun formin sisältöön ja tsekkaamaan
                 // että miten toi likert voisi säilyy popupissa
                 
-                //LIKERT
+                //MUN LIKERT
                 //idea http://jsfiddle.net/XFc2j/
+//                $(document).ready(function(){
+//                    $('input[name=likert]').click(function(){
+//                        properties.likert = this.value;
+//                        console.log(this.value);
+//                    });
+//                });
+                
+                //BEN MELVILLE LIKERT
+                $(L.DomUtil.get('likert')).find(
+                        "input[value='" + properties.likert+ "']").attr('checked', true);
+                
+                //console.log(JSON.stringify($(L.DomUtil.get('likert'))) + " likert tää ja kaks alas");                
+                //console.log($(L.DomUtil.get('likert')).find("input[option='" + properties.likert+ "']"));
+                //console.log($(L.DomUtil.get('likert')).find("input[option='" + properties.likert+ "']").attr('checked', true));
+
                 $(document).ready(function(){
                     $('input[name=likert]').click(function(){
-                        //alert(this.value);
                         properties.likert = this.value;
                         console.log(this.value);
                     });
@@ -141,13 +163,32 @@ and open the template in the editor.
 
                 //PARK SPOT TYPE
                 //TÄMÄ MUUTTAA PARKSPOTIN NÄKYMÄTTÖMÄKSI
-                L.DomUtil.get('parkspot').textContent = properties.parkspot;
-                var parkSpot = L.DomUtil.get('parkspot');
-                console.log(parkSpot);
-                parkSpot.value = properties.parkspot;
-                L.DomEvent.addListener(parkSpot, "change", function (e){
-                    properties.parkspot = e.target.value;
-                });
+//                L.DomUtil.get('parkspot').textContent = properties.parkspot;
+//                var parkSpot = L.DomUtil.get('parkspot');
+//                console.log(parkSpot);
+//                parkSpot.value = properties.parkspot;
+//                L.DomEvent.addListener(parkSpot, "change", function (e){
+//                    properties.parkspot = e.target.value;
+//                });
+                
+                
+                
+                //BEN MELVILLE PARKSPOT
+//                $(L.DomUtil.get('parkspot')).find(
+//                        "input[value='" + properties.parkspot+ "']").attr('checked', true);
+//
+//                //console.log(JSON.stringify($(L.DomUtil.get('likert'))) + " likert tää ja kaks alas");                
+//                //console.log($(L.DomUtil.get('likert')).find("input[option='" + properties.likert+ "']"));
+//                //console.log($(L.DomUtil.get('likert')).find("input[option='" + properties.likert+ "']").attr('checked', true));
+//
+//                $(document).ready(function(){
+//                    $('input[name=parkspot]').click(function(){
+//                        properties.parkspot = this.value;
+//                        console.log(this.value);
+//                    });
+//                });
+                
+                
                 
                 //TEST
                 L.DomUtil.get('testtext').textContent = properties.testtext;
@@ -163,6 +204,24 @@ and open the template in the editor.
                     marker.closePopup();
                 });
             }
+    
+            function onParkspotChange(obj){                
+                console.log(obj);
+                console.log(obj.value + " objvalue");
+                console.log($(document).find("input[value='" + obj.value+"']").selected === true);
+                //console.log($(L.DomUtil.get("parkspot")).find("input[value='" + obj.value+"']").attr("selected", true));
+                $(document).find("input[value='" + obj.value+"']").selected === true;
+                geojson.feature.properties.parkspot = obj.value;
+                console.log("parkspot value set to " + obj.value);
+                //console.log(L.DomUtil.get('parkspot').value = properties.parkspot);
+                //properties.parkspot = obj.value;
+//                if(obj.value === "3"){
+//                    alert("33333333333333333");
+//                } else {
+//                    //fdsfds
+//                }
+            };
+    
     
             // INFOTEXT AND INFOBUTTON
             // infotext and infobutton and associated stuff    
@@ -261,7 +320,7 @@ and open the template in the editor.
                             "datetime": null,
                             "parktime": null,
                             "likert": null,
-                            "parkspot": "Muu",
+                            "parkspot": null,
                             "testtext": [lng, lat]
                         }
                 };

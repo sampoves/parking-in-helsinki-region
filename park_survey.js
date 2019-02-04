@@ -22,26 +22,28 @@ var popupContent = '<form name="myform" role="form" id="form" enctype="multipart
     '<div class="row">'+
         '<label class="control-label col-sm-5"><strong>Kuinka usein olet pysäköinyt autosi tälle alueelle?</strong></label>'+
         '<div class="small-3 column">'+
-            '<ul class="likert" onclick="myfunction()">'+
-                '<li><input value="1" id="likert" name="likert" type="radio">Erittäin usein</li>'+
-                '<li><input value="2" id="likert" name="likert" type="radio">Usein</li>'+
-                '<li><input value="3" id="likert" name="likert" type="radio">Toisinaan</li>'+
-                '<li><input value="4" id="likert" name="likert" type="radio">Harvoin</li>'+
-                '<li><input value="5" id="likert" name="likert" type="radio">En koskaan</li>'+
+            '<ul class="likert" id="likert" onclick="myfunction()">'+
+                '<li><input value="1" name="likert" type="radio">Erittäin usein</li>'+
+                '<li><input value="2" name="likert" type="radio">Usein</li>'+
+                '<li><input value="3" name="likert" type="radio">Toisinaan</li>'+
+                '<li><input value="4" name="likert" type="radio">Harvoin</li>'+
+                '<li><input value="5" name="likert" type="radio">En koskaan</li>'+
             '</ul>'+
         '</div>'+
     '</div>'+
 
     //type of parking spot
-    '<div class="form-group">'+
-        '<label for="parkspot">Minkätyyppinen pysäköintipaikka oli kyseessä?<br></label>'+
-        '<select id="parkspot" name="parkspot" onclick="myfunction()">'+
-            '<option disabled selected value> -- select an option -- </option>'+
-            '<option value="3" name="parkspot" label="Kadunvarsipaikka"></option>'+
-            '<option value="2" name="parkspot" label="Pysäköintialue (parkkipaikka)"></option>'+
-            '<option value="3" name="parkspot" label="Pysäköintihalli"></option>'+
-            '<option value="4" name="parkspot" label="Muu"></option>'+
-        '</select>'+ 
+    '<div class="row">'+
+        '<label class="control-label col-sm-5">Minkätyyppinen pysäköintipaikka oli kyseessä?<br></label>'+
+        '<div class="small-3 column">'+
+            '<select id="parkspot" onchange="onParkspotChange(this)">'+
+                '<li><option value="0" name="parkspot" selected disabled value> -- select an option -- </option></li>'+
+                '<li><option value="1" name="parkspot">Kadunvarsipaikka</option></li>'+
+                '<li><option value="2" name="parkspot">Pysäköintialue (parkkipaikka)</option></li>'+
+                '<li><option value="3" name="parkspot">Pysäköintihalli</option></li>'+
+                '<li><option value="4" name="parkspot">Muu</option></li>'+
+            '</select>'+ 
+        '</div>'+
     '</div>'+
     
     //text box for testing

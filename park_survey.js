@@ -19,9 +19,9 @@ var popupContent = '<form name="myform" role="form" id="form" enctype="multipart
     '</div>'+
 
     //likert familiarity of parking area
-    '<div class="row">'+
+    '<div class="form-group">'+
         '<label class="control-label col-sm-5"><strong>Kuinka usein olet pysäköinyt autosi tälle alueelle?</strong></label>'+
-        '<div class="small-3 column">'+
+        '<div class="likertcolumn">'+
             '<ul class="likert" id="likert">'+
                 '<li><input value="1" name="likert" type="radio">Erittäin usein</li>'+
                 '<li><input value="2" name="likert" type="radio">Usein</li>'+
@@ -33,10 +33,10 @@ var popupContent = '<form name="myform" role="form" id="form" enctype="multipart
     '</div>'+
 
     //type of parking spot
-    '<div class="row">'+
-        '<label class="control-label col-sm-5">Minkätyyppinen pysäköintipaikka oli kyseessä?<br></label>'+
-        '<div class="small-3 column">'+
-            '<select id="parkspot" onchange="onParkspotChange(event)">'+
+    '<div class="form-group">'+
+        '<label class="control-label col-sm-5"><strong>Minkätyyppinen pysäköintipaikka oli kyseessä?</strong><br></label>'+
+        '<div class="parkspotcolumn">'+
+            '<select id="parkspot" name="parkspot" onchange="onParkspotChange(event)">'+
                 '<li><option value="0" name="parkspot" selected disabled value> -- select an option -- </option></li>'+
                 '<li><option value="1" name="parkspot">Kadunvarsipaikka</option></li>'+
                 '<li><option value="2" name="parkspot">Pysäköintialue (parkkipaikka)</option></li>'+

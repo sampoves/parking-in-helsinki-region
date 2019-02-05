@@ -14,3 +14,4 @@ var basicInfo = '<H2>Tervetuloa kyselyyn!</H2>'+
     '<br>'+
     'Kiitän vastauksestasi, <br>terveisin, Sampo Vesanen</br><br>Kyselyyn liittyvissä asioissa ota minuun yhteyttä sähköpostitse: sampo.vesanen(at)helsinki.fi'
 
+var missingStuff = '<font size="4" color="red" style="line-height: 30px;"><center><strong>This entry is incomplete!</strong></center></font>';

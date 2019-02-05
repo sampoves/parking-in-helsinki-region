@@ -118,9 +118,25 @@ p {
 }
 
 .likert li {
-    margin-top: 1px;
+    margin-top: 11px;
     list-style-type: none;
+    vertical-align: middle;
+}
 
+.likert li:hover{
+    background-color: #dfd;    
+}
+
+.likert li:checked + label{
+    background-color:#bfb;
+    border-color: #4c4;
+}
+
+input[type="radio"]{
+    width: 20px;
+    height: 20px;
+    margin-top: -1px;
+    vertical-align: top;
 }
 
 .form-group {
@@ -142,13 +158,14 @@ ul {
 }
 
 #parkspot {
-    font-size: 22px;
-    width: 260px;
+    font-size: 18px;
+    font-family: 'Montserrat', sans-serif;
+    width: 100%;
 }
 
 #parktime {
     font-size: 18px;
-    width:250px
+    width: 100%;
 }
 
 select option {
@@ -157,8 +174,9 @@ select option {
 }
 
 button {
+    width: 100%;
     font-family: 'Montserrat', sans-serif;
-    font-size: 15px;
+    font-size: 16px;
     border-radius: 5px;
     border: 2px solid #4CAF50; /* Green */
     color: black;
@@ -171,7 +189,7 @@ button:hover {
 
 input[type="datetime-local"]{
     font-size: 13pt;
-    width:250px;
+    width: 100%;
     font-family: 'Montserrat', sans-serif;
 }
 

@@ -96,7 +96,19 @@ and open the template in the editor.
                 if(marker.hasOwnProperty('_popup')){
                     marker.unbindPopup();
                 }
-                marker.bindPopup(popupContent);
+                
+                //check if all values are inserted and print text in popUp
+                //if this is the case
+                if(!properties.datetime || !properties.likert 
+                    || !properties.parkspot || !properties.parktime){
+                    marker.bindPopup(popupContent + missingStuff);
+                    marker._icon.src = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png'
+                } else {
+                    marker.bindPopup(popupContent);
+                    marker._icon.src = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png'
+                }
+
+                //marker.bindPopup(popupContent);
                 marker.openPopup();
 
                 //event listeners
@@ -225,7 +237,7 @@ and open the template in the editor.
                 "draw": {
                     marker: {
                         icon: new L.Icon({
-                            iconUrl: 'http://cdn.leafletjs.com/leaflet-0.6.4/images/marker-icon.png',
+                            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
                             shadowUrl: 'http://cdn.leafletjs.com/leaflet-0.6.4/images/marker-shadow.png',
                             iconAnchor: [12, 40],
                             popupAnchor: [0, -41]
@@ -246,6 +258,7 @@ and open the template in the editor.
               
               
             //determine behaviour of popups
+            //THESE ARE NOT IN USE
             var popup = L.popup();
             
             function onMapClick(e){

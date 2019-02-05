@@ -136,12 +136,13 @@ and open the template in the editor.
                 
                 //BEN MELVILLE PARKSPOT
                 //MODATTU BEN MELVILLE PARKSPOT TOIMII
-                console.log(window.currentValue + " toimiiks parkspot currentValue isossa scopessa?");
+                //EPÄILEN ETTÄ TÄÄ TOIMII AIKA LEVÄPERÄISESTI
+                console.log(window.currentParkspotValue + " toimiiks parkspot currentParkspotValue isossa scopessa?");
                 
-                if(typeof currentValue !== 'undefined'){
-                    console.log($(document).find("option[value")[currentValue].value + " document find parkspot value currentValue");
+                if(typeof currentParkspotValue !== 'undefined'){
+                    console.log($(document).find("option[value")[currentParkspotValue].value + " document find parkspot value currentParkspotValue");
                     $(L.DomUtil.get('parkspot')).find(
-                            "option[value='" + currentValue+ "']").attr('selected', true);
+                            "option[value='" + currentParkspotValue + "']").attr('selected', true);
                     var parkSpot = L.DomUtil.get('parkspot');
                     parkSpot.value = properties.parkspot;
                     L.DomEvent.addListener(parkSpot, "change", function(e){
@@ -163,7 +164,7 @@ and open the template in the editor.
             // POSSIBLE TO FIND FEATURE DATA WITH INTERNAL LAYER ID
             //geojson.getLayer(113).feature.properties.parktime
             function onParkspotChange(event){
-                currentValue = event.target.value;
+                currentParkspotValue = event.target.value;
                 console.log("parkspot value set to " + event.target.value);
                 //console.log(event.target.selectedOptions.parkspot.selected + " selected state");
             };

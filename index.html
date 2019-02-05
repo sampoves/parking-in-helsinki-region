@@ -118,17 +118,11 @@ and open the template in the editor.
                 // 050219: PARKSPOT EI KOSKAAN HYVÄKSY ENSIMMÄISTÄ TÄYTTÖÄ.
                 // KAIKKI MYÖHEMMÄT ONNISTUU.
                 
-                // opittua:
-                // document.myform.likert jne tuntuu toimivan tollaisen
-                // function (e) sisällä. mulle on edelleen tosi mysteeri,
-                // että miten pääsen käsiksi mun formin sisältöön ja tsekkaamaan
-                // että miten toi likert voisi säilyy popupissa
-                
 
-                //BEN MELVILLE LIKERT
+                //LIKERT
                 $(L.DomUtil.get('likert')).find(
                         "input[value='" + properties.likert+ "']").attr('checked', true);
-                console.log(properties.likert + " liekrtt");
+                //console.log(properties.likert + " liekrtt");
                 $(document).ready(function(){
                     $('input[name=likert]').click(function(){
                         properties.likert = this.value;
@@ -143,6 +137,7 @@ and open the template in the editor.
                 //BEN MELVILLE PARKSPOT
                 //MODATTU BEN MELVILLE PARKSPOT TOIMII
                 console.log(window.currentValue + " toimiiks parkspot currentValue isossa scopessa?");
+                
                 if(typeof currentValue !== 'undefined'){
                     console.log($(document).find("option[value")[currentValue].value + " document find parkspot value currentValue");
                     $(L.DomUtil.get('parkspot')).find(
@@ -154,7 +149,7 @@ and open the template in the editor.
                         console.log("MEGAJEE");
                     });
                 } else {
-                    //not defined, do nothi       
+                    //not defined, do nothin
                 }
 
                 //SAVE BUTTON
@@ -167,35 +162,10 @@ and open the template in the editor.
 
             // POSSIBLE TO FIND FEATURE DATA WITH INTERNAL LAYER ID
             //geojson.getLayer(113).feature.properties.parktime
-            //ORIGINAL SEKOILU
             function onParkspotChange(event){
-                
-                //UUTTA sekoiluu
-                // parametrin ptiää olla näissä event
-//                listLayers = geojson._layers;
-//                
-//                for (layerID in listLayers){  
-//                    console.log("layerID " +layerID + ", " + geojson.getLayer(layerID).feature.properties.parkstop + " parkstop value in for loop");
-//                }
-//                console.log(event);
-//                console.log(event.target.feature + " featu");
-//                console.log(event.srcElement._leaflet_id + " dfd");
-//                console.log(event.target._leaflet_id + " sekoiluu");
                 currentValue = event.target.value;
                 console.log("parkspot value set to " + event.target.value);
                 //console.log(event.target.selectedOptions.parkspot.selected + " selected state");
-                
-                
-                
-                // vanhaa sekoiluu
-                //geojson.feature.properties.parkspot = obj.value;
-                //console.log(L.DomUtil.get('parkspot').value = properties.parkspot);
-                //properties.parkspot = obj.value;
-//                if(obj.value === "3"){
-//                    alert("33333333333333333");
-//                } else {
-//                    //fdsfds
-//                }
             };
     
     

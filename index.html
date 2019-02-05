@@ -126,7 +126,7 @@ and open the template in the editor.
                 $(document).ready(function(){
                     $('input[name=likert]').click(function(){
                         properties.likert = this.value;
-                        console.log(this.value);
+                        //console.log(this.value);
                     });
                 });
 
@@ -137,27 +137,28 @@ and open the template in the editor.
                 //BEN MELVILLE PARKSPOT
                 //MODATTU BEN MELVILLE PARKSPOT TOIMII
                 //EPÄILEN ETTÄ TÄÄ TOIMII AIKA LEVÄPERÄISESTI
-                console.log(window.currentParkspotValue + " toimiiks parkspot currentParkspotValue isossa scopessa?");
+                
+                //console.log(window.currentParkspotValue + " toimiiks parkspot currentParkspotValue isossa scopessa?");
                 
                 if(typeof currentParkspotValue !== 'undefined'){
-                    console.log($(document).find("option[value")[currentParkspotValue].value + " document find parkspot value currentParkspotValue");
+                    //console.log($(document).find("option[value")[currentParkspotValue].value + " document find parkspot value currentParkspotValue");
                     $(L.DomUtil.get('parkspot')).find(
                             "option[value='" + currentParkspotValue + "']").attr('selected', true);
                     var parkSpot = L.DomUtil.get('parkspot');
                     parkSpot.value = properties.parkspot;
                     L.DomEvent.addListener(parkSpot, "change", function(e){
                         properties.parkspot = e.target.value;
-                        console.log("MEGAJEE");
+                        //console.log("MEGAJEE");
                     });
                 } else {
-                    console.log("first run, faulty");
-                    //console.log(marker.feature);
+                    //console.log("first run, faulty");
+                    //console.log(markeyr.feature);
                     L.DomUtil.get('parkspot').value = properties.parkspot;
                     //console.log(properties.parkspot + " props parkspot");
                     var parkSpot = L.DomUtil.get('parkspot');
                     //console.log(parkSpot + " parkspot var");
                     parkSpot.value = properties.parkspot;
-                    console.log(parkSpot.value + " value parsSpot");
+                    //console.log(parkSpot.value + " value parsSpot");
                     //not defined, do nothin
                     L.DomEvent.addListener(parkSpot, "change", function (e){
                         properties.parkspot = e.target.value;

@@ -150,7 +150,18 @@ and open the template in the editor.
                         console.log("MEGAJEE");
                     });
                 } else {
+                    console.log("first run, faulty");
+                    //console.log(marker.feature);
+                    L.DomUtil.get('parkspot').value = properties.parkspot;
+                    //console.log(properties.parkspot + " props parkspot");
+                    var parkSpot = L.DomUtil.get('parkspot');
+                    //console.log(parkSpot + " parkspot var");
+                    parkSpot.value = properties.parkspot;
+                    console.log(parkSpot.value + " value parsSpot");
                     //not defined, do nothin
+                    L.DomEvent.addListener(parkSpot, "change", function (e){
+                        properties.parkspot = e.target.value;
+                    });
                 }
 
                 //SAVE BUTTON

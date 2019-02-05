@@ -119,11 +119,12 @@ p {
 
 .likert li {
     margin-top: 1px;
-    float: none;
     list-style-type: none;
+
 }
 
 .form-group {
+    font-size: 10pt;
     margin-top: 5px;
     margin-bottom: 20px;
 }
@@ -140,6 +141,44 @@ ul {
     margin-top: 5px;
 }
 
+#parkspot {
+    font-size: 22px;
+    width: 260px;
+}
+
+#parktime {
+    font-size: 18px;
+    width:250px
+}
+
+select option {
+    font-size: 13pt;
+    font-family: 'Montserrat', sans-serif;
+}
+
+button {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    border-radius: 5px;
+    border: 2px solid #4CAF50; /* Green */
+    color: black;
+}
+
+button:hover {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+
+input[type="datetime-local"]{
+    font-size: 13pt;
+    width:250px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+input[type="number"]{
+    font-size: 13pt;
+    font-family: 'Montserrat', sans-serif;
+}
 
 /*div {
   text-align: justify;

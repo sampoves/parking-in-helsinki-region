@@ -16,8 +16,9 @@ and open the template in the editor.
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
         
-        <!--import parking survey variable -->
+        <!--import parking survey variables -->
         <script type="text/javascript" src="park_survey.js"></script>
+        <script type="text/javascript" src="survey_info.js"></script>
         
         <!-- my css stylesheet -->
         <link rel="stylesheet" href="style.css">
@@ -115,31 +116,21 @@ and open the template in the editor.
                     properties.parktime = e.target.value;
                 });
                 
-                // 050219: PARKSPOT EI KOSKAAN HYVÄKSY ENSIMMÄISTÄ TÄYTTÖÄ.
-                // KAIKKI MYÖHEMMÄT ONNISTUU.
-                
-
                 //LIKERT
                 $(L.DomUtil.get('likert')).find(
                         "input[value='" + properties.likert+ "']").attr('checked', true);
-                //console.log(properties.likert + " liekrtt");
                 $(document).ready(function(){
                     $('input[name=likert]').click(function(){
                         properties.likert = this.value;
-                        //console.log(this.value);
                     });
                 });
 
 
-                // TÄLLÄ LÖYTÄÄ PARKSTOPIN VALUEN
+                // TÄLLÄ LÖYTÄÄ PARKSPOTIN VALUEN
                 //console.log($(document).find("option[value")[2].value);
                 
-                //BEN MELVILLE PARKSPOT
-                //MODATTU BEN MELVILLE PARKSPOT TOIMII
-                //EPÄILEN ETTÄ TÄÄ TOIMII AIKA LEVÄPERÄISESTI
-                
+                //PARKSPOT
                 //console.log(window.currentParkspotValue + " toimiiks parkspot currentParkspotValue isossa scopessa?");
-                
                 if(typeof currentParkspotValue !== 'undefined'){
                     //console.log($(document).find("option[value")[currentParkspotValue].value + " document find parkspot value currentParkspotValue");
                     $(L.DomUtil.get('parkspot')).find(
@@ -151,15 +142,13 @@ and open the template in the editor.
                         //console.log("MEGAJEE");
                     });
                 } else {
-                    //console.log("first run, faulty");
-                    //console.log(markeyr.feature);
+                    //console.log("first run, works differently");
                     L.DomUtil.get('parkspot').value = properties.parkspot;
                     //console.log(properties.parkspot + " props parkspot");
                     var parkSpot = L.DomUtil.get('parkspot');
                     //console.log(parkSpot + " parkspot var");
                     parkSpot.value = properties.parkspot;
                     //console.log(parkSpot.value + " value parsSpot");
-                    //not defined, do nothin
                     L.DomEvent.addListener(parkSpot, "change", function (e){
                         properties.parkspot = e.target.value;
                     });
@@ -177,8 +166,7 @@ and open the template in the editor.
             //geojson.getLayer(113).feature.properties.parktime
             function onParkspotChange(event){
                 currentParkspotValue = event.target.value;
-                console.log("parkspot value set to " + event.target.value);
-                //console.log(event.target.selectedOptions.parkspot.selected + " selected state");
+                //console.log("parkspot value set to " + event.target.value);
             };
     
     
@@ -202,7 +190,7 @@ and open the template in the editor.
             
             infoBox.onAdd = function (map) {
                 this._div = L.DomUtil.create('div', 'infobox');
-                this._div.innerHTML = 'Did you ever hear the tragedy of Darth Plagueis The Wise? I thought not. It\'s not a story the Jedi would tell you. It\'s a Sith legend. Darth Plagueis was a Dark Lord of the Sith, so powerful and so wise he could use the Force to influence the midichlorians to create life… He had such a knowledge of the dark side that he could even keep the ones he cared about from dying. The dark side of the Force is a pathway to many abilities some consider to be unnatural. He became so powerful… the only thing he was afraid of was losing his power, which eventually, of course, he did. Unfortunately, he taught his apprentice everything he knew, then his apprentice killed him in his sleep. Ironic. He could save others from death, but not himself.';
+                this._div.innerHTML = basicInfo;
                 return this._div;
             };
             

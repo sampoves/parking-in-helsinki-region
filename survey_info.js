@@ -3,6 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+var infoHeaderStuff = '<p><strong>Parking private cars in Helsinki Capital Region</strong></p>'
+
 var basicInfo = '<H2>Tervetuloa kyselyyn!</H2>'+
     'Tämän kyselyn tarkoituksena on selvittää kuinka kauan henkilöauton pysäköinti kestää pääkaupunkiseudulla. Kyselyssä huomioidaan pysäköinnin koko prosessi: kuinka kauan pysäköintipaikkaa etsittiin, minne auto pysäköitiin ja missä oli vastaajan todellinen määränpää. Kyselyssä kerättyjä tietoja käytetään Helsingin yliopiston geoinformatiikan pro gradu -tutkimuksessa, josta voit lukea lisää allaolevasta "tarkempaa tietoa kyselystä" -kohdassa.'+
     '<br>'+

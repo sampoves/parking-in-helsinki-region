@@ -6,7 +6,7 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>Leaflet-megakysely</title>
+        <title>Parking private cars in Helsinki Capital Region</title>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <script>L_PREFER_CANVAS=false; L_NO_TOUCH=false; L_DISABLE_3D=false;</script>
         
@@ -42,8 +42,8 @@ and open the template in the editor.
         <script>
             // INITIALISE MAP AND LAYERS
             //bounds variables
-            var corner1 = [60.371108, 24.598389];
-            var corner2 = [60.086763, 25.405884];
+            var corner1 = [60.41, 24.49];
+            var corner2 = [60.086763, 25.305884];
             var bounds = L.latLngBounds(corner1, corner2);
             
             //initialise map
@@ -86,12 +86,11 @@ and open the template in the editor.
                 }).addTo(mymap);
             
            
-            //Listen to changes in form
+            //Listen to changeds in form
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
             function layerClickHandler (e) {
                 var marker = e.target,
                         properties = e.target.feature.properties;
-                        //console.log(properties);
                 
                 if(marker.hasOwnProperty('_popup')){
                     marker.unbindPopup();
@@ -102,16 +101,16 @@ and open the template in the editor.
                 if(!properties.datetime || !properties.likert 
                     || !properties.parkspot || !properties.parktime){
                     marker.bindPopup(popupContent + missingStuff);
-                    marker._icon.src = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png'
+                    marker._icon.src = 
+                            'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png';
                 } else {
                     marker.bindPopup(popupContent);
-                    marker._icon.src = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png'
+                    marker._icon.src = 
+                            'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png';
                 }
-
-                //marker.bindPopup(popupContent);
                 marker.openPopup();
 
-                //event listeners
+                //EVENT LISTENERS
                 //DATETIME
                 L.DomUtil.get('datetime').textContent = properties.datetime;
                 var dateTime = L.DomUtil.get('datetime');
@@ -137,30 +136,19 @@ and open the template in the editor.
                     });
                 });
 
-
-                // TÄLLÄ LÖYTÄÄ PARKSPOTIN VALUEN
-                //console.log($(document).find("option[value")[2].value);
-                
                 //PARKSPOT
-                //console.log(window.currentParkspotValue + " toimiiks parkspot currentParkspotValue isossa scopessa?");
                 if(typeof currentParkspotValue !== 'undefined'){
-                    //console.log($(document).find("option[value")[currentParkspotValue].value + " document find parkspot value currentParkspotValue");
                     $(L.DomUtil.get('parkspot')).find(
                             "option[value='" + currentParkspotValue + "']").attr('selected', true);
                     var parkSpot = L.DomUtil.get('parkspot');
                     parkSpot.value = properties.parkspot;
                     L.DomEvent.addListener(parkSpot, "change", function(e){
                         properties.parkspot = e.target.value;
-                        //console.log("MEGAJEE");
                     });
                 } else {
-                    //console.log("first run, works differently");
                     L.DomUtil.get('parkspot').value = properties.parkspot;
-                    //console.log(properties.parkspot + " props parkspot");
                     var parkSpot = L.DomUtil.get('parkspot');
-                    //console.log(parkSpot + " parkspot var");
                     parkSpot.value = properties.parkspot;
-                    //console.log(parkSpot.value + " value parsSpot");
                     L.DomEvent.addListener(parkSpot, "change", function (e){
                         properties.parkspot = e.target.value;
                     });
@@ -227,6 +215,18 @@ and open the template in the editor.
             });
             infoButton.addTo(mymap);
             
+            
+            // INFOHEADER
+            var infoHeader = L.control();
+            infoHeader.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'infoheader');
+                this.update();
+                return this._div;
+            };
+            infoHeader.update = function () {
+                this._div.innerHTML = infoHeaderStuff;
+            };
+            infoHeader.addTo(mymap);
             
             
             //initialise drawing tools, disable a bunch

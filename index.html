@@ -15,6 +15,7 @@ and open the template in the editor.
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.4.0/easy-button.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js"></script>
         
         <!--import parking survey variables -->
         <script type="text/javascript" src="park_survey.js"></script>
@@ -85,6 +86,20 @@ and open the template in the editor.
                             }
                 }).addTo(mymap);
             
+           
+            //import postal codes areas GeoJSON from file
+            var postal = new L.GeoJSON.AJAX("pno_research_area.geojson");       
+            postal.addTo(mymap);
+
+            //add layer control
+            var baseMaps = {
+                "tiles": tileLayer,
+            };
+
+            var overlayMaps = {
+                "Postal areas": postal
+            };
+            L.control.layers(baseMaps, overlayMaps).addTo(mymap);
            
             //Listen to changeds in form
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
@@ -228,6 +243,11 @@ and open the template in the editor.
             };
             infoHeader.addTo(mymap);
             
+            
+            // TEE COOKIE JOTTA KÄYTTÄJÄ VOI VALITA KARTTATASON TMS
+            // https://www.w3schools.com/js/js_cookies.asp
+            //060219 MIKSI MARKER MUUTTUU VIELÄ LYHYESTI SINISEKSI EKAN KERRAN KLIKATESSA
+            //MARKERIN KANSSA KARTTAA?
             
             //initialise drawing tools, disable a bunch
             var draw_control = new L.Control.Draw({

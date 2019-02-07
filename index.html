@@ -86,22 +86,62 @@ and open the template in the editor.
                             }
                 }).addTo(mymap);
             
-           
+            // BACKGROUND GEOJSON LAYERS
             //import postal codes areas GeoJSON from file
-            var postal = new L.GeoJSON.AJAX("pno_research_area.geojson");       
-            postal.addTo(mymap);
+            var stylePostal = {
+                "color": "#ff7800",
+                "weight": 3,
+                "opacity": 0.4,
+                "fillOpacity": 0
+            };        
+    
+            var styleArea = {
+                "color": "#ff7800",
+                "weight": 3,
+                "opacity": 0.3,
+                "fillColor": '#0000FF',
+                "fillOpacity": 0
+            };   
+            
+            var stylePien = {
+                "color": "#f316f7",
+                "weight": 3,
+                "opacity": 0.3,
+                "fillColor": '#0000FF',
+                "fillOpacity": 0
+            };   
+    
+            var postal = new L.GeoJSON.AJAX(
+                    "pno_research_area.geojson", {
+                        style: stylePostal
+            }).addTo(mymap);
+            
+            var postaldissolve = new L.GeoJSON.AJAX(
+                    "pno_dissolve.geojson", {
+                        style: styleArea
+                
+            }).addTo(mymap);
+            var pienalue = new L.GeoJSON.AJAX(
+                    "seutukartta_pienalue.geojson", {
+                        style: stylePien
+            });//.addTo(mymap);
 
             //add layer control
             var baseMaps = {
-                "tiles": tileLayer,
+                "tiles": tileLayer
             };
 
             var overlayMaps = {
-                "Postal areas": postal
+                "Seutukartta pienalue": pienalue,
+                "Postal areas": postal,
+                "Research area": postaldissolve
             };
             L.control.layers(baseMaps, overlayMaps).addTo(mymap);
            
-            //Listen to changeds in form
+           
+           
+           
+            //Listen to changes in form
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
             function layerClickHandler (e) {
                 var marker = e.target,

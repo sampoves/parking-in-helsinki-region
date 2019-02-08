@@ -46,11 +46,10 @@ and open the template in the editor.
     //Tuota cookie, joka muistaa overlaylisäykset, miten cookieen monta valuee? 
     //Sivulle kun tulee niin pitäisi käyttäjälle tulla jotain infoa että mitä pitäisi tehdä
     //Alkuinfon jälkeen pointterin lisääminen kartalle voisi olla defaulttina aktivoituna, jotta ensimmäisen pisteen saa nopeasti lisättyä
-    //Kun pisteen on lisännyt olisi hyvä jos kysely popup aukeaisi automaattisesti
-    //infonappulaa kun painaa niin infoa ei saa mistään suljettua (muuta kuin päivittämällä koko sivun)
+    //Kun pisteen on lisännyt olisi hyvä jos kyselypopup aukeaisi automaattisesti
     //ALEMPI PRIORITEETTI Päivämäärää kysyessä kalenteri kannattaisi avata automaattisesti.
             
-            //TEST COOKIE
+            //COOKIE
             console.log(document.cookie + " ennen definitonii");
             console.log(document.cookie === "survey_tilelayer_choice=Stamen terrain" + " testin tulos");
             
@@ -62,7 +61,6 @@ and open the template in the editor.
                                  'expires=' + expires + ';' +
                                  'path=' + path + ';';
               };
-            
             
 
             // INITIALISE MAP AND LAYERS
@@ -93,13 +91,6 @@ and open the template in the editor.
                 var cookie_value = e.name;
                 create_cookie(cookie_name, cookie_value, 90, "/");
             });
-
-            mymap.on("overlayadd", function(e){
-                console.log(e);
-            });
-            mymap.on("overlayremove", function(e){
-                console.log(e);
-            });
  
             //initialise background tiles
             //CartoDB dark_matter
@@ -115,7 +106,7 @@ and open the template in the editor.
                     "opacity": 1,
                     "subdomains": "abc",
                     "tms": false
-            })//.addTo(mymap);
+            });//.addTo(mymap); //this used to be default here
 
             //OpenStreetMap
             var OpenStreetMap_DE = L.tileLayer('https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png', {
@@ -133,7 +124,7 @@ and open the template in the editor.
                     ext: 'png'
             });
             
-            //attempt to addto mymap cookie value
+            //use .addTo() to give mymap the correct cookie value
             if(document.cookie === "survey_tilelayer_choice=CartoDB dark_matter"){
                 darkmatter.addTo(mymap);
             } else if (document.cookie === "survey_tilelayer_choice=OpenStreetMap") {
@@ -145,7 +136,7 @@ and open the template in the editor.
             }
             
 
-            //MITEN SAADA POPUP AUKI HETI MARKERIN KIINNITÄMISEN JÄLKJEEN?
+            //MITEN SAADA POPUP AUKI HETI MARKERIN KIINNITÄMISEN JÄLKEEN?
             // yks johtolanka: https://jsfiddle.net/emmalivingstone/abpee1ym/
 
             // import empty GeoJSON to be populated by user with responses
@@ -183,6 +174,14 @@ and open the template in the editor.
                 "fillColor": '#0000FF',
                 "fillOpacity": 0
             };   
+            
+            var styleHullu = {
+                "color": "#4db524",
+                "weight": 6,
+                "opacity": 1,
+                "fillColor": '#e26868',
+                "fillOpacity": 1
+            };
     
             var postal = new L.GeoJSON.AJAX(
                     "pno_research_area.geojson", {
@@ -324,6 +323,10 @@ and open the template in the editor.
                 this._div.innerHTML = basicInfo;
                 return this._div;
             };
+            
+            $('.close').click(function() {
+                $('#basic_info').fadeOut('fast'); 
+             });
             
             var infoButton = L.easyButton({
                 states: [{

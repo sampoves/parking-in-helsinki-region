@@ -41,10 +41,34 @@ and open the template in the editor.
         <div class="" id="mymap" ></div>
             
         <script>
+    //Alkututorial??
+    //SCRIPT omaan js-tiedostoon
+    //Tuota cookie, joka muistaa overlaylisäykset, miten cookieen monta valuee? 
+    //Sivulle kun tulee niin pitäisi käyttäjälle tulla jotain infoa että mitä pitäisi tehdä
+    //Alkuinfon jälkeen pointterin lisääminen kartalle voisi olla defaulttina aktivoituna, jotta ensimmäisen pisteen saa nopeasti lisättyä
+    //Kun pisteen on lisännyt olisi hyvä jos kysely popup aukeaisi automaattisesti
+    //infonappulaa kun painaa niin infoa ei saa mistään suljettua (muuta kuin päivittämällä koko sivun)
+    //ALEMPI PRIORITEETTI Päivämäärää kysyessä kalenteri kannattaisi avata automaattisesti.
+            
+            //TEST COOKIE
+            console.log(document.cookie + " ennen definitonii");
+            console.log(document.cookie === "survey_tilelayer_choice=Stamen terrain" + " testin tulos");
+            
+            function create_cookie(name, value, days2expire, path) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days2expire * 24 * 60 * 60 * 1000));
+                var expires = date.toUTCString();
+                document.cookie = name + '=' + value + ';' +
+                                 'expires=' + expires + ';' +
+                                 'path=' + path + ';';
+              };
+            
+            
+
             // INITIALISE MAP AND LAYERS
             //bounds variables
-            var corner1 = [60.41, 24.49];
-            var corner2 = [60.086763, 25.305884];
+            var corner1 = [60.45, 24.37];
+            var corner2 = [60.05, 25.305884];
             var bounds = L.latLngBounds(corner1, corner2);
             
             //initialise map
@@ -60,11 +84,29 @@ and open the template in the editor.
                 zoomControl: true
             });
  
+            //events to listen for baselayer or overlay change for to use of 
+            //cookies
+            //https://leafletjs.com/reference-1.4.0.html#map-baselayerchange
+            mymap.on('baselayerchange', function(e) {
+                console.log(e.name + " tallennettu cookieen");
+                var cookie_name = "survey_tilelayer_choice";
+                var cookie_value = e.name;
+                create_cookie(cookie_name, cookie_value, 90, "/");
+            });
+
+            mymap.on("overlayadd", function(e){
+                console.log(e);
+            });
+            mymap.on("overlayremove", function(e){
+                console.log(e);
+            });
+ 
             //initialise background tiles
-            var tileLayer = L.tileLayer(
+            //CartoDB dark_matter
+            var darkmatter = L.tileLayer(
                     'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png',
-                    {
-                    "attribution": null,
+                {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
                     "detectRetina": false,
                     "maxNativeZoom": 18,
                     "maxZoom": 18,
@@ -73,14 +115,45 @@ and open the template in the editor.
                     "opacity": 1,
                     "subdomains": "abc",
                     "tms": false
-            }).addTo(mymap);
+            })//.addTo(mymap);
 
-            // import empty GeoJSON to be populated by user
+            //OpenStreetMap
+            var OpenStreetMap_DE = L.tileLayer('https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png', {
+                    minZoom: 0,
+                    maxZoom: 18,
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            });
+
+            //Stamen terrain
+            var Stamen_Terrain = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.{ext}', {
+                    attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                    subdomains: 'abcd',
+                    minZoom: 0,
+                    maxZoom: 18,
+                    ext: 'png'
+            });
+            
+            //attempt to addto mymap cookie value
+            if(document.cookie === "survey_tilelayer_choice=CartoDB dark_matter"){
+                darkmatter.addTo(mymap);
+            } else if (document.cookie === "survey_tilelayer_choice=OpenStreetMap") {
+                OpenStreetMap_DE.addTo(mymap);
+            } else if (document.cookie === "survey_tilelayer_choice=Stamen terrain"){
+                Stamen_Terrain.addTo(mymap);
+            } else {
+                darkmatter.addTo(mymap);
+            }
+            
+
+            //MITEN SAADA POPUP AUKI HETI MARKERIN KIINNITÄMISEN JÄLKJEEN?
+            // yks johtolanka: https://jsfiddle.net/emmalivingstone/abpee1ym/
+
+            // import empty GeoJSON to be populated by user with responses
             var geojson = L.geoJson({
                 "type": "FeatureCollection",
                 "features": []
                 },{
-                    onEachFeature: 
+                    onEachFeature:
                             function (feature, layer){
                                 layer.on('click', layerClickHandler);
                             }
@@ -126,9 +199,12 @@ and open the template in the editor.
                         style: stylePien
             });//.addTo(mymap);
 
+
             //add layer control
             var baseMaps = {
-                "tiles": tileLayer
+                "OpenStreetMap": OpenStreetMap_DE,
+                "CartoDB dark_matter": darkmatter,
+                "Stamen terrain": Stamen_Terrain
             };
 
             var overlayMaps = {
@@ -313,23 +389,13 @@ and open the template in the editor.
                     circle: false,
                     circlemarker: false
                 }
-                }).addTo(mymap);
+            }).addTo(mymap);
             
-              
-              
-            //determine behaviour of popups
-            //THESE ARE NOT IN USE
-            var popup = L.popup();
-            
-            function onMapClick(e){
-                popup.setLatLng(e.latlng).setContent(e.latlng.toString() + popupContent).openOn(mymap);
-            }
-            
+
             mymap.on(L.Draw.Event.CREATED, function (e) {
                 var layer = e.layer;
                 var lat = layer.getLatLng().lat;
                 var lng = layer.getLatLng().lng;
-                //var coords = JSON.stringify(layer.toGeoJSON());
                 var geojsonFeature = {
                         "type": "Feature",
                         "geometry": {
@@ -343,7 +409,6 @@ and open the template in the editor.
                             "parkspot": null
                         }
                 };
-                
                 layer.on('click', layerClickHandler); //"mouseover", "click"
                 geojson.addData(geojsonFeature);
             });
@@ -362,30 +427,9 @@ and open the template in the editor.
                             "parktime": null
                         }
                 };
-                //geojson.addData(geojsonFeature); //JOS TÄÄ OLI KÄYTÖSSÄ, 
-                // L.GEOJSONIIN SYNTYY TUPLAT JOKA MERKINNÄSTÄ
                 
             });
             
-            
-             
-            // DO I NEED THIS FUNCTIONALITY??
-//            document.getElementById('export').onclick = function(e) {
-//                var data = drawnItems.toGeoJSON();
-//                var convertedData = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data));
-//                document.getElementById('export').setAttribute('href', 'data:' + convertedData);
-//                document.getElementById('export').setAttribute('download','data.geojson');
-//            };
-//            
-            // Truncate value based on number of decimals
-            var _round = function(num, len) {
-                return Math.round(num*(Math.pow(10, len)))/(Math.pow(10, len));
-            };
-
-            // Helper method to format LatLng object (x.xxxxxx, y.yyyyyy)
-            var strLatLng = function(latlng) {
-                return "("+_round(latlng.lat, 6)+", "+_round(latlng.lng, 6)+")";
-            };
 //
 //            // Object created - bind popup to layer, add to feature group
 //            mymap.on(L.Draw.Event.CREATED, function(event) {
@@ -397,18 +441,18 @@ and open the template in the editor.
 //                drawnItems.addLayer(layer);
 //            });
 //
-//            // Object(s) edited - update popups
-//            mymap.on(L.Draw.Event.EDITED, function(event) {
-//                var layers = event.layers,
-//                    content = null;
-//
-//                layers.eachLayer(function(layer) {
-//                    content = getPopupContent(layer);
-//                    if (content !== null) {
-//                        layer.setPopupContent(content);
-//                    }
-//                });
-//            });
+            // Object(s) edited - update popups
+            mymap.on(L.Draw.Event.EDITED, function(event) {
+                var layers = event.layers,
+                    content = null;
+
+                layers.eachLayer(function(layer) {
+                    content = getPopupContent(layer);
+                    if (content !== null) {
+                        layer.setPopupContent(content);
+                    }
+                });
+            });
         </script>
     </body>
 </html>

@@ -51,7 +51,7 @@ and open the template in the editor.
             
             //COOKIE
             console.log(document.cookie + " ennen definitonii");
-            console.log(document.cookie === "survey_tilelayer_choice=Stamen terrain" + " testin tulos");
+            //console.log(document.cookie === "survey_tilelayer_choice=Stamen terrain");
             
             function create_cookie(name, value, days2expire, path) {
                 var date = new Date();
@@ -164,7 +164,8 @@ and open the template in the editor.
                 "weight": 3,
                 "opacity": 0.3,
                 "fillColor": '#0000FF',
-                "fillOpacity": 0
+                "fillOpacity": 0,
+                "jeejee": 0 //this helps me detect research area MultiPolygon later on
             };   
             
             var stylePien = {
@@ -174,14 +175,7 @@ and open the template in the editor.
                 "fillColor": '#0000FF',
                 "fillOpacity": 0
             };   
-            
-            var styleHullu = {
-                "color": "#4db524",
-                "weight": 6,
-                "opacity": 1,
-                "fillColor": '#e26868',
-                "fillOpacity": 1
-            };
+           
     
             var postal = new L.GeoJSON.AJAX(
                     "pno_research_area.geojson", {
@@ -213,11 +207,7 @@ and open the template in the editor.
             L.control.layers(baseMaps, overlayMaps).addTo(mymap);
            
            
-            //overlay layer happenings
-            function onLayerHover(e){
-                console.log(e.layer.feature.properties.nimi);
-            };
-            
+           //overlay highlighting
             var pienalueHighlight = {
                 'color': '#d738ff',
                 'weight': 2,
@@ -235,17 +225,18 @@ and open the template in the editor.
             };
             
             function highlightLayer(e) {
-                console.log(e.layer._leaflet_id);
-                console.log(e);
+                //console.log(e.layer._leaflet_id);
+                //console.log(e);
                 thisTarget = e.layer._leaflet_id;
                 if (e.target.urls[0] === "pno_research_area.geojson"){
                     //console.log("postinumerot!");
+                    //window.currentPno = e.layer.feature.properties.nimi + ", " + e.layer.feature.properties.posti_alue;
                     mymap._layers[thisTarget].setStyle(postalHighlight);
                 } else if (e.target.urls[0] === "seutukartta_pienalue.geojson"){
                     //console.log("pienalueet!");
+                    //window.currentPien = e.layer.feature.properties.nimi;
                     mymap._layers[thisTarget].setStyle(pienalueHighlight);
                 }
-                
             }
             
             function layerToNormal(e) {
@@ -267,6 +258,58 @@ and open the template in the editor.
             //Listen to changes in form
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
             function layerClickHandler (e) {
+                //console.log(e);
+                
+                //ATTEMPT TO GET INFO FROM ALL VISIBLE LAYERS
+                var clickBounds = L.latLngBounds(e.latlng, e.latlng);
+                var intersectingFeatures = [];
+                //console.log(mymap._layers);
+                
+                for (var l in mymap._layers) {
+                    var overlay = mymap._layers[l];
+                    if (overlay._layers) {   
+                        for (var f in overlay._layers) {
+                            var feature = overlay._layers[f];
+                            var bounds;
+
+                            if (feature.getBounds){
+                                bounds = feature.getBounds();
+                            } else if (feature._latlng) {
+                                bounds = L.latLngBounds(feature._latlng, feature._latlng);
+                            }
+                            // If true, append to intersectingFeatures
+                            if (bounds && clickBounds.intersects(bounds)) {
+                                
+                                //if feature type is Point, discard it
+                                if ((feature.feature.geometry.type !== "Point")){
+                                    intersectingFeatures.push(feature);
+                                    //console.log(feature);
+                                    console.log(feature.defaultOptions.style.hasOwnProperty("jeejee") + " hasown");
+                                    //console.log(feature.defaultOptions.style);
+                                    //console.log(feature.feature.properties.nimi);
+                                }
+
+                            } else {
+                                //do nothing
+                            }
+                        }
+                    }
+                    // if at least one feature found, show it
+                    if (intersectingFeatures.length) {
+//                        var html = "Found features: " + intersectingFeatures.length + "<br/>" + intersectingFeatures.map(function(o) {
+//                            return o.properties.type;
+//                        }).join('<br/>');
+                        var html = "SUCCE";
+//                    map.openPopup(html, e.latlng, {
+//                        offset: L.point(0, -24)
+//                    });
+                    }
+                }
+                
+                
+                
+                
+                
                 var marker = e.target,
                         properties = e.target.feature.properties;
                 
@@ -275,10 +318,10 @@ and open the template in the editor.
                 }
                 
                 //check if all values are inserted and print text in popUp
-                //if this is the case
+                //if this is the cadse
                 if(!properties.datetime || !properties.likert 
                     || !properties.parkspot || !properties.parktime){
-                    marker.bindPopup(popupContent + missingStuff);
+                    marker.bindPopup(html + popupContent + missingStuff);
                     marker._icon.src = 
                             'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png';
                 } else {
@@ -372,10 +415,6 @@ and open the template in the editor.
                 return this._div;
             };
             
-            $('.close').click(function() {
-                $('#basic_info').fadeOut('fast'); 
-             });
-            
             var infoButton = L.easyButton({
                 states: [{
                     stateName: 'infoOpen',
@@ -410,9 +449,7 @@ and open the template in the editor.
             };
             infoHeader.addTo(mymap);
             
-            
-            // TEE COOKIE JOTTA KÄYTTÄJÄ VOI VALITA KARTTATASON TMS
-            // https://www.w3schools.com/js/js_cookies.asp
+           
             //060219 MIKSI MARKER MUUTTUU VIELÄ LYHYESTI SINISEKSI EKAN KERRAN KLIKATESSA
             //MARKERIN KANSSA KARTTAA?
             

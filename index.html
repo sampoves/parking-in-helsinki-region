@@ -217,7 +217,8 @@ and open the template in the editor.
             function onLayerHover(e){
                 console.log(e.layer.feature.properties.nimi);
             };
-            var highlight = {
+            
+            var pienalueHighlight = {
                 'color': '#d738ff',
                 'weight': 2,
                 'opacity': 1,
@@ -225,24 +226,42 @@ and open the template in the editor.
                 "fillOpacity": 0.1
             };
             
+            var postalHighlight = {
+                'color': '#ffd711',
+                'weight': 2,
+                'opacity': 1,
+                "fillColor": '#ff9e28',
+                "fillOpacity": 0.1
+            };
+            
             function highlightLayer(e) {
                 console.log(e.layer._leaflet_id);
                 console.log(e);
                 thisTarget = e.layer._leaflet_id;
-                mymap._layers[thisTarget].setStyle(highlight);
+                if (e.target.urls[0] === "pno_research_area.geojson"){
+                    //console.log("postinumerot!");
+                    mymap._layers[thisTarget].setStyle(postalHighlight);
+                } else if (e.target.urls[0] === "seutukartta_pienalue.geojson"){
+                    //console.log("pienalueet!");
+                    mymap._layers[thisTarget].setStyle(pienalueHighlight);
+                }
+                
             }
             
             function layerToNormal(e) {
-                console.log(e.layer._leaflet_id);
-                console.log(e);
                 thisTarget = e.layer._leaflet_id;
-                mymap._layers[thisTarget].setStyle(stylePien);
+                if (e.target.urls[0] === "pno_research_area.geojson"){
+                    mymap._layers[thisTarget].setStyle(stylePostal);
+                } else if (e.target.urls[0] === "seutukartta_pienalue.geojson"){
+                    mymap._layers[thisTarget].setStyle(stylePien);;
+                }
             }
             
-            //highlight pienalueet
+            //highlight overlay layers
             pienalue.on("mouseover", highlightLayer);
             pienalue.on("mouseout", layerToNormal);
-           
+            postal.on("mouseover", highlightLayer);
+            postal.on("mouseout", layerToNormal);
            
            
             //Listen to changes in form

@@ -262,7 +262,7 @@ and open the template in the editor.
                 if (hits.length !== 0){
                     // If intersection is found, it should only find one feature.
                     // This case returns the name of that feature
-                    return hits[0].feature.properties.nimi;
+                    return hits;
                 } else {
                     // In case of no intersections return a empty string
                     return "";
@@ -272,23 +272,22 @@ and open the template in the editor.
             //Listen to changes in form
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
             function layerClickHandler (e) {
-                //console.log(e);
                 
-                //jeejee = findIntersections(postal, e.latlng);
-                //console.log(jeejee);
                 var hitPostal = findIntersections(e.latlng, postal);
                 var hitPienalue = findIntersections(e.latlng, pienalue);
-                //console.log(hitsPostal[0].feature.properties.nimi);
-                //console.log(hitsPienalue[0].feature.properties.nimi);
+                //console.log(hitPostal);
+                //console.log(hitPienalue);
+                //console.log(hitPostal[0].feature.properties.nimi, hitPostal[0].feature.properties.posti_alue);
+                //console.log(hitPienalue[0].feature.properties.nimi);
                 
-                if (hitPostal === ""){
-                    html = hitPienalue;
-                } else if (hitPienalue === "") {
-                    html = hitPostal;
-                } else if (hitPostal === "" && hitPienalue === ""){
+                if (hitPostal === "" && hitPienalue === ""){
                     html = "";
-                } else {
-                    html = hitPienalue + ", " + hitPostal;
+                } else if (hitPienalue === "") {
+                    html = "Postinumeroalue: " + hitPostal[0].feature.properties.nimi, hitPostal[0].feature.properties.posti_alue;
+                } else if (hitPostal === "" && hitPienalue === ""){
+                    html = "Pienalue: " + hitPienalue[0].feature.properties.nimi;
+                } else if (hitPostal !== "" && hitPienalue !== "") {
+                    html = "Pienalue: " + hitPienalue[0].feature.properties.nimi + "<br> Postinumeroalue: " + hitPostal[0].feature.properties.nimi + " " + hitPostal[0].feature.properties.posti_alue;
                 }
                 
                 

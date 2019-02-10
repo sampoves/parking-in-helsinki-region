@@ -54,7 +54,7 @@ and open the template in the editor.
             
             // INITIALISE MAP AND LAYERS
             //bounds variables
-            var corner1 = [60.45, 24.37];
+            var corner1 = [60.5, 24.37];
             var corner2 = [60.05, 25.305884];
             var bounds = L.latLngBounds(corner1, corner2);
             
@@ -135,7 +135,9 @@ and open the template in the editor.
                 },{
                     onEachFeature:
                             function (feature, layer){
+                                console.log($(layer));
                                 layer.on('click', layerClickHandler);
+                                
                             }
                 }).addTo(mymap);
             

@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 
-var infoHeaderStuff = '<p><strong>Parking private cars in Helsinki Capital Region</strong></p>';
+var firstVisitText = '<div id=firstvisittext>fdsdfsfdsdffdfds</div>';
+
+var infoHeaderStuff = '<div id=infoheaderstuff><p><strong>Parking private cars in Helsinki Capital Region</strong></p></div>';
 
 var basicInfo = "<div id='basic_info'>"+
         "<span id='close' onclick='this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode); return false;'><strong>x</strong></span>"+

@@ -45,7 +45,6 @@ and open the template in the editor.
         <script>
     //Alkututorial??
     //SCRIPT omaan js-tiedostoon
-
     //Sivulle kun tulee niin pitäisi käyttäjälle tulla jotain infoa että mitä pitäisi tehdä
     //Alkuinfon jälkeen pointterin lisääminen kartalle voisi olla defaulttina aktivoituna, jotta ensimmäisen pisteen saa nopeasti lisättyä
     //Kun pisteen on lisännyt olisi hyvä jos kyselypopup aukeaisi automaattisesti
@@ -54,14 +53,6 @@ and open the template in the editor.
             //COOKIE
             //console.log(document.cookie + " ennen definitonii");
             //console.log(document.cookie === "survey_tilelayer_choice=Stamen terrain");
-            function create_cookie(name, value, days2expire, path) {
-                var date = new Date();
-                date.setTime(date.getTime() + (days2expire * 24 * 60 * 60 * 1000));
-                var expires = date.toUTCString();
-                document.cookie = name + '=' + value + ';' +
-                                 'expires=' + expires + ';' +
-                                 'path=' + path + ';';
-              };
             
             // INITIALISE MAP AND LAYERS
             //bounds variables
@@ -223,50 +214,13 @@ and open the template in the editor.
                 "fillColor": '#ff9e28',
                 "fillOpacity": 0.1
             };
-            
-//            function highlightLayer(e) {
-//                //console.log(e.layer._leaflet_id);
-//                //console.log(e);
-//                thisTarget = e.layer._leaflet_id;
-//                if (e.target.urls[0] === "pno_research_area.geojson"){
-//                    //console.log("postinumerot!");
-//                    //window.currentPno = e.layer.feature.properties.nimi + ", " + e.layer.feature.properties.posti_alue;
-//                    mymap._layers[thisTarget].setStyle(postalHighlight);
-//                } else if (e.target.urls[0] === "seutukartta_pienalue.geojson"){
-//                    //console.log("pienalueet!");
-//                    //window.currentPien = e.layer.feature.properties.nimi;
-//                    mymap._layers[thisTarget].setStyle(pienalueHighlight);
-//                }
-//            }
-//            
-//            function layerToNormal(e) {
-//                thisTarget = e.layer._leaflet_id;
-//                if (e.target.urls[0] === "pno_research_area.geojson"){
-//                    mymap._layers[thisTarget].setStyle(stylePostal);
-//                } else if (e.target.urls[0] === "seutukartta_pienalue.geojson"){
-//                    mymap._layers[thisTarget].setStyle(stylePien);;
-//                }
-//            }
-            
+                        
             //highlight overlay layers
             pienalue.on("mouseover", highlightLayer);
             pienalue.on("mouseout", layerToNormal);
             postal.on("mouseover", highlightLayer);
             postal.on("mouseout", layerToNormal);
-           
-            //utilise leaflet-pip (point in Polygon) to find intersections between
-            //clicked latlngs and overlay geojson layers
-//            function findIntersection (latlng, geojsonlayer){
-//                var hits = leafletPip.pointInLayer(latlng, geojsonlayer);
-//                if (hits.length !== 0){
-//                    // If intersection is found, it should only find one feature.
-//                    // This case returns the name of that feature
-//                    return hits;
-//                } else {
-//                    // In case of no intersections return a empty string
-//                    return "";
-//                }
-//            }
+
             
             //Listen to changes in form
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
@@ -292,65 +246,7 @@ and open the template in the editor.
                     delete hitPostal;
                     delete hitPienalue;
                 }
-                
-                
-                //ATTEMPT TO GET INFO FROM ALL VISIBLE LAYERS
-                //THIS WORKS, BUT IS PROBABLY INACCURATE AND MEASURES BBOXES
-                //STUDY THIS MORE:
-                //https://stackoverflow.com/questions/1098040/checking-if-a-key-exists-in-a-javascript-object
-                //https://stackoverflow.com/questions/38599872/get-all-features-of-all-layers-clicked-in-leaflet
-        
-//                var clickBounds = L.latLngBounds(e.latlng, e.latlng);
-//                //console.log(e.latlng);
-//                //console.log(leafletPip.pointInLayer(e.latlng, pienalue));
-//                var intersectingFeatures = [];
-//                
-//                for (var l in mymap._layers) {
-//                    var overlay = mymap._layers[l];
-//                    if (overlay._layers) {   
-//                        for (var f in overlay._layers) {
-//                            var feature = overlay._layers[f];
-//                            var bounds;
-//
-//                            if (feature.getBounds){
-//                                bounds = feature.getBounds();
-//                            } else if (feature._latlng) {
-//                                bounds = L.latLngBounds(feature._latlng, feature._latlng);
-//                            }
-//                            // If true, append to intersectingFeatures
-//                            if (bounds && clickBounds.intersects(bounds)) {
-//                                
-//                                //if feature type is Point, discard it
-//                                //hasOwnProperty() is really weird. testing it
-//                                //was not working for me in the if statement
-//                                if ((feature.feature.geometry.type !== "Point")){
-//                                    intersectingFeatures.push(feature);
-//                                    console.log(feature);
-//                                    console.log(feature.defaultOptions.style.hasOwnProperty("jeejee") + " hasown");
-//                                    //console.log(feature.defaultOptions.style);
-//                                    //console.log(feature.feature.properties.nimi);
-//                                }
-//
-//                            } else {
-//                                //do nothing
-//                            }
-//                        }
-//                    }
-//                    // if at least one feature found, show it
-//                    if (intersectingFeatures.length) {
-////                        var html = "Found features: " + intersectingFeatures.length + "<br/>" + intersectingFeatures.map(function(o) {
-////                            return o.properties.type;
-////                        }).join('<br/>');
-//                        var html = "SUCCE";
-////                    map.openPopup(html, e.latlng, {
-////                        offset: L.point(0, -24)
-////                    });
-//                    }
-//                }
-                
 
-                
-                
                 
                 var marker = e.target,
                         properties = e.target.feature.properties;
@@ -425,14 +321,6 @@ and open the template in the editor.
             }
     
 
-            // POSSIBLE TO FIND FEATURE DATA WITH INTERNAL LAYER ID
-            //geojson.getLayer(113).feature.properties.parktime
-            function onParkspotChange(event){
-                currentParkspotValue = event.target.value;
-                //console.log("parkspot value set to " + event.target.value);
-            };
-    
-    
             // INFOTEXT AND INFOBUTTON
             // infotext and infobutton and associated stuff    
             var infoText = L.control({position: 'bottomleft'});

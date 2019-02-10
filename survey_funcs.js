@@ -12,6 +12,9 @@ function create_cookie(name, value, days2expire, path) {
                      'path=' + path + ';';
   };
 
+
+//utilise leaflet-pip (point in Polygon) to find indtersections between
+//clicked latlngs and overlay geojson layers
 function findIntersection (latlng, geojsonlayer){
     var hits = leafletPip.pointInLayer(latlng, geojsonlayer);
     if (hits.length !== 0){
@@ -23,6 +26,7 @@ function findIntersection (latlng, geojsonlayer){
         return "";
     }
 }
+
 
 function highlightLayer(e) {
     //console.log(e.layer._leaflet_id);
@@ -39,6 +43,7 @@ function highlightLayer(e) {
     }
 }
 
+
 function layerToNormal(e) {
     thisTarget = e.layer._leaflet_id;
     if (e.target.urls[0] === "pno_research_area.geojson"){
@@ -47,3 +52,10 @@ function layerToNormal(e) {
         mymap._layers[thisTarget].setStyle(stylePien);;
     }
 }
+
+
+// This helps set value for parkspot in the popup survey
+function onParkspotChange(event){
+    currentParkspotValue = event.target.value;
+    //console.log("parkspot value set to " + event.target.value);
+};

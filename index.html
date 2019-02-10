@@ -257,7 +257,7 @@ and open the template in the editor.
            
             //utilise leaflet-pip (point in Polygon) to find intersections between
             //clicked latlngs and overlay geojson layers
-            function findIntersections (latlng, geojsonlayer){
+            function findIntersection (latlng, geojsonlayer){
                 var hits = leafletPip.pointInLayer(latlng, geojsonlayer);
                 if (hits.length !== 0){
                     // If intersection is found, it should only find one feature.
@@ -273,21 +273,25 @@ and open the template in the editor.
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
             function layerClickHandler (e) {
                 
-                var hitPostal = findIntersections(e.latlng, postal);
-                var hitPienalue = findIntersections(e.latlng, pienalue);
-                //console.log(hitPostal);
-                //console.log(hitPienalue);
-                //console.log(hitPostal[0].feature.properties.nimi, hitPostal[0].feature.properties.posti_alue);
-                //console.log(hitPienalue[0].feature.properties.nimi);
+                hitPostal = findIntersection(e.latlng, postal);
+                hitPienalue = findIntersection(e.latlng, pienalue);
                 
+                //Check with conditional statement what to print on popup.
+                //delete is necessary to remove unwanted values in popup when
+                //first placing popup on research area and then placing a popup
+                //outside. This would result to an erroneous result
                 if (hitPostal === "" && hitPienalue === ""){
-                    html = "";
+                    html = '<font size="2" color="red" style="line-height: 30px;"><center><strong>Outside research area!</strong></center></font>';
                 } else if (hitPienalue === "") {
                     html = "Postinumeroalue: " + hitPostal[0].feature.properties.nimi, hitPostal[0].feature.properties.posti_alue;
-                } else if (hitPostal === "" && hitPienalue === ""){
+                    delete hitPostal;
+                } else if (hitPostal === ""){
                     html = "Pienalue: " + hitPienalue[0].feature.properties.nimi;
+                    delete hitPienalue;
                 } else if (hitPostal !== "" && hitPienalue !== "") {
                     html = "Pienalue: " + hitPienalue[0].feature.properties.nimi + "<br> Postinumeroalue: " + hitPostal[0].feature.properties.nimi + " " + hitPostal[0].feature.properties.posti_alue;
+                    delete hitPostal;
+                    delete hitPienalue;
                 }
                 
                 

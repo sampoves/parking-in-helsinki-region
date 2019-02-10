@@ -255,11 +255,42 @@ and open the template in the editor.
             postal.on("mouseover", highlightLayer);
             postal.on("mouseout", layerToNormal);
            
-           
+            //utilise leaflet-pip (point in Polygon) to find intersections between
+            //clicked latlngs and overlay geojson layers
+            function findIntersections (latlng, geojsonlayer){
+                var hits = leafletPip.pointInLayer(latlng, geojsonlayer);
+                if (hits.length !== 0){
+                    // If intersection is found, it should only find one feature.
+                    // This case returns the name of that feature
+                    return hits[0].feature.properties.nimi;
+                } else {
+                    // In case of no intersections return a empty string
+                    return "";
+                }
+            }
+            
             //Listen to changes in form
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
             function layerClickHandler (e) {
                 //console.log(e);
+                
+                //jeejee = findIntersections(postal, e.latlng);
+                //console.log(jeejee);
+                var hitPostal = findIntersections(e.latlng, postal);
+                var hitPienalue = findIntersections(e.latlng, pienalue);
+                //console.log(hitsPostal[0].feature.properties.nimi);
+                //console.log(hitsPienalue[0].feature.properties.nimi);
+                
+                if (hitPostal === ""){
+                    html = hitPienalue;
+                } else if (hitPienalue === "") {
+                    html = hitPostal;
+                } else if (hitPostal === "" && hitPienalue === ""){
+                    html = "";
+                } else {
+                    html = hitPienalue + ", " + hitPostal;
+                }
+                
                 
                 //ATTEMPT TO GET INFO FROM ALL VISIBLE LAYERS
                 //THIS WORKS, BUT IS PROBABLY INACCURATE AND MEASURES BBOXES
@@ -267,55 +298,55 @@ and open the template in the editor.
                 //https://stackoverflow.com/questions/1098040/checking-if-a-key-exists-in-a-javascript-object
                 //https://stackoverflow.com/questions/38599872/get-all-features-of-all-layers-clicked-in-leaflet
         
-                var clickBounds = L.latLngBounds(e.latlng, e.latlng);
-                //console.log(e.latlng);
-                //console.log(leafletPip.pointInLayer(e.latlng, pienalue));
-                var intersectingFeatures = [];
+//                var clickBounds = L.latLngBounds(e.latlng, e.latlng);
+//                //console.log(e.latlng);
+//                //console.log(leafletPip.pointInLayer(e.latlng, pienalue));
+//                var intersectingFeatures = [];
+//                
+//                for (var l in mymap._layers) {
+//                    var overlay = mymap._layers[l];
+//                    if (overlay._layers) {   
+//                        for (var f in overlay._layers) {
+//                            var feature = overlay._layers[f];
+//                            var bounds;
+//
+//                            if (feature.getBounds){
+//                                bounds = feature.getBounds();
+//                            } else if (feature._latlng) {
+//                                bounds = L.latLngBounds(feature._latlng, feature._latlng);
+//                            }
+//                            // If true, append to intersectingFeatures
+//                            if (bounds && clickBounds.intersects(bounds)) {
+//                                
+//                                //if feature type is Point, discard it
+//                                //hasOwnProperty() is really weird. testing it
+//                                //was not working for me in the if statement
+//                                if ((feature.feature.geometry.type !== "Point")){
+//                                    intersectingFeatures.push(feature);
+//                                    console.log(feature);
+//                                    console.log(feature.defaultOptions.style.hasOwnProperty("jeejee") + " hasown");
+//                                    //console.log(feature.defaultOptions.style);
+//                                    //console.log(feature.feature.properties.nimi);
+//                                }
+//
+//                            } else {
+//                                //do nothing
+//                            }
+//                        }
+//                    }
+//                    // if at least one feature found, show it
+//                    if (intersectingFeatures.length) {
+////                        var html = "Found features: " + intersectingFeatures.length + "<br/>" + intersectingFeatures.map(function(o) {
+////                            return o.properties.type;
+////                        }).join('<br/>');
+//                        var html = "SUCCE";
+////                    map.openPopup(html, e.latlng, {
+////                        offset: L.point(0, -24)
+////                    });
+//                    }
+//                }
                 
-                for (var l in mymap._layers) {
-                    var overlay = mymap._layers[l];
-                    if (overlay._layers) {   
-                        for (var f in overlay._layers) {
-                            var feature = overlay._layers[f];
-                            var bounds;
 
-                            if (feature.getBounds){
-                                bounds = feature.getBounds();
-                            } else if (feature._latlng) {
-                                bounds = L.latLngBounds(feature._latlng, feature._latlng);
-                            }
-                            // If true, append to intersectingFeatures
-                            if (bounds && clickBounds.intersects(bounds)) {
-                                
-                                //if feature type is Point, discard it
-                                //hasOwnProperty() is really weird. testing it
-                                //was not working for me in the if statement
-                                if ((feature.feature.geometry.type !== "Point")){
-                                    intersectingFeatures.push(feature);
-                                    console.log(feature);
-                                    console.log(feature.defaultOptions.style.hasOwnProperty("jeejee") + " hasown");
-                                    //console.log(feature.defaultOptions.style);
-                                    //console.log(feature.feature.properties.nimi);
-                                }
-
-                            } else {
-                                //do nothing
-                            }
-                        }
-                    }
-                    // if at least one feature found, show it
-                    if (intersectingFeatures.length) {
-//                        var html = "Found features: " + intersectingFeatures.length + "<br/>" + intersectingFeatures.map(function(o) {
-//                            return o.properties.type;
-//                        }).join('<br/>');
-                        var html = "SUCCE";
-//                    map.openPopup(html, e.latlng, {
-//                        offset: L.point(0, -24)
-//                    });
-                    }
-                }
-                
-                
                 
                 
                 

@@ -10,12 +10,13 @@ and open the template in the editor.
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <script>L_PREFER_CANVAS=false; L_NO_TOUCH=false; L_DISABLE_3D=false;</script>
         
-        <!-- import leaflet and leaflet.draw-->
+        <!-- import leaflet, leaflet.draw and other needed libraries-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.4.0/easy-button.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js"></script>
+        <script src="https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js"></script>
         
         <!--import parking survey variables -->
         <script type="text/javascript" src="park_survey.js"></script>
@@ -263,11 +264,13 @@ and open the template in the editor.
                 //ATTEMPT TO GET INFO FROM ALL VISIBLE LAYERS
                 //THIS WORKS, BUT IS PROBABLY INACCURATE AND MEASURES BBOXES
                 //STUDY THIS MORE:
+                //https://stackoverflow.com/questions/1098040/checking-if-a-key-exists-in-a-javascript-object
                 //https://stackoverflow.com/questions/38599872/get-all-features-of-all-layers-clicked-in-leaflet
         
                 var clickBounds = L.latLngBounds(e.latlng, e.latlng);
+                //console.log(e.latlng);
+                //console.log(leafletPip.pointInLayer(e.latlng, pienalue));
                 var intersectingFeatures = [];
-                //console.log(mymap._layers);
                 
                 for (var l in mymap._layers) {
                     var overlay = mymap._layers[l];

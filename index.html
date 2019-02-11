@@ -47,14 +47,9 @@ and open the template in the editor.
     //SCRIPT omaan js-tiedostoon
     //Sivulle kun tulee niin pitäisi käyttäjälle tulla jotain infoa että mitä pitäisi tehdä
     //Kun pisteen on lisännyt olisi hyvä jos kyselypopup aukeaisi automaattisesti
-            
-            //COOKIE
-            //console.log(document.cookie + " ennen definitonii");
-            //console.log(document.cookie === "survey_tilelayer_choice=Stamen terrain");
-            
-            
+    //060219 MIKSI MARKER MUUTTUU VIELÄ LYHYESTI SINISEKSI EKAN KERRAN KLIKATESSA
+    //MARKERIN KANSSA KARTTAA?  
 
-            
             // INITIALISE MAP AND LAYERS
             //bounds variables
             var corner1 = [60.5, 24.37];
@@ -230,14 +225,17 @@ and open the template in the editor.
 
             //default icon options
             //DOES NOT WORK
-            L.Icon.Default.prototype.options = {
-                iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
-                shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-                shadowAnchor: [8, 20],
-                shadowSize: [25, 18],
-                iconAnchor: [12, 40],
-                popupAnchor: [0, -41]
-            };
+            //L.Icon.Default.imagePath = 'marker-icon-2x-red.png';
+            //L.Icon.Default.prototype.options.iconUrl = 'marker-icon-2x-red.png';
+            //L.Icon.Default.prototype.options = {iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png'};
+//            L.Icon.Default.prototype.options = {
+//                iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
+//                shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+//                shadowAnchor: [8, 20],
+//                shadowSize: [25, 18],
+//                iconAnchor: [12, 40],
+//                popupAnchor: [0, -41]
+//            };
             
             //incomplete icon
             var incompleteIcon = L.Icon.extend({
@@ -413,6 +411,36 @@ and open the template in the editor.
             });
             infoButton.addTo(mymap);
             
+
+
+            // SENDBOX AND BUTTON
+            var sendBox = L.control({position: 'bottomright'});
+            sendBox.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'sendbox');
+                this.update();
+                return this._div;
+            };
+            sendBox.update = function () {
+                this._div.innerHTML = "<button id='button-submitall' type='button'><strong>Submit records</strong></button>";
+            };
+            sendBox.addTo(mymap);
+
+            //attempt to prevent map clicks, unsuccessfully
+            sendBox.getContainer().addEventListener('mouseover', function () {
+                mymap.dragging.disable();
+                mymap.scrollWheelZoom.disable();
+            });
+            sendBox.getContainer().addEventListener('mouseout', function () {
+                mymap.dragging.enable();
+                mymap.scrollWheelZoom.enable();
+            });
+            
+            var sendButtonSubmit = L.DomUtil.get('button-submitall');
+            L.DomEvent.addListener(sendButtonSubmit, "click", function (e){
+                alert("Lähetit parkkidatan, leikisti");
+            });
+
+            
             
             // INFOHEADER
             var infoHeader = L.control();
@@ -427,9 +455,7 @@ and open the template in the editor.
             infoHeader.addTo(mymap);
             
            
-            //060219 MIKSI MARKER MUUTTUU VIELÄ LYHYESTI SINISEKSI EKAN KERRAN KLIKATESSA
-            //MARKERIN KANSSA KARTTAA?
-            
+           
             //initialise drawing tools, disable a bunch of feature types
             var draw_control = new L.Control.Draw({
                 "edit": {
@@ -457,12 +483,14 @@ and open the template in the editor.
             }).addTo(mymap);
             
             //enable this to have marker placement on right at page load
-            new L.Draw.Marker(mymap, draw_control.options.marker).enable();
-            
+            //giving the instruction draw_control.options.draw.marker allows
+            //us to start with the red marker
+            new L.Draw.Marker(mymap, draw_control.options.draw.marker).enable();
+
             //disable double click zoom and enable double click marker creation
             mymap.doubleClickZoom.disable(); 
             mymap.on("dblclick", function (e){
-                new L.Draw.Marker(mymap, draw_control.options.marker).enable();
+                new L.Draw.Marker(mymap, draw_control.options.draw.marker).enable();
             });
             
             mymap.on(L.Draw.Event.CREATED, function (e) {

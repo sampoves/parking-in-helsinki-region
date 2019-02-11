@@ -52,6 +52,9 @@ and open the template in the editor.
             //console.log(document.cookie + " ennen definitonii");
             //console.log(document.cookie === "survey_tilelayer_choice=Stamen terrain");
             
+            
+
+            
             // INITIALISE MAP AND LAYERS
             //bounds variables
             var corner1 = [60.5, 24.37];
@@ -124,20 +127,20 @@ and open the template in the editor.
                 darkmatter.addTo(mymap);
             }
             
-
             //MITEN SAADA POPUP AUKI HETI MARKERIN KIINNITÄMISEN JÄLKEEN?
             // yks johtolanka: https://jsfiddle.net/emmalivingstone/abpee1ym/
 
             // import empty GeoJSON to be populated by user with responses
+            var delay=1000, setTimeoutConst;
+            
             var geojson = L.geoJson({
                 "type": "FeatureCollection",
                 "features": []
                 },{
                     onEachFeature:
                             function (feature, layer){
-                                console.log($(layer));
+                                //($(layer));
                                 layer.on('click', layerClickHandler);
-                                
                             }
                 }).addTo(mymap);
             
@@ -167,7 +170,6 @@ and open the template in the editor.
                 "fillOpacity": 0
             };   
            
-    
             var postal = new L.GeoJSON.AJAX(
                     "pno_research_area.geojson", {
                         style: stylePostal
@@ -225,6 +227,42 @@ and open the template in the editor.
             postal.on("mouseover", highlightLayer);
             postal.on("mouseout", layerToNormal);
 
+
+            //default icon options
+            //DOES NOT WORK
+            L.Icon.Default.prototype.options = {
+                iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
+                shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+                shadowAnchor: [8, 20],
+                shadowSize: [25, 18],
+                iconAnchor: [12, 40],
+                popupAnchor: [0, -41]
+            };
+            
+            //incomplete icon
+            var incompleteIcon = L.Icon.extend({
+                options: {
+                    iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
+                    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+                    shadowAnchor: [8, 20],
+                    shadowSize: [25, 18],
+                    iconAnchor: [12, 40],
+                    popupAnchor: [0, -41]
+                }
+            });
+            
+            //complete icon
+            var completeIcon = L.Icon.extend({
+                options: {
+                    iconUrl: "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
+                    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+                    shadowAnchor: [8, 20],
+                    shadowSize: [25, 18],
+                    iconAnchor: [12, 40],
+                    popupAnchor: [0, -41]
+                }
+            });
+            
             
             //Listen to changes in form
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
@@ -265,12 +303,14 @@ and open the template in the editor.
                 if(!properties.datetime || !properties.likert 
                     || !properties.parkspot || !properties.parktime){
                     marker.bindPopup(html + popupContent + missingStuff);
-                    marker._icon.src = 
-                            'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png';
+                    e.target.setIcon(new incompleteIcon);
+                    //marker._icon.src = 
+                    //       'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png';
                 } else {
                     marker.bindPopup(popupContent);
-                    marker._icon.src = 
-                            'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png';
+                    e.target.setIcon(new completeIcon);
+                    //marker._icon.src = 
+                    //        'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png';
                 }
                 marker.openPopup();
 
@@ -417,8 +457,14 @@ and open the template in the editor.
             }).addTo(mymap);
             
             //enable this to have marker placement on right at page load
-            //new L.Draw.Marker(mymap, draw_control.options.marker).enable();
-
+            new L.Draw.Marker(mymap, draw_control.options.marker).enable();
+            
+            //disable double click zoom and enable double click marker creation
+            mymap.doubleClickZoom.disable(); 
+            mymap.on("dblclick", function (e){
+                new L.Draw.Marker(mymap, draw_control.options.marker).enable();
+            });
+            
             mymap.on(L.Draw.Event.CREATED, function (e) {
                 var layer = e.layer;
                 var lat = layer.getLatLng().lat;

@@ -48,7 +48,7 @@ and open the template in the editor.
     //Sivulle kun tulee niin pitäisi käyttäjälle tulla jotain infoa että mitä pitäisi tehdä
     //Kun pisteen on lisännyt olisi hyvä jos kyselypopup aukeaisi automaattisesti
     //060219 MIKSI MARKER MUUTTUU VIELÄ LYHYESTI SINISEKSI EKAN KERRAN KLIKATESSA
-    //MARKERIN KANSSA KARTTAA?  
+    //MARKERIN KANSSA KARTTAA?
 
             // INITIALISE MAP AND LAYERS
             //bounds variables
@@ -111,16 +111,29 @@ and open the template in the editor.
                     ext: 'png'
             });
             
+            
+            //SET USER SETTIdNGS STRAIGHT WITH COOKIE VALUES
             //use .addTo() to give mymap the correct cookie value
-            if(document.cookie === "survey_tilelayer_choice=CartoDB dark_matter"){
+            if(getCookie("survey_tilelayer_choice") === "CartoDB dark_matter"){
                 darkmatter.addTo(mymap);
-            } else if (document.cookie === "survey_tilelayer_choice=OpenStreetMap") {
+            } else if (getCookie("survey_tilelayer_choice") === "OpenStreetMap") {
                 OpenStreetMap_DE.addTo(mymap);
-            } else if (document.cookie === "survey_tilelayer_choice=Stamen terrain"){
+            } else if (getCookie("survey_tilelayer_choice") === "Stamen terrain"){
                 Stamen_Terrain.addTo(mymap);
             } else {
                 darkmatter.addTo(mymap);
             }
+            if(getCookie("info_suljettu_kerran") === "joo"){
+                console.log("INFOSULJETTUJOOOOOOO");
+                $(document).ready(function(){
+                    infoBox.remove(mymap);
+                    infoButton.state('infoOpen');
+                });
+            } else {
+                concole.log("infoa ei oo suljettu kertaakaan");
+                //do nothin, user visiting first time or didn't click X
+            }
+            
             
             //MITEN SAADA POPUP AUKI HETI MARKERIN KIINNITÄMISEN JÄLKEEN?
             // yks johtolanka: https://jsfiddle.net/emmalivingstone/abpee1ym/
@@ -389,6 +402,7 @@ and open the template in the editor.
                 this._div.innerHTML = basicInfo;
                 return this._div;
             };
+            infoBox.addTo(mymap); //active immediately
             
             var infoButton = L.easyButton({
                 states: [{
@@ -421,11 +435,18 @@ and open the template in the editor.
                 return this._div;
             };
             sendBox.update = function () {
-                this._div.innerHTML = "<button id='button-submitall' type='button'><strong>Submit records</strong></button>";
+                this._div.innerHTML = "<button id='buttonsubmitall' type='button'><strong>Submit records</strong></button>";
             };
             sendBox.addTo(mymap);
 
-            //attempt to prevent map clicks, unsuccessfully
+            
+            //prevent map clicks and other events on sendBox
+            L.DomEvent.on(buttonsubmitall, 'click', function (e) {
+                L.DomEvent.stopPropagation(e);
+            });
+            L.DomEvent.on(buttonsubmitall, 'dblclick', function (e) {
+                L.DomEvent.stopPropagation(e);
+            });
             sendBox.getContainer().addEventListener('mouseover', function () {
                 mymap.dragging.disable();
                 mymap.scrollWheelZoom.disable();
@@ -435,11 +456,13 @@ and open the template in the editor.
                 mymap.scrollWheelZoom.enable();
             });
             
-            var sendButtonSubmit = L.DomUtil.get('button-submitall');
+            
+            //"submit records" button functionality
+            var sendButtonSubmit = L.DomUtil.get('buttonsubmitall');
             L.DomEvent.addListener(sendButtonSubmit, "click", function (e){
                 alert("Lähetit parkkidatan, leikisti");
             });
-
+            
             
             
             // INFOHEADER
@@ -452,7 +475,7 @@ and open the template in the editor.
             infoHeader.update = function () {
                 this._div.innerHTML = infoHeaderStuff;
             };
-            infoHeader.addTo(mymap);
+            //infoHeader.addTo(mymap);
             
            
            

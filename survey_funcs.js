@@ -12,6 +12,12 @@ function create_cookie(name, value, days2expire, path) {
                      'path=' + path + ';';
   };
 
+function getCookie(name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length === 2) return parts.pop().split(";").shift();
+}
+
 
 //utilise leaflet-pip (point in Polygon) to find indtersections between
 //clicked latlngs and overlay geojson layers

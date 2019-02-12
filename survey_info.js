@@ -8,9 +8,12 @@ var firstVisitText = '<div id=firstvisittext>fdsdfsfdsdffdfds</div>';
 
 var infoHeaderStuff = '<div id=infoheaderstuff><p><strong>Parking private cars in Helsinki Capital Region</strong></p></div>';
 
-var basicInfo = "<div id='basic_info'>"+
-        "<span id='close' onclick='this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode); return false;'><strong>x</strong></span>"+
-        "<span id='info'>"+
+//includes close button Xd, which has a long piece of code. Make note, for example,
+//event.stopPropagation(), which prevents placing of markers under the infobox
+//if marker placement is active. The parentNode thing provides closing functionality.
+var basicInfo = "<div id='basic_info' onclick='javascript:event.stopPropagation();' ondblclick='javascript:event.stopPropagation();'>"+
+        "<span id='close' onclick='create_cookie(\"info_suljettu_kerran\", \"joo\", 90, \"/\");infoButton.state(\"infoOpen\");javascript:event.stopPropagation();this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode); return false;'><strong>x</strong></span>"+
+        "<span id='info' onclick='javascript:event.stopPropagation();' ondblclick='javascript:event.stopPropagation();'>"+
         '<H2>Tervetuloa kyselyyn!</H2>'+
         'Tämän kyselyn tarkoituksena on selvittää kuinka kauan henkilöauton pysäköinti kestää pääkaupunkiseudulla. Kyselyssä huomioidaan pysäköinnin koko prosessi: kuinka kauan pysäköintipaikkaa etsittiin, minne auto pysäköitiin ja missä oli vastaajan todellinen määränpää. Kyselyssä kerättyjä tietoja käytetään Helsingin yliopiston geoinformatiikan pro gradu -tutkimuksessa, josta voit lukea lisää allaolevasta "tarkempaa tietoa kyselystä" -kohdassa.'+
         '<br>'+

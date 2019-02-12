@@ -15,6 +15,7 @@ and open the template in the editor.
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.4.0/easy-button.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js"></script>
         <script src="https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js"></script>
         
@@ -31,6 +32,7 @@ and open the template in the editor.
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.4.0/easy-button.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css"/>
         
         <!-- font -->
         <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
@@ -112,7 +114,7 @@ and open the template in the editor.
             });
             
             
-            //SET USER SETTIdNGS STRAIGHT WITH COOKIE VALUES
+            //SET USER SETTINGS STRAIGHT WITH COOKIE VALUES
             //use .addTo() to give mymap the correct cookie value
             if(getCookie("survey_tilelayer_choice") === "CartoDB dark_matter"){
                 darkmatter.addTo(mymap);
@@ -123,6 +125,7 @@ and open the template in the editor.
             } else {
                 darkmatter.addTo(mymap);
             }
+            //Has infobox been opened?
             if(getCookie("info_suljettu_kerran") === "joo"){
                 console.log("INFOSULJETTUJOOOOOOO");
                 $(document).ready(function(){
@@ -139,15 +142,12 @@ and open the template in the editor.
             // yks johtolanka: https://jsfiddle.net/emmalivingstone/abpee1ym/
 
             // import empty GeoJSON to be populated by user with responses
-            var delay=1000, setTimeoutConst;
-            
             var geojson = L.geoJson({
                 "type": "FeatureCollection",
                 "features": []
                 },{
                     onEachFeature:
                             function (feature, layer){
-                                //($(layer));
                                 layer.on('click', layerClickHandler);
                             }
                 }).addTo(mymap);
@@ -166,8 +166,7 @@ and open the template in the editor.
                 "weight": 3,
                 "opacity": 0.3,
                 "fillColor": '#0000FF',
-                "fillOpacity": 0,
-                "jeejee": 0 //this helps me detect research area MultiPolygon later on
+                "fillOpacity": 0
             };   
             
             var stylePien = {
@@ -402,7 +401,7 @@ and open the template in the editor.
                 this._div.innerHTML = basicInfo;
                 return this._div;
             };
-            infoBox.addTo(mymap); //active immediately
+            infoBox.addTo(mymap); //infobox active immediately on first open
             
             var infoButton = L.easyButton({
                 states: [{
@@ -440,7 +439,8 @@ and open the template in the editor.
             sendBox.addTo(mymap);
 
             
-            //prevent map clicks and other events on sendBox
+            
+            //prevent unwanted map clicks and other events on sendBox
             L.DomEvent.on(buttonsubmitall, 'click', function (e) {
                 L.DomEvent.stopPropagation(e);
             });
@@ -457,13 +457,23 @@ and open the template in the editor.
             });
             
             
-            //"submit records" button functionality
+            //"submit records" button functionality uses jQuery UI
             var sendButtonSubmit = L.DomUtil.get('buttonsubmitall');
             L.DomEvent.addListener(sendButtonSubmit, "click", function (e){
-                alert("Lähetit parkkidatan, leikisti");
+                //alert("Lähetit parkkidatan, leikisti");
+                $(function() {
+                    $("#sucdialog").dialog({
+                        buttons: {
+                            "Close": function () {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+                    //document.getElementById('buttonsubmitall').style.visibility='hidden';
+                });
             });
             
-            
+
             
             // INFOHEADER
             var infoHeader = L.control();
@@ -578,5 +588,11 @@ and open the template in the editor.
                 });
             });
         </script>
+        
+        <div id="sucdialog" title="Submit success!" style="display:none">
+            <div class="sucimage"></div>​
+            <p>Thank you for taking the time to respond to this survey!</p>
+        </div>
+        
     </body>
 </html>

@@ -133,7 +133,7 @@ and open the template in the editor.
                     infoButton.state('infoOpen');
                 });
             } else {
-                concole.log("infoa ei oo suljettu kertaakaan");
+                console.log("infoa ei oo suljettu kertaakaan");
                 //do nothin, user visiting first time or didn't click X
             }
             
@@ -169,28 +169,17 @@ and open the template in the editor.
                 "fillOpacity": 0
             };   
             
-            var stylePien = {
-                "color": "#f316f7",
-                "weight": 3,
-                "opacity": 0.3,
-                "fillColor": '#0000FF',
-                "fillOpacity": 0
-            };   
            
             var postal = new L.GeoJSON.AJAX(
                     "pno_research_area.geojson", {
                         style: stylePostal
-            }).addTo(mymap);
+            }).addTo(mymap);//.addTo(mymap);
             
             var postaldissolve = new L.GeoJSON.AJAX(
                     "pno_dissolve.geojson", {
                         style: styleArea
             }).addTo(mymap);
                         
-            var pienalue = new L.GeoJSON.AJAX(
-                    "seutukartta_pienalue.geojson", {
-                        style: stylePien
-            });//.addTo(mymap);
 
             //add layer control
             var baseMaps = {
@@ -200,7 +189,6 @@ and open the template in the editor.
             };
 
             var overlayMaps = {
-                "Seutukartta pienalue": pienalue,
                 "Postal areas": postal,
                 "Research area": postaldissolve
             };
@@ -210,14 +198,6 @@ and open the template in the editor.
            $('<p id="controlTitle1"><strong>Taustakartat<strong></p>').insertBefore('div.leaflet-control-layers-base');
            $('<p id="controlTitle2"><strong>Aluejaot<strong></p>').insertBefore('div.leaflet-control-layers-overlays');
     
-           //overlay highlighting
-            var pienalueHighlight = {
-                'color': '#d738ff',
-                'weight': 2,
-                'opacity': 1,
-                "fillColor": '#0000FF',
-                "fillOpacity": 0.1
-            };
             
             var postalHighlight = {
                 'color': '#ffd711',
@@ -229,8 +209,6 @@ and open the template in the editor.
                         
             //highlight overlay layers on mouseover. Also listen to return to 
             //normal.
-            pienalue.on("mouseover", highlightLayer);
-            pienalue.on("mouseout", layerToNormal);
             postal.on("mouseover", highlightLayer);
             postal.on("mouseout", layerToNormal);
 
@@ -284,20 +262,12 @@ and open the template in the editor.
                 //first placing popup on research area and then placing a popup
                 //outside. This would result to an erroneous result
                 hitPostal = findIntersection(e.latlng, postal);
-                hitPienalue = findIntersection(e.latlng, pienalue);
                 
-                if (hitPostal === "" && hitPienalue === ""){
+                if (hitPostal === ""){
                     html = '<font size="2" color="red" style="line-height: 30px;"><center><strong>Outside research area!</strong></center></font>';
-                } else if (hitPienalue === "") {
-                    html = "Postinumeroalue: " + hitPostal[0].feature.properties.nimi, hitPostal[0].feature.properties.posti_alue;
+                } else if (hitPostal !== "") {
+                    html = "Postinumeroalue: " + hitPostal[0].feature.properties.nimi + " " + hitPostal[0].feature.properties.posti_alue;
                     delete hitPostal;
-                } else if (hitPostal === ""){
-                    html = "Pienalue: " + hitPienalue[0].feature.properties.nimi;
-                    delete hitPienalue;
-                } else if (hitPostal !== "" && hitPienalue !== "") {
-                    html = "Pienalue: " + hitPienalue[0].feature.properties.nimi + "<br> Postinumeroalue: " + hitPostal[0].feature.properties.nimi + " " + hitPostal[0].feature.properties.posti_alue;
-                    delete hitPostal;
-                    delete hitPienalue;
                 }
 
                 

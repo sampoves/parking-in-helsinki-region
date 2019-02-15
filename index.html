@@ -400,37 +400,57 @@ and open the template in the editor.
                 }
             };
             
-            //TESTING FOR BETTER MARKER COLORING
-            testi = Object.keys(geojson._layers);
-            console.log(testi);
-            //console.log(geojson._layers[0]); // tää luku vaihtelee
-            //for (var i = 0; i < geojson._layers.length)
-            
-            //THIS WORKS WHEN INPUTTED TO CHROME CONSOLE and some popups have
-            //been filled!
-            for (var i in geojson._layers){
-                notCompletedID = [];
-                console.log(geojson._layers[i]);
-                thisLayer = geojson._layers[i];
-                theseProps = thisLayer.feature.properties;
-                theseAttrs = Object.keys(theseProps);
-                howManyNulls = 0;
-                for (var i = 0; i < attrs.length; i += 1){
-                    attr = theseAttrs[i];
-                    value = theseProps[attr];
-                    //console.log(value);
-                    if (value === null || value === ""){
-                        howManyNulls += 1;
-                    } else {
-                        // do nothjin
+
+            //THIS WORKS
+            //it is probably not efficient to run this operation on every
+            //drag event, but easiest for me to check states of popups
+            mymap.on("drag", function(e){
+                for (var i in geojson._layers){
+                    //console.log(geojson._layers[i]);
+                    thisLayer = geojson._layers[i];
+                    theseProps = thisLayer.feature.properties;
+                    theseAttrs = Object.keys(theseProps);
+                    howManyNulls = 0;
+                    
+                    for (var i = 0; i < attrs.length; i += 1){
+                        attr = theseAttrs[i];
+                        value = theseProps[attr];
+                        if (value === null || value === ""){
+                            howManyNulls += 1;
+                        } else {
+                            // do nothjin
+                        }
                     }
-                }
-                if (howManyNulls === 0){
-                    thisLayer.setIcon(completeIcon);
-                } else {
-                    thisLayer.setIcon(incompleteIcon);
-                }
-            };
+                    if (howManyNulls === 0){
+                        thisLayer.setIcon(completeIcon);
+                    } else {
+                        thisLayer.setIcon(incompleteIcon);
+                    }
+                };
+            });
+//            for (var i in geojson._layers){
+//                notCompletedID = [];
+//                console.log(geojson._layers[i]);
+//                thisLayer = geojson._layers[i];
+//                theseProps = thisLayer.feature.properties;
+//                theseAttrs = Object.keys(theseProps);
+//                howManyNulls = 0;
+//                for (var i = 0; i < attrs.length; i += 1){
+//                    attr = theseAttrs[i];
+//                    value = theseProps[attr];
+//                    //console.log(value);
+//                    if (value === null || value === ""){
+//                        howManyNulls += 1;
+//                    } else {
+//                        // do nothjin
+//                    }
+//                }
+//                if (howManyNulls === 0){
+//                    thisLayer.setIcon(completeIcon);
+//                } else {
+//                    thisLayer.setIcon(incompleteIcon);
+//                }
+//            };
             
             
             

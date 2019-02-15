@@ -149,7 +149,7 @@ and open the template in the editor.
                     onEachFeature:
                             function (feature, layer){
                                 layer.on('click', layerClickHandler);
-                                layer.on('mouseover', jeejee);
+                                layer.on('mouseover', jeejee); //"add" toimii tässä!! jos jotain tarvetta joskus
                                 
                                 //set incomplete icon at start
                                 if(!feature.properties.datetime || !feature.properties.likert || 
@@ -377,7 +377,7 @@ and open the template in the editor.
             //THIS LISTENS TO MARKER VALUES AND CHANGES MARKER COLOR ON
             //POPUP FILL
             function jeejee (feature, layer) {
-                //console.log(feature);
+                //console.log("feature lalalal");
                 props = feature.target.feature.properties;
                 attrs = Object.keys(props);
                 //console.log(attrs);
@@ -399,7 +399,44 @@ and open the template in the editor.
                     feature.target.setIcon(incompleteIcon);
                 }
             };
-
+            
+            //TESTING FOR BETTER MARKER COLORING
+            testi = Object.keys(geojson._layers);
+            console.log(testi);
+            //console.log(geojson._layers[0]); // tää luku vaihtelee
+            //for (var i = 0; i < geojson._layers.length)
+            
+            //THIS WORKS WHEN INPUTTED TO CHROME CONSOLE and some popups have
+            //been filled!
+            for (var i in geojson._layers){
+                notCompletedID = [];
+                console.log(geojson._layers[i]);
+                thisLayer = geojson._layers[i];
+                theseProps = thisLayer.feature.properties;
+                theseAttrs = Object.keys(theseProps);
+                howManyNulls = 0;
+                for (var i = 0; i < attrs.length; i += 1){
+                    attr = theseAttrs[i];
+                    value = theseProps[attr];
+                    //console.log(value);
+                    if (value === null || value === ""){
+                        howManyNulls += 1;
+                    } else {
+                        // do nothjin
+                    }
+                }
+                if (howManyNulls === 0){
+                    thisLayer.setIcon(completeIcon);
+                } else {
+                    thisLayer.setIcon(incompleteIcon);
+                }
+            };
+            
+            
+            
+            
+            
+            
 
             // INFOTEXT AND INFOBUTTON
             // infotext and infobutton and associated stuff    

@@ -149,6 +149,13 @@ and open the template in the editor.
                     onEachFeature:
                             function (feature, layer){
                                 layer.on('click', layerClickHandler);
+                                layer.on('mouseover', jeejee);
+                                
+                                //set incomplete icon at start
+                                if(!feature.properties.datetime || !feature.properties.likert || 
+                                        !feature.properties.parkspot || !feature.properties.parktime){
+                                    layer.setIcon(incompleteIcon);
+                                }
                             }
                 }).addTo(mymap);
             
@@ -173,7 +180,7 @@ and open the template in the editor.
             var postal = new L.GeoJSON.AJAX(
                     "pno_research_area.geojson", {
                         style: stylePostal
-            }).addTo(mymap);//.addTo(mymap);
+            }).addTo(mymap);
             
             var postaldissolve = new L.GeoJSON.AJAX(
                     "pno_dissolve.geojson", {
@@ -194,11 +201,13 @@ and open the template in the editor.
             };
             L.control.layers(baseMaps, overlayMaps).addTo(mymap);
            
-           //add additional text to layer control
-           $('<p id="controlTitle1"><strong>Taustakartat<strong></p>').insertBefore('div.leaflet-control-layers-base');
-           $('<p id="controlTitle2"><strong>Aluejaot<strong></p>').insertBefore('div.leaflet-control-layers-overlays');
+            //add additional text to layer control
+            $('<p id="controlTitle1"><strong>Taustakartat<strong></p>').insertBefore('div.leaflet-control-layers-base');
+            $('<p id="controlTitle2"><strong>Aluejaot<strong></p>').insertBefore('div.leaflet-control-layers-overlays');
     
-            
+    
+            //highlight overlay layers on mouseover. Also listen to return to 
+            //normal.
             var postalHighlight = {
                 'color': '#ffd711',
                 'weight': 2,
@@ -206,53 +215,60 @@ and open the template in the editor.
                 "fillColor": '#ff9e28',
                 "fillOpacity": 0.1
             };
-                        
-            //highlight overlay layers on mouseover. Also listen to return to 
-            //normal.
+            
             postal.on("mouseover", highlightLayer);
             postal.on("mouseout", layerToNormal);
 
-
-            //default icon options
-            //DOES NOT WORK
-            //L.Icon.Default.imagePath = 'marker-icon-2x-red.png';
-            //L.Icon.Default.prototype.options.iconUrl = 'marker-icon-2x-red.png';
-            //L.Icon.Default.prototype.options = {iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png'};
-//            L.Icon.Default.prototype.options = {
-//                iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
-//                shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-//                shadowAnchor: [8, 20],
-//                shadowSize: [25, 18],
-//                iconAnchor: [12, 40],
-//                popupAnchor: [0, -41]
-//            };
             
             //incomplete icon
-            var incompleteIcon = L.Icon.extend({
-                options: {
-                    iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
-                    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-                    shadowAnchor: [8, 20],
-                    shadowSize: [25, 18],
-                    iconAnchor: [12, 40],
-                    popupAnchor: [0, -41]
-                }
+//            var incompleteIcon = L.Icon.extend({
+//                options: {
+//                    iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
+//                    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+//                    shadowAnchor: [8, 20],
+//                    shadowSize: [25, 18],
+//                    iconAnchor: [12, 40],
+//                    popupAnchor: [0, -41]
+//                }
+//            });
+//            
+//            //complete icon
+//            var completeIcon = L.Icon.extend({
+//                options: {
+//                    iconUrl: "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
+//                    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+//                    shadowAnchor: [8, 20],
+//                    shadowSize: [25, 18],
+//                    iconAnchor: [12, 40],
+//                    popupAnchor: [0, -41]
+//                }
+//            });
+            
+            //incomplete icon
+            var incompleteIcon = L.icon({
+                iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
+                iconSize: [25, 41],
+                shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+                shadowAnchor: [8, 20],
+                shadowSize: [25, 18],
+                iconAnchor: [12, 40],
+                popupAnchor: [0, -41]
             });
             
             //complete icon
-            var completeIcon = L.Icon.extend({
-                options: {
-                    iconUrl: "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
-                    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-                    shadowAnchor: [8, 20],
-                    shadowSize: [25, 18],
-                    iconAnchor: [12, 40],
-                    popupAnchor: [0, -41]
-                }
+            var completeIcon = L.icon({
+                iconUrl: "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
+                iconSize: [25, 41],
+                shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+                shadowAnchor: [8, 20],
+                shadowSize: [25, 18],
+                iconAnchor: [12, 40],
+                popupAnchor: [0, -41]
             });
             
             
             //Listen to changes in form
+            //Listen to current click on geojson layer
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
             function layerClickHandler (e) {
                 
@@ -266,7 +282,7 @@ and open the template in the editor.
                 if (hitPostal === ""){
                     html = '<font size="2" color="red" style="line-height: 30px;"><center><strong>Outside research area!</strong></center></font>';
                 } else if (hitPostal !== "") {
-                    html = "Postinumeroalue: " + hitPostal[0].feature.properties.nimi + " " + hitPostal[0].feature.properties.posti_alue;
+                    html = "Postinumeroalue: " + hitPostal[0].feature.properties.nimi + ", " + hitPostal[0].feature.properties.posti_alue;
                     delete hitPostal;
                 }
 
@@ -283,16 +299,27 @@ and open the template in the editor.
                 if(!properties.datetime || !properties.likert 
                     || !properties.parkspot || !properties.parktime){
                     marker.bindPopup(html + popupContent + missingStuff);
-                    e.target.setIcon(new incompleteIcon);
-                    //marker._icon.src = 
-                    //       'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png';
+                    //e.target.setIcon(new incompleteIcon);
+                    e.target.setIcon(incompleteIcon);
                 } else {
                     marker.bindPopup(popupContent);
-                    e.target.setIcon(new completeIcon);
-                    //marker._icon.src = 
-                    //        'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png';
+                    //e.target.setIcon(new completeIcon);
+                    e.target.setIcon(completeIcon);
                 }
                 marker.openPopup();
+
+
+                //marker listener test
+                //WORKS   
+//                attrs = Object.keys(properties);
+//                console.log(attrs);
+//                for (var i = 0; i < attrs.length; i += 1) {
+//                    attr = attrs[i];
+//                    value = properties[attr];
+//                    console.log(value !== null);
+//                }
+                
+
 
                 //EVENT LISTENERS
                 //DATETIME
@@ -345,7 +372,33 @@ and open the template in the editor.
                 });
             }
     
-
+    
+    
+            //THIS LISTENS TO MARKER VALUES AND CHANGES MARKER COLOR ON
+            //POPUP FILL
+            function jeejee (feature, layer) {
+                //console.log(feature);
+                props = feature.target.feature.properties;
+                attrs = Object.keys(props);
+                //console.log(attrs);
+                howManyNulls = 0;
+                for (var i = 0; i < attrs.length; i += 1){
+                    attr = attrs[i];
+                    value = props[attr];
+                    //console.log(value);
+                    if (value === null || value === ""){
+                        howManyNulls += 1;
+                    } else {
+                        // do nothjin
+                    }
+                }
+                //console.log(howManyNulls + " mik' tilanne");
+                if (howManyNulls === 0){
+                    feature.target.setIcon(completeIcon);
+                } else {
+                    feature.target.setIcon(incompleteIcon);
+                }
+            };
 
 
             // INFOTEXT AND INFOBUTTON

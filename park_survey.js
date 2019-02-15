@@ -23,11 +23,12 @@ var popupContent = '<form name="myform" role="form" id="form" enctype="multipart
         '<label class="control-label col-sm-5"><strong>Kuinka usein olet pysäköinyt autosi tälle alueelle?</strong></label>'+
         '<div class="likertcolumn">'+
             '<ul class="likert" id="likert">'+
-                '<li><input value="1" name="likert" type="radio">Erittäin usein</li>'+
-                '<li><input value="2" name="likert" type="radio">Usein</li>'+
-                '<li><input value="3" name="likert" type="radio">Toisinaan</li>'+
-                '<li><input value="4" name="likert" type="radio">Harvoin</li>'+
-                '<li><input value="5" name="likert" type="radio">En koskaan</li>'+
+                //<label></label> makes possible to click on radio button texts as well as the radio button
+                '<label><li><input value="1" name="likert" type="radio">Erittäin usein</li></label>'+
+                '<label><li><input value="2" name="likert" type="radio">Usein</li></label>'+
+                '<label><li><input value="3" name="likert" type="radio">Toisinaan</li></label>'+
+                '<label><li><input value="4" name="likert" type="radio">Harvoin</li></label>'+
+                '<label><li><input value="5" name="likert" type="radio">En koskaan</li></label>'+
             '</ul>'+
         '</div>'+
     '</div>'+

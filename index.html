@@ -166,12 +166,12 @@ and open the template in the editor.
                 "weight": 3,
                 "opacity": 0.4,
                 "fillOpacity": 0
-            };        
-    
+            };
+            
             var styleArea = {
                 "color": "#ff7800",
                 "weight": 3,
-                "opacity": 0.3,
+                "opacity": 0.5,
                 "fillColor": '#0000FF',
                 "fillOpacity": 0
             };   
@@ -210,7 +210,7 @@ and open the template in the editor.
             //normal.
             var postalHighlight = {
                 'color': '#ffd711',
-                'weight': 2,
+                'weight': 4,
                 'opacity': 1,
                 "fillColor": '#ff9e28',
                 "fillOpacity": 0.1
@@ -258,6 +258,17 @@ and open the template in the editor.
             //complete icon
             var completeIcon = L.icon({
                 iconUrl: "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
+                iconSize: [25, 41],
+                shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+                shadowAnchor: [8, 20],
+                shadowSize: [25, 18],
+                iconAnchor: [12, 40],
+                popupAnchor: [0, -41]
+            });
+            
+            //submitted icon
+            var submittedIcon = L.icon({
+                iconUrl: "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png",
                 iconSize: [25, 41],
                 shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
                 shadowAnchor: [8, 20],
@@ -404,7 +415,7 @@ and open the template in the editor.
             //THIS WORKS
             //it is probably not efficient to run this operation on every
             //drag event, but easiest for me to check states of popups
-            mymap.on("drag", function(e){
+            mymap.on("dragstart", function(e){
                 for (var i in geojson._layers){
                     //console.log(geojson._layers[i]);
                     thisLayer = geojson._layers[i];
@@ -413,6 +424,8 @@ and open the template in the editor.
                     howManyNulls = 0;
                     
                     for (var i = 0; i < attrs.length; i += 1){
+                        //implement test whether layer is interactive or not
+                        //check submit button which changed interactivity to false
                         attr = theseAttrs[i];
                         value = theseProps[attr];
                         if (value === null || value === ""){
@@ -558,6 +571,14 @@ and open the template in the editor.
             //"submit records" button functionality uses jQuery UI
             var sendButtonSubmit = L.DomUtil.get('buttonsubmitall');
             L.DomEvent.addListener(sendButtonSubmit, "click", function (e){
+                
+                //inactivate popups after submit records
+                //UNFINISHED! map drag reverses colors, layers stay inactive
+                for (var i in geojson._layers){
+                    thisLayer = geojson._layers[i];
+                    thisLayer.options.interactive = false;
+                    thisLayer.setIcon(submittedIcon);
+                }
                 $(function() {
                     $("#sucdialog").dialog({
                         position: {my: "center", at: "center", of: window},

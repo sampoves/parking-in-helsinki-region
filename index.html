@@ -19,6 +19,7 @@ and open the template in the editor.
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js"></script>
         <script src="https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js"></script>
         
+        
         <!--import parking survey variables -->
         <script type="text/javascript" src="park_survey.js"></script>
         <script type="text/javascript" src="survey_info.js"></script>
@@ -49,8 +50,6 @@ and open the template in the editor.
     //SCRIPT omaan js-tiedostoon
     //Sivulle kun tulee niin pitäisi käyttäjälle tulla jotain infoa että mitä pitäisi tehdä
     //Kun pisteen on lisännyt olisi hyvä jos kyselypopup aukeaisi automaattisesti
-    //060219 MIKSI MARKER MUUTTUU VIELÄ LYHYESTI SINISEKSI EKAN KERRAN KLIKATESSA
-    //MARKERIN KANSSA KARTTAA?
 
             // INITIALISE MAP AND LAYERS
             //bounds variables
@@ -127,13 +126,13 @@ and open the template in the editor.
             }
             //Has infobox been opened?
             if(getCookie("info_suljettu_kerran") === "joo"){
-                console.log("INFOSULJETTUJOOOOOOO");
+                console.log("Cookie kertoi että sivulla käyty aiemmin, älä näytä infoo");
                 $(document).ready(function(){
                     infoBox.remove(mymap);
                     infoButton.state('infoOpen');
                 });
             } else {
-                console.log("infoa ei oo suljettu kertaakaan");
+                console.log("infoa ei oo suljettu kertaakaan, näytä info");
                 //do nothin, user visiting first time or didn't click X
             }
             
@@ -149,7 +148,7 @@ and open the template in the editor.
                     onEachFeature:
                             function (feature, layer){
                                 layer.on('click', layerClickHandler);
-                                layer.on('mouseover', jeejee); //"add" toimii tässä!! jos jotain tarvetta joskus
+                                layer.on('mouseover', markerColorListener); //"add" toimii tässä!! jos jotain tarvetta josku
                                 
                                 //set incomplete icon at start
                                 if(!feature.properties.datetime || !feature.properties.likert || 
@@ -385,33 +384,6 @@ and open the template in the editor.
     
     
     
-            //THIS LISTENS TO MARKER VALUES AND CHANGES MARKER COLOR ON
-            //POPUP FILL
-            function jeejee (feature, layer) {
-                //console.log("feature lalalal");
-                props = feature.target.feature.properties;
-                attrs = Object.keys(props);
-                //console.log(attrs);
-                howManyNulls = 0;
-                for (var i = 0; i < attrs.length; i += 1){
-                    attr = attrs[i];
-                    value = props[attr];
-                    //console.log(value);
-                    if (value === null || value === ""){
-                        howManyNulls += 1;
-                    } else {
-                        // do nothjin
-                    }
-                }
-                //console.log(howManyNulls + " mik' tilanne");
-                if (howManyNulls === 0){
-                    feature.target.setIcon(completeIcon);
-                } else {
-                    feature.target.setIcon(incompleteIcon);
-                }
-            };
-            
-
             //THIS WORKS
             //it is probably not efficient to run this operation on every
             //drag event, but easiest for me to check states of popups
@@ -507,9 +479,15 @@ and open the template in the editor.
                         $(function() {
                             $("#tabs").tabs();
                             $("#tabsikkuna").dialog({
-                                height: 600,
-                                width: 600,
-                                position: {my: "center", at: "center", of: window}
+                                height: 630,
+                                width: 560,
+                                resizable: false,
+                                position: {my: "center", at: "center", of: window},
+                                //this hides info dialog main scroll bars.
+                                //only div scroll bars remain
+                                open: function (event, ui) {
+                                    $('#tabsikkuna').css('overflow', 'hidden');
+                                }
                             });
                             // retain dialog position on window resize
                             $(window).resize(function() {
@@ -551,7 +529,7 @@ and open the template in the editor.
 
     
     
-            //prevent unwanted map clicks and other events on sendBox
+            //prevent unwanted map clicksd and other events on sendBox
             L.DomEvent.on(buttonsubmitall, 'click', function (e) {
                 L.DomEvent.stopPropagation(e);
             });
@@ -569,17 +547,22 @@ and open the template in the editor.
             
             
             //"submit records" button functionality uses jQuery UI
+            // Copying objects in JS is not straightforward and for that reason
+            // I will not attempt to save sent features on map as gray markers.
+            // Instead, send button will destroy all entries entered so far.
             var sendButtonSubmit = L.DomUtil.get('buttonsubmitall');
             L.DomEvent.addListener(sendButtonSubmit, "click", function (e){
                 
                 //inactivate popups after submit records
                 //UNFINISHED! map drag reverses colors, layers stay inactive
-                for (var i in geojson._layers){
-                    thisLayer = geojson._layers[i];
-                    thisLayer.options.interactive = false;
-                    thisLayer.setIcon(submittedIcon);
-                    mymap.closePopup();
-                }
+                //DEPRECATED, NOT NEEDED AS I CANT COPY GEOJSONS
+//                for (var i in geojson._layers){
+//                    thisLayer = geojson._layers[i];
+//                    thisLayer.options.interactive = false;
+//                    thisLayer.setIcon(submittedIcon);
+//                    mymap.closePopup();
+//                }
+                
                 $(function() {
                     $("#sucdialog").dialog({
                         position: {my: "center", at: "center", of: window},
@@ -593,10 +576,13 @@ and open the template in the editor.
                     $(window).resize(function() {
                         $("#sucdialog").dialog("option", "position", {my: "center", at: "center", of: window});
                     });
+                    
                     //document.getElementById('buttonsubmitall').style.visibility='hidden';
                 });
+
+                geojson.clearLayers();
             });
-            
+
 
             
             // INFOHEADER
@@ -685,7 +671,6 @@ and open the template in the editor.
                             "parktime": null
                         }
                 };
-                
             });
             
 //

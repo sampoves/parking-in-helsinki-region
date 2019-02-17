@@ -65,3 +65,31 @@ function onParkspotChange(event){
     currentParkspotValue = event.target.value;
     //console.log("parkspot value set to " + event.target.value);
 };
+
+
+
+//THIS LISTENS TO MARKER VALUES AND CHANGES MARKER COLOR ON
+//POPUP FILL
+function markerColorListener (feature, layer) {
+    //console.log("feature lalalal");
+    props = feature.target.feature.properties;
+    attrs = Object.keys(props);
+    //console.log(attrs);
+    howManyNulls = 0;
+    for (var i = 0; i < attrs.length; i += 1){
+        attr = attrs[i];
+        value = props[attr];
+        //console.log(value);
+        if (value === null || value === ""){
+            howManyNulls += 1;
+        } else {
+            // do nothjin
+        }
+    }
+    //console.log(howManyNulls + " mik' tilanne");
+    if (howManyNulls === 0){
+        feature.target.setIcon(completeIcon);
+    } else {
+        feature.target.setIcon(incompleteIcon);
+    }
+};

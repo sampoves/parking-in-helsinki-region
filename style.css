@@ -315,22 +315,31 @@ div.sucimage {
 }​
 
 
+
+
+
+.tabspanel{
+    height:500px; 
+    width:450px; 
+    overflow:scroll;
+}
+
 /*JQUERY UI TABS*/
-/*#tabsikkuna { 
+#tabsikkuna { 
     padding: 0px; 
     background: none; 
     border-width: 0px; 
     overflow: hidden;
 } 
 
-#tabsikkuna .ui-tabs-panel { 
+/*#tabsikkuna .ui-tabs-panel { 
     background: #f5f3e5 url(http://code.jquery.com/ui/1.8.23/themes/south-street/images/ui-bg_highlight-hard_100_f5f3e5_1x100.png) repeat-x scroll 50% top; 
     border-width: 0px 1px 1px 1px; 
     overflow: auto; 
     
-}
+}*/
 .tabscontainer{
-    width: 600px;
+    width: 550px;
 }
 
 .tabspanel{
@@ -346,7 +355,7 @@ div.sucimage {
     -webkit-border-radius: 0px; 
     border-radius: 0px; 
     overflow: hidden; 
-}*/
+}
 
 
 /*MAKE TEXT IN MAP JUSTIFIED*/

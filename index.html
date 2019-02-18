@@ -24,6 +24,7 @@ and open the template in the editor.
         <script type="text/javascript" src="park_survey.js"></script>
         <script type="text/javascript" src="survey_info.js"></script>
         <script type="text/javascript" src="survey_funcs.js"></script>
+        <script type="text/javascript" src="survey_vars.js"></script>
         
         <!-- my css stylesheet -->
         <link rel="stylesheet" href="style.css">
@@ -53,7 +54,7 @@ and open the template in the editor.
 
             // INITIALISE MAP AND LAYERS
             //bounds variables
-            var corner1 = [60.5, 24.37];
+            var corner1 = [60.6, 24.37];
             var corner2 = [60.05, 25.305884];
             var bounds = L.latLngBounds(corner1, corner2);
             
@@ -78,6 +79,15 @@ and open the template in the editor.
                 var cookie_name = "survey_tilelayer_choice";
                 var cookie_value = e.name;
                 create_cookie(cookie_name, cookie_value, 90, "/");
+                
+                //Listen to baselayerchange and change geojson layer style
+                //accordingly
+                if((mymap.hasLayer(OpenStreetMap_DE)) || (mymap.hasLayer(Stamen_Terrain))){
+                    postal.setStyle(stylePostalDark);
+                } else if (mymap.hasLayer(darkmatter)){
+                    postal.setStyle(stylePostal);
+                }
+                
             });
  
             //initialise background tiles
@@ -124,7 +134,8 @@ and open the template in the editor.
             } else {
                 darkmatter.addTo(mymap);
             }
-            //Has infobox been opened?
+            
+            //COOKIES: Has infobox been opened?
             if(getCookie("info_suljettu_kerran") === "joo"){
                 console.log("Cookie kertoi että sivulla käyty aiemmin, älä näytä infoo");
                 $(document).ready(function(){
@@ -158,24 +169,7 @@ and open the template in the editor.
                             }
                 }).addTo(mymap);
             
-            // BACKGROUND GEOJSON LAYERS
-            //import postal codes areas GeoJSON from file
-            var stylePostal = {
-                "color": "#ff7800",
-                "weight": 3,
-                "opacity": 0.4,
-                "fillOpacity": 0
-            };
-            
-            var styleArea = {
-                "color": "#ff7800",
-                "weight": 3,
-                "opacity": 0.5,
-                "fillColor": '#0000FF',
-                "fillOpacity": 0
-            };   
-            
-           
+            // POLYGON GEOJSONS
             var postal = new L.GeoJSON.AJAX(
                     "pno_research_area.geojson", {
                         style: stylePostal
@@ -185,7 +179,7 @@ and open the template in the editor.
                     "pno_dissolve.geojson", {
                         style: styleArea
             }).addTo(mymap);
-                        
+
 
             //add layer control
             var baseMaps = {
@@ -200,21 +194,14 @@ and open the template in the editor.
             };
             L.control.layers(baseMaps, overlayMaps).addTo(mymap);
            
+           
             //add additional text to layer control
             $('<p id="controlTitle1"><strong>Taustakartat<strong></p>').insertBefore('div.leaflet-control-layers-base');
             $('<p id="controlTitle2"><strong>Aluejaot<strong></p>').insertBefore('div.leaflet-control-layers-overlays');
     
     
             //highlight overlay layers on mouseover. Also listen to return to 
-            //normal.
-            var postalHighlight = {
-                'color': '#ffd711',
-                'weight': 4,
-                'opacity': 1,
-                "fillColor": '#ff9e28',
-                "fillOpacity": 0.1
-            };
-            
+            //normal.   
             postal.on("mouseover", highlightLayer);
             postal.on("mouseout", layerToNormal);
 
@@ -319,18 +306,6 @@ and open the template in the editor.
                 marker.openPopup();
 
 
-                //marker listener test
-                //WORKS   
-//                attrs = Object.keys(properties);
-//                console.log(attrs);
-//                for (var i = 0; i < attrs.length; i += 1) {
-//                    attr = attrs[i];
-//                    value = properties[attr];
-//                    console.log(value !== null);
-//                }
-                
-
-
                 //EVENT LISTENERS
                 //DATETIME
                 L.DomUtil.get('datetime').textContent = properties.datetime;
@@ -384,7 +359,7 @@ and open the template in the editor.
     
     
     
-            //THIS WORKS
+            //ON EVERY DRAGSTART, CHECK STATE OF FILLED FORM IN EACH POPUP
             //it is probably not efficient to run this operation on every
             //drag event, but easiest for me to check states of popups
             mymap.on("dragstart", function(e){
@@ -413,35 +388,8 @@ and open the template in the editor.
                     }
                 };
             });
-//            for (var i in geojson._layers){
-//                notCompletedID = [];
-//                console.log(geojson._layers[i]);
-//                thisLayer = geojson._layers[i];
-//                theseProps = thisLayer.feature.properties;
-//                theseAttrs = Object.keys(theseProps);
-//                howManyNulls = 0;
-//                for (var i = 0; i < attrs.length; i += 1){
-//                    attr = theseAttrs[i];
-//                    value = theseProps[attr];
-//                    //console.log(value);
-//                    if (value === null || value === ""){
-//                        howManyNulls += 1;
-//                    } else {
-//                        // do nothjin
-//                    }
-//                }
-//                if (howManyNulls === 0){
-//                    thisLayer.setIcon(completeIcon);
-//                } else {
-//                    thisLayer.setIcon(incompleteIcon);
-//                }
-//            };
-            
-            
-            
-            
-            
-            
+
+   
 
             // INFOTEXT AND INFOBUTTON
             // infotext and infobutton and associated stuff    
@@ -491,7 +439,8 @@ and open the template in the editor.
                             });
                             // retain dialog position on window resize
                             $(window).resize(function() {
-                                $("#tabsikkuna").dialog("option", "position", {my: "center", at: "center", of: window});
+                                $("#tabsikkuna").dialog("option", "position", 
+                                {my: "center", at: "center", of: window});
                             });
                         } );
                         btn.state('infoClose');
@@ -510,10 +459,6 @@ and open the template in the editor.
             infoButton.addTo(mymap);
             
             
-            
-
-            
-
 
             // SENDBOX AND BUTTON
             var sendBox = L.control({position: 'bottomright'});
@@ -544,8 +489,9 @@ and open the template in the editor.
                 mymap.dragging.enable();
                 mymap.scrollWheelZoom.enable();
             });
+
             
-            
+
             //"submit records" button functionality uses jQuery UI
             // Copying objects in JS is not straightforward and for that reason
             // I will not attempt to save sent features on map as gray markers.

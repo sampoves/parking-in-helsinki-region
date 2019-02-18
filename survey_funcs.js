@@ -41,7 +41,11 @@ function highlightLayer(e) {
     if (e.target.urls[0] === "pno_research_area.geojson"){
         //console.log("postinumerot!");
         //window.currentPno = e.layer.feature.properties.nimi + ", " + e.layer.feature.properties.posti_alue;
-        mymap._layers[thisTarget].setStyle(postalHighlight);
+        if((mymap.hasLayer(OpenStreetMap_DE)) || (mymap.hasLayer(Stamen_Terrain))){
+            mymap._layers[thisTarget].setStyle(postalHighlightDark);
+        } else if (mymap.hasLayer(darkmatter)){
+            mymap._layers[thisTarget].setStyle(postalHighlight);
+        }    
     } else if (e.target.urls[0] === "seutukartta_pienalue.geojson"){
         //console.log("pienalueet!");
         //window.currentPien = e.layer.feature.properties.nimi;
@@ -53,9 +57,13 @@ function highlightLayer(e) {
 function layerToNormal(e) {
     thisTarget = e.layer._leaflet_id;
     if (e.target.urls[0] === "pno_research_area.geojson"){
-        mymap._layers[thisTarget].setStyle(stylePostal);
+        if((mymap.hasLayer(OpenStreetMap_DE)) || (mymap.hasLayer(Stamen_Terrain))){
+            mymap._layers[thisTarget].setStyle(stylePostalDark);
+        } else if (mymap.hasLayer(darkmatter)){
+            mymap._layers[thisTarget].setStyle(stylePostal);
+        }  
     } else if (e.target.urls[0] === "seutukartta_pienalue.geojson"){
-        mymap._layers[thisTarget].setStyle(stylePien);;
+        mymap._layers[thisTarget].setStyle(stylePien);
     }
 }
 

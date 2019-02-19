@@ -47,9 +47,8 @@ and open the template in the editor.
         <div class="" id="mymap" ></div>
             
         <script>
-    //Alkututorial??
     //SCRIPT omaan js-tiedostoon
-    //Sivulle kun tulee niin pitäisi käyttäjälle tulla jotain infoa että mitä pitäisi tehdä
+    //Kirjoita paremmat ohjeet Jquery UI -ikkunaan
     //Kun pisteen on lisännyt olisi hyvä jos kyselypopup aukeaisi automaattisesti
 
             // INITIALISE MAP AND LAYERS
@@ -123,7 +122,7 @@ and open the template in the editor.
             });
             
             
-            //SET USER SETTINGS STRAIGHT WITH COOKIE VALUES
+            //COOKIES: SET USER SETTINGS STRAIGHT WITH COOKIE VALUES
             //use .addTo() to give mymap the correct cookie value
             if(getCookie("survey_tilelayer_choice") === "CartoDB dark_matter"){
                 darkmatter.addTo(mymap);
@@ -151,7 +150,7 @@ and open the template in the editor.
             //MITEN SAADA POPUP AUKI HETI MARKERIN KIINNITÄMISEN JÄLKEEN?
             // yks johtolanka: https://jsfiddle.net/emmalivingstone/abpee1ym/
 
-            // import empty GeoJSON to be populated by user with responses
+            // Initialise empty GeoJSON to be populated by user with responses
             var geojson = L.geoJson({
                 "type": "FeatureCollection",
                 "features": []
@@ -169,10 +168,19 @@ and open the template in the editor.
                             }
                 }).addTo(mymap);
             
-            // POLYGON GEOJSONS
+            // IMPORT POLYGON GEOJSONS
             var postal = new L.GeoJSON.AJAX(
                     "pno_research_area.geojson", {
-                        style: stylePostal
+                        //style: stylePostal
+                        //style function listens to baselayer chage and chooses
+                        //GeoJSON layer postal style accordingly
+                        style: function(feature){
+                            if(mymap.hasLayer(darkmatter)){
+                                postal.setStyle(stylePostal);
+                            } else if ((mymap.hasLayer(OpenStreetMap_DE)) || (mymap.hasLayer(Stamen_Terrain))){
+                                postal.setStyle(stylePostalDark);
+                            };
+                        }
             }).addTo(mymap);
             
             var postaldissolve = new L.GeoJSON.AJAX(
@@ -181,7 +189,7 @@ and open the template in the editor.
             }).addTo(mymap);
 
 
-            //add layer control
+            // Add layer control
             var baseMaps = {
                 "OpenStreetMap": OpenStreetMap_DE,
                 "CartoDB dark_matter": darkmatter,
@@ -195,7 +203,7 @@ and open the template in the editor.
             L.control.layers(baseMaps, overlayMaps).addTo(mymap);
            
            
-            //add additional text to layer control
+            // Add additional text to layer control
             $('<p id="controlTitle1"><strong>Taustakartat<strong></p>').insertBefore('div.leaflet-control-layers-base');
             $('<p id="controlTitle2"><strong>Aluejaot<strong></p>').insertBefore('div.leaflet-control-layers-overlays');
     
@@ -205,31 +213,7 @@ and open the template in the editor.
             postal.on("mouseover", highlightLayer);
             postal.on("mouseout", layerToNormal);
 
-            
-            //incomplete icon
-//            var incompleteIcon = L.Icon.extend({
-//                options: {
-//                    iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
-//                    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-//                    shadowAnchor: [8, 20],
-//                    shadowSize: [25, 18],
-//                    iconAnchor: [12, 40],
-//                    popupAnchor: [0, -41]
-//                }
-//            });
-//            
-//            //complete icon
-//            var completeIcon = L.Icon.extend({
-//                options: {
-//                    iconUrl: "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
-//                    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-//                    shadowAnchor: [8, 20],
-//                    shadowSize: [25, 18],
-//                    iconAnchor: [12, 40],
-//                    popupAnchor: [0, -41]
-//                }
-//            });
-            
+   
             //incomplete icon
             var incompleteIcon = L.icon({
                 iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",

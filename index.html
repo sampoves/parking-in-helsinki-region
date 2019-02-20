@@ -26,6 +26,7 @@ and open the template in the editor.
         <script type="text/javascript" src="survey_funcs.js"></script>
         <script type="text/javascript" src="survey_vars.js"></script>
         
+        <!--Only activate English language in the beginning-->
         <script type="text/javascript" src="lang.en.js"></script>
         
         <!-- my css stylesheet -->
@@ -71,7 +72,7 @@ and open the template in the editor.
             //cookies
             //https://leafletjs.com/reference-1.4.0.html#map-baselayerchange
             mymap.on('baselayerchange', function(e) {
-                console.log(e.name + " set in cookie");
+                console.log(`${e.name} set in cookie`);
                 var cookie_name = "survey_tilelayer_choice";
                 var cookie_value = e.name;
                 create_cookie(cookie_name, cookie_value, 90, "/");
@@ -85,28 +86,22 @@ and open the template in the editor.
                 }
                 
             });
- 
             //DETERMINE SYSTEM LANGUAGE
             //See this for underlying idea:
             //https://stackoverflow.com/questions/228835/best-practice-javascript-and-multilanguage
             //See this for changing of js-files:
             //http://www.javascriptkit.com/javatutors/loadjavascriptcss2.shtml
             var userLang = navigator.language || navigator.userLanguage;
-            console.log("System language detected as " + userLang);
+            console.log(`System language detected as ${userLang}`);
             if(userLang !== "fi-FI"){
                 console.log("Set language to English");
-                //window.setLang = "en";
-                //$('[lang="fi"]').hide();
-                //$('[lang="en"]').toggle();
-                //replacejscssfile("oldscript.js", "newscript.js", "js");
-                replacejscssfile("lang.fi.js", "lang.en.js", "js");
+
+                //replacejscssfile("lang.fi.js", "lang.en.js", "js");
                 console.log("English should be on by default");
             } else {
-                //window.setLang = "fi";
                 console.log("Set language to Finnish");
-                //$('[lang="en"]').hide();
-                //$('[lang="fi"]').toggle();
-                replacejscssfile("lang.en.js", "lang.fi.js", "js");
+                //replacejscssfile("lang.en.js", "lang.fi.js", "js");
+                console.log(`testi ${basemapString}`);
             }
             
 
@@ -184,18 +179,29 @@ and open the template in the editor.
                 "CartoDB dark_matter": darkmatter,
                 "Stamen terrain": Stamen_Terrain
             };
-
             var overlayMaps = {
                 "Postal areas": postal,
                 "Research area": postaldissolve
             };
-            L.control.layers(baseMaps, overlayMaps).addTo(mymap);
-           
+            //L.control.layers(baseMaps, overlayMaps).addTo(mymap);
+            
+            var lCtrl = L.control.layers(baseMaps, overlayMaps);
+            lCtrl.addTo(mymap);
 
             // Add additional text to layer control
-            $('<p id="controlTitle1"><strong>Taustakartat<strong></p>').insertBefore('div.leaflet-control-layers-base');
-            $('<p id="controlTitle2"><strong>Aluejaot<strong></p>').insertBefore('div.leaflet-control-layers-overlays');
-    
+            $(`<p id="controlTitle1"><strong>${basemapString}<strong></p>`).insertBefore('div.leaflet-control-layers-base');
+            $(`<p id="controlTitle2"><strong>${overlayString}<strong></p>`).insertBefore('div.leaflet-control-layers-overlays');
+
+            //lCtrl.update triggers language change
+            //it's wee bit clunky because choosing of language does not work
+            //properly in the beginning of this file
+            lCtrl.update = function(map){
+                $("#controlTitle1").replaceWith(`<p id="controlTitle1"><strong>${basemapString}<strong></p>`);
+                $("#controlTitle2").replaceWith(`<p id="controlTitle2"><strong>${overlayString}<strong></p>`);
+            };
+ 
+ 
+ 
             //highlight overlay layers on mouseover. Also listen to return to 
             //normal.   
             postal.on("mouseover", highlightLayer);
@@ -214,9 +220,9 @@ and open the template in the editor.
                 hitPostal = findIntersection(e.latlng, postal);
                 
                 if (hitPostal === ""){
-                    html = '<font size="2" color="red" style="line-height: 30px;"><center><strong>Outside research area!</strong></center></font>';
+                    html = `<font size="2" color="red" style="line-height: 30px;"><center><strong>${outsideResearch}</strong></center></font>`;
                 } else if (hitPostal !== "") {
-                    html = "Postinumeroalue: " + hitPostal[0].feature.properties.nimi + ", " + hitPostal[0].feature.properties.posti_alue;
+                    html = `${zipArea}: ${hitPostal[0].feature.properties.nimi}, ${hitPostal[0].feature.properties.posti_alue}`;
                     delete hitPostal;
                 }
 
@@ -314,7 +320,7 @@ and open the template in the editor.
                         if (value === null || value === ""){
                             howManyNulls += 1;
                         } else {
-                            // do nothjin
+                            // do nothin
                         }
                     }
                     if (howManyNulls === 0){
@@ -354,27 +360,25 @@ and open the template in the editor.
                 states: [{
                         stateName: 'fi',
                         icon: 'fas fa-language',
-                        title: "Vaihda kieli",
+                        title: "Vaihda kieli englanniksi",
                         onClick: function (btn, map){
-                            //$('[lang="en"]').hide();
-                            //$('[lang="fi"]').toggle();
-                            //console.log("pauno");
-                            //window.setLang = "en";
+                            console.log("kieli enkku");
                             mymap.closePopup();
                             replacejscssfile("lang.fi.js", "lang.en.js", "js");
+                            sendBox.update();
+                            lCtrl.update();
                             btn.state('en');
                         }
                 }, {
                     stateName: 'en',
                     icon: 'fas fa-language',
-                    title: "Change language",
+                    title: "Change language to Finnish",
                     onClick: function (btn, map){
-                        //$('[lang="fi"]').hide();
-                        //$('[lang="en"]').toggle();
-                        //console.log("fsdoj");
-                        //window.setLang = "fi";
+                        console.log("kieli suomi");
                         mymap.closePopup();
                         replacejscssfile("lang.en.js", "lang.fi.js", "js");
+                        sendBox.update();
+                        lCtrl.update();
                         btn.state('fi');
                     }
                 }]
@@ -434,7 +438,7 @@ and open the template in the editor.
                 return this._div;
             };
             sendBox.update = function () {
-                this._div.innerHTML = "<button id='buttonsubmitall' type='button'><strong>Submit records</strong></button>";
+                this._div.innerHTML = `<button id='buttonsubmitall' type='button'><strong>${submitString}</strong></button>`;
             };
             sendBox.addTo(mymap);
 

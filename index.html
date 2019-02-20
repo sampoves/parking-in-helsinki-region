@@ -26,11 +26,13 @@ and open the template in the editor.
         <script type="text/javascript" src="survey_funcs.js"></script>
         <script type="text/javascript" src="survey_vars.js"></script>
         
+        <script type="text/javascript" src="lang.en.js"></script>
+        
         <!-- my css stylesheet -->
         <link rel="stylesheet" href="style.css">
         
         <!-- other stylesheets -->
-        <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.4.0/easy-button.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
@@ -52,11 +54,6 @@ and open the template in the editor.
     //Kun pisteen on lisännyt olisi hyvä jos kyselypopup aukeaisi automaattisesti
 
             // INITIALISE MAP AND LAYERS
-            //bounds variables
-            var corner1 = [60.6, 24.37];
-            var corner2 = [60.05, 25.305884];
-            var bounds = L.latLngBounds(corner1, corner2);
-            
             //initialise map
             var mymap = L.map(
                 'mymap', {
@@ -74,7 +71,7 @@ and open the template in the editor.
             //cookies
             //https://leafletjs.com/reference-1.4.0.html#map-baselayerchange
             mymap.on('baselayerchange', function(e) {
-                console.log(e.name + " tallennettu cookieen");
+                console.log(e.name + " set in cookie");
                 var cookie_name = "survey_tilelayer_choice";
                 var cookie_value = e.name;
                 create_cookie(cookie_name, cookie_value, 90, "/");
@@ -89,39 +86,31 @@ and open the template in the editor.
                 
             });
  
-            //initialise background tiles
-            //CartoDB dark_matter
-            var darkmatter = L.tileLayer(
-                    'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png',
-                {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-                    "detectRetina": false,
-                    "maxNativeZoom": 18,
-                    "maxZoom": 18,
-                    "minZoom": 0,
-                    "noWrap": false,
-                    "opacity": 1,
-                    "subdomains": "abc",
-                    "tms": false
-            });//.addTo(mymap); //this used to be default here
-
-            //OpenStreetMap
-            var OpenStreetMap_DE = L.tileLayer('https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png', {
-                    minZoom: 0,
-                    maxZoom: 18,
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            });
-
-            //Stamen terrain
-            var Stamen_Terrain = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.{ext}', {
-                    attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                    subdomains: 'abcd',
-                    minZoom: 0,
-                    maxZoom: 18,
-                    ext: 'png'
-            });
+            //DETERMINE SYSTEM LANGUAGE
+            //See this for underlying idea:
+            //https://stackoverflow.com/questions/228835/best-practice-javascript-and-multilanguage
+            //See this for changing of js-files:
+            //http://www.javascriptkit.com/javatutors/loadjavascriptcss2.shtml
+            var userLang = navigator.language || navigator.userLanguage;
+            console.log("System language detected as " + userLang);
+            if(userLang !== "fi-FI"){
+                console.log("Set language to English");
+                //window.setLang = "en";
+                //$('[lang="fi"]').hide();
+                //$('[lang="en"]').toggle();
+                //replacejscssfile("oldscript.js", "newscript.js", "js");
+                replacejscssfile("lang.fi.js", "lang.en.js", "js");
+                console.log("English should be on by default");
+            } else {
+                //window.setLang = "fi";
+                console.log("Set language to Finnish");
+                //$('[lang="en"]').hide();
+                //$('[lang="fi"]').toggle();
+                replacejscssfile("lang.en.js", "lang.fi.js", "js");
+            }
             
-            
+
+
             //COOKIES: SET USER SETTINGS STRAIGHT WITH COOKIE VALUES
             //use .addTo() to give mymap the correct cookie value
             if(getCookie("survey_tilelayer_choice") === "CartoDB dark_matter"){
@@ -136,13 +125,13 @@ and open the template in the editor.
             
             //COOKIES: Has infobox been opened?
             if(getCookie("info_suljettu_kerran") === "joo"){
-                console.log("Cookie kertoi että sivulla käyty aiemmin, älä näytä infoo");
+                console.log("Cookie value found, hide survey information popup");
                 $(document).ready(function(){
                     infoBox.remove(mymap);
                     infoButton.state('infoOpen');
                 });
             } else {
-                console.log("infoa ei oo suljettu kertaakaan, näytä info");
+                console.log("Cookie value not found, show survey information popup");
                 //do nothin, user visiting first time or didn't click X
             }
             
@@ -202,52 +191,16 @@ and open the template in the editor.
             };
             L.control.layers(baseMaps, overlayMaps).addTo(mymap);
            
-           
+
             // Add additional text to layer control
             $('<p id="controlTitle1"><strong>Taustakartat<strong></p>').insertBefore('div.leaflet-control-layers-base');
             $('<p id="controlTitle2"><strong>Aluejaot<strong></p>').insertBefore('div.leaflet-control-layers-overlays');
-    
     
             //highlight overlay layers on mouseover. Also listen to return to 
             //normal.   
             postal.on("mouseover", highlightLayer);
             postal.on("mouseout", layerToNormal);
 
-   
-            //incomplete icon
-            var incompleteIcon = L.icon({
-                iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
-                iconSize: [25, 41],
-                shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-                shadowAnchor: [8, 20],
-                shadowSize: [25, 18],
-                iconAnchor: [12, 40],
-                popupAnchor: [0, -41]
-            });
-            
-            //complete icon
-            var completeIcon = L.icon({
-                iconUrl: "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
-                iconSize: [25, 41],
-                shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-                shadowAnchor: [8, 20],
-                shadowSize: [25, 18],
-                iconAnchor: [12, 40],
-                popupAnchor: [0, -41]
-            });
-            
-            //submitted icon
-            var submittedIcon = L.icon({
-                iconUrl: "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png",
-                iconSize: [25, 41],
-                shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-                shadowAnchor: [8, 20],
-                shadowSize: [25, 18],
-                iconAnchor: [12, 40],
-                popupAnchor: [0, -41]
-            });
-            
-            
             //Listen to changes in form
             //Listen to current click on geojson layer
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
@@ -267,7 +220,6 @@ and open the template in the editor.
                     delete hitPostal;
                 }
 
-                
                 var marker = e.target,
                         properties = e.target.feature.properties;
                 
@@ -375,10 +327,9 @@ and open the template in the editor.
 
    
 
-            // INFOTEXT AND INFOBUTTON
+            // INFOTEXT AND LANGBUTTON AND INFOBUTTON
             // infotext and infobutton and associated stuff    
             var infoText = L.control({position: 'bottomleft'});
-
             infoText.onAdd = function (map) {
                 this._div = L.DomUtil.create('div', 'infotext');
                 this.update("");
@@ -390,9 +341,7 @@ and open the template in the editor.
             };
             infoText.addTo(mymap);
 
-
             var infoBox = L.control({position: 'bottomleft'});
-            
             infoBox.onAdd = function (map) {
                 this._div = L.DomUtil.create('div', 'infobox');
                 this._div.innerHTML = basicInfo;
@@ -400,6 +349,39 @@ and open the template in the editor.
             };
             infoBox.addTo(mymap); //infobox active immediately on first open
             
+            //LANGUAGE BUTTON
+            var langButton = L.easyButton({
+                states: [{
+                        stateName: 'fi',
+                        icon: 'fas fa-language',
+                        title: "Vaihda kieli",
+                        onClick: function (btn, map){
+                            //$('[lang="en"]').hide();
+                            //$('[lang="fi"]').toggle();
+                            //console.log("pauno");
+                            //window.setLang = "en";
+                            mymap.closePopup();
+                            replacejscssfile("lang.fi.js", "lang.en.js", "js");
+                            btn.state('en');
+                        }
+                }, {
+                    stateName: 'en',
+                    icon: 'fas fa-language',
+                    title: "Change language",
+                    onClick: function (btn, map){
+                        //$('[lang="fi"]').hide();
+                        //$('[lang="en"]').toggle();
+                        //console.log("fsdoj");
+                        //window.setLang = "fi";
+                        mymap.closePopup();
+                        replacejscssfile("lang.en.js", "lang.fi.js", "js");
+                        btn.state('fi');
+                    }
+                }]
+            });
+            langButton.addTo(mymap);
+            
+            //INFOBUTTON
             var infoButton = L.easyButton({
                 states: [{
                     stateName: 'infoOpen',

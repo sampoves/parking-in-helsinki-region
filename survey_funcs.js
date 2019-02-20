@@ -35,6 +35,7 @@ function findIntersection (latlng, geojsonlayer){
 
 
 function highlightLayer(e) {
+    //PIENALUE GEOJSON NOT IN USE ANYMORE
     //console.log(e.layer._leaflet_id);
     //console.log(e);
     thisTarget = e.layer._leaflet_id;
@@ -55,6 +56,7 @@ function highlightLayer(e) {
 
 
 function layerToNormal(e) {
+    //PIENALUE GEOJSON NOT IN USE ANYMORE
     thisTarget = e.layer._leaflet_id;
     if (e.target.urls[0] === "pno_research_area.geojson"){
         if((mymap.hasLayer(OpenStreetMap_DE)) || (mymap.hasLayer(Stamen_Terrain))){
@@ -101,3 +103,34 @@ function markerColorListener (feature, layer) {
         feature.target.setIcon(incompleteIcon);
     }
 };
+
+
+//TEST WEIRD LANGUAGE CHANGER
+//http://www.javascriptkit.com/javatutors/loadjavascriptcss2.shtml
+function createjscssfile(filename, filetype){
+    if (filetype === "js"){ //if filename is a external JavaScript file
+        var fileref = document.createElement('script');
+        fileref.setAttribute("type", "text/javascript");
+        fileref.setAttribute("src", filename);
+    }
+    else if (filetype === "css"){ //if filename is an external CSS file
+        var fileref = document.createElement("link");
+        fileref.setAttribute("rel", "stylesheet");
+        fileref.setAttribute("type", "text/css");
+        fileref.setAttribute("href", filename);
+    }
+    return fileref;
+}
+ 
+//replacejscssfile("oldscript.js", "newscript.js", "js");
+function replacejscssfile(oldfilename, newfilename, filetype){
+    var targetelement=(filetype === "js")? "script" : (filetype === "css")? "link" : "none"; //determine element type to create nodelist using
+    var targetattr = (filetype === "js")? "src" : (filetype === "css")? "href" : "none"; //determine corresponding attribute to test for
+    var allsuspects = document.getElementsByTagName(targetelement);
+    for (var i=allsuspects.length; i >= 0; i--){ //search backwards within nodelist for matching elements to remove
+        if (allsuspects[i] && allsuspects[i].getAttribute(targetattr) !== null && allsuspects[i].getAttribute(targetattr).indexOf(oldfilename) !== -1){
+            var newelement = createjscssfile(newfilename, filetype);
+            allsuspects[i].parentNode.replaceChild(newelement, allsuspects[i]);
+        }
+    }
+}

@@ -248,7 +248,7 @@ button:hover {
 }
 
 /*SUBMIT RECORDS*/
-#buttonsubmitall {
+#buttonsubmitall:enabled {
     background-color: darkgreen;
     background-position: center;
     width: 100%;
@@ -259,11 +259,11 @@ button:hover {
   transition: background 0.8s;
 }
 
-#buttonsubmitall:hover {
+#buttonsubmitall:hover:enabled {
   background: #12ba57 radial-gradient(circle, transparent 1%, #12ba57 1%) center/15000%;
 }
 
-#buttonsubmitall:active {
+#buttonsubmitall:active:enabled {
     vertical-align: top;
     font-size: 14pt;
     background-color: #0ccc5a;
@@ -272,9 +272,20 @@ button:hover {
 /*    padding: 15px 13px 6px;*/
 }
 
+/*DISABLED VERSION OF SUBMITBUTTON*/
+#buttonsubmitall:disabled,
+#buttonsubmitall[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+  width: 100%;
+  height: 100%;
+  font-size: 17pt;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+  background-position: center;
+}
 
-
-
+/*INPUT FIELD STUFF*/
 input[type="datetime-local"]{
     font-size: 13pt;
     width: 100%;

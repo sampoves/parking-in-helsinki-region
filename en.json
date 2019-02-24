@@ -1,4 +1,10 @@
 {
+    "lang_incomplete": "This entry is incomplete!",
     "lang_outsideResearch": "Outside research area!",
-    "lang_zipArea": "Zip code area"
+    "lang_zipArea": "Zip code area",
+    "lang_basemapString": "Basemaps",
+    "lang_overlayString": "Overlay maps",
+    "lang_postalString": "Zip code areas",
+    "lang_researchString": "Research area",
+    "lang_submitString": "Submit records"
 }

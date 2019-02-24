@@ -1,4 +1,10 @@
-{
+{  
+    "lang_incomplete": "Kysely on kesken!",
     "lang_outsideResearch": "Tutkimusalueen ulkopuolella!",
-    "lang_zipArea": "Postinumeroalue"
+    "lang_zipArea": "Postinumeroalue",
+    "lang_basemap": "Taustakartat",
+    "lang_overlay": "Aluejaot",
+    "lang_postal": "Postinumeroalueet",
+    "lang_research": "Tutkimusalue",
+    "lang_submit": "Lähetä tiedot"
 }

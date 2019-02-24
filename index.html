@@ -107,31 +107,31 @@ and open the template in the editor.
 //            }
 
 
-            var langs = ['en', 'fi'];
-            var langCode = '';
-            var langJS = null;
+//            var langs = ['en', 'fi'];
+//            var langCode = '';
+//            var langJS = null;
+//
+//            langCode = navigator.language.substr (0, 2);
+
+//            if (langCode in langs){
+//                //$.getJSON('lang/'+langCode+'.json', translate);
+//                $.getJSON(langCode+'.json', translate);
+//            } else {
+//                //$.getJSON('lang/en.json', translate);
+//                $.getJSON('en.json', translate);
+//            };
 
 
-            var translate = function (jsdata){	
-                    $("[tkey]").each (function (index){
-                            var strTr = jsdata [$(this).attr ('tkey')];
-                        $(this).html (strTr);
-                    });
-            };
-
-            langCode = navigator.language.substr (0, 2);
-
-            if (langCode in langs){
-                //$.getJSON('lang/'+langCode+'.json', translate);
-                $.getJSON(langCode+'.json', translate);
-            } else {
-                //$.getJSON('lang/en.json', translate);
-                $.getJSON('en.json', translate);
-            };
-
-
-            
-
+            //does not work at the moment
+            $(document).ready(function(){
+                if(getCookie("lang") === "fi"){
+                    console.log("suomi bongattu cookiesta, kieli suomi");
+                    $.getJSON('fi.json', translate);
+                } else {
+                    console.log("kieli cookiessa ei ollu suomi, kieleksi enkku");
+                    $.getJSON('en.json', translate);
+                }
+            });
 
             //COOKIES: SET USER SETTINGS STRAIGHT WITH COOKIE VALUES
             //use .addTo() to give mymap the correct cookie value
@@ -389,10 +389,7 @@ and open the template in the editor.
                         icon: 'fas fa-language',
                         title: "Vaihda kieli englanniksi",
                         onClick: function (btn, map){
-                            console.log("kieli enkku");
-                            // language only updates when popup is opened, so
-                            // force popup closure
-                            //mymap.closePopup();
+                            console.log("kieli enkku, lisätty tieto cookieen");
                             // replace language js-files
                             //replacejscssfile("lang.fi.js", "lang.en.js", "js");
                             //if element disabled, keep disabled and vice versa
@@ -400,19 +397,28 @@ and open the template in the editor.
                             testElementActive(sendBox, sendBoxActive); 
                             //lCtrl.update(); // layer control button translation
                             btn.state('en');
+                            
+                            var cookie_name = "lang";
+                            var cookie_value = "en";
+                            create_cookie(cookie_name, cookie_value, 90, "/");
+                            
                         }
                 }, {
                     stateName: 'en',
                     icon: 'fas fa-language',
                     title: "Change language to Finnish",
                     onClick: function (btn, map){
-                        console.log("kieli suomi");
-                        //mymap.closePopup();
+                        console.log("kieli suomi, lisätty tieto cookieen");
                         //replacejscssfile("lang.en.js", "lang.fi.js", "js");
                         $.getJSON('fi.json', translate);
                         testElementActive(sendBox, sendBoxActive);
                         //lCtrl.update();
                         btn.state('fi');
+                        
+                        var cookie_name = "lang";
+                        var cookie_value = "fi";
+                        create_cookie(cookie_name, cookie_value, 90, "/");
+                        
                     }
                 }]
             });
@@ -472,12 +478,13 @@ and open the template in the editor.
             };
             sendBox.update = function () {
                 window.sendBoxActive = true;
-                this._div.innerHTML = `<button id='buttonsubmitall' type='button'><strong>${submitString}</strong></button>`;
+                //html code in survey_vars.js
+                this._div.innerHTML = normalSubmit;
             };
             // disable send button function
             sendBox.disable = function () {
                 window.sendBoxActive = false;
-                this._div.innerHTML = `<button disabled id='buttonsubmitall' type='button'><strong>${submitString}</strong></button>`;
+                this._div.innerHTML = disabledSubmit;
             };
             sendBox.addTo(mymap);
 

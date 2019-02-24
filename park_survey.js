@@ -5,7 +5,8 @@
  */
 
 // TSEKKAA MIKÄ ADDMARKER() TUOLLA LOPUSSA ON EKALLA RIVIL
-var popupContent = '<form name="myform" role="form" id="form" enctype="multipart/form-data" class = "form-horizontal" onsubmit="addMarker()">'+
+var popupContent = 
+        '<form name="myform" role="form" id="form" enctype="multipart/form-data" class = "form-horizontal" onsubmit="addMarker()">'+
     //datetime
     '<div class="form-group">'+
         '<label class="control-label col-sm-5"><strong>Pysäköintisi päivämäärä ja kellonaika<br></strong></label>'+
@@ -48,5 +49,5 @@ var popupContent = '<form name="myform" role="form" id="form" enctype="multipart
     '</div>'+
     
     //submit button
-    '<button id="button-submit" type="button">Save Changes</button>'+
+    '<button id="button-submit" type="button" tkey="lang_savechanges">Save Changes</button>'+
 '</form>';

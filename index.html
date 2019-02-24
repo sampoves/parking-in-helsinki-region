@@ -216,15 +216,19 @@ and open the template in the editor.
             lCtrl.addTo(mymap);
 
             // Add additional text to layer control
-            $(`<p id="controlTitle1"><strong>${basemapString}<strong></p>`).insertBefore('div.leaflet-control-layers-base');
-            $(`<p id="controlTitle2"><strong>${overlayString}<strong></p>`).insertBefore('div.leaflet-control-layers-overlays');
+//            $(`<p id="controlTitle1"><strong>${basemapString}<strong></p>`).insertBefore('div.leaflet-control-layers-base');
+//            $(`<p id="controlTitle2"><strong>${overlayString}<strong></p>`).insertBefore('div.leaflet-control-layers-overlays');
+            $('<p id="controlTitle1"><strong tkey="lang_basemap">Basemaps<strong></p>').insertBefore('div.leaflet-control-layers-base');
+            $('<p id="controlTitle2"><strong tkey="lang_overlay">Overlay maps<strong></p>').insertBefore('div.leaflet-control-layers-overlays');
 
             //lCtrl.update triggers language change
             //it's wee bit clunky because choosing of language does not work
             //properly in the beginning of this file
             lCtrl.update = function(map){
-                $("#controlTitle1").replaceWith(`<p id="controlTitle1"><strong>${basemapString}<strong></p>`);
-                $("#controlTitle2").replaceWith(`<p id="controlTitle2"><strong>${overlayString}<strong></p>`);
+                $("#controlTitle1").replaceWith(
+                        '<p id="controlTitle1"><strong tkey="lang_basemap">Basemaps<strong></p>');
+                $("#controlTitle2").replaceWith(
+                        '<p id="controlTitle2"><strong tkey="lang_overlay">Overlay maps<strong></p>');
             };
  
  
@@ -233,6 +237,12 @@ and open the template in the editor.
             //normal.   
             postal.on("mouseover", highlightLayer);
             postal.on("mouseout", layerToNormal);
+
+
+            //240219 POPUPIN AVAAMINEN BUGITTAA KIELINAPIN KANSSA. POPUPIA
+            //AVATESSA TÄÄ EI KAI TSEKKAA, ETTÄ MIKÄ KIELI ON SILLÄ HETKELLÄ
+            //KÄYTÖSSÄ TJSP
+
 
             //Listen to changes in form
             //Listen to current click on geojson layer
@@ -247,9 +257,9 @@ and open the template in the editor.
                 hitPostal = findIntersection(e.latlng, postal);
                 
                 if (hitPostal === ""){
-                    html = `<font size="2" color="red" style="line-height: 30px;"><center><strong>${outsideResearch}</strong></center></font>`;
+                    html = '<font size="2" color="red" style="line-height: 30px;"><center><strong tkey="lang_outsideResearch">Outside research area!</strong></center></font>';
                 } else if (hitPostal !== "") {
-                    html = `${zipArea}: ${hitPostal[0].feature.properties.nimi}, ${hitPostal[0].feature.properties.posti_alue}`;
+                    html = `<div tkey="lang_zipArea">Zip code area:</div> ${hitPostal[0].feature.properties.nimi}, ${hitPostal[0].feature.properties.posti_alue}`;
                     delete hitPostal;
                 }
 
@@ -390,14 +400,14 @@ and open the template in the editor.
                         title: "Vaihda kieli englanniksi",
                         onClick: function (btn, map){
                             console.log("kieli enkku, lisätty tieto cookieen");
-                            // replace language js-files
-                            //replacejscssfile("lang.fi.js", "lang.en.js", "js");
-                            //if element disabled, keep disabled and vice versa
                             $.getJSON('en.json', translate);
+                            //if element disabled, keep disabled and vice versa
                             testElementActive(sendBox, sendBoxActive); 
-                            //lCtrl.update(); // layer control button translation
+                            // layer control button translation needs updating
+                            lCtrl.update();
                             btn.state('en');
                             
+                            // update cookie value each time langbutton is pressed
                             var cookie_name = "lang";
                             var cookie_value = "en";
                             create_cookie(cookie_name, cookie_value, 90, "/");
@@ -409,12 +419,12 @@ and open the template in the editor.
                     title: "Change language to Finnish",
                     onClick: function (btn, map){
                         console.log("kieli suomi, lisätty tieto cookieen");
-                        //replacejscssfile("lang.en.js", "lang.fi.js", "js");
                         $.getJSON('fi.json', translate);
                         testElementActive(sendBox, sendBoxActive);
-                        //lCtrl.update();
+                        lCtrl.update();
                         btn.state('fi');
                         
+                        // update cookie value each time langbutton is pressed
                         var cookie_name = "lang";
                         var cookie_value = "fi";
                         create_cookie(cookie_name, cookie_value, 90, "/");
@@ -478,8 +488,7 @@ and open the template in the editor.
             };
             sendBox.update = function () {
                 window.sendBoxActive = true;
-                //html code in survey_vars.js
-                this._div.innerHTML = normalSubmit;
+                this._div.innerHTML = normalSubmit; //type of button
             };
             // disable send button function
             sendBox.disable = function () {
@@ -663,15 +672,15 @@ and open the template in the editor.
         <!--JQUERY UI STUFF-->
         <div id="sucdialog" title="Submit success!" style="display:none">
             <div class="sucimage"></div>​
-            <p>Thank you for taking the time to respond to this survey! Leikisti, mitään ei oikeasti lähetetty.</p>
+            <p tkey="lang_thanks">Thank you for taking the time to respond to this survey!</p>
         </div>
         
         <div id="tabsikkuna" style="overflow: scroll" title="Parking private cars in Helsinki Capital Region">
             <div id="tabs" class="tabscontainer">
                 <ul>
-                    <li><a href="#tabs-1">Tervetuloa kyselyyn!</a></li>
-                    <li><a href="#tabs-2">Tutkimuksesta</a></li>
-                    <li><a href="#tabs-3">Käyttöohjeet</a></li>
+                    <li><a href="#tabs-1" tkey="lang_tab1">Tervetuloa kyselyyn!</a></li>
+                    <li><a href="#tabs-2" tkey="lang_tab2">Tutkimuksesta</a></li>
+                    <li><a href="#tabs-3" tkey="lang_tab3">Käyttöohjeet</a></li>
                 </ul>
                 <div id="tabs-1" class="tabspanel">
                     <H2>Tervetuloa kyselyyn!</H2>

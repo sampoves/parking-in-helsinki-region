@@ -6,5 +6,12 @@
     "lang_overlay": "Aluejaot",
     "lang_postal": "Postinumeroalueet",
     "lang_research": "Tutkimusalue",
-    "lang_submit": "Lähetä tiedot"
+    "lang_submit": "Lähetä tiedot",
+    
+    "lang_savechanges": "Tallenna tiedot",
+    
+    "lang_tab1": "Tervetuloa kyselyyn!",
+    "lang_tab2": "Tutkimuksesta",
+    "lang_tab3": "Käyttöohjeet",
+    "lang_thanks": "Kiitos vastauksestasi!"
 }

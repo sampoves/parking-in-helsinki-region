@@ -93,18 +93,43 @@ and open the template in the editor.
             //http://www.javascriptkit.com/javatutors/loadjavascriptcss2.shtml
             
             //TÄÄ EI TOIMI KOKONAAN, KIELIOSAT OVAT EPÄSYNKASSA! FIKSAA!!
-            var userLang = navigator.language || navigator.userLanguage;
-            console.log(`System language detected as ${userLang}`);
-            if(userLang !== "fi-FI"){
-                console.log("Set language to English");
+//            var userLang = navigator.language || navigator.userLanguage;
+//            console.log(`System language detected as ${userLang}`);
+//            if(userLang !== "fi-FI"){
+//                console.log("Set language to English");
+//
+//                //replacejscssfile("lang.fi.js", "lang.en.js", "js");
+//                console.log("English should be on by default");
+//            } else {
+//                console.log("Set language to Finnish");
+//                //replacejscssfile("lang.en.js", "lang.fi.js", "js");
+//                console.log(`testi ${basemapString}, pitäis tuottaa suomee`);
+//            }
 
-                //replacejscssfile("lang.fi.js", "lang.en.js", "js");
-                console.log("English should be on by default");
+
+            var langs = ['en', 'fi'];
+            var langCode = '';
+            var langJS = null;
+
+
+            var translate = function (jsdata){	
+                    $("[tkey]").each (function (index){
+                            var strTr = jsdata [$(this).attr ('tkey')];
+                        $(this).html (strTr);
+                    });
+            };
+
+            langCode = navigator.language.substr (0, 2);
+
+            if (langCode in langs){
+                //$.getJSON('lang/'+langCode+'.json', translate);
+                $.getJSON(langCode+'.json', translate);
             } else {
-                console.log("Set language to Finnish");
-                replacejscssfile("lang.en.js", "lang.fi.js", "js");
-                console.log(`testi ${basemapString}, pitäis tuottaa suomee`);
-            }
+                //$.getJSON('lang/en.json', translate);
+                $.getJSON('en.json', translate);
+            };
+
+
             
 
 
@@ -365,10 +390,15 @@ and open the template in the editor.
                         title: "Vaihda kieli englanniksi",
                         onClick: function (btn, map){
                             console.log("kieli enkku");
-                            mymap.closePopup();
-                            replacejscssfile("lang.fi.js", "lang.en.js", "js");
-                            testElementActive(sendBox, sendBoxActive);
-                            lCtrl.update();
+                            // language only updates when popup is opened, so
+                            // force popup closure
+                            //mymap.closePopup();
+                            // replace language js-files
+                            //replacejscssfile("lang.fi.js", "lang.en.js", "js");
+                            //if element disabled, keep disabled and vice versa
+                            $.getJSON('en.json', translate);
+                            testElementActive(sendBox, sendBoxActive); 
+                            //lCtrl.update(); // layer control button translation
                             btn.state('en');
                         }
                 }, {
@@ -377,10 +407,11 @@ and open the template in the editor.
                     title: "Change language to Finnish",
                     onClick: function (btn, map){
                         console.log("kieli suomi");
-                        mymap.closePopup();
-                        replacejscssfile("lang.en.js", "lang.fi.js", "js");
+                        //mymap.closePopup();
+                        //replacejscssfile("lang.en.js", "lang.fi.js", "js");
+                        $.getJSON('fi.json', translate);
                         testElementActive(sendBox, sendBoxActive);
-                        lCtrl.update();
+                        //lCtrl.update();
                         btn.state('fi');
                     }
                 }]

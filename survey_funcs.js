@@ -105,24 +105,8 @@ function markerColorListener (feature, layer) {
 };
 
 
-//TEST WEIRD LANGUAGE CHANGER
-//http://www.javascriptkit.com/javatutors/loadjavascriptcss2.shtml
-function createjscssfile(filename, filetype){
-    if (filetype === "js"){ //if filename is a external JavaScript file
-        var fileref = document.createElement('script');
-        fileref.setAttribute("type", "text/javascript");
-        fileref.setAttribute("src", filename);
-    }
-    else if (filetype === "css"){ //if filename is an external CSS file
-        var fileref = document.createElement("link");
-        fileref.setAttribute("rel", "stylesheet");
-        fileref.setAttribute("type", "text/css");
-        fileref.setAttribute("href", filename);
-    }
-    return fileref;
-}
-
 //test if an element is disabled or enabled. Needed in translator button
+//THIS BREAKS THE BUTTON IF USED WITH TRANSLATION
 function testElementActive(elemName, varName){
     if(varName === true){
         return elemName.update();
@@ -131,11 +115,12 @@ function testElementActive(elemName, varName){
     }
 }
 
+
 // Translator function
 // idea from here: https://github.com/dakk/jquery-multilang
 var translate = function(jsdata){	
         $("[tkey]").each(function (index){
-                var strTr = jsdata[$(this).attr('tkey')];
+            var strTr = jsdata[$(this).attr('tkey')];
             $(this).html(strTr);
         });
 };

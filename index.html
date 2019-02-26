@@ -86,26 +86,11 @@ and open the template in the editor.
                 }
                 
             });
-            //DETERMINE SYSTEM LANGUAGE
-            //See this for underlying idea:
-            //https://stackoverflow.com/questions/228835/best-practice-javascript-and-multilanguage
-            
-//            var langs = ['en', 'fi'];
-//            var langCode = '';
-//            var langJS = null;
-//
-//            langCode = navigator.language.substr (0, 2);
 
-//            if (langCode in langs){
-//                //$.getJSON('lang/'+langCode+'.json', translate);
-//                $.getJSON(langCode+'.json', translate);
-//            } else {
-//                //$.getJSON('lang/en.json', translate);
-//                $.getJSON('en.json', translate);
-//            };
-            var currentLang = null;
+
             //COOKIES: SET SITE LANGUAGE WITH COOKIE VALUE
             //does not work at the moment
+            var currentLang = null;
             $(document).ready(function(){
                 if(getCookie("lang") === "fi"){
                     console.log("Finnish detected from cookie, set language as Finnish");
@@ -117,6 +102,7 @@ and open the template in the editor.
                     window.currentLang = "en";
                 }
             });
+
 
             //COOKIES: SET USER SETTINGS STRAIGHT WITH COOKIE VALUES
             //use .addTo() to give mymap the correct cookie value
@@ -197,6 +183,7 @@ and open the template in the editor.
             };
             //L.control.layers(baseMaps, overlayMaps).addTo(mymap);
             
+            //Obtain better control of layer control by declaring it as variable
             var lCtrl = L.control.layers(baseMaps, overlayMaps);
             lCtrl.addTo(mymap);
 
@@ -220,11 +207,6 @@ and open the template in the editor.
             //normal.   
             postal.on("mouseover", highlightLayer);
             postal.on("mouseout", layerToNormal);
-
-
-            //240219 POPUPIN AVAAMINEN BUGITTAA KIELINAPIN KANSSA. POPUPIA
-            //AVATESSA TÄÄ EI KAI TSEKKAA, ETTÄ MIKÄ KIELI ON SILLÄ HETKELLÄ
-            //KÄYTÖSSÄ TJSP
 
 
             //Listen to changes in form
@@ -394,7 +376,7 @@ and open the template in the editor.
                     onClick: function (btn, map){
                         console.log("kieli enkku, lisätty tieto cookieen");
                         $.getJSON('en.json', translate);
-                        $("#buttonsubmitall").text("Send records");
+                        //$("#buttonsubmitall").text("Send records");
                         window.currentLang = "en"; // inform layerClickHandler()
                         //if element disabled, keep disabled and vice versa
                         //THIS BREAKS THE BUTTON AT THE MOMENT
@@ -415,7 +397,7 @@ and open the template in the editor.
                     onClick: function (btn, map){
                         console.log("kieli suomi, lisätty tieto cookieen");
                         $.getJSON('fi.json', translate);
-                        $("#buttonsubmitall").text("Lähetä tiedot");
+                        //$("#buttonsubmitall").text("Lähetä tiedot");
                         window.currentLang = "fi"; // inform layerClickHandler()
                         //THIS BREAKS THE BUTTON AT THE MOMENT
                         //testElementActive(sendBox, sendBoxActive);

@@ -29,7 +29,7 @@ and open the template in the editor.
         <!--Only activate English language in the beginning-->
         <script type="text/javascript" src="lang.en.js"></script>
         
-        <!-- my css stylesheet -->
+        <!-- survey css stylesheet -->
         <link rel="stylesheet" href="style.css">
         
         <!-- other stylesheets -->
@@ -47,7 +47,7 @@ and open the template in the editor.
         
     </head>
     <body>
-        <div class="" id="mymap" ></div>
+        <div class="" id="mymap"></div>
             
         <script>
     //SCRIPT omaan js-tiedostoon
@@ -68,6 +68,8 @@ and open the template in the editor.
                 zoomControl: true
             });
  
+ 
+            //COOKIES AND OTHER THINGS
             //events to listen for baselayer or overlay change for to use of 
             //cookies
             //https://leafletjs.com/reference-1.4.0.html#map-baselayerchange
@@ -89,7 +91,6 @@ and open the template in the editor.
 
 
             //COOKIES: SET SITE LANGUAGE WITH COOKIE VALUE
-            //does not work at the moment
             var currentLang = null;
             $(document).ready(function(){
                 if(getCookie("lang") === "fi"){
@@ -116,18 +117,44 @@ and open the template in the editor.
                 darkmatter.addTo(mymap);
             }
             
-            //COOKIES: Has infobox been opened?
-            if(getCookie("info_suljettu_kerran") === "joo"){
-                console.log("Cookie value found, hide survey information popup");
-                $(document).ready(function(){
-                    infoBox.remove(mymap);
-                    infoButton.state('infoOpen');
-                });
-            } else {
-                console.log("Cookie value not found, show survey information popup");
-                //do nothin, user visiting first time or didn't click X
-            }
             
+            //COOKIES: Has jQuery infobox been opened?
+            $(document).ready(function(){
+                if(getCookie("info_closed_once") === "yes"){
+                    console.log("Cookie value found, hide survey information popup");
+                    //$(".ui-dialog-content").dialog("close");
+                    infoButton.state('infoOpen');
+                } else {
+                    //user visiting first time or didn't click X
+                    console.log("Associated cookie value not found, show survey information popup");
+                    //$("#tabsikkuna").dialog("open");
+                    //$(".ui-dialog-content").dialog("open");
+                    
+                    //This code is copied from infobutton! consider cleaning
+                    //code so that code is not needlessly duplicated
+                    $(function() {
+                        $("#tabs").tabs();
+                        $("#tabsikkuna").dialog({
+                            height: 630,
+                            width: 560,
+                            resizable: false,
+                            position: {my: "center", at: "center", of: window},
+                            //this hides info dialog main scroll bars.
+                            //only div scroll bars remain
+                            open: function (event, ui) {
+                                $('#tabsikkuna').css('overflow', 'hidden');
+                            }
+                        });
+                        // retain dialog position on window resize
+                        $(window).resize(function() {
+                            $("#tabsikkuna").dialog("option", "position", 
+                            {my: "center", at: "center", of: window});
+                        });
+                    } );
+                    infoButton.state('infoClose');
+                    create_cookie("info_closed_once", "yes", 90, "/");
+                }
+            });
             
             //MITEN SAADA POPUP AUKI HETI MARKERIN KIINNITÄMISEN JÄLKEEN?
             // yks johtolanka: https://jsfiddle.net/emmalivingstone/abpee1ym/
@@ -171,7 +198,7 @@ and open the template in the editor.
             }).addTo(mymap);
 
 
-            // Add layer control
+            // Add layer control elements
             var baseMaps = {
                 "OpenStreetMap": OpenStreetMap_DE,
                 "CartoDB dark_matter": darkmatter,
@@ -181,19 +208,18 @@ and open the template in the editor.
                 "Postal areas": postal,
                 "Research area": postaldissolve
             };
-            //L.control.layers(baseMaps, overlayMaps).addTo(mymap);
             
-            //Obtain better control of layer control by declaring it as variable
+            // Add layer control
+            // Obtain better control of layer control by declaring it as variable
             var lCtrl = L.control.layers(baseMaps, overlayMaps);
             lCtrl.addTo(mymap);
 
-            // Add additional text to layer control
+            // Add additional header text to layer control
             $('<p id="controlTitle1"><strong tkey="lang_basemap">Basemaps<strong></p>').insertBefore('div.leaflet-control-layers-base');
             $('<p id="controlTitle2"><strong tkey="lang_overlay">Overlay maps<strong></p>').insertBefore('div.leaflet-control-layers-overlays');
 
-            //lCtrl.update triggers language change
-            //it's wee bit clunky because choosing of language does not work
-            //properly in the beginning of this file
+            //lCtrl.update() triggers language change in layer control dialog. 
+            //translate() does not work without this
             lCtrl.update = function(map){
                 $("#controlTitle1").replaceWith(
                         '<p id="controlTitle1"><strong tkey="lang_basemap">Basemaps<strong></p>');
@@ -202,28 +228,30 @@ and open the template in the editor.
             };
  
  
- 
-            //highlight overlay layers on mouseover. Also listen to return to 
+            //Highlight overlay layers on mouseover. Also listen to return to 
             //normal.   
             postal.on("mouseover", highlightLayer);
             postal.on("mouseout", layerToNormal);
 
 
-            //Listen to changes in form
-            //Listen to current click on geojson layer
+            //Listen to changes in popup form
+            //Listen to current click on geojson layer named "geojson"
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
             function layerClickHandler (e) {
 
                 //MARKER LOCATION INTERSECTED WITH OVERLAY LAYERS
                 //Check with conditional statement what to print on popup.
-                //delete is necessary to remove unwanted values in popup when
-                //first placing popup on research area and then placing a popup
-                //outside. This would result to an erroneous result
+                //Command delete is necessary to remove unwanted values in popup 
+                //when first placing popup on research area and then placing a 
+                //popup outside. This would result to an erroneous result
                 hitPostal = findIntersection(e.latlng, postal);
                 
                 if (hitPostal === ""){
                     html = '<font size="2" color="red" style="line-height: 30px;"><center><strong tkey="lang_outsideResearch">Outside research area!</strong></center></font>';
                 } else if (hitPostal !== "") {
+                    //take note of the following line and its string formatting
+                    //`${variableName}`. Also take note that string formatting
+                    //needs grave accents ``.
                     html = `<div tkey="lang_zipArea">Zip code area:</div> ${hitPostal[0].feature.properties.nimi}, ${hitPostal[0].feature.properties.posti_alue}`;
                     delete hitPostal;
                 }
@@ -253,10 +281,8 @@ and open the template in the editor.
                 // is updated in beginning of this script file when determining
                 // cookie language value and when user presses langbutton
                 if(currentLang === "fi"){
-                    //console.log("Finnish detected from cookie, set language as Finnish");
                     $.getJSON('fi.json', translate);
                 } else {
-                    //console.log("Value in cookie was not Finnish, default to English");
                     $.getJSON('en.json', translate);
                 }
                 
@@ -314,11 +340,13 @@ and open the template in the editor.
     
     
             //ON EVERY DRAGSTART, CHECK STATE OF FILLED FORM IN EACH POPUP
-            //it is probably not efficient to run this operation on every
+            //It is probably not efficient to run this operation on every
             //drag event, but easiest for me to check states of popups
             mymap.on("dragstart", function(e){
+                // get all Leaflet ids of current layers in var geojson and
+                // test them iteratively to see if any of the feature attributes
+                // are null
                 for (var i in geojson._layers){
-                    //console.log(geojson._layers[i]);
                     thisLayer = geojson._layers[i];
                     theseProps = thisLayer.feature.properties;
                     theseAttrs = Object.keys(theseProps);
@@ -335,6 +363,8 @@ and open the template in the editor.
                             // do nothin
                         }
                     }
+                    //if above for loop finished without any nulls, mark layer
+                    //completed with a green marker
                     if (howManyNulls === 0){
                         thisLayer.setIcon(completeIcon);
                     } else {
@@ -347,25 +377,25 @@ and open the template in the editor.
 
             // INFOTEXT AND LANGBUTTON AND INFOBUTTON
             // infotext and infobutton and associated stuff    
-            var infoText = L.control({position: 'bottomleft'});
-            infoText.onAdd = function (map) {
-                this._div = L.DomUtil.create('div', 'infotext');
-                this.update("");
-                return this._div;
-            };
-            
-            infoText.update = function(text){
-                this._div.innerHTML = text;
-            };
-            infoText.addTo(mymap);
+//            var infoText = L.control({position: 'bottomleft'});
+//            infoText.onAdd = function (map) {
+//                this._div = L.DomUtil.create('div', 'infotext');
+//                this.update("");
+//                return this._div;
+//            };
+//            
+//            infoText.update = function(text){
+//                this._div.innerHTML = text;
+//            };
+//            infoText.addTo(mymap);
 
-            var infoBox = L.control({position: 'bottomleft'});
-            infoBox.onAdd = function (map) {
-                this._div = L.DomUtil.create('div', 'infobox');
-                this._div.innerHTML = basicInfo;
-                return this._div;
-            };
-            infoBox.addTo(mymap); //infobox active immediately on first open
+//            var infoBox = L.control({position: 'bottomleft'});
+//            infoBox.onAdd = function (map) {
+//                this._div = L.DomUtil.create('div', 'infobox');
+//                this._div.innerHTML = basicInfo;
+//                return this._div;
+//            };
+//            infoBox.addTo(mymap); //infobox active immediately on first open
             
             //LANGUAGE BUTTON
             var langButton = L.easyButton({
@@ -421,7 +451,6 @@ and open the template in the editor.
                     icon: 'fa fa-info',
                     title: 'Open info',
                     onClick: function (btn, map) {
-                        //infoBox.addTo(map);
                         //initialise jQuery UI dialog and tabs
                         $(function() {
                             $("#tabs").tabs();
@@ -443,13 +472,13 @@ and open the template in the editor.
                             });
                         } );
                         btn.state('infoClose');
+                        create_cookie("info_closed_once", "yes", 90, "/");
                     }
                 }, {
                     stateName: 'infoClose',
                     icon: 'fa fa-info',
                     title: 'Close info',
                     onClick: function (btn, map) {
-                        //infoBox.remove(map);
                         $("#tabsikkuna").dialog("close");
                         btn.state('infoOpen');
                     }
@@ -477,7 +506,6 @@ and open the template in the editor.
             sendBox.addTo(mymap);
 
     
-    
             //prevent unwanted map clicksd and other events on sendBox
             L.DomEvent.on(buttonsubmitall, 'click', function (e) {
                 L.DomEvent.stopPropagation(e);
@@ -495,7 +523,6 @@ and open the template in the editor.
             });
 
             
-
             //"submit records" button functionality uses jQuery UI
             // Copying objects in JS is not straightforward and for that reason
             // I will not attempt to save sent features on map as gray markers.
@@ -503,7 +530,6 @@ and open the template in the editor.
             // TRANSLATE() BREAKS SUBMIT BUTTON IF BUTTON HTML CODE HAS TKEY TAG!
             var sendButtonSubmit = L.DomUtil.get('buttonsubmitall');
             L.DomEvent.addListener(sendButtonSubmit, "click", function (e){
-
                 $(function() {
                     $("#sucdialog").dialog({
                         position: {my: "center", at: "center", of: window},
@@ -523,21 +549,6 @@ and open the template in the editor.
             });
 
 
-            
-            // INFOHEADER
-            var infoHeader = L.control();
-            infoHeader.onAdd = function (map) {
-                this._div = L.DomUtil.create('div', 'infoheader');
-                this.update();
-                return this._div;
-            };
-            infoHeader.update = function () {
-                this._div.innerHTML = infoHeaderStuff;
-            };
-            //infoHeader.addTo(mymap);
-            
-           
-           
             //initialise drawing tools, disable a bunch of feature types
             var draw_control = new L.Control.Draw({
                 "edit": {

@@ -8,6 +8,12 @@
     "lang_research": "Research area",
     "lang_submit": "Submit records",
     
+    "likert1": "Very frequently",
+    "likert2": "Frequently",
+    "likert3": "Occassionally",
+    "likert4": "Rarely",
+    "likert5": "Never",
+    
     "lang_savechanges": "Save changes",
     
     "lang_tab1": "Welcome!",

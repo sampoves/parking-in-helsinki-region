@@ -8,6 +8,12 @@
     "lang_research": "Tutkimusalue",
     "lang_submit": "Lähetä tiedot",
     
+    "likert1": "Erittäin usein",
+    "likert2": "Usein",
+    "likert3": "Toisinaan",
+    "likert4": "Harvoin",
+    "likert5": "En koskaan",
+    
     "lang_savechanges": "Tallenna tiedot",
     
     "lang_tab1": "Tervetuloa kyselyyn!",

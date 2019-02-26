@@ -25,11 +25,11 @@ var popupContent =
         '<div class="likertcolumn">'+
             '<ul class="likert" id="likert">'+
                 //<label></label> makes possible to click on radio button texts as well as the radio button
-                '<label><li><input value="1" name="likert" type="radio">Erittäin usein</li></label>'+
-                '<label><li><input value="2" name="likert" type="radio">Usein</li></label>'+
-                '<label><li><input value="3" name="likert" type="radio">Toisinaan</li></label>'+
-                '<label><li><input value="4" name="likert" type="radio">Harvoin</li></label>'+
-                '<label><li><input value="5" name="likert" type="radio">En koskaan</li></label>'+
+                '<label><li><input value="1" name="likert" type="radio"><span tkey="likert1">Very frequently</span></li></label>'+
+                '<label><li><input value="2" name="likert" type="radio"><span tkey="likert2">Frequently</span></li></label>'+
+                '<label><li><input value="3" name="likert" type="radio"><span tkey="likert3">Occassionally</span></li></label>'+
+                '<label><li><input value="4" name="likert" type="radio"><span tkey="likert4">Rarely</span></li></label>'+
+                '<label><li><input value="5" name="likert" type="radio"><span tkey="likert5">Never</span></li></label>'+
             '</ul>'+
         '</div>'+
     '</div>'+

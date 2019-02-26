@@ -122,14 +122,11 @@ and open the template in the editor.
             $(document).ready(function(){
                 if(getCookie("info_closed_once") === "yes"){
                     console.log("Cookie value found, hide survey information popup");
-                    //$(".ui-dialog-content").dialog("close");
                     infoButton.state('infoOpen');
                 } else {
                     //user visiting first time or didn't click X
                     console.log("Associated cookie value not found, show survey information popup");
-                    //$("#tabsikkuna").dialog("open");
-                    //$(".ui-dialog-content").dialog("open");
-                    
+
                     //This code is copied from infobutton! consider cleaning
                     //code so that code is not needlessly duplicated
                     $(function() {
@@ -152,9 +149,12 @@ and open the template in the editor.
                         });
                     } );
                     infoButton.state('infoClose');
+                    //track if user has closed #tabsikkuna.
+                    //NOTE! X button is not tracked!
                     create_cookie("info_closed_once", "yes", 90, "/");
                 }
             });
+            
             
             //MITEN SAADA POPUP AUKI HETI MARKERIN KIINNITÄMISEN JÄLKEEN?
             // yks johtolanka: https://jsfiddle.net/emmalivingstone/abpee1ym/
@@ -375,28 +375,7 @@ and open the template in the editor.
 
    
 
-            // INFOTEXT AND LANGBUTTON AND INFOBUTTON
-            // infotext and infobutton and associated stuff    
-//            var infoText = L.control({position: 'bottomleft'});
-//            infoText.onAdd = function (map) {
-//                this._div = L.DomUtil.create('div', 'infotext');
-//                this.update("");
-//                return this._div;
-//            };
-//            
-//            infoText.update = function(text){
-//                this._div.innerHTML = text;
-//            };
-//            infoText.addTo(mymap);
-
-//            var infoBox = L.control({position: 'bottomleft'});
-//            infoBox.onAdd = function (map) {
-//                this._div = L.DomUtil.create('div', 'infobox');
-//                this._div.innerHTML = basicInfo;
-//                return this._div;
-//            };
-//            infoBox.addTo(mymap); //infobox active immediately on first open
-            
+            // LANGBUTTON AND INFOBUTTON
             //LANGUAGE BUTTON
             var langButton = L.easyButton({
                 states: [{
@@ -406,7 +385,6 @@ and open the template in the editor.
                     onClick: function (btn, map){
                         console.log("kieli enkku, lisätty tieto cookieen");
                         $.getJSON('en.json', translate);
-                        //$("#buttonsubmitall").text("Send records");
                         window.currentLang = "en"; // inform layerClickHandler()
                         //if element disabled, keep disabled and vice versa
                         //THIS BREAKS THE BUTTON AT THE MOMENT
@@ -427,7 +405,6 @@ and open the template in the editor.
                     onClick: function (btn, map){
                         console.log("kieli suomi, lisätty tieto cookieen");
                         $.getJSON('fi.json', translate);
-                        //$("#buttonsubmitall").text("Lähetä tiedot");
                         window.currentLang = "fi"; // inform layerClickHandler()
                         //THIS BREAKS THE BUTTON AT THE MOMENT
                         //testElementActive(sendBox, sendBoxActive);
@@ -443,7 +420,8 @@ and open the template in the editor.
                 }]
             });
             langButton.addTo(mymap);
-            
+ 
+    
             //INFOBUTTON
             var infoButton = L.easyButton({
                 states: [{
@@ -472,6 +450,8 @@ and open the template in the editor.
                             });
                         } );
                         btn.state('infoClose');
+                        //track if user has closed #tabsikkuna.
+                        //NOTE! X button is not tracked!
                         create_cookie("info_closed_once", "yes", 90, "/");
                     }
                 }, {
@@ -498,7 +478,7 @@ and open the template in the editor.
                 window.sendBoxActive = true;
                 this._div.innerHTML = normalSubmit; //type of button
             };
-            // disable send button function
+            // "disable send button" function
             sendBox.disable = function () {
                 window.sendBoxActive = false;
                 this._div.innerHTML = disabledSubmit;
@@ -523,11 +503,10 @@ and open the template in the editor.
             });
 
             
-            //"submit records" button functionality uses jQuery UI
+            // "submit records" button functionality uses jQuery UI
             // Copying objects in JS is not straightforward and for that reason
             // I will not attempt to save sent features on map as gray markers.
             // Instead, send button will destroy all entries entered so far.
-            // TRANSLATE() BREAKS SUBMIT BUTTON IF BUTTON HTML CODE HAS TKEY TAG!
             var sendButtonSubmit = L.DomUtil.get('buttonsubmitall');
             L.DomEvent.addListener(sendButtonSubmit, "click", function (e){
                 $(function() {
@@ -549,7 +528,7 @@ and open the template in the editor.
             });
 
 
-            //initialise drawing tools, disable a bunch of feature types
+            // Initialise drawing tools, disable a bunch of feature types
             var draw_control = new L.Control.Draw({
                 "edit": {
                     "featureGroup": geojson
@@ -575,12 +554,12 @@ and open the template in the editor.
                 }
             }).addTo(mymap);
             
-            //enable this to have marker placement on right at page load
-            //giving the instruction draw_control.options.draw.marker allows
-            //us to start with the red marker
+            // Enable this to have marker placement on right at page load
+            // giving the instruction draw_control.options.draw.marker allows
+            // us to start with the red marker
             new L.Draw.Marker(mymap, draw_control.options.draw.marker).enable();
 
-            //disable double click zoom and enable double click marker creation
+            // Disable double click zoom and enable double click marker creation
             mymap.doubleClickZoom.disable(); 
             mymap.on("dblclick", function (e){
                 new L.Draw.Marker(mymap, draw_control.options.draw.marker).enable();
@@ -603,7 +582,7 @@ and open the template in the editor.
                             "parkspot": null
                         }
                 };
-                layer.on('click', layerClickHandler); //"mouseover", "click"
+                layer.on('click', layerClickHandler); //other: "mouseover", "click"
                 geojson.addData(geojsonFeature);
             });
 
@@ -648,7 +627,7 @@ and open the template in the editor.
             }); 
         </script>
         
-        <!--JQUERY UI STUFF-->
+        <!--JQUERY UI CONTENT-->
         <div id="sucdialog" title="Submit success!" style="display:none">
             <div class="sucimage"></div>​
             <p tkey="lang_thanks">Thank you for taking the time to respond to this survey!</p>

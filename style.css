@@ -106,59 +106,8 @@ li:first-line {
 }
 
 
-/*INFO HEADER STYLE*/
-.infoheader {
-    z-index: 2;
-    width: 210px;
-    position: absolute;
-    left: 0%;
-    padding: 10px 20px;
-    background: lightgrey;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
-    border-radius: 5px;
-}
 
-.infoheader p {
-    margin: 0 0 5px;
-    font-size: 14px;
-    float: left;
-    margin-top: 5px;
-    margin-left: 20px;
-    margin-bottom: 0px;
-    color: black;
-}
-
-.infoheader h1 {
-    float: left;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 20px;
-    letter-spacing: 15px;
-    margin-bottom: 0px;
-    margin-left: 14px;
-    margin-top: 0px;
-}
-
-
-/*SENDBOX, INFOBOX AND INFOTEXT STYLE*/
-.infobox {
-    position: absolute;
-    width: 400px;
-    padding: 6px 8px;
-    font-family: 'Montserrat', sans-serif;
-    background: rgba(255, 255, 255, 0.8);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
-    border-radius: 5px;
-    border:1px solid grey;
-}
-
-.infobox p {
-    line-height: 600%;
-}
-
-.infotext p {
-    font-size: small;
-}
-
+/*SENDBOX STYLE*/
 .sendbox {
     z-index: 2;
     width: 330px;
@@ -334,6 +283,7 @@ div.sucimage {
     width:450px; 
     overflow:scroll;
 }
+
 
 /*JQUERY UI TABS*/
 #tabsikkuna { 

@@ -51,6 +51,8 @@ and open the template in the editor.
             
         <script>
     //TODO:
+    //isGeojsonEmpty(); rikkoo submit-napin. Korjaa! Johtuu jotenkin listeneristä ja idstä
+    //erase-napin pitäis reverttaa submit-nappi inaktiiviksi
     //*SCRIPT omaan js-tiedostoon
     //*Lähetä-nappi ei toimi jos ei ole markereita
     //*Lähetä-nappi ei toimi jos markerit ei valmiita
@@ -162,9 +164,27 @@ and open the template in the editor.
             });
             
 
+            //does geojson have layers? Use this to make sure submit button is
+            //inactive and active when appropriate
+//            mymap.addEventListener("mousemove", function(){
+//                //console.log(isEmpty(geojson._layers));
+//                isGeojsonEmpty();
+////                if(isEmpty(geojson._layers) === true){
+////                    sendBox.disable();
+////                } else {
+////                    sendBox.update();
+////                }
+//            });
+
+
             //MITEN SAADA POPUP AUKI HETI MARKERIN KIINNITÄMISEN JÄLKEEN?
             // yks johtolanka: https://jsfiddle.net/emmalivingstone/abpee1ym/
-
+            
+            //first check up if geojson has nothing in it
+            $(document).ready(function(){
+                isGeojsonEmpty();
+            });
+            
             // Initialise empty GeoJSON to be populated by user with responses
             var geojson = L.geoJson({
                 "type": "FeatureCollection",
@@ -529,9 +549,39 @@ and open the template in the editor.
                     //document.getElementById('buttonsubmitall').style.visibility='hidden';
                 });
                 geojson.clearLayers();
+                isGeojsonEmpty(); //test whether everything was deleted
             });
 
 
+            
+            //THIS ENABLES A BUTTON WHICH ALSO REVERTS SUBMIT BUTTON TO INACTIVE
+            //HOW TO ADD THIS TO THE ORIGINAL ERASE BUTTON?
+            L.Control.RemoveAll = L.Control.extend({
+                options:{
+                    position: 'topleft'
+                },
+                onAdd: function (map) {
+                    var controlDiv = L.DomUtil.create('div', 'leaflet-draw-toolbar leaflet-bar');
+                    L.DomEvent
+                        .addListener(controlDiv, 'click', L.DomEvent.stopPropagation)
+                        .addListener(controlDiv, 'click', L.DomEvent.preventDefault)
+                
+                    .addListener(controlDiv, 'click', function () {
+                        geojson.clearLayers();
+                        isGeojsonEmpty();
+                    });
+
+                    var controlUI = L.DomUtil.create('a', 'leaflet-draw-edit-remove', controlDiv);
+                    controlUI.title = 'Remove all markers';
+                    controlUI.href = '#';
+                    return controlDiv;
+                }
+            });
+            var removeAllControl = new L.Control.RemoveAll();
+            mymap.addControl(removeAllControl);
+            
+            
+            
             // Initialise drawing tools, disable a bunch of feature types
             var draw_control = new L.Control.Draw({
                 "edit": {
@@ -557,6 +607,7 @@ and open the template in the editor.
                     circlemarker: false
                 }
             }).addTo(mymap);
+
             
             // Enable this to have marker placement on right at page load
             // giving the instruction draw_control.options.draw.marker allows
@@ -588,6 +639,7 @@ and open the template in the editor.
                 };
                 layer.on('click', layerClickHandler); //other: "mouseover", "click"
                 geojson.addData(geojsonFeature);
+                isGeojsonEmpty(); // make sure submit is usable
             });
 
             mymap.on('draw:created', function(e) {

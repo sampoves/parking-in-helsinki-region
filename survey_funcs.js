@@ -135,3 +135,24 @@ function languageCheckUp(){
         $.getJSON('en.json', translate);
     }
 }
+
+
+// this tests if an object is empty. Used to test if geojson layer "geojson"
+// is empty to ensure user can't send blanks to the server. Idea from here:
+// https://coderwall.com/p/_g3x9q/how-to-check-if-javascript-object-is-empty
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+
+// is geojson layer empty?
+function isGeojsonEmpty(){
+    if(isEmpty(geojson._layers) === true){
+        sendBox.disable();
+    } else {
+        sendBox.update();
+    }
+}

@@ -51,12 +51,14 @@ and open the template in the editor.
             
         <script>
     //TODO:
-    //SCRIPT omaan js-tiedostoon
-    //Lähetä-nappi ei toimi jos ei ole markereita
-    //Lähetä-nappi ei toimi jos markerit ei valmiita
-    //Kirjoita paremmat ohjeet Jquery UI -ikkunaan
-    //
-    //Kun pisteen on lisännyt olisi hyvä jos kyselypopup aukeaisi automaattisesti
+    //*SCRIPT omaan js-tiedostoon
+    //*Lähetä-nappi ei toimi jos ei ole markereita
+    //*Lähetä-nappi ei toimi jos markerit ei valmiita
+    //*Disabled submit button ei jostain syystä estä vetämistä tai mousezoomia
+    //*Disabled submit buttonin tekstin kaksoisklikkaus tekee markerin, mutta
+    //muun napin kohdalla ei
+    //*Kirjoita paremmat ohjeet Jquery UI -ikkunaan
+    //*Kun pisteen on lisännyt olisi hyvä jos kyselypopup aukeaisi automaattisesti
 
             // INITIALISE MAP AND LAYERS
             //initialise map
@@ -159,7 +161,7 @@ and open the template in the editor.
                 }
             });
             
-            
+
             //MITEN SAADA POPUP AUKI HETI MARKERIN KIINNITÄMISEN JÄLKEEN?
             // yks johtolanka: https://jsfiddle.net/emmalivingstone/abpee1ym/
 
@@ -272,11 +274,9 @@ and open the template in the editor.
                 if(!properties.datetime || !properties.likert 
                     || !properties.parkspot || !properties.parktime){
                     marker.bindPopup(html + popupContent + missingStuff);
-                    //e.target.setIcon(new incompleteIcon);
                     e.target.setIcon(incompleteIcon);
                 } else {
                     marker.bindPopup(popupContent);
-                    //e.target.setIcon(new completeIcon);
                     e.target.setIcon(completeIcon);
                 }
                 marker.openPopup();
@@ -284,11 +284,7 @@ and open the template in the editor.
                 // keep language up to date with var currentLang. currentLang
                 // is updated in beginning of this script file when determining
                 // cookie language value and when user presses langbutton
-                if(currentLang === "fi"){
-                    $.getJSON('fi.json', translate);
-                } else {
-                    $.getJSON('en.json', translate);
-                }
+                languageCheckUp();
                 
                 //EVENT LISTENERS
                 //DATETIME
@@ -484,22 +480,12 @@ and open the template in the editor.
                 // Button text would default to the one in HTML code without
                 // the following if statement
                 languageCheckUp();
-//                if(window.currentLang === "fi"){
-//                    $.getJSON('fi.json', translate);
-//                } else {
-//                    $.getJSON('en.json', translate);
-//                }
             };
             // "disable send button" function
             sendBox.disable = function () {
                 //window.sendBoxActive = false;
                 this._div.innerHTML = disabledSubmit;
                 languageCheckUp();
-//                if(window.currentLang === "fi"){
-//                    $.getJSON('fi.json', translate);
-//                } else {
-//                    $.getJSON('en.json', translate);
-//                }
             };
             sendBox.addTo(mymap);
 

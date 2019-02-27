@@ -50,8 +50,12 @@ and open the template in the editor.
         <div class="" id="mymap"></div>
             
         <script>
+    //TODO:
     //SCRIPT omaan js-tiedostoon
+    //Lähetä-nappi ei toimi jos ei ole markereita
+    //Lähetä-nappi ei toimi jos markerit ei valmiita
     //Kirjoita paremmat ohjeet Jquery UI -ikkunaan
+    //
     //Kun pisteen on lisännyt olisi hyvä jos kyselypopup aukeaisi automaattisesti
 
             // INITIALISE MAP AND LAYERS
@@ -475,29 +479,43 @@ and open the template in the editor.
                 return this._div;
             };
             sendBox.update = function () {
-                window.sendBoxActive = true;
+                //window.sendBoxActive = true;
                 this._div.innerHTML = normalSubmit; //type of button
+                // Button text would default to the one in HTML code without
+                // the following if statement
+                languageCheckUp();
+//                if(window.currentLang === "fi"){
+//                    $.getJSON('fi.json', translate);
+//                } else {
+//                    $.getJSON('en.json', translate);
+//                }
             };
             // "disable send button" function
             sendBox.disable = function () {
-                window.sendBoxActive = false;
+                //window.sendBoxActive = false;
                 this._div.innerHTML = disabledSubmit;
+                languageCheckUp();
+//                if(window.currentLang === "fi"){
+//                    $.getJSON('fi.json', translate);
+//                } else {
+//                    $.getJSON('en.json', translate);
+//                }
             };
             sendBox.addTo(mymap);
 
     
-            //prevent unwanted map clicksd and other events on sendBox
-            L.DomEvent.on(buttonsubmitall, 'click', function (e) {
+            //prevent unwanted map clicks and other events on sendBox
+            L.DomEvent.on(buttonsubmitall, 'click', function(e){
                 L.DomEvent.stopPropagation(e);
             });
-            L.DomEvent.on(buttonsubmitall, 'dblclick', function (e) {
+            L.DomEvent.on(buttonsubmitall, 'dblclick', function(e){
                 L.DomEvent.stopPropagation(e);
             });
-            sendBox.getContainer().addEventListener('mouseover', function () {
+            sendBox.getContainer().addEventListener('mouseover', function(){
                 mymap.dragging.disable();
                 mymap.scrollWheelZoom.disable();
             });
-            sendBox.getContainer().addEventListener('mouseout', function () {
+            sendBox.getContainer().addEventListener('mouseout', function(){
                 mymap.dragging.enable();
                 mymap.scrollWheelZoom.enable();
             });

@@ -124,3 +124,13 @@ var translate = function(jsdata){
             $(this).html(strTr);
         });
 };
+
+// this function can be used with events and such where language does not update
+// automatically. This is true, for example, when updating submit button
+function languageCheckUp(){
+    if(window.currentLang === "fi"){
+        $.getJSON('fi.json', translate);
+    } else {
+        $.getJSON('en.json', translate);
+    }
+}

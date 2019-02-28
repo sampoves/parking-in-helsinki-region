@@ -396,7 +396,7 @@ and open the template in the editor.
                         $.getJSON('en.json', translate);
                         window.currentLang = "en"; // inform layerClickHandler()
                         //if element disabled, keep disabled and vice versa
-                        //THIS BREAKS THE BUTTON AT THE MOMENT
+                        //THIS USED TO BREAK THE BUTTON, now, old code
                         //testElementActive(sendBox, sendBoxActive); 
                         // layer control button translation needs updating
                         lCtrl.update();
@@ -415,7 +415,7 @@ and open the template in the editor.
                         console.log("kieli suomi, lisätty tieto cookieen");
                         $.getJSON('fi.json', translate);
                         window.currentLang = "fi"; // inform layerClickHandler()
-                        //THIS BREAKS THE BUTTON AT THE MOMENT
+                        //THIS USED TO BREAK THE BUTTON, now, old code
                         //testElementActive(sendBox, sendBoxActive);
                         lCtrl.update();
                         btn.state('fi');

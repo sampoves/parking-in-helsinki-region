@@ -105,6 +105,7 @@ function markerColorListener (feature, layer) {
 };
 
 
+// CURRENTLY UNUSED
 //test if an element is disabled or enabled. Needed in translator button
 //THIS BREAKS THE BUTTON IF USED WITH TRANSLATION
 function testElementActive(elemName, varName){
@@ -137,9 +138,9 @@ function languageCheckUp(){
 }
 
 
-// 280219 UNUSED!!
-// this tests if an object is empty. Used to test if geojson layer "geojson"
-// is empty to ensure user can't send blanks to the server. Idea from here:
+// this tests if an object is empty. Used in function isGeojsonEmpty() to test 
+// if geojson layer "geojson" is empty to ensure user can't send blanks to the 
+// server. Idea from here:
 // https://coderwall.com/p/_g3x9q/how-to-check-if-javascript-object-is-empty
 function isEmpty(obj) {
     for(var key in obj) {

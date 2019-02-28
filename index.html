@@ -51,16 +51,17 @@ and open the template in the editor.
             
         <script>
     //TODO:
-    //isGeojsonEmpty(); rikkoo submit-napin. Korjaa! Johtuu jotenkin listeneristä ja idstä
+    //**isGeojsonEmpty(); rikkoo submit-napin. Korjaa! Johtuu jotenkin listeneristä ja idstä
     //erase-napin pitäis reverttaa submit-nappi inaktiiviksi
-    //*SCRIPT omaan js-tiedostoon
-    //*Lähetä-nappi ei toimi jos ei ole markereita
-    //*Lähetä-nappi ei toimi jos markerit ei valmiita
-    //*Disabled submit button ei jostain syystä estä vetämistä tai mousezoomia
-    //*Disabled submit buttonin tekstin kaksoisklikkaus tekee markerin, mutta
+    //**SCRIPT omaan js-tiedostoon
+    //**Lähetä-nappi ei toimi jos ei ole markereita
+    //**Lähetä-nappi ei toimi jos markerit ei valmiita
+    //**Disabled submit button ei jostain syystä estä vetämistä tai mousezoomia
+    //**Disabled submit buttonin tekstin kaksoisklikkaus tekee markerin, mutta
     //muun napin kohdalla ei
-    //*Kirjoita paremmat ohjeet Jquery UI -ikkunaan
-    //*Kun pisteen on lisännyt olisi hyvä jos kyselypopup aukeaisi automaattisesti
+    //**Kirjoita paremmat ohjeet Jquery UI -ikkunaan
+    //**Kun pisteen on lisännyt olisi hyvä jos kyselypopup aukeaisi automaattisesti
+    //yks johtolanka tähän: https://jsfiddle.net/emmalivingstone/abpee1ym/
 
             // INITIALISE MAP AND LAYERS
             //initialise map
@@ -177,13 +178,16 @@ and open the template in the editor.
 //            });
 
 
-            //MITEN SAADA POPUP AUKI HETI MARKERIN KIINNITÄMISEN JÄLKEEN?
-            // yks johtolanka: https://jsfiddle.net/emmalivingstone/abpee1ym/
             
+            // SUBMIT BUTTON INITIAL DISABLE
+            // THIS IS COMMENTED BECAUSE isGeojsonEmpty() BREAKS THE EVENT 
+            // LISTENER
+            // SEARCH THE DOCUMENT FOR OTHER PLACES WHERE I PLANNED TO USE
+            // ISGEOJSONEMPTY() TO SEE WHAT WAS MY INTENTION
             //first check up if geojson has nothing in it
-            $(document).ready(function(){
-                isGeojsonEmpty();
-            });
+            //$(document).ready(function(){
+            //    isGeojsonEmpty();
+            //});
             
             // Initialise empty GeoJSON to be populated by user with responses
             var geojson = L.geoJson({
@@ -495,15 +499,20 @@ and open the template in the editor.
                 return this._div;
             };
             sendBox.update = function () {
-                //window.sendBoxActive = true;
                 this._div.innerHTML = normalSubmit; //type of button
+
                 // Button text would default to the one in HTML code without
                 // the following if statement
                 languageCheckUp();
+                
+                // enable or re-enable submit button listener. Ready function
+                // is needed in the initial loading of the survey.
+                $(document).ready(function(){
+                    submitButtonListener();
+                });
             };
             // "disable send button" function
             sendBox.disable = function () {
-                //window.sendBoxActive = false;
                 this._div.innerHTML = disabledSubmit;
                 languageCheckUp();
             };
@@ -531,31 +540,37 @@ and open the template in the editor.
             // Copying objects in JS is not straightforward and for that reason
             // I will not attempt to save sent features on map as gray markers.
             // Instead, send button will destroy all entries entered so far.
-            var sendButtonSubmit = L.DomUtil.get('buttonsubmitall');
-            L.DomEvent.addListener(sendButtonSubmit, "click", function (e){
-                $(function() {
-                    $("#sucdialog").dialog({
-                        position: {my: "center", at: "center", of: window},
-                        buttons: {
-                            "Close": function () {
-                                $(this).dialog("close");
+            function submitButtonListener(){
+                var sendButtonSubmit = L.DomUtil.get('buttonsubmitall');
+                L.DomEvent.addListener(sendButtonSubmit, "click", function (e){
+                    $(function() {
+                        $("#sucdialog").dialog({
+                            position: {my: "center", at: "center", of: window},
+                            buttons: {
+                                "Close": function () {
+                                    $(this).dialog("close");
+                                }
                             }
-                        }
+                        });
+                        //retain dialog position on window resize
+                        $(window).resize(function() {
+                            $("#sucdialog").dialog("option", "position", {my: "center", at: "center", of: window});
+                        });
+                        //document.getElementById('buttonsubmitall').style.visibility='hidden';
                     });
-                    //retain dialog position on window resize
-                    $(window).resize(function() {
-                        $("#sucdialog").dialog("option", "position", {my: "center", at: "center", of: window});
-                    });
-                    //document.getElementById('buttonsubmitall').style.visibility='hidden';
+                    geojson.clearLayers();
+                    // THIS IS COMMENTED BECAUSE MY CODE FOR TRANSLATING THE BUTTON
+                    // BREAKS THE EVENT LISTENER
+                    //isGeojsonEmpty(); //test whether everything was deleted
                 });
-                geojson.clearLayers();
-                isGeojsonEmpty(); //test whether everything was deleted
-            });
-
-
+            };
             
             //THIS ENABLES A BUTTON WHICH ALSO REVERTS SUBMIT BUTTON TO INACTIVE
             //HOW TO ADD THIS TO THE ORIGINAL ERASE BUTTON?
+            //https://stackoverflow.com/questions/21125543/leaflet-draw-trash-button-delete-all-polygons-and-save
+            //https://github.com/Leaflet/Leaflet.draw/issues/265
+            //https://gis.stackexchange.com/questions/60576/custom-leaflet-controls
+            //https://stackoverflow.com/questions/46934768/leaflet-draw-delete-button-remove-clear-all-action
             L.Control.RemoveAll = L.Control.extend({
                 options:{
                     position: 'topleft'
@@ -639,7 +654,9 @@ and open the template in the editor.
                 };
                 layer.on('click', layerClickHandler); //other: "mouseover", "click"
                 geojson.addData(geojsonFeature);
-                isGeojsonEmpty(); // make sure submit is usable
+                // BELOW IS COMMENTED BECAUSE MY CODE FOR TRANSLATING THE BUTTON
+                // BREAKS THE EVENT LISTENER
+                //isGeojsonEmpty(); // make sure submit is usable
             });
 
             mymap.on('draw:created', function(e) {

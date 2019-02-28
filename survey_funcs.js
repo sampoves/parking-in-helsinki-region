@@ -148,7 +148,9 @@ function isEmpty(obj) {
     return true;
 }
 
-// is geojson layer empty?
+// Is geojson layer empty?
+//at the moment this breaks the submit button. Obviously the fault of .disable()
+//and .update()
 function isGeojsonEmpty(){
     if(isEmpty(geojson._layers) === true){
         sendBox.disable();

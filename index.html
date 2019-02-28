@@ -54,6 +54,8 @@ and open the template in the editor.
     //**kyselyn voi rikkoa painamalla markerin ollessa valittuna jotain nappia.
     //esim. klikkaam markerilla lähetysnappia, sitten klikkaa karttaa = breakage
     //**erase-napin pitäis reverttaa submit-nappi inaktiiviksi
+    //  this file has clear all layers code:
+    //  https://github.com/Leaflet/Leaflet.draw/blob/develop/src/edit/EditToolbar.js
     //**SCRIPT omaan js-tiedostoon
     //**Lähetä-nappi ei toimi jos markerit ei valmiita
     //**Disabled submit button ei jostain syystä estä vetämistä tai mousezoomia
@@ -193,8 +195,8 @@ and open the template in the editor.
             // IMPORT POLYGON GEOJSONS
             var postal = new L.GeoJSON.AJAX(
                     "pno_research_area.geojson", {
-                        //style: stylePostal
-                        //style function listens to baselayer chage and chooses
+                        attribution: 'Postal areas &copy; <a href="http://urn.fi/urn:nbn:fi:csc-kata20180425144903846834">Statistics Finland</a>',
+                        //style function listens to baselayer change and chooses
                         //GeoJSON layer postal style accordingly
                         style: function(feature){
                             if(mymap.hasLayer(darkmatter)){
@@ -580,7 +582,8 @@ and open the template in the editor.
             mymap.addControl(removeAllControl);
             
             
-            
+            // this file has clear all layers code:
+            // https://github.com/Leaflet/Leaflet.draw/blob/develop/src/edit/EditToolbar.js
             // Initialise drawing tools, disable a bunch of feature types
             var draw_control = new L.Control.Draw({
                 "edit": {

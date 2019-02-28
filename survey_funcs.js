@@ -137,6 +137,7 @@ function languageCheckUp(){
 }
 
 
+// 280219 UNUSED!!
 // this tests if an object is empty. Used to test if geojson layer "geojson"
 // is empty to ensure user can't send blanks to the server. Idea from here:
 // https://coderwall.com/p/_g3x9q/how-to-check-if-javascript-object-is-empty
@@ -148,9 +149,7 @@ function isEmpty(obj) {
     return true;
 }
 
-// Is geojson layer empty?
-//at the moment this breaks the submit button. Obviously the fault of .disable()
-//and .update()
+// Is geojson layer empty? If yes, disable submit button. Otherwise, enable
 function isGeojsonEmpty(){
     if(isEmpty(geojson._layers) === true){
         sendBox.disable();

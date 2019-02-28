@@ -51,10 +51,10 @@ and open the template in the editor.
             
         <script>
     //TODO:
-    //**isGeojsonEmpty(); rikkoo submit-napin. Korjaa! Johtuu jotenkin listeneristä ja idstä
-    //erase-napin pitäis reverttaa submit-nappi inaktiiviksi
+    //**kyselyn voi rikkoa painamalla markerin ollessa valittuna jotain nappia.
+    //esim. klikkaam markerilla lähetysnappia, sitten klikkaa karttaa = breakage
+    //**erase-napin pitäis reverttaa submit-nappi inaktiiviksi
     //**SCRIPT omaan js-tiedostoon
-    //**Lähetä-nappi ei toimi jos ei ole markereita
     //**Lähetä-nappi ei toimi jos markerit ei valmiita
     //**Disabled submit button ei jostain syystä estä vetämistä tai mousezoomia
     //**Disabled submit buttonin tekstin kaksoisklikkaus tekee markerin, mutta
@@ -165,29 +165,12 @@ and open the template in the editor.
             });
             
 
-            //does geojson have layers? Use this to make sure submit button is
-            //inactive and active when appropriate
-//            mymap.addEventListener("mousemove", function(){
-//                //console.log(isEmpty(geojson._layers));
-//                isGeojsonEmpty();
-////                if(isEmpty(geojson._layers) === true){
-////                    sendBox.disable();
-////                } else {
-////                    sendBox.update();
-////                }
-//            });
 
-
-            
             // SUBMIT BUTTON INITIAL DISABLE
-            // THIS IS COMMENTED BECAUSE isGeojsonEmpty() BREAKS THE EVENT 
-            // LISTENER
-            // SEARCH THE DOCUMENT FOR OTHER PLACES WHERE I PLANNED TO USE
-            // ISGEOJSONEMPTY() TO SEE WHAT WAS MY INTENTION
             //first check up if geojson has nothing in it
-            //$(document).ready(function(){
-            //    isGeojsonEmpty();
-            //});
+            $(document).ready(function(){
+                isGeojsonEmpty();
+            });
             
             // Initialise empty GeoJSON to be populated by user with responses
             var geojson = L.geoJson({
@@ -559,9 +542,10 @@ and open the template in the editor.
                         //document.getElementById('buttonsubmitall').style.visibility='hidden';
                     });
                     geojson.clearLayers();
-                    // THIS IS COMMENTED BECAUSE MY CODE FOR TRANSLATING THE BUTTON
-                    // BREAKS THE EVENT LISTENER
-                    //isGeojsonEmpty(); //test whether everything was deleted
+                    
+                    //in this context func makes sure button is disabled, to 
+                    //prevent empty submissions
+                    isGeojsonEmpty(); 
                 });
             };
             
@@ -654,9 +638,7 @@ and open the template in the editor.
                 };
                 layer.on('click', layerClickHandler); //other: "mouseover", "click"
                 geojson.addData(geojsonFeature);
-                // BELOW IS COMMENTED BECAUSE MY CODE FOR TRANSLATING THE BUTTON
-                // BREAKS THE EVENT LISTENER
-                //isGeojsonEmpty(); // make sure submit is usable
+                isGeojsonEmpty(); // In this context makes submit button active
             });
 
             mymap.on('draw:created', function(e) {

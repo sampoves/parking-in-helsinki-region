@@ -204,7 +204,7 @@ function areMarkersFinished(){
         }
     };
     
-    //Attempt fit all unfinished markers thing
+    //Gather unfinished markers to this featureGroup for the use of fitBounds()
     var group = new L.featureGroup(unfinishedMarkers);
     
     //if above for loop finished without any nulls, all popups are finished

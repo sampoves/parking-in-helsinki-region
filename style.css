@@ -204,8 +204,8 @@ button:hover {
     height: 100%;
     font-size: 17pt;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
-  background-position: center;
-  transition: background 0.8s;
+    background-position: center;
+    transition: background 0.8s;
 }
 
 #buttonsubmitall:hover:enabled {
@@ -232,6 +232,7 @@ button:hover {
   font-size: 17pt;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
   background-position: center;
+  transition: background 0.8s;
 }
 
 /*INPUT FIELD STUFF*/

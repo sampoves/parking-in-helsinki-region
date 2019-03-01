@@ -12,6 +12,7 @@ function create_cookie(name, value, days2expire, path) {
                      'path=' + path + ';';
   };
 
+
 function getCookie(name) {
     var value = "; " + document.cookie;
     var parts = value.split("; " + name + "=");
@@ -77,23 +78,19 @@ function onParkspotChange(event){
 };
 
 
-
 //THIS LISTENS TO MARKER VALUES AND CHANGES MARKER COLOR ON
 //POPUP FILL
 function markerColorListener (feature, layer) {
-    //console.log("feature lalalal");
     props = feature.target.feature.properties;
     attrs = Object.keys(props);
-    //console.log(attrs);
     howManyNulls = 0;
     for (var i = 0; i < attrs.length; i += 1){
         attr = attrs[i];
         value = props[attr];
-        //console.log(value);
         if (value === null || value === ""){
             howManyNulls += 1;
         } else {
-            // do nothjin
+            // do nothin
         }
     }
     //console.log(howManyNulls + " mik' tilanne");
@@ -106,8 +103,7 @@ function markerColorListener (feature, layer) {
 
 
 // CURRENTLY UNUSED
-//test if an element is disabled or enabled. Needed in translator button
-//THIS BREAKS THE BUTTON IF USED WITH TRANSLATION
+//test if an element is disabled or enabled.
 function testElementActive(elemName, varName){
     if(varName === true){
         return elemName.update();
@@ -125,6 +121,7 @@ var translate = function(jsdata){
             $(this).html(strTr);
         });
 };
+
 
 // this function can be used with events and such where language does not update
 // automatically. This is true, for example, when updating submit button or
@@ -150,11 +147,77 @@ function isEmpty(obj) {
     return true;
 }
 
+
 // Is geojson layer empty? If yes, disable submit button. Otherwise, enable
 function isGeojsonEmpty(){
     if(isEmpty(geojson._layers) === true){
-        sendBox.disable();
+        console.log("Layer 'geojson' is empty. Attempt to disable submit button:");
+        if(submitButtonState() !== "disabled"){
+            console.log("Le Success");
+            sendBox.disable();
+        } else {
+            console.log("Submit button already disabled.");
+        }
     } else {
-        sendBox.update();
+        console.log("Layer 'geojson' is not empty. Attempt to enable submit button:");
+        if(submitButtonState() !== "enabled"){
+            console.log("Le Success");
+            sendBox.update();
+        } else {
+            console.log("Submit button already enabled.");
+        }
+    }
+}
+
+//Are all popups finished? This function loops through all markers in geojson
+//to detect null fields. If any field is null, this function will keep submit
+//button inactive.
+function areMarkersFinished(){
+    howManyNulls = 0;
+    
+    for (var i in geojson._layers){
+        thisLayer = geojson._layers[i];
+        theseProps = thisLayer.feature.properties;
+        theseAttrs = Object.keys(theseProps);
+
+        for (var i = 0; i < attrs.length; i += 1){
+            //implement test whether layer is interactive or not
+            //check submit button which changed interactivity to false
+            attr = theseAttrs[i];
+            value = theseProps[attr];
+            if (value === null || value === ""){
+                howManyNulls += 1;
+            } else {
+                // do nothin
+            }
+        }               
+    };
+    //if above for loop finished without any nulls, all popups are finished
+    //and submit button can be enabled.
+    if ((howManyNulls === 0) && (isEmpty(geojson._layers) === false)){
+        if(submitButtonState() !== "enabled"){
+            console.log("All markers complete, enable submit button");
+            sendBox.update();
+        } else {
+            console.log("All markers complete. Submit button already enabled.");
+        }
+    } else {
+        //disable() has to be here for the case user wipes a field and marker
+        //regresses to unfinished.
+        if(submitButtonState() !== "disabled"){
+            console.log("Not all markers are complete, did not enable submit button.");
+            sendBox.disable();
+        } else {
+            console.log("Not all markers are complete. Submit button already disabled.");
+        }
+    }
+}
+
+// Test submit button current state
+function submitButtonState(){
+    if(document.getElementById("buttonsubmitall").disabled === true){
+        return "disabled";
+    } else {
+        return "enabled";
     }
 }

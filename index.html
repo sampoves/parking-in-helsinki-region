@@ -65,6 +65,11 @@ and open the template in the editor.
     //**Kun pisteen on lisännyt olisi hyvä jos kyselypopup aukeaisi automaattisesti
     //yks johtolanka tähän: https://jsfiddle.net/emmalivingstone/abpee1ym/
 
+    //010319 areMarkersFinished() toimii, mutta ei oo asetettu tänne koodiin minnekään
+    //lisähuomio: document.getElementById("buttonsubmitall").disabled = true;
+    //tuottaa kauniin transition, mutta mun koodi nytkähtää. Mieti, voisko käyttää
+    //tätä disabledia, jotta tulee kaunista jälkee
+
             // INITIALISE MAP AND LAYERS
             //initialise map
             var mymap = L.map(
@@ -169,7 +174,8 @@ and open the template in the editor.
 
 
             // SUBMIT BUTTON INITIAL DISABLE
-            //first check up if geojson has nothing in it
+            //first check up if geojson has nothing in it to disable submit
+            //button
             $(document).ready(function(){
                 isGeojsonEmpty();
             });
@@ -361,23 +367,32 @@ and open the template in the editor.
                     theseAttrs = Object.keys(theseProps);
                     howManyNulls = 0;
                     
-                    for (var i = 0; i < attrs.length; i += 1){
-                        //implement test whether layer is interactive or not
-                        //check submit button which changed interactivity to false
-                        attr = theseAttrs[i];
-                        value = theseProps[attr];
-                        if (value === null || value === ""){
-                            howManyNulls += 1;
+                    //try-catch is placed here in case user places marker in a
+                    //illegal position such as the disabled button. In the current
+                    //state of my code this breaks the following for loop and
+                    //would prevent movement on map.
+                    try{
+                        for (var i = 0; i < attrs.length; i += 1){
+                            //implement test whether layer is interactive or not
+                            //check submit button which changed interactivity to false
+                            attr = theseAttrs[i];
+                            value = theseProps[attr];
+                            if (value === null || value === ""){
+                                howManyNulls += 1;
+                            } else {
+                                // do nothin
+                            }
+                        }               
+                        //if above for loop finished without any nulls, mark layer
+                        //completed with a green marker
+                        if (howManyNulls === 0){
+                            thisLayer.setIcon(completeIcon);
                         } else {
-                            // do nothin
+                            thisLayer.setIcon(incompleteIcon);
                         }
                     }
-                    //if above for loop finished without any nulls, mark layer
-                    //completed with a green marker
-                    if (howManyNulls === 0){
-                        thisLayer.setIcon(completeIcon);
-                    } else {
-                        thisLayer.setIcon(incompleteIcon);
+                    catch(error){
+                        console.log(`Can't detect marker state because marker id ${thisLayer._leaflet_id} was placed in illegal location (on disabled send button most probably). Move mouse on top of marker to solve this debacle.`);
                     }
                 };
             });
@@ -392,7 +407,7 @@ and open the template in the editor.
                     icon: 'fas fa-language',
                     title: "Vaihda kieli englanniksi",
                     onClick: function (btn, map){
-                        console.log("kieli enkku, lisätty tieto cookieen");
+                        console.log("Current language English. Cookie updated.");
                         $.getJSON('en.json', translate);
                         window.currentLang = "en"; // inform layerClickHandler()
                         // layer control button translation needs updating
@@ -409,7 +424,7 @@ and open the template in the editor.
                     icon: 'fas fa-language',
                     title: "Change language to Finnish",
                     onClick: function (btn, map){
-                        console.log("kieli suomi, lisätty tieto cookieen");
+                        console.log("Current language Finnish. Cookie updated.");
                         $.getJSON('fi.json', translate);
                         window.currentLang = "fi"; // inform layerClickHandler()
                         lCtrl.update();
@@ -546,6 +561,8 @@ and open the template in the editor.
                 });
             };
             
+            
+            
             //THIS ENABLES A BUTTON WHICH ALSO REVERTS SUBMIT BUTTON TO INACTIVE
             //HOW TO ADD THIS TO THE ORIGINAL ERASE BUTTON?
             //https://stackoverflow.com/questions/21125543/leaflet-draw-trash-button-delete-all-polygons-and-save
@@ -575,6 +592,7 @@ and open the template in the editor.
             });
             var removeAllControl = new L.Control.RemoveAll();
             mymap.addControl(removeAllControl);
+            
             
             
             // this file has clear all layers code:
@@ -636,7 +654,8 @@ and open the template in the editor.
                 };
                 layer.on('click', layerClickHandler); //other: "mouseover", "click"
                 geojson.addData(geojsonFeature);
-                isGeojsonEmpty(); // In this context makes submit button active
+                // HOX HOX HOX HOX disabled to try areMarkersFinished()
+                //isGeojsonEmpty(); // In this context makes submit button active
             });
 
             mymap.on('draw:created', function(e) {

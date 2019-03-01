@@ -130,8 +130,8 @@ var missingStuff =
 
 //HTML buttons
 var normalSubmit = 
-        //"<button id='buttonsubmitall' type='button'><strong tkey='lang_submit'>Submit data</strong></button>";
-        "<button id='buttonsubmitall' type='button'><strong>Submit data</strong></button>";
+        "<button id='buttonsubmitall' type='button'><strong tkey='lang_submit'>Submit records</strong></button>";
+        //"<button id='buttonsubmitall' type='button'><strong>Submit data</strong></button>";
 var disabledSubmit = 
-        //"<button disabled id='buttonsubmitall' type='button'><strong tkey='lang_submit'>Submit data</strong></button>";
-        "<button disabled id='buttonsubmitall' type='button'><strong>Submit data</strong></button>";
+        "<button disabled id='buttonsubmitall' type='button'><strong tkey='lang_submit'>Submit data</strong></button>";
+        //"<button disabled id='buttonsubmitall' type='button'><strong>Submit data</strong></button>";

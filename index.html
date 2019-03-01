@@ -177,7 +177,8 @@ and open the template in the editor.
             //first check up if geojson has nothing in it to disable submit
             //button
             $(document).ready(function(){
-                isGeojsonEmpty();
+                //isGeojsonEmpty();
+                sendBox.disable();
             });
             
             // Initialise empty GeoJSON to be populated by user with responses
@@ -557,7 +558,7 @@ and open the template in the editor.
                     
                     //in this context func makes sure button is disabled, to 
                     //prevent empty submissions
-                    isGeojsonEmpty(); 
+                    isGeojsonEmpty();
                 });
             };
             

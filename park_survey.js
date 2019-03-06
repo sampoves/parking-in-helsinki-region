@@ -8,10 +8,10 @@
 var popupContent = 
         '<form name="myform" role="form" id="form" enctype="multipart/form-data" class = "form-horizontal" onsubmit="addMarker()">'+
     //datetime
-    '<div class="form-group">'+
-        '<label class="control-label col-sm-5"><strong tkey="lang_datetime">Pysäköintisi päivämäärä ja kellonaika<br></strong></label>'+
-        '<input type="datetime-local" placeholder="Required" id="datetime" name="datetime" class="form-control"/>'+ 
-    '</div>'+
+//    '<div class="form-group">'+
+//        '<label class="control-label col-sm-5"><strong tkey="lang_datetime">Pysäköintisi päivämäärä ja kellonaika<br></strong></label>'+
+//        '<input type="datetime-local" placeholder="Required" id="datetime" name="datetime" class="form-control"/>'+ 
+//    '</div>'+
 
     //time to search parking
     '<div class="form-group">'+

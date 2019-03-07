@@ -194,7 +194,19 @@ and open the template in the editor.
             var geojson = L.geoJson({
                 "type": "FeatureCollection",
                 "features": []
-            });//.addTo(mymap);
+                },{
+                    onEachFeature:
+                            function (feature, layer){
+                                layer.on('click', layerClickHandler);
+//                                layer.on('mouseover', markerColorListener); //"add" toimii tässä!! jos jotain tarvetta josku
+//                                
+//                                //set incomplete icon at start
+//                                if(!feature.properties.datetime || !feature.properties.likert || 
+//                                        !feature.properties.parkspot || !feature.properties.parktime){
+//                                    layer.setIcon(incompleteIcon);
+//                                }
+                            }
+                }).addTo(mymap);
             
             // IMPORT POLYGON GEOJSONS
             var postal = new L.GeoJSON.AJAX(
@@ -260,7 +272,12 @@ and open the template in the editor.
             //Listen to current click on geojson layer named "geojson"
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
             function layerClickHandler (e) {
-
+                //console.log("jou");
+                //console.log(e);
+                
+                var jeelayer = leafletPip.pointInLayer(e.latlng, geojson);
+                console.log(jeelayer);
+                
                 //MARKER LOCATION INTERSECTED WITH OVERLAY LAYERS
                 //Check with conditional statement what to print on popup.
                 //Command delete is necessary to remove unwanted values in popup 
@@ -277,10 +294,12 @@ and open the template in the editor.
                     html = `<div tkey="lang_zipArea">Zip code area:</div> ${hitPostal[0].feature.properties.nimi}, ${hitPostal[0].feature.properties.posti_alue}`;
                     delete hitPostal;
                 }
-                console.log("clickhandler");
-                console.log(e);
+
+                //console.log(e);
                 var marker = e.target,
                         properties = e.target.feature.properties;
+                
+                console.log(properties);
                 
                 if(marker.hasOwnProperty('_popup')){
                     marker.unbindPopup();
@@ -551,16 +570,12 @@ and open the template in the editor.
 
             postal.on("click", function (e) {
                 var layer = e.layer;
-                //console.log(layer);
-                //var points = layer._latlngs;
+                //var points = layer[0]._latlngs;
                 var pol = layer.toGeoJSON();
                 var geom = pol.geometry;
-                console.log(pol);
-                console.log(geom);
-                //var pol = L.polygon(latlngs);
+                //console.log(leafletPip.pointInLayer(e.latlng, postal));
                 //console.log(pol);
-                //var lat = layer.getLatLng().lat;
-                //var lng = layer.getLatLng().lng;
+                //console.log(geom);
                 var geojsonFeature = {
                         "type": "Feature",
                         "geometry": geom,
@@ -570,7 +585,8 @@ and open the template in the editor.
                             "parkspot": null
                         }
                 };
-                layer.on('click', layerClickHandler); //other: "mouseover", "click"
+                //layerClickHandler(e);
+                //layer.on('click', layerClickHandler); //other: "mouseover", "click"
                 geojson.addData(geojsonFeature);
             });
         </script>

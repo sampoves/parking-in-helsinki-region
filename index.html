@@ -50,21 +50,14 @@ and open the template in the editor.
             
         <script>
     //TODO:
-    //**kyselyn voi rikkoa painamalla markerin ollessa valittuna jotain nappia.
-    //esim. klikkaam markerilla lähetysnappia, sitten klikkaa karttaa = breakage
-    //**erase-napin pitäis reverttaa submit-nappi inaktiiviksi
-    //  this file has clear all layers code:
-    //  https://github.com/Leaflet/Leaflet.draw/blob/develop/src/edit/EditToolbar.js
     //**SCRIPT omaan js-tiedostoon
     //**Lähetä-nappi ei toimi jos markerit ei valmiita
     //**Disabled submit button ei jostain syystä estä vetämistä tai mousezoomia
     //**Disabled submit buttonin tekstin kaksoisklikkaus tekee markerin, mutta
     //muun napin kohdalla ei
     //**Kirjoita ajantasaiset ohjeet Jquery UI -ikkunaan
-    //**Kun pisteen on lisännyt olisi hyvä jos kyselypopup aukeaisi automaattisesti
-    //yks johtolanka tähän: https://jsfiddle.net/emmalivingstone/abpee1ym/
-    //**Tutki panejen käyttöö jotta saa paikannimet esille:
-    //https://leafletjs.com/examples/map-panes/
+
+    //070319 New direction of survey. Use Polygons for popups.
 
     //010319 areMarkersFinished() toimii, mutta ei oo asetettu tänne koodiin minnekään
     //050319 pan to unfinished saattaa olla buginen. Voit myös miettiä, onko
@@ -84,7 +77,7 @@ and open the template in the editor.
                 zoomControl: true
             });
             
-            //pane for map labels
+            //pane for label tile layers
             mymap.createPane('labels');
             mymap.getPane('labels').style.zIndex = 650;
             mymap.getPane('labels').style.pointerEvents = 'none';
@@ -103,35 +96,19 @@ and open the template in the editor.
                 //accordingly
                 //also make note addition or removal of darkmatter labels
                 changeOfLabels();
+                
                 if(mymap.hasLayer(OpenStreetMap_DE)){
-                    //mymap.removeLayer(darkmatterOnlyLabels);
                     voyagerOnlyLabels.addTo(mymap);
                     postal.setStyle(stylePostalDark);
                 } else if (mymap.hasLayer(Stamen_Terrain)){
                     StamenTerrainOnlyLabels.addTo(mymap);
                     postal.setStyle(stylePostalDark);
                 } else if (mymap.hasLayer(darkmatter)){
-                    //mymap.removeLayer(StamenTerrainOnlyLabels);
                     darkmatterOnlyLabels.addTo(mymap);
                     postal.setStyle(stylePostal);
                 }
-                
             });
             
-            function changeOfLabels(){
-                labelsList = ["darkmatterOnlyLabels", "StamenTerrainOnlyLabels", 
-                    "voyagerOnlyLabels"];
-                for (i = 0; i < labelsList.length; i++){
-                    thistext = labelsList[i];
-                    //console.log(thistext);
-                    if(mymap.hasLayer(eval(thistext))){
-                        mymap.removeLayer(eval(thistext));
-                        console.log("removed" + thistext);
-                    } else {
-                        //nothing
-                    }
-                } 
-            }
 
 
             //COOKIES: SET SITE LANGUAGE WITH COOKIE VALUE
@@ -217,19 +194,7 @@ and open the template in the editor.
             var geojson = L.geoJson({
                 "type": "FeatureCollection",
                 "features": []
-                },{
-                    onEachFeature:
-                        function (feature, layer){
-                            layer.on('click', layerClickHandler);
-                            layer.on('mouseover', markerColorListener); //"add" toimii tässä!! jos jotain tarvetta josku
-
-                            //set incomplete icon at start
-                            if(!feature.properties.datetime || !feature.properties.likert || 
-                                    !feature.properties.parkspot || !feature.properties.parktime){
-                                layer.setIcon(incompleteIcon);
-                            }
-                        }
-                }).addTo(mymap);
+            });//.addTo(mymap);
             
             // IMPORT POLYGON GEOJSONS
             var postal = new L.GeoJSON.AJAX(
@@ -240,7 +205,9 @@ and open the template in the editor.
                         style: function(feature){
                             if(mymap.hasLayer(darkmatter)){
                                 postal.setStyle(stylePostal);
-                            } else if ((mymap.hasLayer(OpenStreetMap_DE)) || (mymap.hasLayer(Stamen_Terrain))){
+                            } else if (mymap.hasLayer(OpenStreetMap_DE)){
+                                postal.setStyle(stylePostalDark);
+                            } else if (mymap.hasLayer(Stamen_Terrain)){
                                 postal.setStyle(stylePostalDark);
                             };
                         }
@@ -284,26 +251,16 @@ and open the template in the editor.
  
             //Highlight overlay layers on mouseover. Also listen to return to 
             //normal.   
-            postal.on("click", layerClickHandler);
+            //postal.on("click", layerClickHandler);
             postal.on("mouseover", highlightLayer);
             postal.on("mouseout", layerToNormal);
 
-
-            //NEWSURVEY
-//            postal.eachLayer(function (layer) {
-//                layer.bindPopup(layer.feature.properties.euref_x);
-//            });
-//            postal.on("click", function (feature, layer){
-//                //console.log(feature);
-//                //console.log(layer);
-//                //layer.on('click', layerClickHandler);
-//            });
 
             //Listen to changes in popup form
             //Listen to current click on geojson layer named "geojson"
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
             function layerClickHandler (e) {
-                console.log(e);
+
                 //MARKER LOCATION INTERSECTED WITH OVERLAY LAYERS
                 //Check with conditional statement what to print on popup.
                 //Command delete is necessary to remove unwanted values in popup 
@@ -320,9 +277,10 @@ and open the template in the editor.
                     html = `<div tkey="lang_zipArea">Zip code area:</div> ${hitPostal[0].feature.properties.nimi}, ${hitPostal[0].feature.properties.posti_alue}`;
                     delete hitPostal;
                 }
-
-                var marker = e.layer,
-                        properties = e.layer.feature.properties;
+                console.log("clickhandler");
+                console.log(e);
+                var marker = e.target,
+                        properties = e.target.feature.properties;
                 
                 if(marker.hasOwnProperty('_popup')){
                     marker.unbindPopup();
@@ -330,8 +288,8 @@ and open the template in the editor.
                 
                 //check if all values are inserted and print text in popUp
                 //if this is the case
-                if(!properties.datetime || !properties.likert 
-                    || !properties.parkspot || !properties.parktime){
+                if(!properties.likert || !properties.parkspot || 
+                        !properties.parktime){
                     marker.bindPopup(html + popupContent + missingStuff);
                     //OLDSURVEY
                     //e.target.setIcon(incompleteIcon);
@@ -346,16 +304,7 @@ and open the template in the editor.
                 // is updated in beginning of this script file when determining
                 // cookie language value and when user presses langbutton
                 languageCheckUp();
-                
-                //EVENT LISTENERS
-                //DATETIME
-//                L.DomUtil.get('datetime').textContent = properties.datetime;
-//                var dateTime = L.DomUtil.get('datetime');
-//                dateTime.value = properties.datetime;
-//                L.DomEvent.addListener(dateTime, "change", function (e){
-//                    properties.datetime = e.target.value;
-//                });
-                
+                                
                 //PARKING TIME
                 L.DomUtil.get('parktime').textContent = properties.parktime;
                 var parkTime = L.DomUtil.get('parktime');
@@ -399,51 +348,6 @@ and open the template in the editor.
             }
     
     
-    
-            //ON EVERY DRAGSTART, CHECK STATE OF FILLED FORM IN EACH POPUP
-            //It is probably not efficient to run this operation on every
-            //drag event, but easiest for me to check states of popups
-            mymap.on("dragstart", function(e){
-                // get all Leaflet ids of current layers in var geojson and
-                // test them iteratively to see if any of the feature attributes
-                // are null
-                for (var i in geojson._layers){
-                    thisLayer = geojson._layers[i];
-                    theseProps = thisLayer.feature.properties;
-                    theseAttrs = Object.keys(theseProps);
-                    howManyNulls = 0;
-                    
-                    //try-catch is placed here in case user places marker in a
-                    //illegal position such as the disabled button. In the current
-                    //state of my code this breaks the following for loop and
-                    //would prevent movement on map.
-                    try{
-                        for (var i = 0; i < attrs.length; i += 1){
-                            //implement test whether layer is interactive or not
-                            //check submit button which changed interactivity to false
-                            attr = theseAttrs[i];
-                            value = theseProps[attr];
-                            if (value === null || value === ""){
-                                howManyNulls += 1;
-                            } else {
-                                // do nothin
-                            }
-                        }               
-                        //if above for loop finished without any nulls, mark layer
-                        //completed with a green marker
-                        if (howManyNulls === 0){
-                            thisLayer.setIcon(completeIcon);
-                        } else {
-                            thisLayer.setIcon(incompleteIcon);
-                        }
-                    }
-                    catch(error){
-                        console.log(`Can't detect marker state because marker id ${thisLayer._leaflet_id} was placed in illegal location (on disabled send button most probably). Move mouse on top of marker to solve this debacle.`);
-                    }
-                };
-            });
-
-   
 
             // LANGBUTTON AND INFOBUTTON
             //LANGUAGE BUTTON
@@ -639,81 +543,36 @@ and open the template in the editor.
 
             
             // OLDSURVEY
-            // Enable this to have marker placement on right at page load
-            // giving the instruction draw_control.options.draw.marker allows
-            // us to start with the red marker
-//            new L.Draw.Marker(mymap, draw_control.options.draw.marker).enable();
+
 
             // Disable double click zoom and enable double click marker creation
             mymap.doubleClickZoom.disable(); 
-//            mymap.on("dblclick", function (e){
-//                new L.Draw.Marker(mymap, draw_control.options.draw.marker).enable();
-//            });
 
-              // OLDSURVEY
-//            mymap.on(L.Draw.Event.CREATED, function (e) {
-//                var layer = e.layer;
-//                var lat = layer.getLatLng().lat;
-//                var lng = layer.getLatLng().lng;
-//                var geojsonFeature = {
-//                        "type": "Feature",
-//                        "geometry": {
-//                            "type": "Point",
-//                            "coordinates": [lng, lat]
-//                        },
-//                        "properties":{
-//                            "datetime": null,
-//                            "parktime": null,
-//                            "likert": null,
-//                            "parkspot": null
-//                        }
-//                };
-//                layer.on('click', layerClickHandler); //other: "mouseover", "click"
-//                geojson.addData(geojsonFeature);
-//                // HOX HOX HOX HOX disabled to try areMarkersFinished()
-//                //isGeojsonEmpty(); // In this context makes submit button active
-//            });
-//
-//            mymap.on('draw:created', function(e) {
-//                var layer = e.layer;
-//                var lat = layer.getLatLng().lat;
-//                var lng = layer.getLatLng().lng;
-//                var geojsonFeature = {
-//                        "type": "Feature",
-//                        "geometry": {
-//                            "type": "Point",
-//                            "coordinates": [lng, lat]
-//                        },
-//                        "properties":{
-//                            "parktime": null
-//                        }
-//                };
-//            });
-            
-//
-//            // Object created - bind popup to layer, add to feature group
-//            mymap.on(L.Draw.Event.CREATED, function(event) {
-//                var layer = event.layer;
-//                var content = strLatLng(layer.getLatLng());
-//                if (content !== null) {
-//                    layer.bindPopup(content);
-//                }
-//                drawnItems.addLayer(layer);
-//            });
-//
-//          OLDSURVEY
-            // Object(s) edited - update popups
-//            mymap.on(L.Draw.Event.EDITED, function(event) {
-//                var layers = event.layers,
-//                    content = null;
-//
-//                layers.eachLayer(function(layer) {
-//                    content = getPopupContent(layer);
-//                    if (content !== null) {
-//                        layer.setPopupContent(content);
-//                    }
-//                });
-//            }); 
+
+            postal.on("click", function (e) {
+                var layer = e.layer;
+                //console.log(layer);
+                //var points = layer._latlngs;
+                var pol = layer.toGeoJSON();
+                var geom = pol.geometry;
+                console.log(pol);
+                console.log(geom);
+                //var pol = L.polygon(latlngs);
+                //console.log(pol);
+                //var lat = layer.getLatLng().lat;
+                //var lng = layer.getLatLng().lng;
+                var geojsonFeature = {
+                        "type": "Feature",
+                        "geometry": geom,
+                        "properties": {
+                            "parktime": null,
+                            "likert": null,
+                            "parkspot": null
+                        }
+                };
+                layer.on('click', layerClickHandler); //other: "mouseover", "click"
+                geojson.addData(geojsonFeature);
+            });
         </script>
         
         <!--JQUERY UI CONTENT-->

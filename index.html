@@ -52,11 +52,9 @@ and open the template in the editor.
     //**SCRIPT omaan js-tiedostoon
     //**Lähetä-nappi ei toimi jos markerit ei valmiita
     //**Disabled submit button ei jostain syystä estä vetämistä tai mousezoomia
-    //**Disabled submit buttonin tekstin kaksoisklikkaus tekee markerin, mutta
-    //muun napin kohdalla ei
     //**Kirjoita ajantasaiset ohjeet Jquery UI -ikkunaan
-    //**varmista, että geojson-layerille menee vain yksi Polygon kustakin
-    //postinumeroalueesta
+    //**tallenna tiedot-napin voi rikkoa painamalla täyttämätöntä polygonia
+    //monta kertaa
 
     //070319 New direction of survey. Use Polygons for popups.
 
@@ -247,6 +245,15 @@ and open the template in the editor.
             // Obtain better control of layer control by declaring it as variable
             var lCtrl = L.control.layers(baseMaps, overlayMaps);
             lCtrl.addTo(mymap);
+            
+            //Listen to additions to overlays: always keep geojson layer on top.
+            //Also make sure that "postal" is always on top of "postaldissolve".
+            //This is realised with first bringing postal on top, then geojson.
+            mymap.on("overlayadd", function (event) {
+                postal.bringToFront();
+                geojson.bringToFront();
+            });
+            
 
             // Add additional header text to layer control
             $('<p id="controlTitle1"><strong tkey="lang_basemap">Basemaps<strong></p>').insertBefore('div.leaflet-control-layers-base');
@@ -273,11 +280,7 @@ and open the template in the editor.
             //Listen to current click on geojson layer named "geojson"
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
             function layerClickHandler (e) {
-                //console.log("jou");
-                //console.log(e);
-                
-                var jeelayer = leafletPip.pointInLayer(e.latlng, geojson);
-                //console.log(jeelayer);
+                //var jeelayer = leafletPip.pointInLayer(e.latlng, geojson);
                 
                 //MARKER LOCATION INTERSECTED WITH OVERLAY LAYERS
                 //Check with conditional statement what to print on popup.
@@ -296,13 +299,13 @@ and open the template in the editor.
                     delete hitPostal;
                 }
 
-                //console.log(e);
                 var marker = e.target,
                         properties = e.target.feature.properties;
                 
                 console.log(properties);
                 
                 if(marker.hasOwnProperty('_popup')){
+                    console.log("has pipyup");
                     marker.unbindPopup();
                 }
                 
@@ -310,10 +313,12 @@ and open the template in the editor.
                 //if this is the case
                 if(!properties.likert || !properties.parkspot || 
                         !properties.parktime){
+                    console.log("created popup");
                     marker.bindPopup(html + popupContent + missingStuff);
                     //OLDSURVEY
                     //e.target.setIcon(incompleteIcon);
                 } else {
+                    console.log("created popup");
                     marker.bindPopup(popupContent);
                     //OLDSURVEY
                     //e.target.setIcon(completeIcon);
@@ -572,12 +577,7 @@ and open the template in the editor.
             //On layer click on "postal", initialise "geojsonFeature" and add it 
             //to the "geojson" layer.
             postal.on("click", function (e) {
-                console.log("clickedp ostal");
-                console.log(e);
-                console.log(e.layer.feature.properties.posti_alue);
-                
                 var layer = e.layer;
-                //var points = layer[0]._latlngs;
                 var pol = layer.toGeoJSON();
                 var geom = pol.geometry;
                 //console.log(leafletPip.pointInLayer(e.latlng, postal));

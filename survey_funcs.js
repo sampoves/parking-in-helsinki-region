@@ -248,3 +248,41 @@ function submitButtonState(){
         return "enabled";
     }
 }
+
+
+//this function checks which label layers are active at that moment. It will
+//deactivate any that it finds.
+function changeOfLabels(){
+    labelsList = ["darkmatterOnlyLabels", "StamenTerrainOnlyLabels", 
+        "voyagerOnlyLabels"];
+    
+    for (i = 0; i < labelsList.length; i++){
+        currentItem = labelsList[i];
+        if(mymap.hasLayer(eval(currentItem))){
+            mymap.removeLayer(eval(currentItem));
+            console.log("removed " + currentItem);
+        } else {
+            //nothing
+        }
+    } 
+}
+
+
+//Make sure layer "geojson" is not getting multiple features for
+//the same Polygon. Test this by keeping track of clicked on postal
+//areas.
+function uniqueZipCode(thisZipCode){
+    //create zipCodeList if does not exist
+    if (typeof zipCodeList === 'undefined') {
+        zipCodeList = [];
+    } else {
+        //do nothin
+    }
+    //append to list if is not in list
+    if(zipCodeList.includes(thisZipCode)){
+        return false;
+    } else {
+        zipCodeList.push(thisZipCode);
+        return true;
+    }
+}

@@ -13,7 +13,6 @@ and open the template in the editor.
         <!-- import leaflet, leaflet.draw and other needed libraries-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.4.0/easy-button.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js"></script>
@@ -56,6 +55,8 @@ and open the template in the editor.
     //**Disabled submit buttonin tekstin kaksoisklikkaus tekee markerin, mutta
     //muun napin kohdalla ei
     //**Kirjoita ajantasaiset ohjeet Jquery UI -ikkunaan
+    //**varmista, että geojson-layerille menee vain yksi Polygon kustakin
+    //postinumeroalueesta
 
     //070319 New direction of survey. Use Polygons for popups.
 
@@ -276,7 +277,7 @@ and open the template in the editor.
                 //console.log(e);
                 
                 var jeelayer = leafletPip.pointInLayer(e.latlng, geojson);
-                console.log(jeelayer);
+                //console.log(jeelayer);
                 
                 //MARKER LOCATION INTERSECTED WITH OVERLAY LAYERS
                 //Check with conditional statement what to print on popup.
@@ -568,7 +569,13 @@ and open the template in the editor.
             mymap.doubleClickZoom.disable(); 
 
 
+            //On layer click on "postal", initialise "geojsonFeature" and add it 
+            //to the "geojson" layer.
             postal.on("click", function (e) {
+                console.log("clickedp ostal");
+                console.log(e);
+                console.log(e.layer.feature.properties.posti_alue);
+                
                 var layer = e.layer;
                 //var points = layer[0]._latlngs;
                 var pol = layer.toGeoJSON();
@@ -587,7 +594,13 @@ and open the template in the editor.
                 };
                 //layerClickHandler(e);
                 //layer.on('click', layerClickHandler); //other: "mouseover", "click"
-                geojson.addData(geojsonFeature);
+                //only add data to "geojson" if user has never clicked on
+                //the postal area being clicked
+                if(uniqueZipCode(e.layer.feature.properties.posti_alue) === true){
+                    geojson.addData(geojsonFeature);
+                } else {
+                    //do nothin
+                }
             });
         </script>
         

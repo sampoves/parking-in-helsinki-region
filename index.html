@@ -54,7 +54,7 @@ and open the template in the editor.
     //**Disabled submit button ei jostain syystä estä vetämistä tai mousezoomia
     //**Kirjoita ajantasaiset ohjeet Jquery UI -ikkunaan
     //**tallenna tiedot-napin voi rikkoa painamalla täyttämätöntä polygonia
-    //monta kertaa
+    //monta kertaa PITÄÄ MUUTTAA UNBINDPOPUPII ERI TAVOIN
 
     //070319 New direction of survey. Use Polygons for popups.
 
@@ -76,7 +76,8 @@ and open the template in the editor.
                 zoomControl: true
             });
             
-            //pane for label tile layers
+            //pane for label tile layers. This will keep tile layer labels on
+            //top of geojson Polygons
             mymap.createPane('labels');
             mymap.getPane('labels').style.zIndex = 650;
             mymap.getPane('labels').style.pointerEvents = 'none';

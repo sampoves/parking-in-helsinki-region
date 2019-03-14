@@ -198,7 +198,6 @@ and open the template in the editor.
                 },{
                     onEachFeature:
                             function (feature, layer){
-                                layer.on("layeradd", console.log(layer));
                                 layer.on('click', layerClickHandler);
 //                                layer.on('mouseover', markerColorListener); //"add" toimii tässä!! jos jotain tarvetta josku
 //                                
@@ -303,7 +302,7 @@ and open the template in the editor.
             //Listen to current click on geojson layer named "geojson"
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
             function layerClickHandler (e) {
-
+                console.log("löysää");
                 //MARKER LOCATION INTERSECTED WITH OVERLAY LAYERS
                 //Check with conditional statement what to print on popup.
                 //Command delete is necessary to remove unwanted values in popup 
@@ -605,28 +604,34 @@ and open the template in the editor.
             //On layer click on "postal", initialise "geojsonFeature" and add it 
             //to the "geojson" layer.
             postal.on("click", function (e) {
-                //console.log(e.layer);
-                var layer = e.layer;
-                var pol = layer.toGeoJSON();
-                var geom = pol.geometry;
-                //console.log(leafletPip.pointInLayer(e.latlng, postal));
-                //console.log(pol);
-                //console.log(geom);
-                var geojsonFeature = {
-                        "type": "Feature",
-                        "geometry": geom,
-                        "properties": {
-                            "parktime": null,
-                            "likert": null,
-                            "parkspot": null
-                        }
-                };
-                //layerClickHandler(e);
-                //layer.on('click', layerClickHandler); //other: "mouseover", "click"
-                //only add data to "geojson" if user has never clicked on
-                //the postal area being clicked
-                if(uniqueZipCode(e.layer.feature.properties.posti_alue) === true){
-                    geojson.addData(geojsonFeature);
+                // if statement tests if the following class is open. It gets
+                // value 1 if it is, otherwise 0. This prevents inadvertent
+                // additions of Polygons when clicking away from the popup
+                if($(".leaflet-popup-content-wrapper").length === 0){
+                    var layer = e.layer;
+                    var pol = layer.toGeoJSON();
+                    var geom = pol.geometry;
+                    //console.log(leafletPip.pointInLayer(e.latlng, postal));
+                    //console.log(pol);
+                    //console.log(geom);
+                    var geojsonFeature = {
+                            "type": "Feature",
+                            "geometry": geom,
+                            "properties": {
+                                "parktime": null,
+                                "likert": null,
+                                "parkspot": null
+                            }
+                    };
+                    //layerClickHandler(e);
+                    //layer.on('click', layerClickHandler); //other: "mouseover", "click"
+                    //only add data to "geojson" if user has never clicked on
+                    //the postal area being clicked
+                    if(uniqueZipCode(e.layer.feature.properties.posti_alue) === true){
+                        geojson.addData(geojsonFeature);
+                    } else {
+                        //do nothin
+                    }
                 } else {
                     //do nothin
                 }

@@ -58,7 +58,6 @@ and open the template in the editor.
     //OLIS KIVA -CLASS
     //**Disabled submit button ei jostain syystä estä vetämistä tai mousezoomia
 
-
     //070319 New direction of survey. Use Polygons for popups.
     //010319 areMarkersFinished() toimii, mutta ei oo asetettu tänne koodiin minnekään
     //050319 areMarkersFinished(), pan to unfinished saattaa olla buginen. Voit 
@@ -193,14 +192,14 @@ and open the template in the editor.
             });
             
             // Initialise empty GeoJSON to be populated by user with responses
-
             var geojson = L.geoJson({
                 "type": "FeatureCollection",
                 "features": []
                 },{
                     onEachFeature:
                             function (feature, layer){
-                                layer.on('click', layerClickHandler);                           
+                                layer.on("layeradd", console.log(layer));
+                                layer.on('click', layerClickHandler);
 //                                layer.on('mouseover', markerColorListener); //"add" toimii tässä!! jos jotain tarvetta josku
 //                                
 //                                //set incomplete icon at start
@@ -210,8 +209,8 @@ and open the template in the editor.
 //                                }
                             }
                 }).addTo(mymap);
-            
-            
+
+    
             // IMPORT POLYGON GEOJSONS
             var postal = new L.GeoJSON.AJAX(
                     "pno_research_area.geojson", {
@@ -258,21 +257,22 @@ and open the template in the editor.
                 postal.bringToFront();
                 geojson.bringToFront();
             });
-            
+
             //Make sure user can't spam clicks/taps on one Polygon (it breaks
             //the "save changes" button. Simply see if variable state is true
             //or false
-//            var popupState = false;
-//            mymap.on("click", function(e){
-//                if(popupState === false){
-//                    console.log("popupstate false, eli anna avata popuppi");
-//                    popupState = true;
-//                } else {
-//                    console.log("popuppistate true, sulje popuppi enne ku mitään tapahtuu");
-//                    mymap.closePopup();
-//                    popupState = false;
-//                }
-//            });
+            var popupState = false;
+            mymap.on("click", function(e){
+                if(popupState === false){
+                    console.log("popupstate false, eli anna avata popuppi");
+                    popupState = true;
+                } else {
+                    console.log("popuppistate true, sulje popuppi enne ku mitään tapahtuu");
+                    mymap.closePopup();
+                    popupState = false;
+                }
+            });
+    
 
             // Add additional header text to layer control
             $('<p id="controlTitle1"><strong tkey="lang_basemap">Basemaps<strong></p>').insertBefore('div.leaflet-control-layers-base');
@@ -299,48 +299,28 @@ and open the template in the editor.
             //Listen to current click on geojson layer named "geojson"
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
             function layerClickHandler (e) {
-                console.log("layerclick");
-                console.log(e);
+
                 //MARKER LOCATION INTERSECTED WITH OVERLAY LAYERS
                 //Check with conditional statement what to print on popup.
                 //Command delete is necessary to remove unwanted values in popup 
                 //when first placing popup on research area and then placing a 
                 //popup outside. This would result to an erroneous result
+                hitPostal = findIntersection(e.latlng, postal);
                 
-        
-//                hitPostal = findIntersection(e.latlng, postal);
-                
-//                if (hitPostal === ""){
-//                    html = '<font size="2" color="red" style="line-height: 30px;"><center><strong tkey="lang_outsideResearch">Outside research area!</strong></center></font>';
-//                } else if (hitPostal !== "") {
-//                    //take note of the following line and its string formatting
-//                    //`${variableName}`. Also take note that string formatting
-//                    //needs grave accents ``.
-//                    html = `<div tkey="lang_zipArea">Zip code area:</div> ${hitPostal[0].feature.properties.nimi}, ${hitPostal[0].feature.properties.posti_alue}`;
-//                    delete hitPostal;
-//                }
-                try{
-                    html = `<div tkey="lang_zipArea">Zip code area:</div> ${e.target.feature.properties.nimi}, ${e.target.feature.properties.posti_alue}`;
-                } catch(err){
-                    html = `<div tkey="lang_zipArea">Zip code area:</div> ${e.layer.feature.properties.nimi}, ${e.layer.feature.properties.posti_alue}`;
+                if (hitPostal === ""){
+                    html = '<font size="2" color="red" style="line-height: 30px;"><center><strong tkey="lang_outsideResearch">Outside research area!</strong></center></font>';
+                } else if (hitPostal !== "") {
+                    //take note of the following line and its string formatting
+                    //`${variableName}`. Also take note that string formatting
+                    //needs grave accents ``.
+                    html = `<div tkey="lang_zipArea">Zip code area:</div> ${hitPostal[0].feature.properties.nimi}, ${hitPostal[0].feature.properties.posti_alue}`;
+                    delete hitPostal;
                 }
 
-                try {
-                    var marker = e.target,
-                            properties = e.target.feature.properties;
-                    console.log("try marker");
-                    console.log(marker);
-                    console.log("try properties");
-                    console.log(properties);
-                } catch(err){
-                    var marker = e.layer,
-                            properties = e.layer.feature.properties;
-                    console.log("catch marker");
-                    console.log(marker);
-                    console.log("catch properties");
-                    console.log(properties);
-                };
-
+                var marker = e.target,
+                        properties = e.target.feature.properties;
+                
+                console.log(properties);
                 
                 if(marker.hasOwnProperty('_popup')){
                     marker.unbindPopup();
@@ -359,6 +339,14 @@ and open the template in the editor.
                     //e.target.setIcon(completeIcon);
                 }
                 marker.openPopup();
+
+                //use jQuery to listen to current popup and its close button.
+                //This way we can communicate popupState correctly with that
+                //button.
+                $("a.leaflet-popup-close-button").one('click', function(e){
+                    console.log("pressed x");
+                    popupState = false;
+                });
 
                 // keep language up to date with var currentLang. currentLang
                 // is updated in beginning of this script file when determining
@@ -404,6 +392,7 @@ and open the template in the editor.
                 var buttonSubmit = L.DomUtil.get('button-submit');
                 L.DomEvent.addListener(buttonSubmit, "click", function (e){
                     marker.closePopup();
+                    popupState = false; //make sure user does not spam
                 });
             }
     
@@ -531,7 +520,6 @@ and open the template in the editor.
             L.DomEvent.on(buttonsubmitall, 'dblclick', function(e){
                 L.DomEvent.stopPropagation(e);
             });
-    
             sendBox.getContainer().addEventListener('mouseover', function(){
                 mymap.dragging.disable();
                 mymap.scrollWheelZoom.disable();
@@ -541,7 +529,6 @@ and open the template in the editor.
                 mymap.scrollWheelZoom.enable();
             });
 
-            
             
             // "submit records" button functionality uses jQuery UI
             // Copying objects in JS is not straightforward and for that reason
@@ -613,32 +600,27 @@ and open the template in the editor.
 
             //On layer click on "postal", initialise "geojsonFeature" and add it 
             //to the "geojson" layer.
-            postal.on("click", function (layer, feature) {
-                console.log("postal on click, layer");
-                console.log(layer);
-                //var layer = e.layer;
-                //var pol = layer.toGeoJSON();
-                var pol = layer.layer.feature.geometry;
-                //var geom = pol.geometry;
+            postal.on("click", function (e) {
+                var layer = e.layer;
+                var pol = layer.toGeoJSON();
+                var geom = pol.geometry;
                 //console.log(leafletPip.pointInLayer(e.latlng, postal));
-                //console.log(e);
-                //console.log(e.layer);
+                //console.log(pol);
                 //console.log(geom);
                 var geojsonFeature = {
                         "type": "Feature",
-                        "geometry": pol,
+                        "geometry": geom,
                         "properties": {
                             "parktime": null,
                             "likert": null,
                             "parkspot": null
                         }
                 };
-                layerClickHandler(layer);
+                //layerClickHandler(e);
                 //layer.on('click', layerClickHandler); //other: "mouseover", "click"
-                
                 //only add data to "geojson" if user has never clicked on
                 //the postal area being clicked
-                if(uniqueZipCode(layer.layer.feature.properties.posti_alue) === true){
+                if(uniqueZipCode(e.layer.feature.properties.posti_alue) === true){
                     geojson.addData(geojsonFeature);
                 } else {
                     //do nothin

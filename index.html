@@ -260,16 +260,20 @@ and open the template in the editor.
 
             //Make sure user can't spam clicks/taps on one Polygon (it breaks
             //the "save changes" button. Simply see if variable state is true
-            //or false
-            var popupState = false;
+            //or false. Also, make sure clicking on map in a non-reseach area
+            //location will not change the variable
+            var popupState = true;
             mymap.on("click", function(e){
-                if(popupState === false){
-                    console.log("popupstate false, eli anna avata popuppi");
-                    popupState = true;
-                } else {
-                    console.log("popuppistate true, sulje popuppi enne ku mitään tapahtuu");
-                    mymap.closePopup();
-                    popupState = false;
+                outOfBounds = findIntersection(e.latlng, postaldissolve);
+                if(outOfBounds !== ""){
+                    if(popupState === false){
+                        console.log("popupstate false, eli anna avata popuppi");
+                        popupState = true;
+                    } else {
+                        console.log("popuppistate true, sulje popuppi enne ku mitään tapahtuu");
+                        mymap.closePopup();
+                        popupState = false;
+                    }
                 }
             });
     
@@ -601,6 +605,7 @@ and open the template in the editor.
             //On layer click on "postal", initialise "geojsonFeature" and add it 
             //to the "geojson" layer.
             postal.on("click", function (e) {
+                //console.log(e.layer);
                 var layer = e.layer;
                 var pol = layer.toGeoJSON();
                 var geom = pol.geometry;

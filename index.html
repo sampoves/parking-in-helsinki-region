@@ -261,20 +261,20 @@ and open the template in the editor.
             //the "save changes" button. Simply see if variable state is true
             //or false. Also, make sure clicking on map in a non-reseach area
             //location will not change the variable
-            var popupState = true;
-            mymap.on("click", function(e){
-                outOfBounds = findIntersection(e.latlng, postaldissolve);
-                if(outOfBounds !== ""){
-                    if(popupState === false){
-                        console.log("popupstate false, eli anna avata popuppi");
-                        popupState = true;
-                    } else {
-                        console.log("popuppistate true, sulje popuppi enne ku mitään tapahtuu");
-                        mymap.closePopup();
-                        popupState = false;
-                    }
-                }
-            });
+//            var popupState = true;
+//            mymap.on("click", function(e){
+//                outOfBounds = findIntersection(e.latlng, postaldissolve);
+//                if(outOfBounds !== ""){
+//                    if(popupState === false){
+//                        console.log("popupstate false, eli anna avata popuppi");
+//                        popupState = true;
+//                    } else {
+//                        console.log("popuppistate true, sulje popuppi enne ku mitään tapahtuu");
+//                        mymap.closePopup();
+//                        popupState = false;
+//                    }
+//                }
+//            });
     
 
             // Add additional header text to layer control
@@ -302,7 +302,6 @@ and open the template in the editor.
             //Listen to current click on geojson layer named "geojson"
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
             function layerClickHandler (e) {
-                console.log("löysää");
                 //MARKER LOCATION INTERSECTED WITH OVERLAY LAYERS
                 //Check with conditional statement what to print on popup.
                 //Command delete is necessary to remove unwanted values in popup 
@@ -636,6 +635,38 @@ and open the template in the editor.
                     //do nothin
                 }
             });
+            
+            geojson.on("click", function(e){
+//                if($(".leaflet-popup-content").length === 1){
+//                    //mymap.closePopup();
+//                }
+
+//                for (var i in geojson._layers){
+//                    thisLayer = geojson._layers[i];
+//                    //console.log(typeof(thisLayer._popup));
+//                    if(typeof(thisLayer._popup) !== "undefined"){
+//                        //currentId = e.target._leaflet_id;
+//                        //console.log(thisLayer._eventParents[currentId]);
+//                        //console.log(e.target._leaflet_id);
+//                        console.log(e);
+//                        console.log(thisLayer);
+//                    };
+//                };
+                //console.log(e);
+                for(var i in e.target._layers){
+                    thisLayer = e.target._layers[i];
+                    if(typeof(thisLayer._popup) !== "undefined"){
+                        //console.log(thisLayer);
+                        console.log(thisLayer.feature.geometry === e.layer.feature.geometry);
+                        //testaa alla oleva ja että lukemia yksi, sit pitäis rullaa.
+                        //lisäksi miten toi closepopup vois toimii paremmin?
+                        if(thisLayer.feature.geometry === e.layer.feature.geometry){
+                            //mymap.closePopup();
+                        }
+                    }
+                }
+            });
+            
         </script>
         
         <!--JQUERY UI CONTENT-->

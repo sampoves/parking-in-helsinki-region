@@ -148,6 +148,12 @@ and open the template in the editor.
             $(document).ready(function(){
                 if(getCookie("info_closed_once") === "yes"){
                     console.log("Cookie value found, hide survey information popup");
+                    
+                    //these two jQuery commands help prevent creating new
+                    //Polygon records to geojson by preventing geojsonFeature
+                    //creation on "postal.on("click"...)
+                    $("#tabsikkuna").dialog();
+                    $("#tabsikkuna").dialog("close");
                     infoButton.state('infoOpen');
                 } else {
                     //user visiting first time or didn't click X
@@ -606,7 +612,7 @@ and open the template in the editor.
                 // if statement tests if the following class is open. It gets
                 // value 1 if it is, otherwise 0. This prevents inadvertent
                 // additions of Polygons when clicking away from the popup
-                if($(".leaflet-popup-content-wrapper").length === 0){
+                if(($(".leaflet-popup-content-wrapper").length === 0) && ($("#tabsikkuna").is(":visible") === false)){
                     var layer = e.layer;
                     var pol = layer.toGeoJSON();
                     var geom = pol.geometry;
@@ -667,6 +673,11 @@ and open the template in the editor.
                 }
             });
             
+            //Show survey version in jQuery window
+            var survey_version = "Development version 15.3.2019";
+            window.onload = function(){
+                document.getElementById('version').innerHTML = survey_version;
+            };
         </script>
         
         <!--JQUERY UI CONTENT-->
@@ -683,6 +694,7 @@ and open the template in the editor.
                     <li><a href="#tabs-3" tkey="lang_tab3">Käyttöohjeet</a></li>
                 </ul>
                 <div id="tabs-1" class="tabspanel">
+                    <p id="version"></p>
                     <H2 tkey="lang_welcome1">Tervetuloa kyselyyn!</H2>
                     <p tkey="lang_welcome2">Tämän kyselyn tarkoituksena on selvittää kuinka kauan henkilöauton pysäköinti kestää pääkaupunkiseudulla. Kyselyssä huomioidaan pysäköinnin koko prosessi: kuinka kauan pysäköintipaikkaa etsittiin, minne auto pysäköitiin ja missä oli vastaajan todellinen määränpää. Kyselyssä kerättyjä tietoja käytetään Helsingin yliopiston geoinformatiikan pro gradu -tutkimuksessa, josta voit lukea lisää allaolevasta "tarkempaa tietoa kyselystä" -kohdassa.</p>
                     <p tkey="lang_welcome3">Tämä kysely tähtää vaivattomuuteen: Jos et muista pysäköinnin tarkkaa aikaa tai paikkaa, voit syöttää näistä arvion. Voit täyttää kyselyn vaikka jokaisen pääkaupunkiseudulla tapahtuneen henkilöautomatkasi päätteeksi, tai täyttää lomakkeen yhdeltä istumalta monta kertaa.</p>

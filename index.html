@@ -664,16 +664,27 @@ and open the template in the editor.
                     if(typeof(thisLayer._popup) !== "undefined"){
                         //console.log(thisLayer);
                         console.log(thisLayer.feature.geometry === e.layer.feature.geometry);
-                        //testaa alla oleva ja että lukemia yksi, sit pitäis rullaa.
-                        //lisäksi miten toi closepopup vois toimii paremmin?
+                        
+                        //allaoleva poistaa click handlerin nykyisestä popupista
+                        //ja palauttaa sen x sekunnin päästä. Tää ei kuitenkaan
+                        //toimi kuin kerran per polygoni ja toimii muutenkin
+                        //hatarasti jos klikkailee polygonien väleillä
+                        //THIS IS BUGGY
+                        //mahdollinen apu: https://stackoverflow.com/questions/14775011/how-to-add-delay-to-click-on-each-iteration-jquery
                         if(thisLayer.feature.geometry === e.layer.feature.geometry){
-                            //mymap.closePopup();
+                            $(thisLayer).each(function(){
+                                thisLayer.off("click");
+                                setTimeout(function() {
+                                    console.log("timeout alkoi");
+                                    thisLayer.on("click", layerClickHandler);
+                                }, 1000);
+                            });
                         }
                     }
                 }
             });
             
-            //Show survey version in jQuery window
+            //Show survey version in jQuery info window
             var survey_version = "Development version 15.3.2019";
             window.onload = function(){
                 document.getElementById('version').innerHTML = survey_version;

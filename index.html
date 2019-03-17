@@ -658,30 +658,44 @@ and open the template in the editor.
 //                        console.log(thisLayer);
 //                    };
 //                };
-                //console.log(e);
-                for(var i in e.target._layers){
-                    thisLayer = e.target._layers[i];
-                    if(typeof(thisLayer._popup) !== "undefined"){
-                        //console.log(thisLayer);
-                        console.log(thisLayer.feature.geometry === e.layer.feature.geometry);
-                        
-                        //allaoleva poistaa click handlerin nykyisestä popupista
-                        //ja palauttaa sen x sekunnin päästä. Tää ei kuitenkaan
-                        //toimi kuin kerran per polygoni ja toimii muutenkin
-                        //hatarasti jos klikkailee polygonien väleillä
-                        //THIS IS BUGGY
-                        //mahdollinen apu: https://stackoverflow.com/questions/14775011/how-to-add-delay-to-click-on-each-iteration-jquery
-                        if(thisLayer.feature.geometry === e.layer.feature.geometry){
-                            $(thisLayer).each(function(){
-                                thisLayer.off("click");
-                                setTimeout(function() {
-                                    console.log("timeout alkoi");
-                                    thisLayer.on("click", layerClickHandler);
-                                }, 1000);
-                            });
-                        }
-                    }
-                }
+            thisGeom = e.layer.feature.geometry;
+            if(PreviousGeometrySame(thisGeom) === true){
+                //user clicked the same polygon again
+                //TÄÄ NÄYTTÄÄ LUPAAVALTA: KOKEILE LISÄTÄ PREVGEOMSAME-
+                //TOIMINNALLISUUTTA.
+                //TÄLLÄ HETKELLÄ CLOSEPOPUP tarkoittaa, ettei closepopupin jälkeen
+                //samaa polygonii ei saa auki ilman että klikkaa toista polygonii.
+                //ETSI KEINO, JOLLA tää ratkee
+                console.log("same pol clicked");
+                mymap.closePopup();
+            } else {
+                //was different polygon
+            }
+
+                //BUGGY! PROMISING PROTOTYPE
+//                for(var i in e.target._layers){
+//                    thisLayer = e.target._layers[i];
+//                    if(typeof(thisLayer._popup) !== "undefined"){
+//                        //console.log(thisLayer);
+//                        console.log(thisLayer.feature.geometry === e.layer.feature.geometry);
+//                        
+//                        //allaoleva poistaa click handlerin nykyisestä popupista
+//                        //ja palauttaa sen x sekunnin päästä. Tää ei kuitenkaan
+//                        //toimi kuin kerran per polygoni ja toimii muutenkin
+//                        //hatarasti jos klikkailee polygonien väleillä
+//                        //CODE BELOW IS BUGGY
+//                        //mahdollinen apu: https://stackoverflow.com/questions/14775011/how-to-add-delay-to-click-on-each-iteration-jquery
+//                        if(thisLayer.feature.geometry === e.layer.feature.geometry){
+//                            $(thisLayer).each(function(){
+//                                thisLayer.off("click");
+//                                setTimeout(function() {
+//                                    console.log("timeout alkoi");
+//                                    thisLayer.on("click", layerClickHandler);
+//                                }, 1000);
+//                            });
+//                        }
+//                    }
+//                }
             });
             
             //Show survey version in jQuery info window

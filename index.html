@@ -659,14 +659,14 @@ and open the template in the editor.
 //                    };
 //                };
             thisGeom = e.layer.feature.geometry;
-            if(PreviousGeometrySame(thisGeom) === true){
+            if(previousGeometrySame(thisGeom) === true){
                 //user clicked the same polygon again
                 //TÄÄ NÄYTTÄÄ LUPAAVALTA: KOKEILE LISÄTÄ PREVGEOMSAME-
                 //TOIMINNALLISUUTTA.
                 //TÄLLÄ HETKELLÄ CLOSEPOPUP tarkoittaa, ettei closepopupin jälkeen
                 //samaa polygonii ei saa auki ilman että klikkaa toista polygonii.
                 //ETSI KEINO, JOLLA tää ratkee
-                console.log("same pol clicked");
+                //console.log("same pol clicked");
                 mymap.closePopup();
             } else {
                 //was different polygon

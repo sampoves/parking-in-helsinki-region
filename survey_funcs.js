@@ -286,3 +286,44 @@ function uniqueZipCode(thisZipCode){
         return true;
     }
 }
+
+function previousGeometrySame(currentGeom) {
+    if (typeof prevGeom === 'undefined') {
+        // first time running this function, instantiate prevGeom with arbitrary
+        // value;
+        prevGeom = 1;
+    } else {
+        //prevGeom exists, do nothin
+    }
+    if (typeof timesClicked === 'undefined') {
+        // first time running this function, instantiate timesClicked with value
+        // zero
+        timesClicked = 0;
+    } else {
+        // timesClicked exists, do nothin
+    }
+    //check if previous geometry is the same as current geometry
+    if(prevGeom === currentGeom){
+        prevGeom = currentGeom;
+        console.log("prevgeom same as currentgeom");
+        if(timesClicked !== 0) {
+            //the same geometry is clicked once already
+            console.log("same geometry already clicked once before, allow popup");
+            //revert timesClicked to zero
+            timesClicked = 0;
+            return false;
+        } else {
+            //first time clicked on same geometry
+            console.log("first time clicked on same polygon, prevent popup");
+            // indicate that same polygon has been clicked once
+            timesClicked = 1;
+            return true;
+        }
+    } else {
+        prevGeom = currentGeom;
+        console.log("prevgeom NOT SAME currentgeom");
+        //make sure timesClicked value 1 does not transfer to other Polygons
+        timesClicked = 0;
+        return false;
+    }
+}

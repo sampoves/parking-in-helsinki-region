@@ -296,6 +296,7 @@ and open the template in the editor.
                 //when first placing popup on research area and then placing a 
                 //popup outside. This would result to an erroneous result
                 hitPostal = findIntersection(e.latlng, postal);
+                thisZip = hitPostal[0].feature.properties.posti_alue;
                 
                 if (hitPostal === ""){
                     html = '<font size="2" color="red" style="line-height: 30px;"><center><strong tkey="lang_outsideResearch">Outside research area!</strong></center></font>';
@@ -398,11 +399,11 @@ and open the template in the editor.
                 //DELETE BUTTON
                 var buttonDelete = L.DomUtil.get('button-delete');
                 L.DomEvent.addListener(buttonDelete, "click", function (e){
-                    //marker.closePopup();
-                    console.log(marker);
-                    //FIX THIS:
-                    //removal works, but same Polygon can't be selected on
-                    //geojson after initial removal.
+
+                    //Using class TrackZipCodes we are able to keep track of
+                    //zip codes user has clicked on. They can also be removed,
+                    //which is important for the functionality of this survey.
+                    usersZipCodes.removeZipCode(window.thisZip);
                     geojson.removeLayer(marker);
                     //the following value manipulates previousGeometrySame(). 
                     //It allows user to exit popup dialog with x, and then 
@@ -622,7 +623,6 @@ and open the template in the editor.
             //On layer click on "postal", initialise "geojsonFeature" and add it 
             //to the "geojson" layer.
             postal.on("click", function (e) {
-                console.log("clikcy");
                 // if statement tests if the following class is open. It gets
                 // value 1 if it is, otherwise 0. This prevents inadvertent
                 // additions of Polygons when clicking away from the popup
@@ -630,9 +630,6 @@ and open the template in the editor.
                     var layer = e.layer;
                     var pol = layer.toGeoJSON();
                     var geom = pol.geometry;
-                    //console.log(leafletPip.pointInLayer(e.latlng, postal));
-                    //console.log(pol);
-                    //console.log(geom);
                     var geojsonFeature = {
                             "type": "Feature",
                             "geometry": geom,
@@ -646,16 +643,12 @@ and open the template in the editor.
                     //layer.on('click', layerClickHandler); //other: "mouseover", "click"
                     //only add data to "geojson" if user has never clicked on
                     //the postal area being clicked
-                    if(usersZipCodes.addUniqueZipCode(e.layer.feature.properties.posti_alue) === true){
+                    if(usersZipCodes.addUniqueZipCode(
+                            e.layer.feature.properties.posti_alue) === true){
                         geojson.addData(geojsonFeature);
                     } else {
                         //do nothin
                     }
-//                    if(uniqueZipCode(e.layer.feature.properties.posti_alue) === true){
-//                        geojson.addData(geojsonFeature);
-//                    } else {
-//                        //do nothin
-//                    }
                 } else {
                     //do nothin
                 }

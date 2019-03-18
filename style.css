@@ -106,6 +106,15 @@ li:first-line {
 }
 
 
+/*VERSION TEXT IN INFO DIALOG*/
+#version {
+    font-size: small;
+    color: grey;
+    margin-top: -4px;
+    margin-bottom: -4px;
+}
+
+
 
 /*SENDBOX STYLE*/
 .sendbox {
@@ -195,6 +204,16 @@ button:hover {
   background-color: #4CAF50; /* Green */
   color: white;
 }
+
+#button-delete {
+    border: 2px solid #ff0000; /* Red */
+}
+
+#button-delete:hover {
+    background-color: #ff0000; /* Red */
+    color: white;
+}
+
 
 /*SUBMIT RECORDS*/
 #buttonsubmitall:enabled {

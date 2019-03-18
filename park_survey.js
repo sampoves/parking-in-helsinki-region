@@ -50,4 +50,7 @@ var popupContent =
     
     //submit button
     '<button id="button-submit" type="button" tkey="lang_savechanges">Save Changes</button>'+
+            
+    //delete current feature button
+    '<button id="button-delete" type="button" tkey="lang_deletefeature">Remove These Records</button>'+
 '</form>';

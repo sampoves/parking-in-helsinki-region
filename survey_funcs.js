@@ -185,7 +185,7 @@ function areMarkersFinished(){
         theseAttrs = Object.keys(theseProps);
         thisIterationNulls = 0; //for fit all unfinished markers thing
 
-        for (var i = 0; i < attrs.length; i += 1){
+        for (var i = 0; i < theseAttrs.length; i += 1){
             //implement test whether layer is interactive or not
             //check submit button which changed interactivity to false
             attr = theseAttrs[i];
@@ -222,11 +222,12 @@ function areMarkersFinished(){
         //of array unfinishedMarkers and var thisIterationNulls and a if statement
         //to check if current layer was unfinished. Then add unfinished markers
         //to featureGroup group, and fit them on map here.
-        try{mymap.fitBounds(group.getBounds(), {maxZoom: 14});
-        }
-        catch(error){
-            console.log("featureGroup 'group' is empty, don't pan view.");
-        }
+        //UNCOMMENT THIS TO ENABLE PAN TO UNFINISHED POLS
+//        try{mymap.fitBounds(group.getBounds(), {maxZoom: 14});
+//        }
+//        catch(error){
+//            console.log("featureGroup 'group' is empty, don't pan view.");
+//        }
         
         //disable() has to be here for the case user wipes a field and marker
         //regresses to unfinished.

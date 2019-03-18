@@ -53,7 +53,11 @@ and open the template in the editor.
     //**Lähetä-nappi ei toimi jos markerit ei valmiita (lisää toiminnallisuus polygoneihin)
     //**Kirjoita ajantasaiset ohjeet Jquery UI -ikkunaan
     //**kysymysten lopullinen muoto pitää päättää
-    //**deletenappi lisätty, mutta samaa aluetta ei voi lisää enää uudelleen
+    //**when popup open, prevent clicking (and immediately opening popup on
+    //geojson-layer. this already works when popup is open and clicking postal.
+    //**areMarkersFinished() is checked when pressing x or save changes. On hieman
+    //hutera tsekkailu muuten. Paranna tämä.
+    //**highlightaus geojson-layerille
 
     //OLIS KIVA -CLASS
     //**Disabled submit button ei jostain syystä estä vetämistä tai mousezoomia
@@ -290,6 +294,7 @@ and open the template in the editor.
             //Listen to current click on geojson layer named "geojson"
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
             function layerClickHandler (e) {
+                areMarkersFinished();
                 //MARKER LOCATION INTERSECTED WITH OVERLAY LAYERS
                 //Check with conditional statement what to print on popup.
                 //Command delete is necessary to remove unwanted values in popup 
@@ -336,7 +341,7 @@ and open the template in the editor.
                 //previousGeometrySame().
                 $("a.leaflet-popup-close-button").one('click', function(e){
                     console.log("pressed x");
-                    
+                    areMarkersFinished();
                     //the following value manipulates previousGeometrySame(). 
                     //It allows user to exit popup dialog with x, and then 
                     //immediately click on the same polygon to open the same 
@@ -388,7 +393,7 @@ and open the template in the editor.
                 var buttonSubmit = L.DomUtil.get('button-submit');
                 L.DomEvent.addListener(buttonSubmit, "click", function (e){
                     marker.closePopup();
-                    
+                    areMarkersFinished();
                     //the following value manipulates previousGeometrySame(). 
                     //It allows user to exit popup dialog with x, and then 
                     //immediately click on the same polygon to open the same 
@@ -669,7 +674,7 @@ and open the template in the editor.
             });
             
             //Show survey version in jQuery info window
-            var survey_version = "Development version 15.3.2019";
+            var survey_version = "Development version 19.3.2019";
             window.onload = function(){
                 document.getElementById('version').innerHTML = survey_version;
             };

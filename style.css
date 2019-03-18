@@ -207,6 +207,7 @@ button:hover {
 
 #button-delete {
     border: 2px solid #ff0000; /* Red */
+    margin-top: 15px;
 }
 
 #button-delete:hover {

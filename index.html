@@ -52,7 +52,8 @@ and open the template in the editor.
     //**SCRIPT omaan js-tiedostoon
     //**Lähetä-nappi ei toimi jos markerit ei valmiita (lisää toiminnallisuus polygoneihin)
     //**Kirjoita ajantasaiset ohjeet Jquery UI -ikkunaan
-    //**lisää deletenappi
+    //**kysymysten lopullinen muoto pitää päättää
+    //**deletenappi lisätty, mutta samaa aluetta ei voi lisää enää uudelleen
 
     //OLIS KIVA -CLASS
     //**Disabled submit button ei jostain syystä estä vetämistä tai mousezoomia
@@ -392,6 +393,22 @@ and open the template in the editor.
                     //immediately click on the same polygon to open the same 
                     //popup.
                     prevGeom = 1;
+                });
+                
+                //DELETE BUTTON
+                var buttonDelete = L.DomUtil.get('button-delete');
+                L.DomEvent.addListener(buttonDelete, "click", function (e){
+                    //marker.closePopup();
+                    console.log(marker);
+                    //FIX THIS:
+                    //removal works, but same Polygon can't be selected on
+                    //geojson after initial removal.
+                    geojson.removeLayer(marker);
+                    //the following value manipulates previousGeometrySame(). 
+                    //It allows user to exit popup dialog with x, and then 
+                    //immediately click on the same polygon to open the same 
+                    //popup.
+                    //prevGeom = 1;
                 });
             }
     

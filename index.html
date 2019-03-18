@@ -643,59 +643,17 @@ and open the template in the editor.
             });
             
             geojson.on("click", function(e){
-//                if($(".leaflet-popup-content").length === 1){
-//                    //mymap.closePopup();
-//                }
-
-//                for (var i in geojson._layers){
-//                    thisLayer = geojson._layers[i];
-//                    //console.log(typeof(thisLayer._popup));
-//                    if(typeof(thisLayer._popup) !== "undefined"){
-//                        //currentId = e.target._leaflet_id;
-//                        //console.log(thisLayer._eventParents[currentId]);
-//                        //console.log(e.target._leaflet_id);
-//                        console.log(e);
-//                        console.log(thisLayer);
-//                    };
-//                };
-            thisGeom = e.layer.feature.geometry;
-            if(previousGeometrySame(thisGeom) === true){
-                //user clicked the same polygon again
-                //TÄÄ NÄYTTÄÄ LUPAAVALTA: KOKEILE LISÄTÄ PREVGEOMSAME-
-                //TOIMINNALLISUUTTA.
-                //TÄLLÄ HETKELLÄ CLOSEPOPUP tarkoittaa, ettei closepopupin jälkeen
-                //samaa polygonii ei saa auki ilman että klikkaa toista polygonii.
-                //ETSI KEINO, JOLLA tää ratkee
-                //console.log("same pol clicked");
-                mymap.closePopup();
-            } else {
-                //was different polygon
-            }
-
-                //BUGGY! PROMISING PROTOTYPE
-//                for(var i in e.target._layers){
-//                    thisLayer = e.target._layers[i];
-//                    if(typeof(thisLayer._popup) !== "undefined"){
-//                        //console.log(thisLayer);
-//                        console.log(thisLayer.feature.geometry === e.layer.feature.geometry);
-//                        
-//                        //allaoleva poistaa click handlerin nykyisestä popupista
-//                        //ja palauttaa sen x sekunnin päästä. Tää ei kuitenkaan
-//                        //toimi kuin kerran per polygoni ja toimii muutenkin
-//                        //hatarasti jos klikkailee polygonien väleillä
-//                        //CODE BELOW IS BUGGY
-//                        //mahdollinen apu: https://stackoverflow.com/questions/14775011/how-to-add-delay-to-click-on-each-iteration-jquery
-//                        if(thisLayer.feature.geometry === e.layer.feature.geometry){
-//                            $(thisLayer).each(function(){
-//                                thisLayer.off("click");
-//                                setTimeout(function() {
-//                                    console.log("timeout alkoi");
-//                                    thisLayer.on("click", layerClickHandler);
-//                                }, 1000);
-//                            });
-//                        }
-//                    }
-//                }
+                thisGeom = e.layer.feature.geometry;
+                if(previousGeometrySame(thisGeom) === true){
+                    //previousGeometrySame() only returns true if the previous click
+                    //on the layer "geojson" was the same as current one, and this
+                    //same polygon has been clicked only once before. In short, if
+                    //a same Polygon is clicked two consecutive times, the second
+                    //click closes the active popup.
+                    mymap.closePopup();
+                } else {
+                    //was different polygon, do nothin
+                }
             });
             
             //Show survey version in jQuery info window

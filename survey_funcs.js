@@ -287,6 +287,12 @@ function uniqueZipCode(thisZipCode){
     }
 }
 
+// Make sure user is not clicking on the same Polygon two consecutive times.
+// In this code the survey popup behaves erratically if user is allowed to
+// spam the clicks. The function remembers the previous Polygon clicked. In
+// addition to that the function keeps track of how many times the same Polygon
+// is clicked. This is useful as this function is used in conjunction with
+// the command mymap.closePopup()
 function previousGeometrySame(currentGeom) {
     if (typeof prevGeom === 'undefined') {
         // first time running this function, instantiate prevGeom with arbitrary
@@ -302,27 +308,29 @@ function previousGeometrySame(currentGeom) {
     } else {
         // timesClicked exists, do nothin
     }
-    //check if previous geometry is the same as current geometry
+    // Check if previous geometry is the same as current geometry
+    // Previous Polygon is the same as current one
     if(prevGeom === currentGeom){
         prevGeom = currentGeom;
-        console.log("prevgeom same as currentgeom");
+        console.log("Prevgeom same as currentgeom");
         if(timesClicked !== 0) {
-            //the same geometry is clicked once already
-            console.log("same geometry already clicked once before, allow popup");
+            //The same geometry has been clicked once already, allow popup
+            console.log("Same geometry already clicked once before, allow popup");
             //revert timesClicked to zero
             timesClicked = 0;
             return false;
         } else {
-            //first time clicked on same geometry
+            // First click on the same Polygon, prevent popup.
             console.log("first time clicked on same polygon, prevent popup");
-            // indicate that same polygon has been clicked once
+            // Indicate that same polygon has been clicked once
             timesClicked = 1;
             return true;
         }
+    // previous Polygon and the current one do not match
     } else {
         prevGeom = currentGeom;
         console.log("prevgeom NOT SAME currentgeom");
-        //make sure timesClicked value 1 does not transfer to other Polygons
+        // Make sure timesClicked value 1 does not transfer to other Polygons
         timesClicked = 0;
         return false;
     }

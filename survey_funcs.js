@@ -287,6 +287,39 @@ function uniqueZipCode(thisZipCode){
     }
 }
 
+class TrackZipCodes {
+    constructor() {
+        this.zipCodeList = [];
+    }
+    addUniqueZipCode(zipCode) {
+        //append to list if is not in list
+        if(this.zipCodeList.includes(zipCode)){
+            return false;
+        } else {
+            this.zipCodeList.push(zipCode);
+            return true;
+        }
+    }
+    removeZipCode(zipCode) {
+        //append to list if is not in list
+        if(this.zipCodeList.includes(zipCode)){
+            this.zipCodeList.splice(this.zipCodeList.indexOf(zipCode), 1 );
+            console.log("Removed " + zipCode);
+        } else {
+            console.log("Did not find zip code " + zipCode);
+            //not found, do nothin
+        }
+    }
+    listZipCodes() {
+        return this.zipCodeList;
+    }
+}
+    
+
+
+
+
+
 // Make sure user is not clicking on the same Polygon two consecutive times.
 // In this code the survey popup behaves erratically if user is allowed to
 // spam the clicks. The function remembers the previous Polygon clicked. In

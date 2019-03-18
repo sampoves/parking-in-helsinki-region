@@ -614,9 +614,15 @@ and open the template in the editor.
             mymap.doubleClickZoom.disable(); 
 
 
+
+            //initialise TrackZipCodes object for keeping track of unique zip
+            //codes
+            usersZipCodes = new TrackZipCodes();
+
             //On layer click on "postal", initialise "geojsonFeature" and add it 
             //to the "geojson" layer.
             postal.on("click", function (e) {
+                console.log("clikcy");
                 // if statement tests if the following class is open. It gets
                 // value 1 if it is, otherwise 0. This prevents inadvertent
                 // additions of Polygons when clicking away from the popup
@@ -640,11 +646,16 @@ and open the template in the editor.
                     //layer.on('click', layerClickHandler); //other: "mouseover", "click"
                     //only add data to "geojson" if user has never clicked on
                     //the postal area being clicked
-                    if(uniqueZipCode(e.layer.feature.properties.posti_alue) === true){
+                    if(usersZipCodes.addUniqueZipCode(e.layer.feature.properties.posti_alue) === true){
                         geojson.addData(geojsonFeature);
                     } else {
                         //do nothin
                     }
+//                    if(uniqueZipCode(e.layer.feature.properties.posti_alue) === true){
+//                        geojson.addData(geojsonFeature);
+//                    } else {
+//                        //do nothin
+//                    }
                 } else {
                     //do nothin
                 }

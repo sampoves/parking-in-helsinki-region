@@ -314,6 +314,9 @@ class TrackZipCodes {
     listZipCodes() {
         return this.zipCodeList;
     }
+    clearZipCodes() {
+        this.zipCodeList = [];
+    }
 }
     
 

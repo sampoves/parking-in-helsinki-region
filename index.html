@@ -50,12 +50,11 @@ and open the template in the editor.
         <script>
     //TÄRKEÄ TODO:
     //**SCRIPT omaan js-tiedostoon
-    //**Lähetä-nappi ei toimi jos markerit ei valmiita (lisää toiminnallisuus polygoneihin)
     //**Kirjoita ajantasaiset ohjeet Jquery UI -ikkunaan
     //**kysymysten lopullinen muoto pitää päättää
     //**when popup open, prevent clicking (and immediately opening popup on
     //geojson-layer. this already works when popup is open and clicking postal.
-    //**areMarkersFinished() is checked when pressing x or save changes. On hieman
+    //**areMarkersFinished() toimii save changesissa ja x:ssä. On hieman
     //hutera tsekkailu muuten. Paranna tämä.
     //**highlightaus geojson-layerille
 
@@ -573,6 +572,7 @@ and open the template in the editor.
                             $("#sucdialog").dialog("option", "position", {my: "center", at: "center", of: window});
                         });
                     });
+                    usersZipCodes.clearZipCodes();
                     geojson.clearLayers();
                     
                     //in this context func makes sure button is disabled, to 
@@ -628,6 +628,14 @@ and open the template in the editor.
             //On layer click on "postal", initialise "geojsonFeature" and add it 
             //to the "geojson" layer.
             postal.on("click", function (e) {
+                
+                //these two values help previousGeometrySame() function make
+                //right decisions. Aforementioned function does not come to
+                //correct conclusions, if clicking on geojson layer and then
+                //clickin postal, and then again clicking geojson.
+                timesClicked = 0;
+                prevGeom = 1;
+                
                 // if statement tests if the following class is open. It gets
                 // value 1 if it is, otherwise 0. This prevents inadvertent
                 // additions of Polygons when clicking away from the popup

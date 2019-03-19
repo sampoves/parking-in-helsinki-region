@@ -57,6 +57,8 @@ and open the template in the editor.
     //geojson-layer. this already works when popup is open and clicking postal.
     //**areMarkersFinished() toimii save changesissa ja x:ssä. On hieman
     //hutera tsekkailu muuten. Paranna tämä.
+    //previousGeometrySame() geojson-klikkailuongelma. nopea klikkailu geojson-
+    //layereiden läpi myös rikkoo tallenna tiedot -napin ja poista nämä tiedot-napin
 
     //OLIS KIVA -CLASS
     //**Disabled submit button ei jostain syystä estä vetämistä tai mousezoomia
@@ -582,44 +584,8 @@ and open the template in the editor.
                 });
             };
             
-
-          
-            // OLDSURVEY
-            // this file has clear all layers code:
-            // https://github.com/Leaflet/Leaflet.draw/blob/develop/src/edit/EditToolbar.js
-            // Initialise drawing tools, disable a bunch of feature types
-//            var draw_control = new L.Control.Draw({
-//                "edit": {
-//                    "featureGroup": geojson
-//                },
-//                "draw": {
-//                    marker: {
-//                        icon: new L.Icon({
-//                            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
-//                            shadowUrl: 'http://cdn.leafletjs.com/leaflet-0.6.4/images/marker-shadow.png',
-//                            iconAnchor: [12, 40],
-//                            popupAnchor: [0, -41]
-//                        }),
-//                        shapeOptions: {
-//                            clickable: true
-//                        }
-//                        
-//                    },
-//                    polyline: false,
-//                    polygon: false,
-//                    rectangle: false,
-//                    circle: false,
-//                    circlemarker: false
-//                }
-//            }).addTo(mymap);
-
-            
-            // OLDSURVEY
-
-
             // Disable double click zoom and enable double click marker creation
             mymap.doubleClickZoom.disable(); 
-
 
 
             //initialise TrackZipCodes object for keeping track of unique zip
@@ -633,8 +599,13 @@ and open the template in the editor.
                 //right decisions. Aforementioned function does not come to
                 //correct conclusions, if clicking on geojson layer and then
                 //clickin postal, and then again clicking geojson.
-                timesClicked = 0;
-                prevGeom = 1;
+                
+                if((typeof(timesClicked) === "undefined") && (typeof(prevGeom) === "undefined")){
+                    //do nothin
+                } else {
+                    timesClicked = 0;
+                    prevGeom = 1;
+                }
                 
                 // if statement tests if the following class is open. It gets
                 // value 1 if it is, otherwise 0. This prevents inadvertent
@@ -680,7 +651,8 @@ and open the template in the editor.
                     //was different polygon, do nothin
                 }
             });
-            
+
+ 
             //Show survey version in jQuery info window
             var survey_version = "Development version 19.3.2019";
             window.onload = function(){

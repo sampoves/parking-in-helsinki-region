@@ -382,23 +382,21 @@ class TrackZipCodes {
 // is clicked. This is useful as this function is used in conjunction with
 // the command mymap.closePopup()
 function previousGeometrySame(currentGeom) {
-    //because postal.on("click") has prevGeom = 1, the next 2 if statements never
-    //fire
-//    if (typeof prevGeom === 'undefined') {
-//        // first time running this function, instantiate prevGeom with arbitrary
-//        // value;
-//        prevGeom = 1;
-//    } else {
-//        //prevGeom exists, do nothin
-//    }
-//    if (typeof timesClicked === 'undefined') {
-//        // first time running this function, instantiate timesClicked with value
-//        // zero
-//        timesClicked = 0;
-//    } else {
-//        // timesClicked exists, do nothin
-//    }
-//    
+    if (typeof prevGeom === 'undefined') {
+        // first time running this function, instantiate prevGeom with arbitrary
+        // value;
+        prevGeom = 1;
+    } else {
+        //prevGeom exists, do nothin
+    }
+    if (typeof timesClicked === 'undefined') {
+        // first time running this function, instantiate timesClicked with value
+        // zero
+        timesClicked = 0;
+    } else {
+        // timesClicked exists, do nothin
+    }
+    
     // Check if previous geometry is the same as current geometry
     // Previous Polygon is the same as current one
     if(prevGeom === currentGeom){
@@ -426,25 +424,15 @@ function previousGeometrySame(currentGeom) {
         //the infobox is open. If so, return "prevgeom same as currentgeom" 
         //condition
         //
-        if($(".leaflet-popup-content-wrapper").length !== 0){
-            console.log("Popup open, prevent new one");
+        // THIS IS BUGGY. IF === 0, one can fastclick through all geojson layers.
+        //if !== 0, bloorg happens but increases amount of clicks in geojson
+        //think about an alternative for this
+        if($(".leaflet-popup-content-wrapper").length === 0){
+            console.log("BLOORG Popup open, prevent new one");
             timesClicked = 1;
             return true;
         }
-        
-        //Non-functional
-        //
-//        if(($(".leaflet-popup-content-wrapper").length !== 0) &&
-//                ($("#tabsikkuna").is(":visible") === true)){
-//            console.log("2a) prevgeom not same, but popup or infobox open, prevent popup");
-//            //timesClicked = 0;
-//            return true;
-//        } else {
-//            console.log("2b) no popup or infobox open, allow popup");
-//            timesClicked = 0;
-//            return false;
-//        }
-        
+               
         //original else statement:
         // Make sure timesClicked value 1 does not transfer to other Polygons
         console.log("VIKA allow popup");
@@ -453,15 +441,24 @@ function previousGeometrySame(currentGeom) {
     }
 }
 
+//test easier route
+function previousGeometrySame2(currentGeom){
+    
+}
 
-function PopupClosingOps() {
+
+
+function popupClosingOps() {
     for (var i in geojson._layers){
         thisLayer = geojson._layers[i];
         if(thisLayer.hasOwnProperty("_popup")){
-            thisLayer.closePopup();  
-            console.log("isPopupOpen() closed a popup");
-        } else {
-            //do nothin
+            thisPopup = thisLayer.getPopup();
+            console.log(thisPopup.isOpen());
+            //thisLayer.closePopup();
+            //thisLayer.unbindPopup();
+            //console.log("isPopupOpen() closed a popup in id " + i);
+//        } else {
+//            //do nothin
         }
     }
 }

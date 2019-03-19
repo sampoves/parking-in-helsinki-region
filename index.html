@@ -48,6 +48,7 @@ and open the template in the editor.
         <div class="" id="mymap"></div>
             
         <script>
+    //070319 New direction of survey. Use Polygons for popups.
     //TÄRKEÄ TODO:
     //**SCRIPT omaan js-tiedostoon
     //**Kirjoita ajantasaiset ohjeet Jquery UI -ikkunaan
@@ -60,11 +61,6 @@ and open the template in the editor.
     //OLIS KIVA -CLASS
     //**Disabled submit button ei jostain syystä estä vetämistä tai mousezoomia
     //**parempi css ja muut määrittelyt kännyköille
-
-    //070319 New direction of survey. Use Polygons for popups.
-    //010319 areMarkersFinished() toimii, mutta ei oo asetettu tänne koodiin minnekään
-    //050319 areMarkersFinished(), pan to unfinished saattaa olla buginen. Voit 
-    //myös miettiä, onko koko juttu tarpeen
 
             // INITIALISE MAP AND LAYERS
             //initialise map
@@ -319,8 +315,6 @@ and open the template in the editor.
 
                 var marker = e.target,
                         properties = e.target.feature.properties;
-                
-                console.log(properties);
                 
                 if(marker.hasOwnProperty('_popup')){
                     marker.unbindPopup();
@@ -635,7 +629,6 @@ and open the template in the editor.
             //On layer click on "postal", initialise "geojsonFeature" and add it 
             //to the "geojson" layer.
             postal.on("click", function (e) {
-                
                 //these two values help previousGeometrySame() function make
                 //right decisions. Aforementioned function does not come to
                 //correct conclusions, if clicking on geojson layer and then

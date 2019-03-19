@@ -382,20 +382,23 @@ class TrackZipCodes {
 // is clicked. This is useful as this function is used in conjunction with
 // the command mymap.closePopup()
 function previousGeometrySame(currentGeom) {
-    if (typeof prevGeom === 'undefined') {
-        // first time running this function, instantiate prevGeom with arbitrary
-        // value;
-        prevGeom = 1;
-    } else {
-        //prevGeom exists, do nothin
-    }
-    if (typeof timesClicked === 'undefined') {
-        // first time running this function, instantiate timesClicked with value
-        // zero
-        timesClicked = 0;
-    } else {
-        // timesClicked exists, do nothin
-    }
+    //because postal.on("click") has prevGeom = 1, the next 2 if statements never
+    //fire
+//    if (typeof prevGeom === 'undefined') {
+//        // first time running this function, instantiate prevGeom with arbitrary
+//        // value;
+//        prevGeom = 1;
+//    } else {
+//        //prevGeom exists, do nothin
+//    }
+//    if (typeof timesClicked === 'undefined') {
+//        // first time running this function, instantiate timesClicked with value
+//        // zero
+//        timesClicked = 0;
+//    } else {
+//        // timesClicked exists, do nothin
+//    }
+//    
     // Check if previous geometry is the same as current geometry
     // Previous Polygon is the same as current one
     if(prevGeom === currentGeom){
@@ -424,7 +427,7 @@ function previousGeometrySame(currentGeom) {
         //condition
         //
         if($(".leaflet-popup-content-wrapper").length !== 0){
-            console.log("caught neighbor pol click " + timesClicked);
+            console.log("Popup open, prevent new one");
             timesClicked = 1;
             return true;
         }
@@ -444,7 +447,21 @@ function previousGeometrySame(currentGeom) {
         
         //original else statement:
         // Make sure timesClicked value 1 does not transfer to other Polygons
+        console.log("VIKA allow popup");
         timesClicked = 0;
         return false;
+    }
+}
+
+
+function PopupClosingOps() {
+    for (var i in geojson._layers){
+        thisLayer = geojson._layers[i];
+        if(thisLayer.hasOwnProperty("_popup")){
+            thisLayer.closePopup();  
+            console.log("isPopupOpen() closed a popup");
+        } else {
+            //do nothin
+        }
     }
 }

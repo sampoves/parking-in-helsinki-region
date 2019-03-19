@@ -116,26 +116,29 @@ function onParkspotChange(event){
 
 //THIS LISTENS TO MARKER VALUES AND CHANGES MARKER COLOR ON
 //POPUP FILL
-function markerColorListener (feature, layer) {
-    props = feature.target.feature.properties;
-    attrs = Object.keys(props);
-    howManyNulls = 0;
-    for (var i = 0; i < attrs.length; i += 1){
-        attr = attrs[i];
-        value = props[attr];
-        if (value === null || value === ""){
-            howManyNulls += 1;
-        } else {
-            // do nothin
-        }
-    }
-    //console.log(howManyNulls + " mik' tilanne");
-    if (howManyNulls === 0){
-        feature.target.setIcon(completeIcon);
-    } else {
-        feature.target.setIcon(incompleteIcon);
-    }
-};
+//
+//probably obsolete 190319
+//
+//function markerColorListener (feature, layer) {
+//    props = feature.target.feature.properties;
+//    attrs = Object.keys(props);
+//    howManyNulls = 0;
+//    for (var i = 0; i < attrs.length; i += 1){
+//        attr = attrs[i];
+//        value = props[attr];
+//        if (value === null || value === ""){
+//            howManyNulls += 1;
+//        } else {
+//            // do nothin
+//        }
+//    }
+//    //console.log(howManyNulls + " mik' tilanne");
+//    if (howManyNulls === 0){
+//        feature.target.setIcon(completeIcon);
+//    } else {
+//        feature.target.setIcon(incompleteIcon);
+//    }
+//};
 
 
 //run for loop which tests incompleteness of geojson layers.
@@ -397,16 +400,16 @@ function previousGeometrySame(currentGeom) {
     // Previous Polygon is the same as current one
     if(prevGeom === currentGeom){
         prevGeom = currentGeom;
-        console.log("Prevgeom same as currentgeom");
+        console.log("1) Prevgeom same as currentgeom");
         if(timesClicked !== 0) {
             //The same geometry has been clicked once already, allow popup
-            console.log("Same geometry already clicked once before, allow popup");
+            console.log("1a) Same geometry already clicked once before, allow popup");
             //revert timesClicked to zero
             timesClicked = 0;
             return false;
         } else {
             // First click on the same Polygon, prevent popup.
-            console.log("first time clicked on same polygon, prevent popup");
+            console.log("1b) first time clicked on same polygon, prevent popup");
             // Indicate that same polygon has been clicked once
             timesClicked = 1;
             return true;
@@ -414,7 +417,32 @@ function previousGeometrySame(currentGeom) {
     // previous Polygon and the current one do not match
     } else {
         prevGeom = currentGeom;
-        console.log("prevgeom NOT SAME currentgeom");
+        console.log("2) prevgeom NOT SAME currentgeom");
+        
+        //even if prevgeom is not the same as currentgeom, test if a popup or
+        //the infobox is open. If so, return "prevgeom same as currentgeom" 
+        //condition
+        //
+        if($(".leaflet-popup-content-wrapper").length !== 0){
+            console.log("caught neighbor pol click " + timesClicked);
+            timesClicked = 1;
+            return true;
+        }
+        
+        //Non-functional
+        //
+//        if(($(".leaflet-popup-content-wrapper").length !== 0) &&
+//                ($("#tabsikkuna").is(":visible") === true)){
+//            console.log("2a) prevgeom not same, but popup or infobox open, prevent popup");
+//            //timesClicked = 0;
+//            return true;
+//        } else {
+//            console.log("2b) no popup or infobox open, allow popup");
+//            timesClicked = 0;
+//            return false;
+//        }
+        
+        //original else statement:
         // Make sure timesClicked value 1 does not transfer to other Polygons
         timesClicked = 0;
         return false;

@@ -56,7 +56,6 @@ and open the template in the editor.
     //geojson-layer. this already works when popup is open and clicking postal.
     //**areMarkersFinished() toimii save changesissa ja x:ssä. On hieman
     //hutera tsekkailu muuten. Paranna tämä.
-    //**highlightaus geojson-layerille, värikoodaus
 
     //OLIS KIVA -CLASS
     //**Disabled submit button ei jostain syystä estä vetämistä tai mousezoomia
@@ -209,15 +208,12 @@ and open the template in the editor.
                     onEachFeature:
                             function (feature, layer){
                                 layer.on('click', layerClickHandler);
-//                                layer.on('mouseover', markerColorListener); //"add" toimii tässä!! jos jotain tarvetta josku
-//                                
-                                //set incomplete icon at start
-//                                if(!feature.properties.likert || 
-//                                        !feature.properties.parkspot || 
-//                                        !feature.properties.parktime){
-//                                    layer.setStyle(geojsonIncomplete);
-//                                }
                                 
+                                //markerColorListener may be obsolete
+//                                layer.on('mouseover', markerColorListener); //"add" toimii tässä!! jos jotain tarvetta josku
+
+                                //incompleteTest() accepts onEachFeature "feature"
+                                //or layer event
                                 if(incompleteTest(feature) === true){
                                     layer.setStyle(geojsonIncomplete);
                                 } else {
@@ -293,7 +289,6 @@ and open the template in the editor.
  
             //Highlight overlay layers on mouseover. Also listen to return to 
             //normal.   
-            //postal.on("click", layerClickHandler);
             postal.on("mouseover", highlightLayer);
             postal.on("mouseout", layerToNormal);
             geojson.on("mouseover", highlightGeojson);
@@ -349,7 +344,8 @@ and open the template in the editor.
                 //This way we can communicate correctly with the function
                 //previousGeometrySame().
                 $("a.leaflet-popup-close-button").one('click', function(e){
-                    console.log("pressed x");
+                    console.log("pressed x");   
+                    updateGeomColors();
                     areMarkersFinished();
                     //the following value manipulates previousGeometrySame(). 
                     //It allows user to exit popup dialog with x, and then 
@@ -401,6 +397,7 @@ and open the template in the editor.
                 //SAVE BUTTON
                 var buttonSubmit = L.DomUtil.get('button-submit');
                 L.DomEvent.addListener(buttonSubmit, "click", function (e){
+                    updateGeomColors();
                     marker.closePopup();
                     areMarkersFinished();
                     //the following value manipulates previousGeometrySame(). 

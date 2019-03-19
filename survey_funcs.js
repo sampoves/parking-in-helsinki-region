@@ -106,6 +106,7 @@ function incompleteTest(input) {
 }
 
 
+
 // This helps set value for parkspot in the popup survey
 function onParkspotChange(event){
     currentParkspotValue = event.target.value;
@@ -136,6 +137,18 @@ function markerColorListener (feature, layer) {
     }
 };
 
+
+//run for loop which tests incompleteness of geojson layers.
+function updateGeomColors() {
+    for (var i in geojson._layers){
+        thisLayer = geojson._layers[i];
+        if(incompleteTest(thisLayer.feature) === true){
+            thisLayer.setStyle(geojsonIncomplete);
+        } else {
+            thisLayer.setStyle(geojsonComplete);
+        }
+    }
+}
 
 // CURRENTLY UNUSED
 //test if an element is disabled or enabled.

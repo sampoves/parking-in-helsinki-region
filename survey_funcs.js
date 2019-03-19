@@ -36,37 +36,72 @@ function findIntersection (latlng, geojsonlayer){
 
 
 function highlightLayer(e) {
-    //PIENALUE GEOJSON NOT IN USE ANYMORE
-    //console.log(e.layer._leaflet_id);
-    //console.log(e);
     thisTarget = e.layer._leaflet_id;
-    if (e.target.urls[0] === "pno_research_area.geojson"){
-        //console.log("postinumerot!");
-        //window.currentPno = e.layer.feature.properties.nimi + ", " + e.layer.feature.properties.posti_alue;
-        if((mymap.hasLayer(OpenStreetMap_DE)) || (mymap.hasLayer(Stamen_Terrain))){
-            mymap._layers[thisTarget].setStyle(postalHighlightDark);
-        } else if (mymap.hasLayer(darkmatter)){
-            mymap._layers[thisTarget].setStyle(postalHighlight);
-        }    
-    } else if (e.target.urls[0] === "seutukartta_pienalue.geojson"){
-        //console.log("pienalueet!");
-        //window.currentPien = e.layer.feature.properties.nimi;
-        mymap._layers[thisTarget].setStyle(pienalueHighlight);
-    }
+    //console.log("postinumerot!");
+    //window.currentPno = e.layer.feature.properties.nimi + ", " + e.layer.feature.properties.posti_alue;
+    if((mymap.hasLayer(OpenStreetMap_DE)) || (mymap.hasLayer(Stamen_Terrain))){
+        mymap._layers[thisTarget].setStyle(postalHighlightDark);
+    } else if (mymap.hasLayer(darkmatter)){
+        mymap._layers[thisTarget].setStyle(postalHighlight);
+    }    
 }
 
 
 function layerToNormal(e) {
-    //PIENALUE GEOJSON NOT IN USE ANYMORE
     thisTarget = e.layer._leaflet_id;
-    if (e.target.urls[0] === "pno_research_area.geojson"){
-        if((mymap.hasLayer(OpenStreetMap_DE)) || (mymap.hasLayer(Stamen_Terrain))){
-            mymap._layers[thisTarget].setStyle(stylePostalDark);
-        } else if (mymap.hasLayer(darkmatter)){
-            mymap._layers[thisTarget].setStyle(stylePostal);
-        }  
-    } else if (e.target.urls[0] === "seutukartta_pienalue.geojson"){
-        mymap._layers[thisTarget].setStyle(stylePien);
+    if((mymap.hasLayer(OpenStreetMap_DE)) || (mymap.hasLayer(Stamen_Terrain))){
+        mymap._layers[thisTarget].setStyle(stylePostalDark);
+    } else if (mymap.hasLayer(darkmatter)){
+        mymap._layers[thisTarget].setStyle(stylePostal);
+    }  
+}
+
+function highlightGeojson(e) {
+    thisTarget = e.layer._leaflet_id;
+    if(mymap.hasLayer(geojson)) {
+        if(incompleteTest(e) === true) {
+            mymap._layers[thisTarget].setStyle(geojsonIncompHighlight);
+        } else {
+            mymap._layers[thisTarget].setStyle(geojsonCompHighlight);
+        }
+    }
+}
+
+
+function geojsonToNormal(e) {
+    thisTarget = e.layer._leaflet_id;
+    if(mymap.hasLayer(geojson)) {
+        if(incompleteTest(e) === true) {
+            mymap._layers[thisTarget].setStyle(geojsonIncomplete);
+        } else {
+            mymap._layers[thisTarget].setStyle(geojsonComplete);
+        }
+    }
+}
+
+
+function incompleteTest(input) {
+    //Accept two type of inputs: try{} is event of a layer, and catch(err){} is
+    //feature parameter of geojson onEachFeature definition
+    try {
+        feature = input.layer.feature;
+        if(!feature.properties.likert || !feature.properties.parkspot || 
+                !feature.properties.parktime){
+            //is incomplete
+            return true;
+        } else {
+            //is complete
+            return false;
+        }
+    } catch(err){
+        if(!input.properties.likert || !input.properties.parkspot || 
+                !input.properties.parktime){
+            //is incomplete
+            return true;
+        } else {
+            //is complete
+            return false;
+        }
     }
 }
 

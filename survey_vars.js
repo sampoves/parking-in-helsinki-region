@@ -134,6 +134,22 @@ var styleArea = {
     "fillOpacity": 0
 };   
 
+var geojsonIncomplete = {
+    'color': '#ffb711',
+    'weight': 4,
+    'opacity': 1,
+    "fillColor": '#ff9e28',
+    "fillOpacity": 0.3
+};
+
+var geojsonComplete = {
+    'color': '#00d62e',
+    'weight': 4,
+    'opacity': 1,
+    "fillColor": '#5af47b',
+    "fillOpacity": 0.3
+};
+
 
 // HIGHLIGHT STYLES
 var postalHighlight = {
@@ -151,6 +167,24 @@ var postalHighlightDark = {
     "fillColor": '#083559',
     "fillOpacity": 0.2
 };
+
+var geojsonIncompHighlight = {
+    'color': '#ffdf6d',
+    'weight': 5,
+    'opacity': 1,
+    "fillColor": '#ffdd00',
+    "fillOpacity": 0.6
+};
+
+var geojsonCompHighlight = {
+    'color': '#6dff8c',
+    'weight': 5,
+    'opacity': 1,
+    "fillColor": '#5af47b',
+    "fillOpacity": 0.6
+};
+
+
 
 
 // Text strings

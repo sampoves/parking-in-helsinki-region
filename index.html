@@ -56,10 +56,11 @@ and open the template in the editor.
     //geojson-layer. this already works when popup is open and clicking postal.
     //**areMarkersFinished() toimii save changesissa ja x:ssä. On hieman
     //hutera tsekkailu muuten. Paranna tämä.
-    //**highlightaus geojson-layerille
+    //**highlightaus geojson-layerille, värikoodaus
 
     //OLIS KIVA -CLASS
     //**Disabled submit button ei jostain syystä estä vetämistä tai mousezoomia
+    //**parempi css ja muut määrittelyt kännyköille
 
     //070319 New direction of survey. Use Polygons for popups.
     //010319 areMarkersFinished() toimii, mutta ei oo asetettu tänne koodiin minnekään
@@ -210,11 +211,19 @@ and open the template in the editor.
                                 layer.on('click', layerClickHandler);
 //                                layer.on('mouseover', markerColorListener); //"add" toimii tässä!! jos jotain tarvetta josku
 //                                
-//                                //set incomplete icon at start
-//                                if(!feature.properties.datetime || !feature.properties.likert || 
-//                                        !feature.properties.parkspot || !feature.properties.parktime){
-//                                    layer.setIcon(incompleteIcon);
+                                //set incomplete icon at start
+//                                if(!feature.properties.likert || 
+//                                        !feature.properties.parkspot || 
+//                                        !feature.properties.parktime){
+//                                    layer.setStyle(geojsonIncomplete);
 //                                }
+                                
+                                if(incompleteTest(feature) === true){
+                                    layer.setStyle(geojsonIncomplete);
+                                } else {
+                                    layer.setStyle(geojsonComplete);
+                                }
+                                
                             }
                 }).addTo(mymap);
 
@@ -287,7 +296,8 @@ and open the template in the editor.
             //postal.on("click", layerClickHandler);
             postal.on("mouseover", highlightLayer);
             postal.on("mouseout", layerToNormal);
-
+            geojson.on("mouseover", highlightGeojson);
+            geojson.on("mouseout", geojsonToNormal);
 
             //Listen to changes in popup form
             //Listen to current click on geojson layer named "geojson"

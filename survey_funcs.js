@@ -368,6 +368,13 @@ class TrackZipCodes {
     clearZipCodes() {
         this.zipCodeList = [];
     }
+    listContains(zipCode) {
+        if(this.zipCodeList.includes(zipCode)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
     
 

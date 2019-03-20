@@ -347,7 +347,8 @@ and open the template in the editor.
                     //It allows user to exit popup dialog with x, and then 
                     //immediately click on the same polygon to open the same 
                     //popup.
-                    prevGeom = 1;
+                    //prevGeom = 1;
+                    apu = 0;
                 });
 
                 // keep language up to date with var currentLang. currentLang
@@ -400,7 +401,8 @@ and open the template in the editor.
                     //It allows user to exit popup dialog with x, and then 
                     //immediately click on the same polygon to open the same 
                     //popup.
-                    prevGeom = 1;
+                    //prevGeom = 1;
+                    apu = 0;
                 });
                 
                 //DELETE BUTTON
@@ -595,17 +597,18 @@ and open the template in the editor.
             //On layer click on "postal", initialise "geojsonFeature" and add it 
             //to the "geojson" layer.
             postal.on("click", function (e) {
+                apu = 0;
                 //these two values help previousGeometrySame() function make
                 //right decisions. Aforementioned function does not come to
                 //correct conclusions, if clicking on geojson layer and then
                 //clickin postal, and then again clicking geojson.
                 
-                if((typeof(timesClicked) === "undefined") && (typeof(prevGeom) === "undefined")){
-                    //do nothin
-                } else {
-                    timesClicked = 0;
-                    prevGeom = 1;
-                }
+//                if((typeof(timesClicked) === "undefined") && (typeof(prevGeom) === "undefined")){
+//                    //do nothin
+//                } else {
+//                    timesClicked = 0;
+//                    prevGeom = 1;
+//                }
                 
                 // if statement tests if the following class is open. It gets
                 // value 1 if it is, otherwise 0. This prevents inadvertent
@@ -638,23 +641,46 @@ and open the template in the editor.
                 }
             });
             
+            apu = 0;
+//            geojson.on("click", function(e){
+//                thisGeom = e.layer.feature.geometry;
+//                if(previousGeometrySame(thisGeom) === true){
+//                    //previousGeometrySame() only returns true if the previous click
+//                    //on the layer "geojson" was the same as current one, and this
+//                    //same polygon has been clicked only once before. In short, if
+//                    //a same Polygon is clicked two consecutive times, the second
+//                    //click closes the active popup.
+//                    mymap.closePopup();
+//                } else {
+//                    if(($(".leaflet-popup-content-wrapper").length !== 0) && (apu === 1)){
+//                        console.log("HEP2");
+//                        mymap.closePopup();
+//                        apu = 0;
+//                    } else {
+//                        apu = 1;
+//                    }
+//                    //was different polygon, do nothin
+//                }
+//            });
+            
+            mymap.on("click", function(e){
+                apu = 0;
+            });
+            
             geojson.on("click", function(e){
-                thisGeom = e.layer.feature.geometry;
-                if(previousGeometrySame(thisGeom) === true){
-                    //previousGeometrySame() only returns true if the previous click
-                    //on the layer "geojson" was the same as current one, and this
-                    //same polygon has been clicked only once before. In short, if
-                    //a same Polygon is clicked two consecutive times, the second
-                    //click closes the active popup.
+                if(($(".leaflet-popup-content-wrapper").length !== 0) && (apu === 1)){
+                    console.log("HEP");
+                    apu = 0;
                     mymap.closePopup();
                 } else {
-                    //was different polygon, do nothin
+                    apu = 1;
                 }
+                console.log("apu " + apu);
             });
 
  
             //Show survey version in jQuery info window
-            var survey_version = "Development version 19.3.2019";
+            var survey_version = "Development version 20.3.2019";
             window.onload = function(){
                 document.getElementById('version').innerHTML = survey_version;
             };

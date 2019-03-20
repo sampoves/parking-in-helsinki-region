@@ -24,7 +24,7 @@ var darkmatter = L.tileLayer(
         "opacity": 1,
         "subdomains": "abc",
         "tms": false
-});//.addTo(mymap); //this used to be default here
+});
 
 //OpenStreetMap
 //https://github.com/CartoDB/basemap-styles
@@ -118,7 +118,7 @@ var voyagerOnlyLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertil
 var stylePostal = {
     "color": "#ff7800",
     "weight": 3,
-    "opacity": 0.4,
+    "opacity": 0.2,
     "fillOpacity": 0
 };
 

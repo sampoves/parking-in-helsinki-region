@@ -360,8 +360,23 @@ class TrackZipCodes {
         }
     }
 }
-    
 
+//When defining geojson layers, the styling seems to be buggy. One feature per
+//geojson layer seems to revert to default blue style. This function attempts
+//to bypass that.
+//Insert geojson layer of your choosing, then style to use if basemap is of 
+//light hue, and another style to use if basemap is of dark hue
+function stylingFunction(layerToStyle, styleDark, styleLight) {
+    console.log("stylinfunvtion run");
+    if(mymap.hasLayer(darkmatter)){
+        console.log("darkmatter succeee");
+        layerToStyle.setStyle(styleDark);
+    } else if (mymap.hasLayer(OpenStreetMap_DE)){
+        layerToStyle.setStyle(styleLight);
+    } else if (mymap.hasLayer(Stamen_Terrain)){
+        layerToStyle.setStyle(styleLight);
+    };
+}
 
 
 

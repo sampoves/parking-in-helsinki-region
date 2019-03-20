@@ -102,11 +102,13 @@ and open the template in the editor.
                     voyagerOnlyLabels.addTo(mymap);
                     postal.setStyle(stylePostalDark);
                     postaldissolve.setStyle(styleAreaDark);
-                } else if (mymap.hasLayer(Stamen_Terrain)){
+                } 
+                else if (mymap.hasLayer(Stamen_Terrain)){
                     StamenTerrainOnlyLabels.addTo(mymap);
                     postal.setStyle(stylePostalDark);
                     postaldissolve.setStyle(styleAreaDark);
-                } else if (mymap.hasLayer(darkmatter)){
+                } 
+                else if (mymap.hasLayer(darkmatter)){
                     darkmatterOnlyLabels.addTo(mymap);
                     postal.setStyle(stylePostal);
                     postaldissolve.setStyle(styleArea);
@@ -135,10 +137,12 @@ and open the template in the editor.
             if(getCookie("survey_tilelayer_choice") === "CartoDB dark_matter"){
                 darkmatter.addTo(mymap);
                 darkmatterOnlyLabels.addTo(mymap);
-            } else if (getCookie("survey_tilelayer_choice") === "OpenStreetMap") {
+            } 
+            else if (getCookie("survey_tilelayer_choice") === "OpenStreetMap") {
                 OpenStreetMap_DE.addTo(mymap);
                 voyagerOnlyLabels.addTo(mymap);
-            } else if (getCookie("survey_tilelayer_choice") === "Stamen terrain"){
+            } 
+            else if (getCookie("survey_tilelayer_choice") === "Stamen terrain"){
                 Stamen_Terrain.addTo(mymap);
                 StamenTerrainOnlyLabels.addTo(mymap);
             } 
@@ -193,7 +197,6 @@ and open the template in the editor.
             //first check up if geojson has nothing in it to disable submit
             //button
             $(document).ready(function(){
-                //isGeojsonEmpty();
                 sendBox.disable();
             });
             
@@ -237,17 +240,23 @@ and open the template in the editor.
             
             var postaldissolve = new L.GeoJSON.AJAX(
                     "pno_dissolve.geojson", {
-                        style: function(feature){
-                            if(mymap.hasLayer(darkmatter)){
-                                postaldissolve.setStyle(styleArea);
-                            } else if (mymap.hasLayer(OpenStreetMap_DE)){
-                                postaldissolve.setStyle(styleAreaDark);
-                            } else if (mymap.hasLayer(Stamen_Terrain)){
-                                postaldissolve.setStyle(styleAreaDark);
-                            };
-                        }
+                        style: styleArea
+//                        style: function(layer){
+//                            if(mymap.hasLayer(darkmatter)){
+//                                postaldissolve.setStyle(styleArea);
+//                            } else if (mymap.hasLayer(OpenStreetMap_DE)){
+//                                postaldissolve.setStyle(styleAreaDark);
+//                            } else if (mymap.hasLayer(Stamen_Terrain)){
+//                                postaldissolve.setStyle(styleAreaDark);
+//                            };
+//                        }
             }).addTo(mymap);
 
+            //this does not load as expected at page finish. commented
+//            $(document).ready(function(){
+//                window.stylingFunction(postal, stylePostal, stylePostalDark);
+//                window.stylingFunction(postaldissolve, styleArea, styleAreaDark);
+//            });
 
             // Add layer control elements
             var baseMaps = {

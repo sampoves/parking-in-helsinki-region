@@ -106,39 +106,11 @@ function incompleteTest(input) {
 }
 
 
-
 // This helps set value for parkspot in the popup survey
 function onParkspotChange(event){
     currentParkspotValue = event.target.value;
     //console.log("parkspot value set to " + event.target.value);
 };
-
-
-//THIS LISTENS TO MARKER VALUES AND CHANGES MARKER COLOR ON
-//POPUP FILL
-//
-//probably obsolete 190319
-//
-//function markerColorListener (feature, layer) {
-//    props = feature.target.feature.properties;
-//    attrs = Object.keys(props);
-//    howManyNulls = 0;
-//    for (var i = 0; i < attrs.length; i += 1){
-//        attr = attrs[i];
-//        value = props[attr];
-//        if (value === null || value === ""){
-//            howManyNulls += 1;
-//        } else {
-//            // do nothin
-//        }
-//    }
-//    //console.log(howManyNulls + " mik' tilanne");
-//    if (howManyNulls === 0){
-//        feature.target.setIcon(completeIcon);
-//    } else {
-//        feature.target.setIcon(incompleteIcon);
-//    }
-//};
 
 
 //run for loop which tests incompleteness of geojson layers.
@@ -152,6 +124,7 @@ function updateGeomColors() {
         }
     }
 }
+
 
 // CURRENTLY UNUSED
 //test if an element is disabled or enabled.
@@ -221,6 +194,7 @@ function isGeojsonEmpty(){
         }
     }
 }
+
 
 //Are all popups finished? This function loops through all markers in geojson
 //to detect null fields. If any field is null, this function will keep submit
@@ -292,6 +266,7 @@ function areMarkersFinished(){
     }
 }
 
+
 // Test submit button current state
 function submitButtonState(){
     if(document.getElementById("buttonsubmitall").disabled === true){
@@ -339,12 +314,16 @@ function uniqueZipCode(thisZipCode){
     }
 }
 
+
+// this class helps keep track unique clicked postal areas in the survey. Unique
+// zip code tracking is needed to prevent creation of multiple geojson layers
+// for a zip code which already has a record (ie., a layer)
 class TrackZipCodes {
     constructor() {
         this.zipCodeList = [];
     }
     addUniqueZipCode(zipCode) {
-        //append to list if is not in list
+        // Append zip code to list if is not in list
         if(this.zipCodeList.includes(zipCode)){
             return false;
         } else {
@@ -352,22 +331,27 @@ class TrackZipCodes {
             return true;
         }
     }
+    
+    // Remove zip code from list if detected from list
     removeZipCode(zipCode) {
-        //append to list if is not in list
         if(this.zipCodeList.includes(zipCode)){
             this.zipCodeList.splice(this.zipCodeList.indexOf(zipCode), 1 );
             console.log("Removed " + zipCode);
         } else {
             console.log("Did not find zip code " + zipCode);
-            //not found, do nothin
         }
     }
+    
     listZipCodes() {
         return this.zipCodeList;
     }
+    
+    // Used with submit all records button. Clears the table for a potential
+    // additional filling of the survey
     clearZipCodes() {
         this.zipCodeList = [];
     }
+    
     listContains(zipCode) {
         if(this.zipCodeList.includes(zipCode)) {
             return true;

@@ -414,6 +414,7 @@ and open the template in the editor.
                     //which is important for the functionality of this survey.
                     usersZipCodes.removeZipCode(window.thisZip);
                     geojson.removeLayer(marker);
+                    apu = 0;
                     //the following value manipulates previousGeometrySame(). 
                     //It allows user to exit popup dialog with x, and then 
                     //immediately click on the same polygon to open the same 
@@ -641,32 +642,16 @@ and open the template in the editor.
                 }
             });
             
+            // This bit here prevents the immediate opening of a new popup on
+            // layer geojson if a popup is already open. This behaviour would
+            // temporarily screw up the display of inserted records and would
+            // break the "save changes" and "delete records" buttons. With this
+            // code we keep track 1) if a popup is open, 2) what is the state
+            // of the helper variable "apu". Apu gets the value of 0 if a popup
+            // can be opened and 1 if it is not allowed. Apu is manipulated not
+            // only here. We need to change its value on postal click and when
+            // clicking save changes, x button and delete records.
             apu = 0;
-//            geojson.on("click", function(e){
-//                thisGeom = e.layer.feature.geometry;
-//                if(previousGeometrySame(thisGeom) === true){
-//                    //previousGeometrySame() only returns true if the previous click
-//                    //on the layer "geojson" was the same as current one, and this
-//                    //same polygon has been clicked only once before. In short, if
-//                    //a same Polygon is clicked two consecutive times, the second
-//                    //click closes the active popup.
-//                    mymap.closePopup();
-//                } else {
-//                    if(($(".leaflet-popup-content-wrapper").length !== 0) && (apu === 1)){
-//                        console.log("HEP2");
-//                        mymap.closePopup();
-//                        apu = 0;
-//                    } else {
-//                        apu = 1;
-//                    }
-//                    //was different polygon, do nothin
-//                }
-//            });
-            
-            mymap.on("click", function(e){
-                apu = 0;
-            });
-            
             geojson.on("click", function(e){
                 if(($(".leaflet-popup-content-wrapper").length !== 0) && (apu === 1)){
                     console.log("HEP");

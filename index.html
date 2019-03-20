@@ -34,7 +34,6 @@ and open the template in the editor.
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.4.0/easy-button.css"/>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css"/>
         
         <!-- font -->
@@ -48,7 +47,6 @@ and open the template in the editor.
         <div class="" id="mymap"></div>
             
         <script>
-    //070319 New direction of survey. Use Polygons for popups.
     //TÄRKEÄ TODO:
     //**SCRIPT omaan js-tiedostoon
     //**Kirjoita ajantasaiset ohjeet Jquery UI -ikkunaan
@@ -59,9 +57,12 @@ and open the template in the editor.
     //**areMarkersFinished() toimii save changesissa ja x:ssä. On hieman
     //hutera tsekkailu muuten. Paranna tämä.
 
-    //OLIS KIVA -CLASS
+    //OLIS KIVA -TODO
     //**Disabled submit button ei jostain syystä estä vetämistä tai mousezoomia
     //**parempi css ja muut määrittelyt kännyköille
+    //**geojson styling. Jokin erittäin outo juttu estää if-lauseita toimimasta
+    //oikein geojson-layeria määritellessä. postaldissolven if-lauseet on
+    //kommentoitu, koska en osannut ratkaista pulmaa
 
             // INITIALISE MAP AND LAYERS
             //initialise map
@@ -192,7 +193,6 @@ and open the template in the editor.
             });
             
 
-
             // SUBMIT BUTTON INITIAL DISABLE
             //first check up if geojson has nothing in it to disable submit
             //button
@@ -220,7 +220,6 @@ and open the template in the editor.
                             }
                 }).addTo(mymap);
 
-    
             // IMPORT POLYGON GEOJSONS
             var postal = new L.GeoJSON.AJAX(
                     "pno_research_area.geojson", {
@@ -282,8 +281,6 @@ and open the template in the editor.
                 geojson.bringToFront();
             });
 
-    
-
             // Add additional header text to layer control
             $('<p id="controlTitle1"><strong tkey="lang_basemap">Basemaps<strong></p>').insertBefore('div.leaflet-control-layers-base');
             $('<p id="controlTitle2"><strong tkey="lang_overlay">Overlay maps<strong></p>').insertBefore('div.leaflet-control-layers-overlays');
@@ -296,7 +293,6 @@ and open the template in the editor.
                 $("#controlTitle2").replaceWith(
                         '<p id="controlTitle2"><strong tkey="lang_overlay">Overlay maps<strong></p>');
             };
- 
  
             //Highlight overlay layers on mouseover. Also listen to return to 
             //normal.   
@@ -598,7 +594,6 @@ and open the template in the editor.
             // Disable double click zoom and enable double click marker creation
             mymap.doubleClickZoom.disable(); 
 
-
             //initialise TrackZipCodes object for keeping track of unique zip
             //codes
             usersZipCodes = new TrackZipCodes();
@@ -652,13 +647,13 @@ and open the template in the editor.
             apu = 0;
             geojson.on("click", function(e){
                 if(($(".leaflet-popup-content-wrapper").length !== 0) && (apu === 1)){
-                    console.log("HEP");
+                    //console.log("HEP");
                     apu = 0;
                     mymap.closePopup();
                 } else {
                     apu = 1;
                 }
-                console.log("apu " + apu);
+                //console.log("apu " + apu);
             });
 
  

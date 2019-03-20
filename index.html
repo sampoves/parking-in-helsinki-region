@@ -21,12 +21,11 @@ Helsinki Capital Region".
         
         <!--import parking survey variables -->
         <script type="text/javascript" src="park_survey.js"></script>
-        <script type="text/javascript" src="survey_info.js"></script>
         <script type="text/javascript" src="survey_funcs.js"></script>
         <script type="text/javascript" src="survey_vars.js"></script>
         
         <!--Only activate English language in the beginning-->
-        <script type="text/javascript" src="lang.en.js"></script>
+        <!--<script type="text/javascript" src="lang.en.js"></script>-->
         
         <!-- survey css stylesheet -->
         <link rel="stylesheet" href="style.css">
@@ -57,6 +56,7 @@ Helsinki Capital Region".
     //geojson-layeria kerran enemmän. kokeile korjaa
     //**arePopupsFinished() toimii save changesissa ja x:ssä. On hieman
     //hutera tsekkailu muuten. Paranna tämä.
+    //**BASELAYER EI TAIDA LATAUTUA, JOS EI COOKIETA ASETETTU!
 
     //OLIS KIVA -TODO
     //**Disabled submit button ei jostain syystä estä vetämistä tai mousezoomia
@@ -65,7 +65,11 @@ Helsinki Capital Region".
     //oikein geojson-layeria määritellessä. postaldissolven if-lauseet on
     //kommentoitu, koska en osannut ratkaista pulmaa
 
-
+    //MYSQL help:
+    // http://howtolamp.com/lamp/mysql/5.6/basics/
+    // https://www.w3schools.com/php/php_mysql_insert.asp
+    // https://www.digitalocean.com/community/tutorials/a-basic-mysql-tutorial
+    // https://gist.github.com/gordonbrander/2230317 pseudo-id
             //--------------
             //INITIALISATION
             //--------------

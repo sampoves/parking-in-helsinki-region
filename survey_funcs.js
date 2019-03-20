@@ -382,3 +382,57 @@ function submitButtonState(){
         return "enabled";
     }
 }
+
+
+//------------------
+//DATABASE FUNCTIONS
+//------------------
+
+function preparePost(geojsonLayer) {
+    //fetch data from geojson
+    for (var i in geojson._layers){
+        thisLayer = geojson._layers[i];
+        
+        likertValue = thisLayer.feature.properties.likert;
+        parkspotValue = thisLayer.feature.properties.parkspot;
+        parktimeValue = thisLayer.feature.properties.parktime;
+        
+        var data = {
+            likert: likertValue,
+            parkspot: parkspotValue,
+            parktime: parktimeValue
+        };
+        //console.log(data);
+        
+        $.post('surveytest.php', data, function(responseFromServer) {
+              // Insert response from server to '#response' div
+              var responseHtml = '<div>Full JSON object: ' + JSON.stringify(responseFromServer) + '</div>';
+              responseHtml += '<div>Status: ' + responseFromServer.status + ', message: ' + responseFromServer.message + '</div>';
+              
+              $('#response').html(responseHtml);
+              console.log(responseHtml);
+            
+            }, 'json');
+    }
+}
+
+function preparePost2(){
+
+    // Fetch data from UI
+    //var emailValue = $('#email').val();
+    var emailValue = "pelle.hermanni@pelle.com";
+
+    // Create object to be sent
+    var data = {email: emailValue};
+    
+    // Send data to server (PHP)
+    $.post('surveytest.php', data, function(responseFromServer) {
+
+        // Insert response from server to '#response' div
+        var responseHtml = '<div>Full JSON object: ' + JSON.stringify(responseFromServer) + '</div>';
+        responseHtml += '<div>Status: ' + responseFromServer.status + ', message: ' + responseFromServer.message + '</div>';
+
+        $('#response').html(responseHtml);
+        console.log(responseHtml);
+    }, 'json');
+}

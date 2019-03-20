@@ -379,6 +379,37 @@ function stylingFunction(layerToStyle, styleDark, styleLight) {
 }
 
 
+// "Submit records" button functionality uses jQuery UI
+// Copying objects in JS is not straightforward and for that reason
+// I will not attempt to save sent features on map as gray markers.
+// Instead, send button will destroy all entries entered so far.
+function submitButtonListener(){
+    var sendButtonSubmit = L.DomUtil.get('buttonsubmitall');
+    L.DomEvent.addListener(sendButtonSubmit, "click", function (e){
+        $(function() {
+            $("#sucdialog").dialog({
+                position: {my: "center", at: "center", of: window},
+                buttons: {
+                    "Close": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            //retain dialog position on window resize
+            $(window).resize(function() {
+                $("#sucdialog").dialog("option", "position", {my: "center", at: "center", of: window});
+            });
+        });
+        usersZipCodes.clearZipCodes();
+        geojson.clearLayers();
+
+        //in this context func makes sure button is disabled, to 
+        //prevent empty submissions
+        isGeojsonEmpty();
+    });
+};
+
+
 
 // the code below was overly complicated attempt to prevent immediate opening
 // of a new popup when a popup was already open in the geojson layer. To be deleted

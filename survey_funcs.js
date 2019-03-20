@@ -295,26 +295,6 @@ function changeOfLabels(){
 }
 
 
-//Make sure layer "geojson" is not getting multiple features for
-//the same Polygon. Test this by keeping track of clicked on postal
-//areas.
-function uniqueZipCode(thisZipCode){
-    //create zipCodeList if does not exist
-    if (typeof zipCodeList === 'undefined') {
-        zipCodeList = [];
-    } else {
-        //do nothin
-    }
-    //append to list if is not in list
-    if(zipCodeList.includes(thisZipCode)){
-        return false;
-    } else {
-        zipCodeList.push(thisZipCode);
-        return true;
-    }
-}
-
-
 // this class helps keep track unique clicked postal areas in the survey. Unique
 // zip code tracking is needed to prevent creation of multiple geojson layers
 // for a zip code which already has a record (ie., a layer)
@@ -361,13 +341,14 @@ class TrackZipCodes {
     }
 }
 
+
 //When defining geojson layers, the styling seems to be buggy. One feature per
 //geojson layer seems to revert to default blue style. This function attempts
 //to bypass that.
 //Insert geojson layer of your choosing, then style to use if basemap is of 
 //light hue, and another style to use if basemap is of dark hue
 function stylingFunction(layerToStyle, styleDark, styleLight) {
-    console.log("stylinfunvtion run");
+    console.log("stylinfunction run");
     if(mymap.hasLayer(darkmatter)){
         console.log("darkmatter succeee");
         layerToStyle.setStyle(styleDark);
@@ -408,91 +389,3 @@ function submitButtonListener(){
         isGeojsonEmpty();
     });
 };
-
-
-
-// the code below was overly complicated attempt to prevent immediate opening
-// of a new popup when a popup was already open in the geojson layer. To be deleted
-
-// Make sure user is not clicking on the same Polygon two consecutive times.
-// In this code the survey popup behaves erratically if user is allowed to
-// spam the clicks. The function remembers the previous Polygon clicked. In
-// addition to that the function keeps track of how many times the same Polygon
-// is clicked. This is useful as this function is used in conjunction with
-// the command mymap.closePopup()
-//function previousGeometrySame(currentGeom) {
-//    if (typeof prevGeom === 'undefined') {
-//        // first time running this function, instantiate prevGeom with arbitrary
-//        // value;
-//        prevGeom = 1;
-//    } else {
-//        //prevGeom exists, do nothin
-//    }
-//    if (typeof timesClicked === 'undefined') {
-//        // first time running this function, instantiate timesClicked with value
-//        // zero
-//        timesClicked = 0;
-//    } else {
-//        // timesClicked exists, do nothin
-//    }
-//    
-//    // Check if previous geometry is the same as current geometry
-//    // Previous Polygon is the same as current one
-//    if(prevGeom === currentGeom){
-//        prevGeom = currentGeom;
-//        console.log("1) Prevgeom same as currentgeom");
-//        if(timesClicked !== 0) {
-//            //The same geometry has been clicked once already, allow popup
-//            console.log("1a) Same geometry already clicked once before, allow popup");
-//            //revert timesClicked to zero
-//            timesClicked = 0;
-//            return false;
-//        } else {
-//            // First click on the same Polygon, prevent popup.
-//            console.log("1b) first time clicked on same polygon, prevent popup");
-//            // Indicate that same polygon has been clicked once
-//            timesClicked = 1;
-//            return true;
-//        }
-//    // previous Polygon and the current one do not match
-//    } else {
-//        prevGeom = currentGeom;
-//        console.log("2) prevgeom NOT SAME currentgeom");
-//        
-//        //even if prevgeom is not the same as currentgeom, test if a popup or
-//        //the infobox is open. If so, return "prevgeom same as currentgeom" 
-//        //condition
-//        //
-//        // THIS IS BUGGY. IF === 0, one can fastclick through all geojson layers.
-//        //if !== 0, bloorg happens but increases amount of clicks in geojson
-//        //think about an alternative for this
-//        if($(".leaflet-popup-content-wrapper").length === 0){
-//            console.log("BLOORG Popup open, prevent new one");
-//            timesClicked = 1;
-//            return true;
-//        }
-//               
-//        //original else statement:
-//        // Make sure timesClicked value 1 does not transfer to other Polygons
-//        console.log("VIKA allow popup");
-//        timesClicked = 0;
-//        return false;
-//    }
-//}
-//
-//
-//
-//function popupClosingOps() {
-//    for (var i in geojson._layers){
-//        thisLayer = geojson._layers[i];
-//        if(thisLayer.hasOwnProperty("_popup")){
-//            thisPopup = thisLayer.getPopup();
-//            console.log(thisPopup.isOpen());
-//            //thisLayer.closePopup();
-//            //thisLayer.unbindPopup();
-//            //console.log("isPopupOpen() closed a popup in id " + i);
-////        } else {
-////            //do nothin
-//        }
-//    }
-//}

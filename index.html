@@ -94,6 +94,13 @@ and open the template in the editor.
                 sendBox.disable();
             });
             
+            //Show survey version in jQuery info window
+            var survey_version = "Development version 20.3.2019";
+            window.onload = function(){
+                document.getElementById('version').innerHTML = survey_version;
+            };
+            
+            
             
             //------------
             //MYMAP EVENTS
@@ -148,9 +155,10 @@ and open the template in the editor.
             });
 
 
-            //------------------------
-            //COOKIES AND OTHER THINGS
-            //------------------------
+
+            //-------
+            //COOKIES
+            //-------
             //
             //COOKIES: SET SITE LANGUAGE WITH COOKIE VALUE
             var currentLang = null;
@@ -225,8 +233,7 @@ and open the template in the editor.
             });
             
 
-            
-            
+
             //-------------------------
             //INITIALISE GEOJSON LAYERS
             //-------------------------
@@ -289,7 +296,8 @@ and open the template in the editor.
 //            });
  
  
-             //-------------------
+ 
+            //-------------------
             //GEOJSON LAYER EVENTS
             //--------------------
             //
@@ -300,6 +308,61 @@ and open the template in the editor.
             geojson.on("mouseover", highlightGeojson);
             geojson.on("mouseout", geojsonToNormal);
 
+            //On layer click on "postal", initialise "geojsonFeature" and add it 
+            //to the "geojson" layer.
+            postal.on("click", function (e) {
+                //this value manipulates geojson.on("click")
+                apu = 0;
+                
+                // if statement tests if the following class is open. It gets
+                // value 1 if it is, otherwise 0. This prevents inadvertent
+                // additions of Polygons when clicking away from the popup
+                if(($(".leaflet-popup-content-wrapper").length === 0) && ($("#tabsikkuna").is(":visible") === false)){
+                    var layer = e.layer;
+                    var pol = layer.toGeoJSON();
+                    var geom = pol.geometry;
+                    var geojsonFeature = {
+                            "type": "Feature",
+                            "geometry": geom,
+                            "properties": {
+                                "parktime": null,
+                                "likert": null,
+                                "parkspot": null
+                            }
+                    };
+
+                    //only add data to "geojson" if user has never clicked on
+                    //the postal area being clicked
+                    if(usersZipCodes.addUniqueZipCode(
+                            e.layer.feature.properties.posti_alue) === true){
+                        geojson.addData(geojsonFeature);
+                    } else {
+                        //do nothin
+                    }
+                } else {
+                    //do nothin
+                }
+            });
+            
+            // This bit here prevents the immediate opening of a new popup on
+            // layer geojson if a popup is already open. This behaviour would
+            // temporarily screw up the display of inserted records and would
+            // break the "save changes" and "delete records" buttons. With this
+            // code we keep track 1) if a popup is open, 2) what is the state
+            // of the helper variable "apu". Apu gets the value of 0 if a popup
+            // can be opened and 1 if it is not allowed. Apu is manipulated not
+            // only here. We need to change its value on postal click and when
+            // clicking save changes, x button and delete records.
+            apu = 0;
+            geojson.on("click", function(e){
+                if(($(".leaflet-popup-content-wrapper").length !== 0) && (apu === 1)){
+                    apu = 0;
+                    mymap.closePopup();
+                } else {
+                    apu = 1;
+                }
+            });
+            
 
 
             //------------------------
@@ -336,6 +399,11 @@ and open the template in the editor.
             };
 
 
+
+            //-------------------------
+            //FORMATION OF SURVEY POPUP
+            //-------------------------
+            //
             //Listen to changes in popup form
             //Listen to current click on geojson layer named "geojson"
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
@@ -463,8 +531,11 @@ and open the template in the editor.
             }
     
     
-
-            // LANGBUTTON AND INFOBUTTON
+    
+            //------------------------------
+            //LANGUAGE BUTTON AND INFOBUTTON
+            //------------------------------
+            //
             //LANGUAGE BUTTON
             var langButton = L.easyButton({
                 states: [{
@@ -505,7 +576,6 @@ and open the template in the editor.
             });
             langButton.addTo(mymap);
  
-    
             //INFOBUTTON
             var infoButton = L.easyButton({
                 states: [{
@@ -551,6 +621,11 @@ and open the template in the editor.
             infoButton.addTo(mymap);
             
             
+            
+            //---------------------
+            //SUBMIT RECORDS BUTTON
+            //---------------------
+            //
             // SENDBOX AND BUTTON
             var sendBox = L.control({position: 'bottomright'});
             sendBox.onAdd = function (map) {
@@ -578,7 +653,6 @@ and open the template in the editor.
             };
             sendBox.addTo(mymap);
 
-    
             //prevent unwanted map clicks and other events on sendBox
             L.DomEvent.on(buttonsubmitall, 'click', function(e){
                 L.DomEvent.stopPropagation(e);
@@ -594,71 +668,6 @@ and open the template in the editor.
                 mymap.dragging.enable();
                 mymap.scrollWheelZoom.enable();
             });
-
-
-            //On layer click on "postal", initialise "geojsonFeature" and add it 
-            //to the "geojson" layer.
-            postal.on("click", function (e) {
-                //this value manipulates geojson.on("click")
-                apu = 0;
-                
-                // if statement tests if the following class is open. It gets
-                // value 1 if it is, otherwise 0. This prevents inadvertent
-                // additions of Polygons when clicking away from the popup
-                if(($(".leaflet-popup-content-wrapper").length === 0) && ($("#tabsikkuna").is(":visible") === false)){
-                    var layer = e.layer;
-                    var pol = layer.toGeoJSON();
-                    var geom = pol.geometry;
-                    var geojsonFeature = {
-                            "type": "Feature",
-                            "geometry": geom,
-                            "properties": {
-                                "parktime": null,
-                                "likert": null,
-                                "parkspot": null
-                            }
-                    };
-
-                    //only add data to "geojson" if user has never clicked on
-                    //the postal area being clicked
-                    if(usersZipCodes.addUniqueZipCode(
-                            e.layer.feature.properties.posti_alue) === true){
-                        geojson.addData(geojsonFeature);
-                    } else {
-                        //do nothin
-                    }
-                } else {
-                    //do nothin
-                }
-            });
-            
-            // This bit here prevents the immediate opening of a new popup on
-            // layer geojson if a popup is already open. This behaviour would
-            // temporarily screw up the display of inserted records and would
-            // break the "save changes" and "delete records" buttons. With this
-            // code we keep track 1) if a popup is open, 2) what is the state
-            // of the helper variable "apu". Apu gets the value of 0 if a popup
-            // can be opened and 1 if it is not allowed. Apu is manipulated not
-            // only here. We need to change its value on postal click and when
-            // clicking save changes, x button and delete records.
-            apu = 0;
-            geojson.on("click", function(e){
-                if(($(".leaflet-popup-content-wrapper").length !== 0) && (apu === 1)){
-                    //console.log("HEP");
-                    apu = 0;
-                    mymap.closePopup();
-                } else {
-                    apu = 1;
-                }
-                //console.log("apu " + apu);
-            });
-
- 
-            //Show survey version in jQuery info window
-            var survey_version = "Development version 20.3.2019";
-            window.onload = function(){
-                document.getElementById('version').innerHTML = survey_version;
-            };
         </script>
         
         <!--JQUERY UI CONTENT-->

@@ -73,46 +73,6 @@ var voyagerOnlyLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertil
 });
 
 
-
-//MARKER VARIABLES
-//
-//these are obsolete now that survey uses polygons
-//
-//incomplete icon
-//var incompleteIcon = L.icon({
-//    iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
-//    iconSize: [25, 41],
-//    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-//    shadowAnchor: [8, 20],
-//    shadowSize: [25, 18],
-//    iconAnchor: [12, 40],
-//    popupAnchor: [0, -41]
-//});
-//
-////complete icon
-//var completeIcon = L.icon({
-//    iconUrl: "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
-//    iconSize: [25, 41],
-//    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-//    shadowAnchor: [8, 20],
-//    shadowSize: [25, 18],
-//    iconAnchor: [12, 40],
-//    popupAnchor: [0, -41]
-//});
-//
-////submitted icon
-//var submittedIcon = L.icon({
-//    iconUrl: "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png",
-//    iconSize: [25, 41],
-//    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-//    shadowAnchor: [8, 20],
-//    shadowSize: [25, 18],
-//    iconAnchor: [12, 40],
-//    popupAnchor: [0, -41]
-//});
-
-
-
 // BACKGROUND GEOJSON LAYERS
 //import postal codes areas GeoJSON from file
 var stylePostal = {

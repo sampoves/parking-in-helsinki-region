@@ -1,8 +1,14 @@
 /* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * These are functions used by Leaflet popup survey for University of Helsinki 
+ * master's thesis "Parking of private cars and accessibility in Helsinki 
+ * Capital Region".
+ * Written by Sampo Vesanen, 2019.
  */
+
+
+//----------------
+//COOKIE FUNCTIONS
+//----------------
 function create_cookie(name, value, days2expire, path) {
     var date = new Date();
     date.setTime(date.getTime() + (days2expire * 24 * 60 * 60 * 1000));
@@ -12,7 +18,6 @@ function create_cookie(name, value, days2expire, path) {
                      'path=' + path + ';';
   };
 
-
 function getCookie(name) {
     var value = "; " + document.cookie;
     var parts = value.split("; " + name + "=");
@@ -20,21 +25,9 @@ function getCookie(name) {
 }
 
 
-//utilise leaflet-pip (point in Polygon) to find indtersections between
-//clicked latlngs and overlay geojson layers
-function findIntersection (latlng, geojsonlayer){
-    var hits = leafletPip.pointInLayer(latlng, geojsonlayer);
-    if (hits.length !== 0){
-        // If intersection is found, it should only find one feature.
-        // This case returns the name of that feature
-        return hits;
-    } else {
-        // In case of no intersections return a empty string
-        return "";
-    }
-}
-
-
+//--------------------------------------------
+//POLYGON HIGHLIGHTING AND COLOURING FUNCTIONS
+//--------------------------------------------
 function highlightLayer(e) {
     thisTarget = e.layer._leaflet_id;
     //console.log("postinumerot!");
@@ -45,7 +38,6 @@ function highlightLayer(e) {
         mymap._layers[thisTarget].setStyle(postalHighlight);
     }    
 }
-
 
 function layerToNormal(e) {
     thisTarget = e.layer._leaflet_id;
@@ -67,7 +59,6 @@ function highlightGeojson(e) {
     }
 }
 
-
 function geojsonToNormal(e) {
     thisTarget = e.layer._leaflet_id;
     if(mymap.hasLayer(geojson)) {
@@ -79,7 +70,24 @@ function geojsonToNormal(e) {
     }
 }
 
+//run for loop which tests incompleteness of geojson layers.
+function updateGeomColors() {
+    for (var i in geojson._layers){
+        thisLayer = geojson._layers[i];
+        if(incompleteTest(thisLayer.feature) === true){
+            thisLayer.setStyle(geojsonIncomplete);
+        } else {
+            thisLayer.setStyle(geojsonComplete);
+        }
+    }
+}
 
+
+//-----------------------
+//MISCELLANEOUS FUNCTIONS
+//-----------------------
+
+//Is the feature and its records in question incomplete?
 function incompleteTest(input) {
     //Accept two type of inputs: try{} is event of a layer, and catch(err){} is
     //feature parameter of geojson onEachFeature definition
@@ -105,37 +113,70 @@ function incompleteTest(input) {
     }
 }
 
-
 // This helps set value for parkspot in the popup survey
 function onParkspotChange(event){
     currentParkspotValue = event.target.value;
     //console.log("parkspot value set to " + event.target.value);
 };
 
+//utilise leaflet-pip (point in Polygon) to find indtersections between
+//clicked latlngs and overlay geojson layers
+function findIntersection (latlng, geojsonlayer){
+    var hits = leafletPip.pointInLayer(latlng, geojsonlayer);
+    if (hits.length !== 0){
+        // If intersection is found, it should only find one feature.
+        // This case returns the name of that feature
+        return hits;
+    } else {
+        // In case of no intersections return a empty string
+        return "";
+    }
+}
 
-//run for loop which tests incompleteness of geojson layers.
-function updateGeomColors() {
-    for (var i in geojson._layers){
-        thisLayer = geojson._layers[i];
-        if(incompleteTest(thisLayer.feature) === true){
-            thisLayer.setStyle(geojsonIncomplete);
+
+
+//------------------------
+//LAYER STYLING AND EVENTS
+//------------------------
+
+//When defining geojson layers, the styling seems to be buggy. One feature per
+//geojson layer seems to revert to default blue style. This function attempts
+//to bypass that.
+//Insert geojson layer of your choosing, then style to use if basemap is of 
+//light hue, and another style to use if basemap is of dark hue
+function stylingFunction(layerToStyle, styleDark, styleLight) {
+    console.log("stylinfunction run");
+    if(mymap.hasLayer(darkmatter)){
+        console.log("darkmatter succeee");
+        layerToStyle.setStyle(styleDark);
+    } else if (mymap.hasLayer(OpenStreetMap_DE)){
+        layerToStyle.setStyle(styleLight);
+    } else if (mymap.hasLayer(Stamen_Terrain)){
+        layerToStyle.setStyle(styleLight);
+    };
+}
+
+//this function checks which label layers are active at that moment. It will
+//deactivate any that it finds.
+function changeOfLabels(){
+    labelsList = ["darkmatterOnlyLabels", "StamenTerrainOnlyLabels", 
+        "voyagerOnlyLabels"];
+    
+    for (i = 0; i < labelsList.length; i++){
+        currentItem = labelsList[i];
+        if(mymap.hasLayer(eval(currentItem))){
+            mymap.removeLayer(eval(currentItem));
+            console.log("removed " + currentItem);
         } else {
-            thisLayer.setStyle(geojsonComplete);
+            //nothing
         }
-    }
+    } 
 }
 
 
-// CURRENTLY UNUSED
-//test if an element is disabled or enabled.
-function testElementActive(elemName, varName){
-    if(varName === true){
-        return elemName.update();
-    } else if (varName === false){
-        return elemName.disable();
-    }
-}
-
+//------------------
+//LANGUAGE FUNCTIONS
+//------------------
 
 // Translator function
 // idea from here: https://github.com/dakk/jquery-multilang
@@ -145,7 +186,6 @@ var translate = function(jsdata){
             $(this).html(strTr);
         });
 };
-
 
 // this function can be used with events and such where language does not update
 // automatically. This is true, for example, when updating submit button or
@@ -159,47 +199,13 @@ function languageCheckUp(){
 }
 
 
-// this tests if an object is empty. Used in function isGeojsonEmpty() to test 
-// if geojson layer "geojson" is empty to ensure user can't send blanks to the 
-// server. Idea from here:
-// https://coderwall.com/p/_g3x9q/how-to-check-if-javascript-object-is-empty
-function isEmpty(obj) {
-    for(var key in obj) {
-        if(obj.hasOwnProperty(key))
-            return false;
-    }
-    return true;
-}
-
-
-// Is geojson layer empty? If yes, disable submit button. Otherwise, enable
-function isGeojsonEmpty(){
-    if(isEmpty(geojson._layers) === true){
-        console.log("Layer 'geojson' is empty. Attempt to disable submit button:");
-        if(submitButtonState() !== "disabled"){
-            console.log("Le Success");
-            //sendBox.disable();
-            document.getElementById("buttonsubmitall").disabled = true;
-        } else {
-            console.log("Submit button already disabled.");
-        }
-    } else {
-        console.log("Layer 'geojson' is not empty. Attempt to enable submit button:");
-        if(submitButtonState() !== "enabled"){
-            console.log("Le Success");
-            //sendBox.update();
-            document.getElementById("buttonsubmitall").disabled = false;
-        } else {
-            console.log("Submit button already enabled.");
-        }
-    }
-}
 
 
 //Are all popups finished? This function loops through all markers in geojson
 //to detect null fields. If any field is null, this function will keep submit
 //button inactive.
-//Also implemented location of unfinished markers
+//This function used to have a feature which located unfinished polygons. Was
+//removed as extraneous. See old versions of this file to see the code.
 function areMarkersFinished(){
     howManyNulls = 0;
     unfinishedMarkers = [];//for fit all unfinished markers thing
@@ -258,7 +264,6 @@ function areMarkersFinished(){
         //regresses to unfinished.
         if(submitButtonState() !== "disabled"){
             console.log("Not all markers are complete, did not enable submit button.");
-            //sendBox.disable();
             document.getElementById("buttonsubmitall").disabled = true;
         } else {
             console.log("Not all markers are complete. Submit button already disabled.");
@@ -267,33 +272,9 @@ function areMarkersFinished(){
 }
 
 
-// Test submit button current state
-function submitButtonState(){
-    if(document.getElementById("buttonsubmitall").disabled === true){
-        return "disabled";
-    } else {
-        return "enabled";
-    }
-}
-
-
-//this function checks which label layers are active at that moment. It will
-//deactivate any that it finds.
-function changeOfLabels(){
-    labelsList = ["darkmatterOnlyLabels", "StamenTerrainOnlyLabels", 
-        "voyagerOnlyLabels"];
-    
-    for (i = 0; i < labelsList.length; i++){
-        currentItem = labelsList[i];
-        if(mymap.hasLayer(eval(currentItem))){
-            mymap.removeLayer(eval(currentItem));
-            console.log("removed " + currentItem);
-        } else {
-            //nothing
-        }
-    } 
-}
-
+//-------
+//CLASSES
+//-------
 
 // this class helps keep track unique clicked postal areas in the survey. Unique
 // zip code tracking is needed to prevent creation of multiple geojson layers
@@ -342,23 +323,44 @@ class TrackZipCodes {
 }
 
 
-//When defining geojson layers, the styling seems to be buggy. One feature per
-//geojson layer seems to revert to default blue style. This function attempts
-//to bypass that.
-//Insert geojson layer of your choosing, then style to use if basemap is of 
-//light hue, and another style to use if basemap is of dark hue
-function stylingFunction(layerToStyle, styleDark, styleLight) {
-    console.log("stylinfunction run");
-    if(mymap.hasLayer(darkmatter)){
-        console.log("darkmatter succeee");
-        layerToStyle.setStyle(styleDark);
-    } else if (mymap.hasLayer(OpenStreetMap_DE)){
-        layerToStyle.setStyle(styleLight);
-    } else if (mymap.hasLayer(Stamen_Terrain)){
-        layerToStyle.setStyle(styleLight);
-    };
+//-----------------------
+//SUBMIT BUTTON FUNCTIONS
+//-----------------------
+
+// this tests if an object is empty. Used in function isGeojsonEmpty() to test 
+// if geojson layer "geojson" is empty to ensure user can't send blanks to the 
+// server. Idea from here:
+// https://coderwall.com/p/_g3x9q/how-to-check-if-javascript-object-is-empty
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
 }
 
+// Is geojson layer empty? If yes, disable submit button. Otherwise, enable
+function isGeojsonEmpty(){
+    if(isEmpty(geojson._layers) === true){
+        console.log("Layer 'geojson' is empty. Attempt to disable submit button:");
+        if(submitButtonState() !== "disabled"){
+            console.log("Le Success");
+            //sendBox.disable();
+            document.getElementById("buttonsubmitall").disabled = true;
+        } else {
+            console.log("Submit button already disabled.");
+        }
+    } else {
+        console.log("Layer 'geojson' is not empty. Attempt to enable submit button:");
+        if(submitButtonState() !== "enabled"){
+            console.log("Le Success");
+            //sendBox.update();
+            document.getElementById("buttonsubmitall").disabled = false;
+        } else {
+            console.log("Submit button already enabled.");
+        }
+    }
+}
 
 // "Submit records" button functionality uses jQuery UI
 // Copying objects in JS is not straightforward and for that reason
@@ -378,7 +380,8 @@ function submitButtonListener(){
             });
             //retain dialog position on window resize
             $(window).resize(function() {
-                $("#sucdialog").dialog("option", "position", {my: "center", at: "center", of: window});
+                $("#sucdialog").dialog("option", "position", {
+                    my: "center", at: "center", of: window});
             });
         });
         usersZipCodes.clearZipCodes();
@@ -389,3 +392,12 @@ function submitButtonListener(){
         isGeojsonEmpty();
     });
 };
+
+// Test submit button current state
+function submitButtonState(){
+    if(document.getElementById("buttonsubmitall").disabled === true){
+        return "disabled";
+    } else {
+        return "enabled";
+    }
+}

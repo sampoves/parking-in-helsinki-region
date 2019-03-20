@@ -1,17 +1,12 @@
 /* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * This is the html survey form of Leaflet popup survey for University of Helsinki 
+ * master's thesis "Parking of private cars and accessibility in Helsinki 
+ * Capital Region". Written by Sampo Vesanen.
  */
 
-// TSEKKAA MIKÄ ADDMARKER() TUOLLA LOPUSSA ON EKALLA RIVIL
+// onsubmit="addmarker" may be obsolete
 var popupContent = 
-        '<form name="myform" role="form" id="form" enctype="multipart/form-data" class = "form-horizontal" onsubmit="addMarker()">'+
-    //datetime
-//    '<div class="form-group">'+
-//        '<label class="control-label col-sm-5"><strong tkey="lang_datetime">Pysäköintisi päivämäärä ja kellonaika<br></strong></label>'+
-//        '<input type="datetime-local" placeholder="Required" id="datetime" name="datetime" class="form-control"/>'+ 
-//    '</div>'+
+    '<form name="myform" role="form" id="form" enctype="multipart/form-data" class = "form-horizontal" onsubmit="addMarker()">'+
 
     //time to search parking
     '<div class="form-group">'+

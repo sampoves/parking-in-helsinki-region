@@ -1,7 +1,8 @@
 /* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * These are some of the variables used by Leaflet popup survey for University 
+ * of Helsinki master's thesis "Parking of private cars and accessibility in 
+ * Helsinki Capital Region".
+ * Written by Sampo Vesanen in 2019.
  */
 
 //BOUNDS VARIABLES FOR MYMAP

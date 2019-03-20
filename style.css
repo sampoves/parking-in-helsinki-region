@@ -137,7 +137,6 @@ li:first-line {
 }
 
 
-
 /*-----------------------------------------*/
 /*FORM-GROUP LIKERT AND RADIO BUTTONS STYLE*/
 /*-----------------------------------------*/
@@ -162,7 +161,6 @@ input[type="radio"]{
     margin-top: -1px;
     vertical-align: top;
 }
-
 
 .form-group {
     font-size: 10pt;
@@ -315,14 +313,6 @@ div.sucimage {
 }​
 
 
-
-.tabspanel{
-    height:500px; 
-    width:450px; 
-    overflow:scroll;
-}
-
-
 /*--------------*/
 /*JQUERY UI TABS*/
 /*--------------*/
@@ -332,6 +322,12 @@ div.sucimage {
     border-width: 0px; 
     overflow: hidden;
 } 
+
+.tabspanel{
+    height:500px; 
+    width:450px; 
+    overflow:scroll;
+}
 
 /*#tabsikkuna .ui-tabs-panel { 
     background: #f5f3e5 url(http://code.jquery.com/ui/1.8.23/themes/south-street/images/ui-bg_highlight-hard_100_f5f3e5_1x100.png) repeat-x scroll 50% top; 

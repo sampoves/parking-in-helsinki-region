@@ -154,6 +154,18 @@ Helsinki Capital Region".
                 postal.bringToFront();
                 geojson.bringToFront();
             });
+            
+            //on dragstart, check if popups are finished and button can be 
+            //activated. Same for click. These events may be expensive to run.
+            mymap.on("dragstart", function (e) {
+                updateGeomColors();
+                arePopupsFinished();
+            });
+            
+            mymap.on("click", function (e) {
+                updateGeomColors();
+                arePopupsFinished();
+            });
 
 
 
@@ -318,7 +330,8 @@ Helsinki Capital Region".
                 // if statement tests if the following class is open. It gets
                 // value 1 if it is, otherwise 0. This prevents inadvertent
                 // additions of Polygons when clicking away from the popup
-                if(($(".leaflet-popup-content-wrapper").length === 0) && ($("#tabsikkuna").is(":visible") === false)){
+                if(($(".leaflet-popup-content-wrapper").length === 0) && 
+                        ($("#tabsikkuna").is(":visible") === false)){
                     var layer = e.layer;
                     var pol = layer.toGeoJSON();
                     var geom = pol.geometry;

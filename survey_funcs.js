@@ -185,6 +185,12 @@ var translate = function(jsdata){
             var strTr = jsdata[$(this).attr('tkey')];
             $(this).html(strTr);
         });
+        //handle changing of thankyou.png
+        if(currentLang === "en"){
+            $("div.sucimage").css("content", "url('thankyou.png')");
+        } else {
+            $("div.sucimage").css("content", "url('thankyou_fi.png')");
+        }
 };
 
 // this function can be used with events and such where language does not update

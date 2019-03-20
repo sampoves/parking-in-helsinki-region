@@ -11,7 +11,10 @@ var corner2 = [60.05, 25.305884];
 var bounds = L.latLngBounds(corner1, corner2);
 
 
+//---------------------------------
 //INITIALISE BACKGROUND TILE LAYERS
+//---------------------------------
+//
 //CartoDB dark_matter
 var darkmatter = L.tileLayer(
         'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_nolabels/{z}/{x}/{y}.png',
@@ -46,7 +49,10 @@ var Stamen_Terrain = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terr
 });
 
 
+//-----------------------------------
 //INITIALISE "ONLY LABELS" TILELAYERS
+//-----------------------------------
+
 var darkmatterOnlyLabels = L.tileLayer(
         'https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png', {
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
@@ -74,8 +80,10 @@ var voyagerOnlyLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertil
 });
 
 
-// BACKGROUND GEOJSON LAYERS
-//import postal codes areas GeoJSON from file
+//------------------------------
+// GEOJSON LAYER STYLE VARIABLES
+// -----------------------------
+
 var stylePostal = {
     "color": "#ff7800",
     "weight": 3,
@@ -125,7 +133,10 @@ var geojsonComplete = {
 };
 
 
+//-----------------
 // HIGHLIGHT STYLES
+//-----------------
+
 var postalHighlight = {
     'color': '#ffd711',
     'weight': 4,
@@ -159,17 +170,18 @@ var geojsonCompHighlight = {
 };
 
 
-
-
-// Text strings
+//-------------
+// TEXT STRINGS
+//-------------
 var missingStuff = 
         '<font size="4" color="red" style="line-height: 30px;"><center><strong tkey="lang_incomplete">This entry is incomplete!</strong></center></font>';
 
 
-//HTML buttons
+//------------
+//HTML BUTTONS
+//------------
 var normalSubmit = 
         "<button id='buttonsubmitall' type='button'><strong tkey='lang_submit'>Submit records</strong></button>";
-        //"<button id='buttonsubmitall' type='button'><strong>Submit data</strong></button>";
+
 var disabledSubmit = 
         "<button disabled id='buttonsubmitall' type='button'><strong tkey='lang_submit'>Submit data</strong></button>";
-        //"<button disabled id='buttonsubmitall' type='button'><strong>Submit data</strong></button>";

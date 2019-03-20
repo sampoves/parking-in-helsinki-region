@@ -64,6 +64,11 @@ and open the template in the editor.
     //oikein geojson-layeria määritellessä. postaldissolven if-lauseet on
     //kommentoitu, koska en osannut ratkaista pulmaa
 
+
+            //--------------
+            //INITIALISATION
+            //--------------
+            //
             // INITIALISE MAP AND LAYERS
             //initialise map
             var mymap = L.map(
@@ -78,13 +83,28 @@ and open the template in the editor.
                 zoomControl: true
             });
             
+            //initialise TrackZipCodes object for keeping track of unique zip
+            //codes. This prevents duplicate records for same zip code areas.
+            usersZipCodes = new TrackZipCodes();
+            
+            // DISABLE SUBMIT BUTTON AT START
+            //first check up if geojson has nothing in it to disable submit
+            //button
+            $(document).ready(function(){
+                sendBox.disable();
+            });
+            
+            
+            //------------
+            //MYMAP EVENTS
+            //------------
+            //
             //pane for label tile layers. This will keep tile layer labels on
             //top of geojson Polygons
             mymap.createPane('labels');
             mymap.getPane('labels').style.zIndex = 650;
             mymap.getPane('labels').style.pointerEvents = 'none';
             
-            //COOKIES AND OTHER THINGS
             //events to listen for baselayer or overlay change for to use of 
             //cookies
             //https://leafletjs.com/reference-1.4.0.html#map-baselayerchange
@@ -116,8 +136,22 @@ and open the template in the editor.
                 }
             });
             
+            // Disable double click zoom and enable double click marker creation
+            mymap.doubleClickZoom.disable(); 
+
+            //Listen to additions to overlays: always keep geojson layer on top.
+            //Also make sure that "postal" is always on top of "postaldissolve".
+            //This is realised with first bringing postal on top, then geojson.
+            mymap.on("overlayadd", function (event) {
+                postal.bringToFront();
+                geojson.bringToFront();
+            });
 
 
+            //------------------------
+            //COOKIES AND OTHER THINGS
+            //------------------------
+            //
             //COOKIES: SET SITE LANGUAGE WITH COOKIE VALUE
             var currentLang = null;
             $(document).ready(function(){
@@ -131,7 +165,6 @@ and open the template in the editor.
                     window.currentLang = "en";
                 }
             });
-
 
             //COOKIES: SET USER SETTINGS STRAIGHT WITH COOKIE VALUES
             //use .addTo() to give mymap the correct cookie value
@@ -147,7 +180,6 @@ and open the template in the editor.
                 Stamen_Terrain.addTo(mymap);
                 StamenTerrainOnlyLabels.addTo(mymap);
             } 
-            
             
             //COOKIES: Has jQuery infobox been opened?
             $(document).ready(function(){
@@ -193,13 +225,12 @@ and open the template in the editor.
             });
             
 
-            // SUBMIT BUTTON INITIAL DISABLE
-            //first check up if geojson has nothing in it to disable submit
-            //button
-            $(document).ready(function(){
-                sendBox.disable();
-            });
             
+            
+            //-------------------------
+            //INITIALISE GEOJSON LAYERS
+            //-------------------------
+            //
             // Initialise empty GeoJSON to be populated by user with responses
             var geojson = L.geoJson({
                 "type": "FeatureCollection",
@@ -256,7 +287,25 @@ and open the template in the editor.
 //                window.stylingFunction(postal, stylePostal, stylePostalDark);
 //                window.stylingFunction(postaldissolve, styleArea, styleAreaDark);
 //            });
+ 
+ 
+             //-------------------
+            //GEOJSON LAYER EVENTS
+            //--------------------
+            //
+            //Highlight overlay layers on mouseover. Also listen to return to 
+            //normal.   
+            postal.on("mouseover", highlightLayer);
+            postal.on("mouseout", layerToNormal);
+            geojson.on("mouseover", highlightGeojson);
+            geojson.on("mouseout", geojsonToNormal);
 
+
+
+            //------------------------
+            //LAYER CONTROL ELEMENTS
+            //------------------------
+            //
             // Add layer control elements
             var baseMaps = {
                 "OpenStreetMap": OpenStreetMap_DE,
@@ -273,14 +322,6 @@ and open the template in the editor.
             var lCtrl = L.control.layers(baseMaps, overlayMaps);
             lCtrl.addTo(mymap);
             
-            //Listen to additions to overlays: always keep geojson layer on top.
-            //Also make sure that "postal" is always on top of "postaldissolve".
-            //This is realised with first bringing postal on top, then geojson.
-            mymap.on("overlayadd", function (event) {
-                postal.bringToFront();
-                geojson.bringToFront();
-            });
-
             // Add additional header text to layer control
             $('<p id="controlTitle1"><strong tkey="lang_basemap">Basemaps<strong></p>').insertBefore('div.leaflet-control-layers-base');
             $('<p id="controlTitle2"><strong tkey="lang_overlay">Overlay maps<strong></p>').insertBefore('div.leaflet-control-layers-overlays');
@@ -293,13 +334,7 @@ and open the template in the editor.
                 $("#controlTitle2").replaceWith(
                         '<p id="controlTitle2"><strong tkey="lang_overlay">Overlay maps<strong></p>');
             };
- 
-            //Highlight overlay layers on mouseover. Also listen to return to 
-            //normal.   
-            postal.on("mouseover", highlightLayer);
-            postal.on("mouseout", layerToNormal);
-            geojson.on("mouseover", highlightGeojson);
-            geojson.on("mouseout", geojsonToNormal);
+
 
             //Listen to changes in popup form
             //Listen to current click on geojson layer named "geojson"
@@ -560,13 +595,6 @@ and open the template in the editor.
                 mymap.scrollWheelZoom.enable();
             });
 
-
-            // Disable double click zoom and enable double click marker creation
-            mymap.doubleClickZoom.disable(); 
-
-            //initialise TrackZipCodes object for keeping track of unique zip
-            //codes
-            usersZipCodes = new TrackZipCodes();
 
             //On layer click on "postal", initialise "geojsonFeature" and add it 
             //to the "geojson" layer.

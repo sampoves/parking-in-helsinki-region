@@ -55,7 +55,7 @@ Helsinki Capital Region".
     //**kun geojsonilla popup auki, uutta ei saa enää heti auki. Huom! tämä ei
     //toimi, jos klikkaa pohjalayerii, eli tilelayerii. Silloin joutuu klikkaamaan
     //geojson-layeria kerran enemmän. kokeile korjaa
-    //**areMarkersFinished() toimii save changesissa ja x:ssä. On hieman
+    //**arePopupsFinished() toimii save changesissa ja x:ssä. On hieman
     //hutera tsekkailu muuten. Paranna tämä.
 
     //OLIS KIVA -TODO
@@ -144,7 +144,7 @@ Helsinki Capital Region".
                 }
             });
             
-            // Disable double click zoom and enable double click marker creation
+            // Disable double click zoom
             mymap.doubleClickZoom.disable(); 
 
             //Listen to additions to overlays: always keep geojson layer on top.
@@ -409,8 +409,8 @@ Helsinki Capital Region".
             //Listen to current click on geojson layer named "geojson"
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
             function layerClickHandler (e) {
-                areMarkersFinished();
-                //MARKER LOCATION INTERSECTED WITH OVERLAY LAYERS
+                arePopupsFinished();
+                //POLYGON (CLICK) LOCATION INTERSECTED WITH OVERLAY LAYERS
                 //Check with conditional statement what to print on popup.
                 //Command delete is necessary to remove unwanted values in popup 
                 //when first placing popup on research area and then placing a 
@@ -428,22 +428,22 @@ Helsinki Capital Region".
                     delete hitPostal;
                 }
 
-                var marker = e.target,
+                var pol = e.target,
                         properties = e.target.feature.properties;
                 
-                if(marker.hasOwnProperty('_popup')){
-                    marker.unbindPopup();
+                if(pol.hasOwnProperty('_popup')){
+                    pol.unbindPopup();
                 }
                 
                 //check if all values are inserted and print text in popUp
                 //if this is the case
                 if(!properties.likert || !properties.parkspot || 
                         !properties.parktime){
-                    marker.bindPopup(html + popupContent + missingStuff);
+                    pol.bindPopup(html + popupContent + missingStuff);
                 } else {
-                    marker.bindPopup(html + popupContent);
+                    pol.bindPopup(html + popupContent);
                 }
-                marker.openPopup();
+                pol.openPopup();
 
                 //use jQuery to listen to current popup and its close button.
                 //This way we can communicate correctly with the function
@@ -451,7 +451,7 @@ Helsinki Capital Region".
                 $("a.leaflet-popup-close-button").one('click', function(e){
                     console.log("pressed x");   
                     updateGeomColors();
-                    areMarkersFinished();
+                    arePopupsFinished();
                     
                     //the following value manipulates geojson.on("click"). 
                     //It allows user to exit popup dialog with x, and then 
@@ -504,8 +504,8 @@ Helsinki Capital Region".
                 var buttonSubmit = L.DomUtil.get('button-submit');
                 L.DomEvent.addListener(buttonSubmit, "click", function (e){
                     updateGeomColors();
-                    marker.closePopup();
-                    areMarkersFinished();
+                    pol.closePopup();
+                    arePopupsFinished();
                     //the following value manipulates geojson.on("click"). 
                     //It allows user to exit popup dialog with x, and then 
                     //immediately click on the same polygon to open the same 
@@ -521,7 +521,7 @@ Helsinki Capital Region".
                     //zip codes user has clicked on. They can also be removed,
                     //which is important for the functionality of this survey.
                     usersZipCodes.removeZipCode(window.thisZip);
-                    geojson.removeLayer(marker);
+                    geojson.removeLayer(pol);
 
                     //the following value manipulates geojson.on("click").  
                     //It allows user to exit popup dialog with x, and then 

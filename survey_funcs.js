@@ -199,79 +199,6 @@ function languageCheckUp(){
 }
 
 
-
-
-//Are all popups finished? This function loops through all markers in geojson
-//to detect null fields. If any field is null, this function will keep submit
-//button inactive.
-//This function used to have a feature which located unfinished polygons. Was
-//removed as extraneous. See old versions of this file to see the code.
-function areMarkersFinished(){
-    howManyNulls = 0;
-    unfinishedMarkers = [];//for fit all unfinished markers thing
-    
-    for (var i in geojson._layers){
-        thisLayer = geojson._layers[i];
-        theseProps = thisLayer.feature.properties;
-        theseAttrs = Object.keys(theseProps);
-        thisIterationNulls = 0; //for fit all unfinished markers thing
-
-        for (var i = 0; i < theseAttrs.length; i += 1){
-            //implement test whether layer is interactive or not
-            //check submit button which changed interactivity to false
-            attr = theseAttrs[i];
-            value = theseProps[attr];
-            if (value === null || value === ""){
-                howManyNulls += 1;
-                thisIterationNulls += 1;
-            } else {
-                // do nothin
-            }
-        }
-        if(howManyNulls !== 0){
-            unfinishedMarkers.push(thisLayer);
-        } else {
-            //do nothin
-        }
-    };
-    
-    //Gather unfinished markers to this featureGroup for the use of fitBounds()
-    var group = new L.featureGroup(unfinishedMarkers);
-    
-    //if above for loop finished without any nulls, all popups are finished
-    //and submit button can be enabled.
-    if ((howManyNulls === 0) && (isEmpty(geojson._layers) === false)){
-        if(submitButtonState() !== "enabled"){
-            console.log("All markers complete, enable submit button");
-            //sendBox.update();
-            document.getElementById("buttonsubmitall").disabled = false;
-        } else {
-            console.log("All markers complete. Submit button already enabled.");
-        }
-    } else {
-        //implemented detection of unfinished markers. This needs initialisation
-        //of array unfinishedMarkers and var thisIterationNulls and a if statement
-        //to check if current layer was unfinished. Then add unfinished markers
-        //to featureGroup group, and fit them on map here.
-        //UNCOMMENT THIS TO ENABLE PAN TO UNFINISHED POLS
-//        try{mymap.fitBounds(group.getBounds(), {maxZoom: 14});
-//        }
-//        catch(error){
-//            console.log("featureGroup 'group' is empty, don't pan view.");
-//        }
-        
-        //disable() has to be here for the case user wipes a field and marker
-        //regresses to unfinished.
-        if(submitButtonState() !== "disabled"){
-            console.log("Not all markers are complete, did not enable submit button.");
-            document.getElementById("buttonsubmitall").disabled = true;
-        } else {
-            console.log("Not all markers are complete. Submit button already disabled.");
-        }
-    }
-}
-
-
 //-------
 //CLASSES
 //-------
@@ -326,6 +253,55 @@ class TrackZipCodes {
 //-----------------------
 //SUBMIT BUTTON FUNCTIONS
 //-----------------------
+//
+//Are all popups finished? This function loops through all polygons in geojson
+//to detect null fields. If any field is null, this function will keep submit
+//button inactive.
+//This function used to have a feature which located unfinished polygons. Was
+//removed as extraneous. See old versions of this file to see the code.
+function arePopupsFinished(){
+    howManyNulls = 0;
+    
+    for (var i in geojson._layers){
+        thisLayer = geojson._layers[i];
+        theseProps = thisLayer.feature.properties;
+        theseAttrs = Object.keys(theseProps);
+
+        for (var i = 0; i < theseAttrs.length; i += 1){
+            //implement test whether layer is interactive or not
+            //check submit button which changed interactivity to false
+            attr = theseAttrs[i];
+            value = theseProps[attr];
+            if (value === null || value === ""){
+                howManyNulls += 1;
+            } else {
+                // do nothin
+            }
+        }
+    };
+    
+    //if above for loop finished without any nulls, all popups are finished
+    //and submit button can be enabled.
+    if ((howManyNulls === 0) && (isEmpty(geojson._layers) === false)){
+        if(submitButtonState() !== "enabled"){
+            console.log("All popups complete, enable submit button");
+            //sendBox.update();
+            document.getElementById("buttonsubmitall").disabled = false;
+        } else {
+            console.log("All popups complete. Submit button already enabled.");
+        }
+    } else {        
+        //disable() has to be here for the case user wipes a field and polygon
+        //regresses to unfinished.
+        if(submitButtonState() !== "disabled"){
+            console.log("Not all popups are complete, did not enable submit button.");
+            document.getElementById("buttonsubmitall").disabled = true;
+        } else {
+            console.log("Not all popups are complete. Submit button already disabled.");
+        }
+    }
+}
+
 
 // this tests if an object is empty. Used in function isGeojsonEmpty() to test 
 // if geojson layer "geojson" is empty to ensure user can't send blanks to the 
@@ -364,8 +340,7 @@ function isGeojsonEmpty(){
 
 // "Submit records" button functionality uses jQuery UI
 // Copying objects in JS is not straightforward and for that reason
-// I will not attempt to save sent features on map as gray markers.
-// Instead, send button will destroy all entries entered so far.
+// AT THIS POINT send button will destroy all entries entered so far.
 function submitButtonListener(){
     var sendButtonSubmit = L.DomUtil.get('buttonsubmitall');
     L.DomEvent.addListener(sendButtonSubmit, "click", function (e){

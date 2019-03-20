@@ -101,12 +101,15 @@ and open the template in the editor.
                 if(mymap.hasLayer(OpenStreetMap_DE)){
                     voyagerOnlyLabels.addTo(mymap);
                     postal.setStyle(stylePostalDark);
+                    postaldissolve.setStyle(styleAreaDark);
                 } else if (mymap.hasLayer(Stamen_Terrain)){
                     StamenTerrainOnlyLabels.addTo(mymap);
                     postal.setStyle(stylePostalDark);
+                    postaldissolve.setStyle(styleAreaDark);
                 } else if (mymap.hasLayer(darkmatter)){
                     darkmatterOnlyLabels.addTo(mymap);
                     postal.setStyle(stylePostal);
+                    postaldissolve.setStyle(styleArea);
                 }
             });
             
@@ -138,10 +141,7 @@ and open the template in the editor.
             } else if (getCookie("survey_tilelayer_choice") === "Stamen terrain"){
                 Stamen_Terrain.addTo(mymap);
                 StamenTerrainOnlyLabels.addTo(mymap);
-            } else {
-                darkmatter.addTo(mymap);
-                darkmatterOnlyLabels.addTo(mymap);
-            }
+            } 
             
             
             //COOKIES: Has jQuery infobox been opened?
@@ -205,9 +205,6 @@ and open the template in the editor.
                     onEachFeature:
                             function (feature, layer){
                                 layer.on('click', layerClickHandler);
-                                
-                                //markerColorListener may be obsolete
-//                                layer.on('mouseover', markerColorListener); //"add" toimii tässä!! jos jotain tarvetta josku
 
                                 //incompleteTest() accepts onEachFeature "feature"
                                 //or layer event
@@ -240,7 +237,15 @@ and open the template in the editor.
             
             var postaldissolve = new L.GeoJSON.AJAX(
                     "pno_dissolve.geojson", {
-                        style: styleArea
+                        style: function(feature){
+                            if(mymap.hasLayer(darkmatter)){
+                                postaldissolve.setStyle(styleArea);
+                            } else if (mymap.hasLayer(OpenStreetMap_DE)){
+                                postaldissolve.setStyle(styleAreaDark);
+                            } else if (mymap.hasLayer(Stamen_Terrain)){
+                                postaldissolve.setStyle(styleAreaDark);
+                            };
+                        }
             }).addTo(mymap);
 
 

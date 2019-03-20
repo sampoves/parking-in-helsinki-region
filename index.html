@@ -53,12 +53,11 @@ and open the template in the editor.
     //**SCRIPT omaan js-tiedostoon
     //**Kirjoita ajantasaiset ohjeet Jquery UI -ikkunaan
     //**kysymysten lopullinen muoto pitää päättää
-    //**when popup open, prevent clicking (and immediately opening popup on
-    //geojson-layer. this already works when popup is open and clicking postal.
+    //**kun geojsonilla popup auki, uutta ei saa enää heti auki. Huom! tämä ei
+    //toimi, jos klikkaa pohjalayerii, eli tilelayerii. Silloin joutuu klikkaamaan
+    //geojson-layeria kerran enemmän. kokeile korjaa
     //**areMarkersFinished() toimii save changesissa ja x:ssä. On hieman
     //hutera tsekkailu muuten. Paranna tämä.
-    //previousGeometrySame() geojson-klikkailuongelma. nopea klikkailu geojson-
-    //layereiden läpi myös rikkoo tallenna tiedot -napin ja poista nämä tiedot-napin
 
     //OLIS KIVA -CLASS
     //**Disabled submit button ei jostain syystä estä vetämistä tai mousezoomia
@@ -327,12 +326,8 @@ and open the template in the editor.
                 if(!properties.likert || !properties.parkspot || 
                         !properties.parktime){
                     marker.bindPopup(html + popupContent + missingStuff);
-                    //OLDSURVEY
-                    //e.target.setIcon(incompleteIcon);
                 } else {
-                    marker.bindPopup(popupContent);
-                    //OLDSURVEY
-                    //e.target.setIcon(completeIcon);
+                    marker.bindPopup(html + popupContent);
                 }
                 marker.openPopup();
 
@@ -343,11 +338,11 @@ and open the template in the editor.
                     console.log("pressed x");   
                     updateGeomColors();
                     areMarkersFinished();
-                    //the following value manipulates previousGeometrySame(). 
+                    
+                    //the following value manipulates geojson.on("click"). 
                     //It allows user to exit popup dialog with x, and then 
                     //immediately click on the same polygon to open the same 
                     //popup.
-                    //prevGeom = 1;
                     apu = 0;
                 });
 
@@ -397,11 +392,10 @@ and open the template in the editor.
                     updateGeomColors();
                     marker.closePopup();
                     areMarkersFinished();
-                    //the following value manipulates previousGeometrySame(). 
+                    //the following value manipulates geojson.on("click"). 
                     //It allows user to exit popup dialog with x, and then 
                     //immediately click on the same polygon to open the same 
                     //popup.
-                    //prevGeom = 1;
                     apu = 0;
                 });
                 
@@ -414,12 +408,12 @@ and open the template in the editor.
                     //which is important for the functionality of this survey.
                     usersZipCodes.removeZipCode(window.thisZip);
                     geojson.removeLayer(marker);
-                    apu = 0;
-                    //the following value manipulates previousGeometrySame(). 
+
+                    //the following value manipulates geojson.on("click").  
                     //It allows user to exit popup dialog with x, and then 
                     //immediately click on the same polygon to open the same 
                     //popup.
-                    //prevGeom = 1;
+                    apu = 0;                    
                 });
             }
     
@@ -598,18 +592,8 @@ and open the template in the editor.
             //On layer click on "postal", initialise "geojsonFeature" and add it 
             //to the "geojson" layer.
             postal.on("click", function (e) {
+                //this value manipulates geojson.on("click")
                 apu = 0;
-                //these two values help previousGeometrySame() function make
-                //right decisions. Aforementioned function does not come to
-                //correct conclusions, if clicking on geojson layer and then
-                //clickin postal, and then again clicking geojson.
-                
-//                if((typeof(timesClicked) === "undefined") && (typeof(prevGeom) === "undefined")){
-//                    //do nothin
-//                } else {
-//                    timesClicked = 0;
-//                    prevGeom = 1;
-//                }
                 
                 // if statement tests if the following class is open. It gets
                 // value 1 if it is, otherwise 0. This prevents inadvertent

@@ -134,6 +134,29 @@ function findIntersection (latlng, geojsonlayer){
 }
 
 
+//This code launches jQuery info dialog when prompted. The language button and 
+//a cookie script make use of this. Secondary purpose is to prevent code 
+//repetition.
+function initialiseInfo(){
+    $("#tabs").tabs();
+    $("#tabsikkuna").dialog({
+        height: 630,
+        width: 560,
+        resizable: false,
+        position: {my: "center", at: "center", of: window},
+        //this hides info dialog main scroll bars.
+        //only div scroll bars remain
+        open: function (event, ui) {
+            $('#tabsikkuna').css('overflow', 'hidden');
+        }
+    });
+    // retain dialog position on window resize
+    $(window).resize(function() {
+        $("#tabsikkuna").dialog("option", "position", 
+        {my: "center", at: "center", of: window});
+    });
+}
+
 
 //------------------------
 //LAYER STYLING AND EVENTS

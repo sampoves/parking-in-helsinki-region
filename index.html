@@ -24,9 +24,6 @@ Helsinki Capital Region".
         <script type="text/javascript" src="survey_funcs.js"></script>
         <script type="text/javascript" src="survey_vars.js"></script>
         
-        <!--Only activate English language in the beginning-->
-        <!--<script type="text/javascript" src="lang.en.js"></script>-->
-        
         <!-- survey css stylesheet -->
         <link rel="stylesheet" href="style.css">
         
@@ -56,7 +53,6 @@ Helsinki Capital Region".
     //geojson-layeria kerran enemmän. kokeile korjaa
     //**arePopupsFinished() toimii save changesissa ja x:ssä. On hieman
     //hutera tsekkailu muuten. Paranna tämä.
-    //**BASELAYER EI TAIDA LATAUTUA, JOS EI COOKIETA ASETETTU! todettu serveriversiolla
     //**geojson-layeria pystyy klikkailee kun infobox on auki
     //**postalia pystyy klikkailee ku infobox auki
 
@@ -102,7 +98,7 @@ Helsinki Capital Region".
             });
             
             //Show survey version in jQuery info window
-            var survey_version = "Development version 20.3.2019";
+            var survey_version = "Development version 21.3.2019";
             window.onload = function(){
                 document.getElementById('version').innerHTML = survey_version;
             };
@@ -206,7 +202,12 @@ Helsinki Capital Region".
             else if (getCookie("survey_tilelayer_choice") === "Stamen terrain"){
                 Stamen_Terrain.addTo(mymap);
                 StamenTerrainOnlyLabels.addTo(mymap);
-            } 
+            } else {
+                //this is the case if first launch: no cookie set, set darkmatter
+                //on as default
+                darkmatter.addTo(mymap);
+                darkmatterOnlyLabels.addTo(mymap);
+            }
             
             //COOKIES: Has jQuery infobox been opened?
             $(document).ready(function(){
@@ -223,27 +224,9 @@ Helsinki Capital Region".
                     //user visiting first time or didn't click X
                     console.log("Associated cookie value not found, show survey information popup");
 
-                    //This code is copied from infobutton! consider cleaning
-                    //code so that code is not needlessly duplicated
-                    $(function() {
-                        $("#tabs").tabs();
-                        $("#tabsikkuna").dialog({
-                            height: 630,
-                            width: 560,
-                            resizable: false,
-                            position: {my: "center", at: "center", of: window},
-                            //this hides info dialog main scroll bars.
-                            //only div scroll bars remain
-                            open: function (event, ui) {
-                                $('#tabsikkuna').css('overflow', 'hidden');
-                            }
-                        });
-                        // retain dialog position on window resize
-                        $(window).resize(function() {
-                            $("#tabsikkuna").dialog("option", "position", 
-                            {my: "center", at: "center", of: window});
-                        });
-                    } );
+                    //initialise jQuery UI dialog and tabs through this
+                    //function
+                    $(initialiseInfo);
                     infoButton.state('infoClose');
                     //track if user has closed #tabsikkuna.
                     //NOTE! X button is not tracked!
@@ -603,26 +586,9 @@ Helsinki Capital Region".
                     icon: 'fa fa-info',
                     title: 'Open info',
                     onClick: function (btn, map) {
-                        //initialise jQuery UI dialog and tabs
-                        $(function() {
-                            $("#tabs").tabs();
-                            $("#tabsikkuna").dialog({
-                                height: 630,
-                                width: 560,
-                                resizable: false,
-                                position: {my: "center", at: "center", of: window},
-                                //this hides info dialog main scroll bars.
-                                //only div scroll bars remain
-                                open: function (event, ui) {
-                                    $('#tabsikkuna').css('overflow', 'hidden');
-                                }
-                            });
-                            // retain dialog position on window resize
-                            $(window).resize(function() {
-                                $("#tabsikkuna").dialog("option", "position", 
-                                {my: "center", at: "center", of: window});
-                            });
-                        } );
+                        //initialise jQuery UI dialog and tabs through this
+                        //function
+                        $(initialiseInfo);
                         btn.state('infoClose');
                         //track if user has closed #tabsikkuna.
                         //NOTE! X button is not tracked!

@@ -138,6 +138,10 @@ function findIntersection (latlng, geojsonlayer){
 //a cookie script make use of this. Secondary purpose is to prevent code 
 //repetition.
 function initialiseInfo(){
+    //make popups close if info is opened. "apu" manipulates geojson.on("click")
+    mymap.closePopup();
+    apu = 0;
+    
     $("#tabs").tabs();
     $("#tabsikkuna").dialog({
         height: 630,

@@ -377,6 +377,10 @@ function isGeojsonEmpty(){
 function submitButtonListener(){
     var sendButtonSubmit = L.DomUtil.get('buttonsubmitall');
     L.DomEvent.addListener(sendButtonSubmit, "click", function (e){
+        
+        //The important part: send data to server
+        preparePost();
+        
         $(function() {
             $("#sucdialog").dialog({
                 position: {my: "center", at: "center", of: window},
@@ -415,7 +419,7 @@ function submitButtonState(){
 //DATABASE FUNCTIONS
 //------------------
 
-function preparePost(geojsonLayer) {
+function preparePost() {
     //fetch data from geojson
     for (var i in geojson._layers){
         thisLayer = geojson._layers[i];
@@ -429,9 +433,8 @@ function preparePost(geojsonLayer) {
             parkspot: parkspotValue,
             parktime: parktimeValue
         };
-        //console.log(data);
         
-        $.post('surveytest.php', data, function(responseFromServer) {
+        $.post('testnew.php', data, function(responseFromServer) {
               // Insert response from server to '#response' div
               var responseHtml = '<div>Full JSON object: ' + JSON.stringify(responseFromServer) + '</div>';
               responseHtml += '<div>Status: ' + responseFromServer.status + ', message: ' + responseFromServer.message + '</div>';
@@ -443,7 +446,33 @@ function preparePost(geojsonLayer) {
     }
 }
 
-function preparePost2(){
+function prepareErrorPost() {
+    //fetch data from geojson
+    likertValue = "thisLayer.feature.properties.likert";
+    parkspotValue = 43.4534;
+    parktimeValue = "thisLayer.feature.properties.parktime";
+
+    var data = {
+        likert: 5,
+        parkspot: parkspotValue,
+        parktime: parktimeValue
+    };
+
+    $.post('testnew.php', data, function(responseFromServer) {
+          // Insert response from server to '#response' div
+          var responseHtml = '<div>Full JSON object: ' + JSON.stringify(responseFromServer) + '</div>';
+          responseHtml += '<div>Status: ' + responseFromServer.status + ', message: ' + responseFromServer.message + '</div>';
+
+          $('#response').html(responseHtml);
+          console.log(responseHtml);
+
+        }, 'json');
+
+}
+
+
+
+function preparePostTemplate(){
 
     // Fetch data from UI
     //var emailValue = $('#email').val();
@@ -453,13 +482,16 @@ function preparePost2(){
     var data = {email: emailValue};
     
     // Send data to server (PHP)
-    $.post('surveytest.php', data, function(responseFromServer) {
+    $.post('test.php', data, function(responseFromServer) {
 
         // Insert response from server to '#response' div
         var responseHtml = '<div>Full JSON object: ' + JSON.stringify(responseFromServer) + '</div>';
         responseHtml += '<div>Status: ' + responseFromServer.status + ', message: ' + responseFromServer.message + '</div>';
 
+        //server response sent to #sucdialog, see index.html jquery content
         $('#response').html(responseHtml);
+        
         console.log(responseHtml);
+        
     }, 'json');
 }

@@ -312,6 +312,10 @@ div.sucimage {
    width: 100%;
 }​
 
+.response {
+    font-family: 'Montserrat', sans-serif;
+}
+
 
 /*--------------*/
 /*JQUERY UI TABS*/

@@ -420,6 +420,10 @@ function submitButtonState(){
 //------------------
 
 function preparePost() {
+    
+    //make sure response is empty going in
+    $("#response").html("");
+    
     //fetch data from geojson
     for (var i in geojson._layers){
         thisLayer = geojson._layers[i];
@@ -435,12 +439,14 @@ function preparePost() {
         };
         
         $.post('testnew.php', data, function(responseFromServer) {
-              // Insert response from server to '#response' div
-              var responseHtml = '<div>Full JSON object: ' + JSON.stringify(responseFromServer) + '</div>';
-              responseHtml += '<div>Status: ' + responseFromServer.status + ', message: ' + responseFromServer.message + '</div>';
-              
-              $('#response').html(responseHtml);
-              console.log(responseHtml);
+            // Insert response from server to '#response' div
+            var responseHtml = '<div>Full JSON object: ' + JSON.stringify(responseFromServer) + '</div>';
+            responseHtml += '<div>Status: ' + responseFromServer.status + ', message: ' + responseFromServer.message + '</div>';
+            
+            var responseDiv = document.getElementById('response');
+            responseDiv.innerHTML += responseHtml;
+            //$('#response').html(responseHtml);
+            //console.log(responseHtml);
             
             }, 'json');
     }
@@ -448,12 +454,12 @@ function preparePost() {
 
 function prepareErrorPost() {
     //fetch data from geojson
-    likertValue = "thisLayer.feature.properties.likert";
-    parkspotValue = 43.4534;
-    parktimeValue = "thisLayer.feature.properties.parktime";
+    likertValue = 1;
+    parkspotValue = 4;
+    parktimeValue = 5454;
 
     var data = {
-        likert: 5,
+        likert: likertValue,
         parkspot: parkspotValue,
         parktime: parktimeValue
     };

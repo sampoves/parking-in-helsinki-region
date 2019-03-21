@@ -30,7 +30,7 @@ $sanitizedParkspot = filter_var($parkspot, FILTER_VALIDATE_INT);
 $sanitizedParktime = filter_var($parktime, FILTER_VALIDATE_INT);
 
 // Validate input for likert (check that we're getting correct values)
-if (!filter_var($sanitizedLikert, FILTER_VALIDATE_INT)) {
+if (!filter_var($sanitizedLikert, FILTER_VALIDATE_INT, array("options" => array("min_range"=>1, "max_range"=>5)))) {
     
     // Error found given variable isn't allowed
     $response['status'] = 'error';
@@ -41,14 +41,14 @@ if (!filter_var($sanitizedLikert, FILTER_VALIDATE_INT)) {
 }
 
 // Validate input for parkspot
-if (!filter_var($sanitizedParkspot, FILTER_VALIDATE_INT)) {
+if (!filter_var($sanitizedParkspot, FILTER_VALIDATE_INT, array("options" => array("min_range"=>1, "max_range"=>4)))) {
     $response['status'] = 'error';
     $response['message'] = 'Invalid value for parkspot.';
     exit(json_encode($response));
 }
 
 // Validate input for parktime
-if (!filter_var($sanitizedParktime, FILTER_VALIDATE_INT)) {   
+if (!filter_var($sanitizedParktime, FILTER_VALIDATE_INT, array("options" => array("min_range"=>0, "max_range"=>99)))) {   
     $response['status'] = 'error';
     $response['message'] = 'Invalid value for parktime.';
     exit(json_encode($response));

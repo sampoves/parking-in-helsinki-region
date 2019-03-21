@@ -3,18 +3,19 @@ Current project:
 Leaflet.js based web survey to acquire information about parking in Helsinki Capital Region.
 
 Leaflet.js Parking survey consists of
-* index.html - main HTML stuff and a lot of JavaScript
+* index.html - main HTML framework, jQuery HTML content and a lot of JavaScript
 * park_survey.js - L.Popup requires HTML code as a variable. This file contains the Popup parking survey in HTML as a variable
-* survey_funcs.js - contains custom functions used by js script located in index.html
-* survey_info.js - HTML text. Instructions and stuff
-* style.css - style sheet
+* survey_funcs.js - Contains custom functions used by js script located in index.html
+* survey_vars.js - Contains many static variables which are delegated here to declutter index.html
+* style.css - Survey style sheet
+* en.json - English language strings
+* fi.json - Finnish language strings
 
 GeoJSON data
-* pno_dissolve.geojson - Research area as one Polygon
+* pno_dissolve.geojson - Research area as the four municipalities
 * pno_research_area.geojson - Postal areas for the research area
-* seutukartta_pienalue.geojson - Seutukartta aluejako pienalue areas for the research area
 
-Old stuff:
-Currently vacationing, it'll be back. Python script to refine and analyse data produced in parking field survey
+Other thesis material:
+This part is currently vacationing, it'll be back. Python script to refine and analyse data produced in parking field survey. Will be majorly updated once responses start to flow in.
 * parking.py - main script
 * parking_func.py - auxiliary functions

@@ -1,4 +1,11 @@
 <?php
+//This script inserts Parking survey results from web app to MySQL.
+//This is MySQL database insertion code written by Sampo Vesanen with the invaluable
+//input by Harri Lampi.
+// ------------------
+// PHP INITIALISATION
+// ------------------
+
 // Initialize array containing allowed variables
 $allowedDataVariables = ['likert', 'parkspot', 'parktime'];
 
@@ -17,6 +24,7 @@ foreach($_POST as $dataVariable => $dataValue) {
 	exit(json_encode($response));
   }
 }
+
 // Receive data from client side (JavaScript)
 $likert = $_POST['likert'];
 $parkspot = $_POST['parkspot'];
@@ -53,6 +61,29 @@ if (!filter_var($sanitizedParktime, FILTER_VALIDATE_INT, array("options" => arra
     $response['message'] = sprintf('Invalid value for parktime. Value given %s', $sanitizedParktime);
     exit(json_encode($response));
 }
+
+//perform mysql insertion
+$servername = "localhost";
+$username = "php-user";
+$password = "aCCess2Table";
+$dbname = "parksurvey";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+
+$sql = "INSERT INTO survey1 (likert, parkspot, parktime) VALUES (" .$sanitizedLikert. "," .$sanitizedParkspot. "," .$sanitizedParktime. ")";
+
+if ($conn->query($sql) === TRUE) {
+    //echo "New record created successfully";
+} else {
+    //echo "Error: " . $sql . "<br>" . $conn->error;
+}
+
+$conn->close();
 
 // Set some data to return (not necessary) and echo JSON
 $response['message'] = sprintf('Thank you. Likert %s, parkspot %s, parktime %s', $sanitizedLikert, $sanitizedParkspot, $sanitizedParktime);

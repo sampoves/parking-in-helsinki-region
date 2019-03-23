@@ -419,10 +419,14 @@ function submitButtonState(){
 //DATABASE FUNCTIONS
 //------------------
 
+//for looping to send records to server record by record.
 function preparePost() {
     
     //make sure response is empty going in
     $("#response").html("");
+    
+    //helpers
+    var recordsSent = 0;
     
     //fetch data from geojson
     for (var i in geojson._layers){
@@ -438,27 +442,62 @@ function preparePost() {
             parktime: parktimeValue
         };
         
-        $.post('testnew.php', data, function(responseFromServer) {
+        $.post('insert_mysql.php', data, function(responseFromServer) {
             // Insert response from server to '#response' div
             var responseHtml = '<div>Full JSON object: ' + JSON.stringify(responseFromServer) + '</div>';
             responseHtml += '<div>Status: ' + responseFromServer.status + ', message: ' + responseFromServer.message + '</div>';
             
             var responseDiv = document.getElementById('response');
             responseDiv.innerHTML += responseHtml;
+            
+            //this code is original
             //$('#response').html(responseHtml);
             //console.log(responseHtml);
             
-            }, 'json');
+        }, 'json');
+        recordsSent = recordsSent + 1;
     }
+    console.log(recordsSent + " records sent");
+}
+
+function accessDatabase(){
+    var data = {};
+    $.post('dbasetest.php', data, function(responseFromServer) {
+        // Insert response from server to '#response' div
+        var responseHtml = '<div>Full JSON object: ' + JSON.stringify(responseFromServer) + '</div>';
+        responseHtml += '<div>Status: ' + responseFromServer.status + ', message: ' + responseFromServer.message + '</div>';
+
+        //console.log(responseHtml);
+        //console.log(JSON.stringify(responseFromServer));
+        
+        var responseDiv = document.getElementById('response');
+        responseDiv.innerHTML += responseHtml;
+    }, 'json');
+    console.log("funcin jälkeinen");
+    console.log(window.responseHtml);
+    console.log(JSON.stringify(window.responseFromServer));
+}
+
+function runTest(){
+    $.post("dbasetest.php", function(data){
+        myfunc(data);
+    }, "text");
+};
+
+function myfunc(data){
+    console.log("pellejee");
+    console.log(data);
 }
 
 function prepareErrorPost() {
     //fetch data from geojson
+    pellevalue = "jeejee";
     likertValue = 1;
     parkspotValue = 4;
-    parktimeValue = 5454;
+    parktimeValue = 0;
 
     var data = {
+        pelle: pellevalue,
         likert: likertValue,
         parkspot: parkspotValue,
         parktime: parktimeValue
@@ -471,11 +510,9 @@ function prepareErrorPost() {
 
           $('#response').html(responseHtml);
           console.log(responseHtml);
-
-        }, 'json');
+    }, 'json');
 
 }
-
 
 
 function preparePostTemplate(){

@@ -307,7 +307,7 @@ input[type="number"]{
 /*IMAGES*/
 /*------*/
 div.sucimage {
-   content:url("thankyou.png");
+   content:url("images/thankyou.png");
    height: 100%;
    width: 100%;
 }​

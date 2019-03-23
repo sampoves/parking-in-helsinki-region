@@ -214,9 +214,9 @@ var translate = function(jsdata){
         });
         //handle changing of thankyou.png
         if(currentLang === "en"){
-            $("div.sucimage").css("content", "url('thankyou.png')");
+            $("div.sucimage").css("content", "url('images/thankyou.png')");
         } else {
-            $("div.sucimage").css("content", "url('thankyou_fi.png')");
+            $("div.sucimage").css("content", "url('images/thankyou_fi.png')");
         }
 };
 

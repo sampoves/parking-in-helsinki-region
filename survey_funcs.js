@@ -113,11 +113,13 @@ function incompleteTest(input) {
     }
 }
 
+
 // This helps set value for parkspot in the popup survey
 function onParkspotChange(event){
     currentParkspotValue = event.target.value;
     //console.log("parkspot value set to " + event.target.value);
 };
+
 
 //utilise leaflet-pip (point in Polygon) to find indtersections between
 //clicked latlngs and overlay geojson layers
@@ -161,6 +163,21 @@ function initialiseInfo(){
     });
 }
 
+
+//format a tidy string format date for mysql insertion. Formats all parts with
+//leading zeroes.
+function formatTime() {
+    var today = new Date();
+    var time = 
+            ("0" + today.getHours()).slice(-2) + ":" + 
+            ("0" + today.getMinutes()).slice(-2) + ":" + 
+            ("0" + today.getSeconds()).slice(-2);
+    var date = 
+            ("0" + today.getDate()).slice(-2) + "-" + 
+            ("0" + (today.getMonth() + 1)).slice(-2) + '-' +  
+            today.getFullYear();
+    return date + " " + time;
+}
 
 //------------------------
 //LAYER STYLING AND EVENTS
@@ -460,35 +477,7 @@ function preparePost() {
     console.log(recordsSent + " records sent");
 }
 
-function accessDatabase(){
-    var data = {};
-    $.post('dbasetest.php', data, function(responseFromServer) {
-        // Insert response from server to '#response' div
-        var responseHtml = '<div>Full JSON object: ' + JSON.stringify(responseFromServer) + '</div>';
-        responseHtml += '<div>Status: ' + responseFromServer.status + ', message: ' + responseFromServer.message + '</div>';
-
-        //console.log(responseHtml);
-        //console.log(JSON.stringify(responseFromServer));
-        
-        var responseDiv = document.getElementById('response');
-        responseDiv.innerHTML += responseHtml;
-    }, 'json');
-    console.log("funcin jälkeinen");
-    console.log(window.responseHtml);
-    console.log(JSON.stringify(window.responseFromServer));
-}
-
-function runTest(){
-    $.post("dbasetest.php", function(data){
-        myfunc(data);
-    }, "text");
-};
-
-function myfunc(data){
-    console.log("pellejee");
-    console.log(data);
-}
-
+//test php code robustness, try to add illegal variables
 function prepareErrorPost() {
     //fetch data from geojson
     pellevalue = "jeejee";

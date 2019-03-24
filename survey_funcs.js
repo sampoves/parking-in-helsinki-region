@@ -16,7 +16,7 @@ function create_cookie(name, value, days2expire, path) {
     document.cookie = name + '=' + value + ';' +
                      'expires=' + expires + ';' +
                      'path=' + path + ';';
-  };
+}
 
 function getCookie(name) {
     var value = "; " + document.cookie;
@@ -30,7 +30,6 @@ function getCookie(name) {
 //--------------------------------------------
 function highlightLayer(e) {
     thisTarget = e.layer._leaflet_id;
-    //console.log("postinumerot!");
     //window.currentPno = e.layer.feature.properties.nimi + ", " + e.layer.feature.properties.posti_alue;
     if((mymap.hasLayer(OpenStreetMap_DE)) || (mymap.hasLayer(Stamen_Terrain))){
         mymap._layers[thisTarget].setStyle(postalHighlightDark);
@@ -178,6 +177,7 @@ function formatTime() {
             today.getFullYear();
     return date + " " + time;
 }
+
 
 //------------------------
 //LAYER STYLING AND EVENTS
@@ -476,6 +476,7 @@ function preparePost() {
     }
     console.log(recordsSent + " records sent");
 }
+
 
 //test php code robustness, try to add illegal variables
 function prepareErrorPost() {

@@ -48,13 +48,10 @@ Helsinki Capital Region".
     //**SCRIPT omaan js-tiedostoon
     //**Kirjoita ajantasaiset ohjeet Jquery UI -ikkunaan
     //**kysymysten lopullinen muoto pitää päättää
-    //**kun geojsonilla popup auki, uutta ei saa enää heti auki. Huom! tämä ei
-    //toimi, jos klikkaa pohjalayerii, eli tilelayerii. Silloin joutuu klikkaamaan
-    //geojson-layeria kerran enemmän. kokeile korjaa
-    //**arePopupsFinished() toimii save changesissa ja x:ssä. On hieman
-    //hutera tsekkailu muuten. Paranna tämä.
-    //**geojson-layeria pystyy klikkailee kun infobox on auki
-    //**postalia pystyy klikkailee ku infobox auki
+    //**kun geojsonilla popup auki, ja klikkaa tilelayeria eli pohjaa, joutuu 
+    //klikkaamaan geojson-layeria kerran enemmän jotta popupin saa takaisin. 
+    //kokeile korjaa
+    //**bugi infoboxin css:ssä, liikaa tilaa oikealla. Regressio saatu aikaan 210319
 
     //OLIS KIVA -TODO
     //**Disabled submit button ei jostain syystä estä vetämistä tai mousezoomia
@@ -62,9 +59,9 @@ Helsinki Capital Region".
     //**geojson styling. Jokin erittäin outo juttu estää if-lauseita toimimasta
     //oikein geojson-layeria määritellessä. postaldissolven if-lauseet on
     //kommentoitu, koska en osannut ratkaista pulmaa
-    //**infobutton state ei muutu jos infoboxista lähtee x:llä: yks ylimääräinen
-    //clickki tulee
     //**tehty jquery dialog fadein, mutta fadeout puuttuu. Tee jos ehdit.
+    //**geojson-layeria ei pysty klikkailee kun infobox on auki, mutta
+    //karttanäkymä zoomaa polygonin kohdalle
 
     //MYSQL help:
     // http://howtolamp.com/lamp/mysql/5.6/basics/
@@ -101,7 +98,7 @@ Helsinki Capital Region".
             });
             
             //Show survey version in jQuery info window
-            var survey_version = "Development version 21.3.2019";
+            var survey_version = "Development version 24.3.2019. Database connection live.";
             window.onload = function(){
                 document.getElementById('version').innerHTML = survey_version;
             };
@@ -206,10 +203,10 @@ Helsinki Capital Region".
                 Stamen_Terrain.addTo(mymap);
                 StamenTerrainOnlyLabels.addTo(mymap);
             } else {
-                //this is the case if first launch: no cookie set, set darkmatter
+                //this is the case if first launch: no cookie set, set OSM
                 //on as default
-                darkmatter.addTo(mymap);
-                darkmatterOnlyLabels.addTo(mymap);
+                OpenStreetMap_DE.addTo(mymap);
+                voyagerOnlyLabels.addTo(mymap);
             }
             
             //COOKIES: Has jQuery infobox been opened?
@@ -264,6 +261,11 @@ Helsinki Capital Region".
                 }).addTo(mymap);
 
             // IMPORT POLYGON GEOJSONS
+            // Note: bug suspicion. Laying out style function like here seems to
+            // work unexpectedly. It always picks one geometry where the style
+            // defaults to blue. This is acceptable for postal, but not for
+            // postaldissolve. For this reason the code is commented in
+            // postaldissolve's style parameter.
             var postal = new L.GeoJSON.AJAX(
                     "pno_research_area.geojson", {
                         attribution: 'Postal areas &copy; <a href="http://urn.fi/urn:nbn:fi:csc-kata20180425144903846834">Statistics Finland</a>',
@@ -536,6 +538,7 @@ Helsinki Capital Region".
                     //which is important for the functionality of this survey.
                     usersZipCodes.removeZipCode(window.thisZip);
                     geojson.removeLayer(pol);
+                    arePopupsFinished();
 
                     //the following value "apu" manipulates geojson.on("click").  
                     //It allows user to exit popup dialog with x, and then 

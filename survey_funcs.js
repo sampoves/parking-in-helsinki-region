@@ -478,6 +478,18 @@ function preparePost() {
 }
 
 
+//test database connection
+function testConn() {
+    $.post('test_conn.php', function(responseFromServer) {
+        console.log(responseFromServer);
+    }, "json");
+}
+
+
+
+
+
+
 //test php code robustness, try to add illegal variables
 function prepareErrorPost() {
     //fetch data from geojson
@@ -492,16 +504,15 @@ function prepareErrorPost() {
         parkspot: parkspotValue,
         parktime: parktimeValue
     };
-
+    
     $.post('testnew.php', data, function(responseFromServer) {
           // Insert response from server to '#response' div
-          var responseHtml = '<div>Full JSON object: ' + JSON.stringify(responseFromServer) + '</div>';
-          responseHtml += '<div>Status: ' + responseFromServer.status + ', message: ' + responseFromServer.message + '</div>';
-
-          $('#response').html(responseHtml);
-          console.log(responseHtml);
+          var phpResponse = responseFromServer;
+          //var responseHtml = '<div>Full JSON object: ' + JSON.stringify(responseFromServer) + '</div>';
+          //responseHtml += '<div>Status: ' + responseFromServer.status + ', message: ' + responseFromServer.message + '</div>';
+          //$('#response').html(responseHtml);
+          console.log(phpResponse);
     }, 'json');
-
 }
 
 

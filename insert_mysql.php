@@ -76,6 +76,7 @@ if (!filter_var($sanitizedParktime, FILTER_VALIDATE_INT, array("options" => arra
 // DATABASE INSERTION
 // ------------------
 //perform mysql insertion
+//https://www.w3schools.com/php/php_mysql_insert.asp
 $servername = "localhost";
 $username = "php-user";
 $password = "aCCess2Table";
@@ -83,26 +84,43 @@ $dbname = "parksurvey";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
+
 // Check connection
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    //die("Connection failed: " . $conn->connect_error);
+	$response['status'] = 'error';
+    $response['message'] = sprintf('Could not connect to database: %s', $conn->connect_error);
+	exit(json_encode($response));
 } 
 
 $sql = "INSERT INTO survey1 (likert, parkspot, parktime) VALUES (" .$sanitizedLikert. "," .$sanitizedParkspot. "," .$sanitizedParktime. ")";
-
-if ($conn->query($sql) === TRUE) {
-    //echo "New record created successfully";
-} else {
-    //echo "Error: " . $sql . "<br>" . $conn->error;
-}
-
-$conn->close();
 
 
 // ------------
 // FINALISATION
 // ------------
 // Set some data to return (not necessary) and echo JSON
-$response['message'] = sprintf('Thank you. Likert %s, parkspot %s, parktime %s', $sanitizedLikert, $sanitizedParkspot, $sanitizedParktime);
-echo(json_encode($response));
+// first test if query was completed
+if ($conn->query($sql) === TRUE) {
+    //echo "New record created successfully";
+	$response['message'] = sprintf('Thank you. Likert %s, parkspot %s, parktime %s', $sanitizedLikert, $sanitizedParkspot, $sanitizedParktime);
+	$conn->close();
+	echo(json_encode($response));
+} else {
+   //echo "Error: " . $sql . "<br>" . $conn->error;
+	$response['status'] = 'error';
+	$response['message'] = sprintf('Connection error: %s, %s', $sql, $conn->error);
+	$conn->close();
+	exit(json_encode($response));
+}
+
+//$conn->close();
+
+
+// ------------
+// FINALISATION
+// ------------
+// Set some data to return (not necessary) and echo JSON
+//$response['message'] = sprintf('Thank you. Likert %s, parkspot %s, parktime %s', $sanitizedLikert, $sanitizedParkspot, $sanitizedParktime);
+//echo(json_encode($response));
 ?>

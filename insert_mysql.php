@@ -6,9 +6,16 @@
 //This is code written by Sampo Vesanen with the invaluable input by Harri Lampi.
 //Date 23.3.2019
 
+
 // ------------------
 // PHP INITIALISATION
 // ------------------
+
+// Check for empty POST
+if(empty($_POST) ) {
+	header('location:index.php') 
+}
+
 // Initialize array containing allowed variables
 $allowedDataVariables = ['timestamp', 'likert', 'parkspot', 'parktime'];
 
@@ -120,9 +127,9 @@ if (!filter_var($sanitizedParktime, FILTER_VALIDATE_INT, array("options" => arra
 //perform mysql insertion
 //https://www.w3schools.com/php/php_mysql_insert.asp
 
-//database config
-include_once('config.php')
-
+//database config. Access upper folder
+//include_once(dirname(__FILE__) . "/config.php");
+include_once("./../config.php");
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);

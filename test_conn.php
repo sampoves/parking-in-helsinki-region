@@ -1,8 +1,6 @@
 <?php
-$servername = "localhost";
-$username = "php-user";
-$password = "aCCess2Table";
-$dbname = "parksurvey";
+//database config. Access upper folder
+include_once("./../config.php");
 
 // Initialize response array
 $response = ['status' => 'success', 'message' => ''];
@@ -17,11 +15,8 @@ if ($conn->connect_error) {
 	$response['status'] = 'error';
 	$response['message'] = sprintf('Could not connect: ', $conn->connect_error);
 	exit(json_encode($response));
-    //die("Connection failed: " . $conn->connect_error);
 } else {
 	$response['message'] = 'Connected successfully.';
 	echo(json_encode($response));
 }
-
-//echo "Connected successfully";
 ?>

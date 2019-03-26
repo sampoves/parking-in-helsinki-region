@@ -11,9 +11,9 @@
 // PHP INITIALISATION
 // ------------------
 
-// Check for empty POST
-if(empty($_POST) ) {
-	header('location:index.php') 
+// Check for empty POST and redirect if request empty
+if(empty($_POST)) {
+	header('location:index.html');
 }
 
 // Initialize array containing allowed variables
@@ -124,24 +124,21 @@ if (!filter_var($sanitizedParktime, FILTER_VALIDATE_INT, array("options" => arra
 // ------------------
 // DATABASE INSERTION
 // ------------------
-//perform mysql insertion
-//https://www.w3schools.com/php/php_mysql_insert.asp
 
-//database config. Access upper folder
-//include_once(dirname(__FILE__) . "/config.php");
+// Database connection config. Access upper folder for privacy.
 include_once("./../config.php");
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+include_once("./../insert.php");
 
 // Check connection
 if ($conn->connect_error) {
 	$response['status'] = 'error';
-    $response['message'] = sprintf('Could not connect to database: %s', $conn->connect_error);
+	$response['message'] = sprintf('Could not connect to database: %s', $conn->connect_error);
 	exit(json_encode($response));
 } 
 
-$sql = "INSERT INTO survey1 (likert, parkspot, parktime) VALUES (" .$sanitizedLikert. "," .$sanitizedParkspot. "," .$sanitizedParktime. ")";
+// Generate query string
+$sql = insertMySQL($timestamp, $sanitizedLikert, $sanitizedParkspot, $sanitizedParktime);
+
 
 
 // ------------

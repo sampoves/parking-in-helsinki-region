@@ -5,10 +5,6 @@ include_once("./../config.php");
 // Initialize response array
 $response = ['status' => 'success', 'message' => ''];
 
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
 // Check connection
 if ($conn->connect_error) {
 	// If connection error

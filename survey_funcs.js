@@ -442,6 +442,9 @@ function preparePost() {
     //make sure response is empty going in
     $("#response").html("");
     
+    //generate timestamp for this submit
+    var submitTime = formatTime();
+    
     //helpers
     var recordsSent = 0;
     
@@ -449,11 +452,13 @@ function preparePost() {
     for (var i in geojson._layers){
         thisLayer = geojson._layers[i];
         
+        timestampValue = submitTime;
         likertValue = thisLayer.feature.properties.likert;
         parkspotValue = thisLayer.feature.properties.parkspot;
         parktimeValue = thisLayer.feature.properties.parktime;
         
         var data = {
+            timestamp: timestampValue,
             likert: likertValue,
             parkspot: parkspotValue,
             parktime: parktimeValue
@@ -486,26 +491,22 @@ function testConn() {
 }
 
 
-
-
-
-
 //test php code robustness, try to add illegal variables
 function prepareErrorPost() {
-    //fetch data from geojson
-    pellevalue = "jeejee";
+    //give $.post() erroneous data
+    timestampValue = "35-03-2019";
     likertValue = 1;
     parkspotValue = 4;
     parktimeValue = 0;
 
     var data = {
-        pelle: pellevalue,
+        timestamp: timestampValue,
         likert: likertValue,
         parkspot: parkspotValue,
         parktime: parktimeValue
     };
     
-    $.post('testnew.php', data, function(responseFromServer) {
+    $.post('insert_mysql.php', data, function(responseFromServer) {
           // Insert response from server to '#response' div
           var phpResponse = responseFromServer;
           //var responseHtml = '<div>Full JSON object: ' + JSON.stringify(responseFromServer) + '</div>';

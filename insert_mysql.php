@@ -10,7 +10,7 @@
 // PHP INITIALISATION
 // ------------------
 // Initialize array containing allowed variables
-$allowedDataVariables = ['likert', 'parkspot', 'parktime'];
+$allowedDataVariables = ['timestamp', 'likert', 'parkspot', 'parktime'];
 
 // Initialize response array
 $response = ['status' => 'success', 'message' => ''];
@@ -32,6 +32,7 @@ foreach($_POST as $dataVariable => $dataValue) {
   }
 }
 // Receive data from client side (JavaScript)
+$timestamp = $_POST['timestamp'];
 $likert = $_POST['likert'];
 $parkspot = $_POST['parkspot'];
 $parktime = $_POST['parktime'];
@@ -42,9 +43,50 @@ $parktime = $_POST['parktime'];
 // --------------
 // Remove illegal characters etc.
 // https://www.w3schools.com/PhP/filter_validate_int.asp
+
+//give timestamp a custom check, as no ready filters exist
 $sanitizedLikert = filter_var($likert, FILTER_VALIDATE_INT);
 $sanitizedParkspot = filter_var($parkspot, FILTER_VALIDATE_INT);
 $sanitizedParktime = filter_var($parktime, FILTER_VALIDATE_INT);
+
+
+// Set up validation for timestamp
+try {
+	$timestamp_arr = explode(' ', $timestamp);
+	$date = explode('-', $timestamp_arr[0]);
+	$time = $timestamp_arr[1];
+} catch(Exception $e) {
+	$response['status'] = 'error';
+	$response['message'] = sprintf('Invalid value in timestamp, can\'t parse. Value given %s, error: %s', $timestamp, $e->getMessage());
+	exit(json_encode($response));
+}
+
+// Validation of timestamp: date
+if (count($date) == 3) {
+    if (checkdate($date[1], $date[0], $date[2])) {
+		// valid date!
+		//continue!
+    } else {
+		// problem with dates!
+		$response['status'] = 'error';
+		$response['message'] = sprintf('Invalid date in timestamp. Value given %s', $timestamp);
+		exit(json_encode($response));
+    }
+} else {
+    // problem with date input
+    $response['status'] = 'error';
+    $response['message'] = sprintf('Invalid input for date in timestamp. Value given %s', $timestamp);
+	exit(json_encode($response));
+}
+
+// Validation of timestamp: time with regex
+if (!preg_match('/^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$/', $time)) {
+    // problem with time regex
+    $response['status'] = 'error';
+    $response['message'] = sprintf('Invalid value for time in timestamp. Value given %s', $timestamp);
+	exit(json_encode($response));
+}
+
 
 // Validate input for likert (check that we're getting correct values)
 if (!filter_var($sanitizedLikert, FILTER_VALIDATE_INT, array("options" => array("min_range"=>1, "max_range"=>5)))) {
@@ -101,7 +143,7 @@ $sql = "INSERT INTO survey1 (likert, parkspot, parktime) VALUES (" .$sanitizedLi
 // Set some data to return (not necessary) and echo JSON
 // first test if query was completed
 if ($conn->query($sql) === TRUE) {
-	$response['message'] = sprintf('New record created successfully. Likert %s, parkspot %s, parktime %s', $sanitizedLikert, $sanitizedParkspot, $sanitizedParktime);
+	$response['message'] = sprintf('New record created successfully. Timestamp %s, Likert %s, parkspot %s, parktime %s', $timestamp, $sanitizedLikert, $sanitizedParkspot, $sanitizedParktime);
 	$conn->close();
 	echo(json_encode($response));
 } else {

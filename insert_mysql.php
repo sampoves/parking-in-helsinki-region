@@ -119,10 +119,10 @@ if (!filter_var($sanitizedParktime, FILTER_VALIDATE_INT, array("options" => arra
 // ------------------
 //perform mysql insertion
 //https://www.w3schools.com/php/php_mysql_insert.asp
-$servername = "localhost";
-$username = "php-user";
-$password = "aCCess2Table";
-$dbname = "parksurvey";
+
+//database config
+include_once('config.php')
+
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);

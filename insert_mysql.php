@@ -11,13 +11,13 @@
 // PHP INITIALISATION
 // ------------------
 
-// Check for empty POST and redirect if request empty
+// Check for empty POST and redirect to survey if request empty
 if(empty($_POST)) {
 	header('location:index.html');
 }
 
 // Initialize array containing allowed variables
-$allowedDataVariables = ['timestamp', 'likert', 'parkspot', 'parktime'];
+$allowedDataVariables = ['timestamp', 'session', 'zipcode', 'likert', 'parkspot', 'parktime'];
 
 // Initialize response array
 $response = ['status' => 'success', 'message' => ''];
@@ -40,6 +40,8 @@ foreach($_POST as $dataVariable => $dataValue) {
 }
 // Receive data from client side (JavaScript)
 $timestamp = $_POST['timestamp'];
+$session = $_POST['session'];
+$zipcode = $_POST['zipcode'];
 $likert = $_POST['likert'];
 $parkspot = $_POST['parkspot'];
 $parktime = $_POST['parktime'];
@@ -95,6 +97,23 @@ if (!preg_match('/^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$/', $time)) {
 }
 
 
+// Validate input for session ID (regex).
+if (!preg_match('/^[a-z0-9]{9}$/', $session)) {
+    // problem with time regex. Only lowercase letters and 0-9 allowed. Length 9.
+    $response['status'] = 'error';
+    $response['message'] = sprintf('Invalid value for session id. Value given %s', $session);
+	exit(json_encode($response));
+}
+
+
+// Validate input for zip code (regex).
+if (!preg_match('/^[0-9]{5}$/', $zipcode)) {
+    // problem with zip code regex. Only 0-9 allowed. Length 5.
+    $response['status'] = 'error';
+    $response['message'] = sprintf('Invalid value for zipcode. Value given %s', $zipcode);
+	exit(json_encode($response));
+}
+
 // Validate input for likert (check that we're getting correct values)
 if (!filter_var($sanitizedLikert, FILTER_VALIDATE_INT, array("options" => array("min_range"=>1, "max_range"=>5)))) {
     
@@ -137,7 +156,7 @@ if ($conn->connect_error) {
 } 
 
 // Generate query string
-$sql = insertMySQL($timestamp, $sanitizedLikert, $sanitizedParkspot, $sanitizedParktime);
+$sql = insertMySQL($timestamp, $session, $zipcode, $sanitizedLikert, $sanitizedParkspot, $sanitizedParktime);
 
 
 

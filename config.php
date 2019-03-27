@@ -2,7 +2,7 @@
 //Database variables
 $servername = "localhost";
 $username = "php-user";
-$password = "aCCess2Table";
+$password = "usingNew_Passwr0d";
 $dbname = "parksurvey";
 
 // Create connection

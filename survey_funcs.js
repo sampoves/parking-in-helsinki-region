@@ -179,7 +179,7 @@ function formatTime() {
 }
 
 
-// Generate unique ID code by Gordon Brander
+// "Generate unique ID" code by Gordon Brander
 // https://gist.github.com/gordonbrander
 
 // Generate unique IDs for use as pseudo-private/protected names.
@@ -201,7 +201,7 @@ var ID = function () {
   // Math.random should be unique because of its seeding algorithm.
   // Convert it to base 36 (numbers + letters), and grab the first 9 characters
   // after the decimal.
-  return '_' + Math.random().toString(36).substr(2, 9);
+  return Math.random().toString(36).substr(2, 9);
 };
 
 
@@ -472,6 +472,11 @@ function preparePost() {
     
     //generate timestamp for this submit
     var submitTime = formatTime();
+
+    //test if unique ID exists. If not, create
+    if(typeof sessionId === 'undefined'){
+        window.sessionId = ID();
+    }
     
     //helpers
     var recordsSent = 0;
@@ -481,12 +486,16 @@ function preparePost() {
         thisLayer = geojson._layers[i];
         
         timestampValue = submitTime;
+        sessionValue = window.sessionId;
+        zipcodeValue = thisLayer.feature.properties.zipcode;
         likertValue = thisLayer.feature.properties.likert;
         parkspotValue = thisLayer.feature.properties.parkspot;
         parktimeValue = thisLayer.feature.properties.parktime;
         
         var data = {
             timestamp: timestampValue,
+            session: sessionValue,
+            zipcode: zipcodeValue,
             likert: likertValue,
             parkspot: parkspotValue,
             parktime: parktimeValue

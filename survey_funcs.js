@@ -480,6 +480,7 @@ function preparePost() {
     
     //helpers
     var recordsSent = 0;
+    var errorRecords = 0;
     
     //fetch data from geojson
     for (var i in geojson._layers){
@@ -501,22 +502,30 @@ function preparePost() {
             parktime: parktimeValue
         };
         
+        // IT MAY BE BAD IDEA TO IMPLEMENT ERROR STATES. MAKE YOUR MIND
         $.post('insert_mysql.php', data, function(responseFromServer) {
             // Insert response from server to '#response' div
-            var responseHtml = '<div>Full JSON object: ' + JSON.stringify(responseFromServer) + '</div>';
-            responseHtml += '<div>Status: ' + responseFromServer.status + ', message: ' + responseFromServer.message + '</div>';
+            //if received error message, count it
+            if(responseFromServer.status === "error") {
+                errorRecords = errorRecords + 1;
+            }
             
+            var responseHtml = '<div>Records sent: ' + (recordsSent+1) + '<br>Fails: ' + errorRecords + '<br>Status: ' + responseFromServer.status + '<br>Message: ' + responseFromServer.message + '</div>';
+            
+            // only add one message from server. Add += if all wanted
             var responseDiv = document.getElementById('response');
-            responseDiv.innerHTML += responseHtml;
+            responseDiv.innerHTML = responseHtml;
+            //responseDiv.innerHTML += responseHtml;
             
             //this code is original
             //$('#response').html(responseHtml);
             //console.log(responseHtml);
             
-        }, 'json');
-        recordsSent = recordsSent + 1;
+        }, 'json').done(function(responseFromServer){
+            //run this small function any time jquery post is finished
+            recordsSent = recordsSent + 1;
+        });
     }
-    console.log(recordsSent + " records sent");
 }
 
 

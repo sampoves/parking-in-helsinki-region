@@ -7,7 +7,7 @@ function insertMySQL($timestamp, $sessionid, $zipcode, $likert, $parkspot, $park
 }
 
 
-// Visit counter mysql function
+// Visit counter MySQL function
 // Some parts are developed as in here:
 //https://technopoints.co.in/unique-visit-counter-ip-address-php/
 
@@ -22,6 +22,7 @@ function visitCounter($connection, $ip) {
 
 	if($num === 0) {
 		// this ip address is new to the site; insert IP and first time info
+		//NB! NOW() fetches UTC timezone!
 		$insertNewIpQuery = "INSERT INTO visitors(ip, ts_first, ts_latest, count) VALUES ('" .$ip. "', NOW(), NOW(), 1);";
 
 		if ($connection->query($insertNewIpQuery) === TRUE) {
@@ -31,6 +32,7 @@ function visitCounter($connection, $ip) {
 		}
 	} else {
 		// this ip address has been to the site; update timestamp latest and view count
+		//NB! NOW() fetches UTC timezone!
 		$addToCountQuery = "UPDATE visitors SET count = count + 1 WHERE ip = '" .$ip. "';";
 		$latestVisitQuery = "UPDATE visitors SET ts_latest = NOW() WHERE ip = '" .$ip. "';";
 

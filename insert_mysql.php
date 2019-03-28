@@ -37,7 +37,7 @@ foreach($_POST as $dataVariable => $dataValue) {
 		
 	// Echo JSON and exit script
 	exit(json_encode($response));
-  }
+	}
 }
 // Receive data from client side (JavaScript)
 $timestamp = $_POST['timestamp'];

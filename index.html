@@ -56,6 +56,8 @@ Helsinki Capital Region".
     //**uusi polygon geojson-layerilla, tarvii kaks klikkii. kokeile korjaa
     //**kun sivun lataa, ekan kerran kielinapin painaminen, mitään ei tapahu.
     //AINOASTAAN KUN KIELI ON ENGLANTI!
+    //**Pitäisikö sittenkin kerätä ip-osoitteet käyttäjiltä? Sillä syyllä,
+    //että näkee jos sama hlö on ilmoittanut saman pnoalueen useasti?
 
     //OLIS KIVA -TODO
     //**Disabled submit button ei jostain syystä estä vetämistä tai mousezoomia
@@ -101,26 +103,24 @@ Helsinki Capital Region".
                 sendBox.disable();
             });
             
-            //Show survey version in jQuery info window
+            //Show survey version in jQuery info window. Also, execute visitor
+            //counter code.
             var survey_version = "Development version 28.3.2019. Database connection live.";
             window.onload = function() {
                 document.getElementById('version').innerHTML = survey_version;
                 
-                //visitor counter
-                $.post('unique_visitors.php', {}, function(responseFromServer) {
-                    //working its magic
+                //Execute visitor counter. Send dummy data to validate our post
+                //request.
+                $.post('unique_visitors.php', {dummy: 1337}, function(responseFromServer) {
+                    //PHP working its magic
                 }, "text").done(function(responseFromServer) {
                     console.log(responseFromServer);
                 });
                 
             };
             
-//            //visitor counter
-//            window.onload = function() {
-//
-//            };
-            
-            
+
+
             //------------
             //MYMAP EVENTS
             //------------

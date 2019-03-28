@@ -20,6 +20,7 @@ html,
 body,
 #mymap {
     height: 100%;
+    width: 100vw;
 }
 
 p {
@@ -224,11 +225,13 @@ button:hover {
 #button-closeinfo {
     border: 2px solid #ff0000; /* Red */
     margin-top: 15px;
+    font-family: 'Montserrat', sans-serif;
 }
 
 #button-closeinfo:hover {
     background-color: #ff0000; /* Red */
     color: white;
+    font-family: 'Montserrat', sans-serif;
 }
 
 
@@ -389,11 +392,28 @@ div.sucimage {
     to   { opacity: 1; }
 }
 
-/*not in use
-@keyframes fadeout {
-    from { opacity: 1; }
-    to   { opacity: 0; }
-}*/
+
+
+/*----------------------*/
+/*ADJUSTMENTS FOR MOBILE*/
+/*----------------------*/
+
+@media only screen and (max-width: 600px) {
+    .sendbox {
+        left: 45%;
+        padding-bottom: 25px; 
+    }
+    
+    #buttonsubmitall:disabled,
+    #buttonsubmitall[disabled]{
+        width: 50%;
+        height: 130%;
+    }
+    #buttonsubmitall:enabled {
+        width: 50%;
+        height: 130%;
+    }
+}
 
 
 

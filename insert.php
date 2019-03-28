@@ -7,8 +7,14 @@ function insertMySQL($timestamp, $sessionid, $zipcode, $likert, $parkspot, $park
 }
 
 
-// visit counter mysql function
-// https://technopoints.co.in/unique-visit-counter-ip-address-php/
+// Visit counter mysql function
+// Some parts are developed as in here:
+//https://technopoints.co.in/unique-visit-counter-ip-address-php/
+
+// Establish connection to MySQL and determine if this IP address has been added to the
+// database. If no, then add a new row with starter data. If yes, increment count by one
+// and replace the latest timestamp value. All queries test whether the operation was
+// successful.
 function visitCounter($connection, $ip) {
 	$ipQuery = "SELECT * FROM visitors WHERE ip = '" .$ip. "';";
 	$ipResult = mysqli_query($connection, $ipQuery);
@@ -18,7 +24,6 @@ function visitCounter($connection, $ip) {
 		// this ip address is new to the site; insert IP and first time info
 		$insertNewIpQuery = "INSERT INTO visitors(ip, ts_first, ts_latest, count) VALUES ('" .$ip. "', NOW(), NOW(), 1);";
 
-		//mysqli_query($connection, $insertNewIpQuery);
 		if ($connection->query($insertNewIpQuery) === TRUE) {
 			echo("Visit counter success. A new visitor! Welcome!");
 		} else {
@@ -29,13 +34,12 @@ function visitCounter($connection, $ip) {
 		$addToCountQuery = "UPDATE visitors SET count = count + 1 WHERE ip = '" .$ip. "';";
 		$latestVisitQuery = "UPDATE visitors SET ts_latest = NOW() WHERE ip = '" .$ip. "';";
 
-		//mysqli_query($connection, $addToCountQuery);
 		if ($connection->query($addToCountQuery) === TRUE) {
 			echo("Visit counter 'count+1' success. A returning visitor! Welcome back!");
 		} else {
 			echo(sprintf("Visit counter 'count+1' failure. Connection error: %s", $connection->error));
 		}
-		//mysqli_query($connection, $latestVisitQuery);		
+	
 		if ($connection->query($latestVisitQuery) === TRUE) {
 			echo("\r\nVisit counter 'latest visit' update success.");
 		} else {

@@ -14,13 +14,14 @@
 // Check for empty POST and redirect to survey if request empty
 if(empty($_POST)) {
 	header('location:index.html');
+	exit();
 }
 
 // Initialize array containing allowed variables
 $allowedDataVariables = ['timestamp', 'session', 'zipcode', 'likert', 'parkspot', 'parktime'];
 
 // Initialize response array
-$response = ['status' => 'success', 'message' => ''];
+$response = ['status' => 'success', 'message' => '', 'amount' => 0];
 
 
 // -------------------
@@ -153,7 +154,7 @@ if ($conn->connect_error) {
 	$response['status'] = 'error';
 	$response['message'] = sprintf('Could not connect to database: %s', $conn->connect_error);
 	exit(json_encode($response));
-} 
+}
 
 // Generate query string
 $sql = insertMySQL($timestamp, $session, $zipcode, $sanitizedLikert, $sanitizedParkspot, $sanitizedParktime);

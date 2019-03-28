@@ -107,10 +107,9 @@ Helsinki Capital Region".
                 document.getElementById('version').innerHTML = survey_version;
                 
                 //visitor counter
-                $.post('unique_visitors.php', function(responseFromServer) {
+                $.post('unique_visitors.php', {}, function(responseFromServer) {
                     //working its magic
                 }, "text").done(function(responseFromServer) {
-                    console.log("laskuribusiness");
                     console.log(responseFromServer);
                 });
                 

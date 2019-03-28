@@ -222,7 +222,6 @@ button:hover {
 }
 
 #button-closeinfo {
-    font-family: 'Montserrat', sans-serif;
     border: 2px solid #ff0000; /* Red */
     margin-top: 15px;
 }
@@ -338,18 +337,21 @@ div.sucimage {
     overflow: hidden;
 } 
 
+/*this width:450px here caused the end-of-march-infobox-bug*/
 .tabspanel{
     height:500px; 
-    width:450px; 
+/*    width:450px; */
     overflow:scroll;
 }
 
+/*Backgrounds for infobox*/
 /*#tabsikkuna .ui-tabs-panel { 
     background: #f5f3e5 url(http://code.jquery.com/ui/1.8.23/themes/south-street/images/ui-bg_highlight-hard_100_f5f3e5_1x100.png) repeat-x scroll 50% top; 
     border-width: 0px 1px 1px 1px; 
     overflow: auto; 
     
 }*/
+
 .tabscontainer{
     width: 550px;
 }

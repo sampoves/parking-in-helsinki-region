@@ -21,4 +21,4 @@ This part is currently vacationing, it'll be back. Python script to refine and a
 * parking_func.py - auxiliary functions
 
 Features scrapped during development
-* 290319 infobox cookie will not trigger from infobutton or x button. Only the red button at the bottom of introduction
+* 280319 infobox cookie will not trigger from infobutton or x button. Only the red button at the bottom of introduction

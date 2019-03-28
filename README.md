@@ -19,3 +19,6 @@ Other thesis material:
 This part is currently vacationing, it'll be back. Python script to refine and analyse data produced in parking field survey. Will be majorly updated once responses start to flow in.
 * parking.py - main script
 * parking_func.py - auxiliary functions
+
+Features scrapped during development
+* 290319 infobox cookie will not trigger from infobutton or x button. Only the red button at the bottom of introduction

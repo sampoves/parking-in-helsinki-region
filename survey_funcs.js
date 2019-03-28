@@ -143,16 +143,33 @@ function initialiseInfo(){
     mymap.closePopup();
     apu = 0;
     
-    $("#tabs").tabs();
+    $("#tabs").tabs({
+        //show and hide applies fadein and fadeout effects for tab panels in
+        //infobox
+        show: {
+            effect: 'fade',
+            duration: 150
+        },         
+        hide: {
+            effect: 'fade',
+            duration: 150
+        }
+    });
     $("#tabsikkuna").dialog({
         height: 630,
         width: 560,
         resizable: false,
         position: {my: "center", at: "center", of: window},
+        
         //this hides info dialog main scroll bars.
         //only div scroll bars remain
         open: function (event, ui) {
             $('#tabsikkuna').css('overflow', 'hidden');
+        },
+        //add fadeout animation when closing. Fadein is done with CSS!
+        hide: {
+            effect: 'fade',
+            duration: 300
         }
     });
     // retain dialog position on window resize
@@ -189,7 +206,7 @@ function formatTime() {
 
 
 // "Generate unique ID" code by Gordon Brander
-// https://gist.github.com/gordonbrander
+// https://gist.github.com/gordonbrander/2230317 pseudo-id
 
 // Generate unique IDs for use as pseudo-private/protected names.
 // Similar in concept to

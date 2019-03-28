@@ -160,6 +160,15 @@ function initialiseInfo(){
         $("#tabsikkuna").dialog("option", "position", 
         {my: "center", at: "center", of: window});
     });
+    
+    // listen to "close this info window" button 
+    var buttonCloseinfo = L.DomUtil.get('button-closeinfo');
+    L.DomEvent.addListener(buttonCloseinfo, "click", function (e){
+            create_cookie("info_closed_once", "yes", 90, "/");
+            $("#tabsikkuna").dialog("close");
+            infoButton.state('infoOpen');
+    });
+    
 }
 
 

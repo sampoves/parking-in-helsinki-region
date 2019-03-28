@@ -202,6 +202,12 @@ Helsinki Capital Region".
                     console.log("Value in cookie was not Finnish, default to English");
                     $.getJSON('en.json', translate);
                     window.currentLang = "en";
+                    
+                    //force language button state to the correct once when the
+                    //page is fully loaded
+                    $(document).ready(function() {
+                        langButton.state("en");
+                    });
                 }
             });
 
@@ -237,16 +243,14 @@ Helsinki Capital Region".
                     $("#tabsikkuna").dialog("close");
                     infoButton.state('infoOpen');
                 } else {
-                    //user visiting first time or didn't click X
+                    //user visiting first time or hasn't pressed "stop showing..."
+                    //button
                     console.log("Associated cookie value not found, show survey information popup");
 
                     //initialise jQuery UI dialog and tabs through this
                     //function
                     $(initialiseInfo);
                     infoButton.state('infoClose');
-                    //track if user has closed #tabsikkuna.
-                    //NOTE! X button is not tracked!
-                    create_cookie("info_closed_once", "yes", 90, "/");
                 }
             });
             
@@ -622,14 +626,10 @@ Helsinki Capital Region".
                         //function
                         $(initialiseInfo);
                         btn.state('infoClose');
-                        //track if user has closed #tabsikkuna with the button.
-                        //note! jQuery dialog x button needs to be listened
-                        //to separately.
-                        create_cookie("info_closed_once", "yes", 90, "/");
                         
-                        // Listen to x button in jQuery dialog
+                        // Listen to x button in jQuery dialog to keep infobutton
+                        // up to date
                         $(".ui-dialog-titlebar-close").one('click', function(e){
-                            create_cookie("info_closed_once", "yes", 90, "/");
                             btn.state('infoOpen');
                         });
                     }
@@ -720,6 +720,7 @@ Helsinki Capital Region".
                     <p tkey="lang_welcome5"><b>Huom!</b> Huomaathan, että <i>kyselyssä ei kartoiteta kotipihapysäköintiä tai sellaista pysäköintiä, jossa vastaajalla on käytössä henkilökohtainen pysäköintipaikka</i>.</p>
                     <p tkey="lang_welcome6">Kiitän vastauksestasi, <br>terveisin, Sampo Vesanen</p>
                     <p tkey="lang_welcome7">Kyselyyn liittyvissä asioissa ota minuun yhteyttä sähköpostitse: sampo.vesanen(at)helsinki.fi</p>
+                    <button id="button-closeinfo" type="button" tkey="lang_buttoncloseinfo">Stop showing this dialog box at startup</button>
                 </div>
                 <div id="tabs-2" class="tabspanel">
                     <p tkey="lang_about1">Tämän kyselyn tarkoituksena on tutkia pysäköintiin kuluvan ajan alueellista vaihtelua pääkaupunkiseudulla. Kysely noudattaa Salosen ja Toivosen (2013) matka-aikojen mittaamiseen tarkoitettua ovelta ovelle -menetelmää, jonka osana pysäköimisprosessi on. Menetelmän mukaisesti tässä kyselyssä kysytään <b>1)</b> kuinka kauan pysäköintipaikan löytymiseen kului aikaa pysäköinnin etsimisen aloittamisesta, <b>2)</b> missä pysäköintipaikka sijaitsi sekä <b>3)</b> missä oli matkan lopullinen määränpää. Kyselyn tulokset ovat perustana geoinformatiikka-aiheiselle pro gradu -tutkielmalleni, jonka työnimi on <i>Parking of private cars and spatial accessibility in Greater Helsinki Area</i>. Tuloksia käytetään parantamaan Helsingin yliopistossa toimivan Accessibility Research Groupin kehittämää Helsingin seudun matka-aikamatriisimallia (Toivonen et al. 2015). Tällä hetkellä ryhmä käyttää matka-aikamatriisissa karkeaa arviota pysäköintiin kuluvasta ajasta (Kalenoja & Häyrynen 2003). Pro gradu -tutkielmani hypoteesina on, että pysäköintiprosessin kesto vaihtelee pääkaupunkiseudun eri osissa, ja tästä tutkimuksesta saatavat tulokset mahdollistavat alueellisen vaihtelun tutkimisen ja visualisoinnin. Pääset tutustumaan Digital Geography Labin tutkimukseen <a target="_blank" rel="noopener noreferrer" href="https://www.helsinki.fi/en/researchgroups/digital-geography-lab">täällä</a> (avautuu uuteen ikkunaan).</p>

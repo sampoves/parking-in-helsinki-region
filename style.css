@@ -221,6 +221,17 @@ button:hover {
     color: white;
 }
 
+#button-closeinfo {
+    font-family: 'Montserrat', sans-serif;
+    border: 2px solid #ff0000; /* Red */
+    margin-top: 15px;
+}
+
+#button-closeinfo:hover {
+    background-color: #ff0000; /* Red */
+    color: white;
+}
+
 
 /*--------------*/
 /*SUBMIT RECORDS*/

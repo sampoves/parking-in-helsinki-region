@@ -333,6 +333,10 @@ div.sucimage {
 /*--------------*/
 /*JQUERY UI TABS*/
 /*--------------*/
+.ui-dialog-titlebar {    
+    font-family: 'Montserrat', sans-serif;
+}
+
 #tabsikkuna { 
     padding: 0px; 
     background: none; 
@@ -391,7 +395,7 @@ div.sucimage {
     from { opacity: 0; }
     to   { opacity: 1; }
 }
-
+/* NB: I did fadeout effects with jquery*/
 
 
 /*----------------------*/

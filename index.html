@@ -58,11 +58,10 @@ Helsinki Capital Region".
     //OLIS KIVA -TODO
     //**SCRIPT omaan js-tiedostoon
     //**Disabled submit button ei jostain syystä estä vetämistä tai mousezoomia
-    //**parempi css ja muut määrittelyt kännyköille
+    //**tee parempi css ja muut määrittelyt kännyköille
     //**geojson styling. Jokin erittäin outo juttu estää if-lauseita toimimasta
     //oikein geojson-layeria määritellessä. postaldissolven if-lauseet on
     //kommentoitu, koska en osannut ratkaista pulmaa
-    //**tehty jquery dialog fadein, mutta fadeout puuttuu. Tee jos ehdit.
     //**geojson-layeria ei pysty klikkailee kun infobox on auki, mutta
     //karttanäkymä zoomaa polygonin kohdalle
 
@@ -476,7 +475,8 @@ Helsinki Capital Region".
                     pol.bindPopup(html + popupContent);
                 }
                 pol.openPopup();
-
+                popupMobileCheck();
+                
                 //use jQuery to listen to current popup and its close button.
                 //This way we can communicate correctly with the function
                 //previousGeometrySame().
@@ -484,6 +484,7 @@ Helsinki Capital Region".
                     console.log("pressed x");   
                     updateGeomColors();
                     arePopupsFinished();
+                    showUI();
                     
                     //the following value "apu" manipulates geojson.on("click"). 
                     //It allows user to exit popup dialog with x, and then 
@@ -538,6 +539,7 @@ Helsinki Capital Region".
                     updateGeomColors();
                     pol.closePopup();
                     arePopupsFinished();
+                    showUI()
                     
                     //the following value "apu" manipulates geojson.on("click"). 
                     //It allows user to exit popup dialog with x, and then 
@@ -556,6 +558,7 @@ Helsinki Capital Region".
                     usersZipCodes.removeZipCode(window.thisZip);
                     geojson.removeLayer(pol);
                     arePopupsFinished();
+                    showUI()
 
                     //the following value "apu" manipulates geojson.on("click").  
                     //It allows user to exit popup dialog with x, and then 

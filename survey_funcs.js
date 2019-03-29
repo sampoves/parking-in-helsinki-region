@@ -178,6 +178,9 @@ function initialiseInfo(){
         {my: "center", at: "center", of: window});
     });
     
+    // are we on mobile?
+    mobileCheck();
+    
     // listen to "close this info window" button 
     var buttonCloseinfo = L.DomUtil.get('button-closeinfo');
     L.DomEvent.addListener(buttonCloseinfo, "click", function (e){
@@ -186,6 +189,34 @@ function initialiseInfo(){
             infoButton.state('infoOpen');
     });
     
+}
+
+
+function mobileCheck() {
+    //are we using mobile? If yes, resize 
+    if(((L.Browser.mobile === true) && ($(window).width() < 800)) ||
+            (($(window).width() < 800))) {
+        
+        $("#tabsikkuna").dialog({
+            height: $(window).height(),
+            width: $(window).width()
+        });
+        
+        $(window).resize(function() {
+            $('.ui-dialog').css({
+                 'width': $(window).width(),
+                 'height': $(window).height(),
+                 'left': '0px',
+                 'top':'0px'
+            });
+        }).resize(); //<---- resizes on page ready
+    
+        $('.tabspanel').css('height', '100%');
+        $('.tabspanel').css('width', '100%');
+        $('.tabspanel').css('overflow', 'auto');
+    } else {
+        //nothin
+    }
 }
 
 

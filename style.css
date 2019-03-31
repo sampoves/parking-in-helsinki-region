@@ -111,12 +111,19 @@ li:first-line {
 }
 
 
-/*---------------------------*/
-/*VERSION TEXT IN INFO DIALOG*/
-/*---------------------------*/
+/*---------------------------------------*/
+/*VERSION AND WARNING TEXT IN INFO DIALOG*/
+/*---------------------------------------*/
 #version {
     font-size: small;
     color: grey;
+    margin-top: -4px;
+    margin-bottom: -4px;
+}
+
+#mobilewarning {
+    font-size: small;
+    color: red;
     margin-top: -4px;
     margin-bottom: -4px;
 }

@@ -109,9 +109,20 @@ Helsinki Capital Region".
 
             //Show survey version in jQuery info window. Also, execute visitor
             //counter code.
-            var survey_version = "Development version 29.3.2019. Database connection live.";
+            var survey_version = "Development version 31.3.2019. Database connection live.";
             window.onload = function() {
                 document.getElementById('version').innerHTML = survey_version;
+                
+                //insert warning text if visiting with mobile phone
+                if(L.Browser.mobile === true){
+                document.getElementById('mobilewarning').innerHTML = 
+                        "It seems you are visiting the survey with a mobile \n\
+                        phone. Unfortunately the survey is not optimised for \n\
+                        mobile phones, and may behave unexpectedly. If \n\
+                        possible, please consider filling out this survey with \n\
+                        a desktop computer, or a tablet with sufficient screen \n\
+                        size.";
+                }
                 
                 //Execute visitor counter. Send dummy data to validate our post
                 //request.
@@ -721,6 +732,7 @@ Helsinki Capital Region".
                 </ul>
                 <div id="tabs-1" class="tabspanel">
                     <p id="version"></p>
+                    <p id ="mobilewarning"></p>
                     <H2 tkey="lang_welcome1">Tervetuloa kyselyyn!</H2>
                     <p tkey="lang_welcome2">Tämän kyselyn tarkoituksena on selvittää kuinka kauan henkilöauton pysäköinti kestää pääkaupunkiseudulla. Kyselyssä huomioidaan pysäköinnin koko prosessi: kuinka kauan pysäköintipaikkaa etsittiin, minne auto pysäköitiin ja missä oli vastaajan todellinen määränpää. Kyselyssä kerättyjä tietoja käytetään Helsingin yliopiston geoinformatiikan pro gradu -tutkimuksessa, josta voit lukea lisää allaolevasta "tarkempaa tietoa kyselystä" -kohdassa.</p>
                     <p tkey="lang_welcome3">Tämä kysely tähtää vaivattomuuteen: Jos et muista pysäköinnin tarkkaa aikaa tai paikkaa, voit syöttää näistä arvion. Voit täyttää kyselyn vaikka jokaisen pääkaupunkiseudulla tapahtuneen henkilöautomatkasi päätteeksi, tai täyttää lomakkeen yhdeltä istumalta monta kertaa.</p>

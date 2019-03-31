@@ -18,6 +18,7 @@ Helsinki Capital Region".
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js"></script>
         <script src="https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js"></script>
+        <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
         
         <!--import parking survey variables -->
         <script type="text/javascript" src="park_survey.js"></script>
@@ -32,7 +33,8 @@ Helsinki Capital Region".
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.4.0/easy-button.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css"/>
-        
+        <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"/>
+
         <!-- font -->
         <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
         
@@ -54,6 +56,8 @@ Helsinki Capital Region".
     //**uusi polygon geojson-layerilla, tarvii kaks klikkii. kokeile korjaa
     //**Pitäisikö sittenkin kerätä ip-osoitteet käyttäjiltä? Sillä syyllä,
     //että näkee jos sama hlö on ilmoittanut saman pnoalueen useasti?
+    //**tee puhelinmoodi vapaaehtoiseksi
+    //**katso mitä muuta geokooderille voisi tehdä
 
     //OLIS KIVA -TODO
     //**SCRIPT omaan js-tiedostoon
@@ -436,7 +440,7 @@ Helsinki Capital Region".
             // Obtain better control of layer control by declaring it as variable
             var lCtrl = L.control.layers(baseMaps, overlayMaps);
             lCtrl.addTo(mymap);
-            
+
             // Add additional header text to layer control
             $('<p id="controlTitle1"><strong tkey="lang_basemap">Basemaps<strong></p>').insertBefore('div.leaflet-control-layers-base');
             $('<p id="controlTitle2"><strong tkey="lang_overlay">Overlay maps<strong></p>').insertBefore('div.leaflet-control-layers-overlays');
@@ -450,6 +454,22 @@ Helsinki Capital Region".
                         '<p id="controlTitle2"><strong tkey="lang_overlay">Overlay maps<strong></p>');
             };
 
+            //Add leaflet-control.geocoder
+            L.Control.geocoder().addTo(mymap);
+//            var geocoder = L.Control.geocoder({
+//                    defaultMarkGeocode: false
+//                })
+//                .on('markgeocode', function(e) {
+//                    var bbox = e.geocode.bbox;
+//                    var poly = L.polygon([
+//                         bbox.getSouthEast(),
+//                         bbox.getNorthEast(),
+//                         bbox.getNorthWest(),
+//                         bbox.getSouthWest()
+//                    ]).addTo(mymap);
+//                    mymap.fitBounds(poly.getBounds());
+//                })
+//                .addTo(mymap);
 
 
             //-------------------------

@@ -57,6 +57,7 @@ Helsinki Capital Region".
     //**Pitäisikö sittenkin kerätä ip-osoitteet käyttäjiltä? Sillä syyllä,
     //että näkee jos sama hlö on ilmoittanut saman pnoalueen useasti?
     //**tee puhelinmoodi vapaaehtoiseksi
+    //**font-awesome logo: desktop, laptop, mobile, mobile-alt
     //**katso mitä muuta geokooderille voisi tehdä
 
     //OLIS KIVA -TODO
@@ -96,10 +97,13 @@ Helsinki Capital Region".
             //codes. This prevents duplicate records for same zip code areas.
             usersZipCodes = new TrackZipCodes();
             
-            // DISABLE SUBMIT BUTTON AT START AND PREVENT ENTER
-            //first check up if geojson has nothing in it to disable submit
-            //button
+            // PREFORM SOME ACTIONS WHEN PAGE IS LOADED
+            // - DISABLE SUBMIT BUTTON AT START
+            // - PREVENT ENTER
+            // - check up if geojson has nothing in it to disable submit button
+            // - set survey mode as desktop
             $(document).ready(function(){
+                window.mobileOn = false;
                 sendBox.disable();
                 
                 //prevent sending form with enter key
@@ -113,7 +117,7 @@ Helsinki Capital Region".
 
             //Show survey version in jQuery info window. Also, execute visitor
             //counter code.
-            var survey_version = "Development version 31.3.2019. Database connection live.";
+            var survey_version = "Development version 1.4.2019. Database connection live.";
             window.onload = function() {
                 document.getElementById('version').innerHTML = survey_version;
                 
@@ -686,6 +690,30 @@ Helsinki Capital Region".
             });
             infoButton.addTo(mymap);
             
+            
+            //MOBILEBUTTON
+            var mobileButton = L.easyButton({
+                states: [{
+                    stateName: 'mobileOn',
+                    icon: 'fa fa-mobile-alt',
+                    title: 'Switch to mobile version',
+                    onClick: function (btn, map) {
+
+                        window.mobileOn = true;
+                        btn.state('MobileOff');
+                    }
+                }, {
+                    stateName: 'MobileOff',
+                    icon: 'fa fa-desktop',
+                    title: 'Switch to desktop version',
+                    onClick: function (btn, map) {
+
+                        window.mobileOn = false;
+                        btn.state('mobileOn');
+                    }
+                }]
+            });
+            mobileButton.addTo(mymap);
             
             
             //---------------------

@@ -57,7 +57,6 @@ Helsinki Capital Region".
     //**Pitäisikö sittenkin kerätä ip-osoitteet käyttäjiltä? Sillä syyllä,
     //että näkee jos sama hlö on ilmoittanut saman pnoalueen useasti?
     //**tee puhelinmoodi vapaaehtoiseksi
-    //**font-awesome logo: desktop, laptop, mobile, mobile-alt
     //**katso mitä muuta geokooderille voisi tehdä
 
     //OLIS KIVA -TODO
@@ -97,13 +96,10 @@ Helsinki Capital Region".
             //codes. This prevents duplicate records for same zip code areas.
             usersZipCodes = new TrackZipCodes();
             
-            // PREFORM SOME ACTIONS WHEN PAGE IS LOADED
-            // - DISABLE SUBMIT BUTTON AT START
-            // - PREVENT ENTER
-            // - check up if geojson has nothing in it to disable submit button
-            // - set survey mode as desktop
+            // DISABLE SUBMIT BUTTON AT START AND PREVENT ENTER
+            //first check up if geojson has nothing in it to disable submit
+            //button
             $(document).ready(function(){
-                window.mobileOn = false;
                 sendBox.disable();
                 
                 //prevent sending form with enter key
@@ -122,11 +118,13 @@ Helsinki Capital Region".
                 document.getElementById('version').innerHTML = survey_version;
                 
                 //insert warning text if visiting with mobile phone
-                if(L.Browser.mobile === true){
+                if($(window).width() < 800) {
                 document.getElementById('mobilewarning').innerHTML = 
                         "It seems you are visiting the survey with a mobile \n\
-                        phone. Unfortunately the survey is not optimised for \n\
-                        mobile phones, and may behave unexpectedly. If \n\
+                        phone or a device with a relatively small screen. \n\
+                        Unfortunately the survey is not optimised for \n\
+                        mobile phones or other digital devices with a low screen\n\
+                        resolution, and it may behave unexpectedly. If \n\
                         possible, please consider filling out this survey with \n\
                         a desktop computer, or a tablet with sufficient screen \n\
                         size.";
@@ -690,30 +688,6 @@ Helsinki Capital Region".
             });
             infoButton.addTo(mymap);
             
-            
-            //MOBILEBUTTON
-            var mobileButton = L.easyButton({
-                states: [{
-                    stateName: 'mobileOn',
-                    icon: 'fa fa-mobile-alt',
-                    title: 'Switch to mobile version',
-                    onClick: function (btn, map) {
-
-                        window.mobileOn = true;
-                        btn.state('MobileOff');
-                    }
-                }, {
-                    stateName: 'MobileOff',
-                    icon: 'fa fa-desktop',
-                    title: 'Switch to desktop version',
-                    onClick: function (btn, map) {
-
-                        window.mobileOn = false;
-                        btn.state('mobileOn');
-                    }
-                }]
-            });
-            mobileButton.addTo(mymap);
             
             
             //---------------------

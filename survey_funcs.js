@@ -191,6 +191,78 @@ function initialiseInfo(){
 }
 
 
+function mobileCheck() {
+    //are we using mobile? If yes, resize.
+    //This function is far from useful. It makes mobilephone experience at least
+    //somewhat possible.
+    if($(window).width() < 800) {
+        
+        $("#tabsikkuna").dialog({
+            height: $(window).height(),
+            width: $(window).width()
+        });
+        
+        $(window).resize(function() {
+            $('.ui-dialog').css({
+                 'width': $(window).width(),
+                 'height': $(window).height(),
+                 'left': '0px',
+                 'top':'0px'
+            });
+        }).resize(); //<---- resizes on page ready
+    
+        //tabs
+        $(".ui-tabs-nav").parent().css('width', $(window).width());
+        
+        //text area
+        $('.tabspanel').css('height', '100%');
+        $('.tabspanel').css('width', '100%');
+        $('.tabspanel').css('overflow', 'auto');
+    } else {
+        //nothin
+    }
+}
+
+
+function popupMobileCheck() {
+    //are we using mobile? If yes, resize popup when it is opened.
+    //NB! This function is far from useful. It makes mobilephone experience at 
+    //least somewhat possible.
+    if($(window).width() < 800) {
+        //frame
+        $(window).resize(function() {
+                $('.leaflet-popup-content-wrapper').css({
+                        'width': $(window).width(),
+                        'height': $(window).height(),
+                        'left': '0px',
+                        'top':'0px'
+                });
+        }).resize();
+        //content
+        $(window).resize(function() {
+                $('.leaflet-popup-content').css({
+                        'width': $(window).width(),
+                        'height': $(window).height(),
+                        'left': '0px',
+                        'top':'0px'
+                });
+        }).resize();
+        $("#buttonsubmitall").css({"visibility": "hidden"});
+        $(".leaflet-top").css({"visibility": "hidden"});
+    } else {
+        //nothin
+    }
+}
+
+
+// Mobile phone popup hides map elements. This restores them.
+function showUI() {
+    $(".leaflet-top").css({"visibility": "visible"});
+    $("#buttonsubmitall").css({"visibility": "visible"});
+}
+
+
+
 //format a tidy string format date for mysql insertion. Formats all parts with
 //leading zeroes.
 function formatTime() {
@@ -232,81 +304,6 @@ var ID = function () {
   return Math.random().toString(36).substr(2, 9);
 };
 
-
-
-//------------------------------------
-//MOBILE PHONE COMPATIBILITY FUNCTIONS
-//------------------------------------
-
-function mobileCheck() {
-    //are we using mobile? If yes, resize.
-    //This function is far from finished. It makes mobilephone experience at 
-    //least somewhat bearable.
-    if(window.mobileOn === true) {
-        
-        $("#tabsikkuna").dialog({
-            height: $(window).height(),
-            width: $(window).width()
-        });
-        
-        $(window).resize(function() {
-            $('.ui-dialog').css({
-                 'width': $(window).width(),
-                 'height': $(window).height(),
-                 'left': '0px',
-                 'top':'0px'
-            });
-        }).resize(); //<---- resizes on page ready
-    
-        //tabs
-        $(".ui-tabs-nav").parent().css('width', $(window).width());
-        
-        //text area
-        $('.tabspanel').css('height', '100%');
-        $('.tabspanel').css('width', '100%');
-        $('.tabspanel').css('overflow', 'auto');
-    } else {
-        //nothin
-    }
-}
-
-
-function popupMobileCheck() {
-    //are we using mobile? If yes, resize popup when it is opened.
-    //NB! This function is far from finished. It makes mobilephone experience at 
-    //least somewhat bearable.
-    if(window.mobileOn === true) {
-        //frame
-        $(window).resize(function() {
-                $('.leaflet-popup-content-wrapper').css({
-                        'width': $(window).width(),
-                        'height': $(window).height(),
-                        'left': '0px',
-                        'top':'0px'
-                });
-        }).resize();
-        //content
-        $(window).resize(function() {
-                $('.leaflet-popup-content').css({
-                        'width': $(window).width(),
-                        'height': $(window).height(),
-                        'left': '0px',
-                        'top':'0px'
-                });
-        }).resize();
-        $("#buttonsubmitall").css({"visibility": "hidden"});
-        $(".leaflet-top").css({"visibility": "hidden"});
-    } else {
-        //nothin
-    }
-}
-
-
-// Mobile phone popup hides map elements. This restores them.
-function showUI() {
-    $(".leaflet-top").css({"visibility": "visible"});
-    $("#buttonsubmitall").css({"visibility": "visible"});
-}
 
 
 

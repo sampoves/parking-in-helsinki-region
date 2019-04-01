@@ -385,11 +385,7 @@ div.sucimage {
     overflow: hidden; 
 }
 
-.ui-state-focus {
-    transition: background 0.8s;
-}
-
-.ui-state-hover {
+.ui-state-focus, .ui-state-hover {
     transition: background 0.8s;
 }
 
@@ -427,6 +423,14 @@ div.sucimage {
 }
 
 
+/*--------*/
+/*GEOCODER*/
+/*--------*/
+
+.leaflet-control-geocoder-form input, .leaflet-control-geocoder-form-no-error {
+        font-family: 'Montserrat', sans-serif;
+        margin-bottom: 5px;
+}
 
 
 /*MAKE TEXT IN MAP JUSTIFIED*/

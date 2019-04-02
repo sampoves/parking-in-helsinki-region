@@ -63,7 +63,6 @@ Helsinki Capital Region".
     //kommentoitu, koska en osannut ratkaista pulmaa
     //**geojson-layeria ei pysty klikkailee kun infobox on auki, mutta
     //karttanäkymä zoomaa polygonin kohdalle
-    //**voisiko geokooderi etsiä pelkkää tutkimusaluetta?
 
             //--------------
             //INITIALISATION
@@ -489,16 +488,20 @@ Helsinki Capital Region".
             };
 
             //Add leaflet-control.geocoder. Prevent queries outside Finland.
-            //See this for details, there may be a way to make queries even
-            //stricter.
+            //See links for details. It seems Nominatim does not support city
+            //specific queries.
             //https://github.com/perliedman/leaflet-control-geocoder/issues/32
+            //https://github.com/perliedman/leaflet-control-geocoder/issues/40
+            //http://nominatim.org/release-docs/develop/api/Search/
             var geocoder = L.Control.geocoder({
                 geocoder: L.Control.Geocoder.nominatim({
-                        geocodingQueryParams: {countrycodes: 'fi'}
+                        geocodingQueryParams: {
+                            countrycodes: 'fi'
+                        }
                     }),
                 defaultMarkGeocode: false,
                 placeholder: "Please enter a place or address",
-                errorMessage: "Your query returned no results."
+                errorMessage: "Your query produced no results."
                 })
                 .on('markgeocode', function(e) {
                     var bbox = e.geocode.bbox;

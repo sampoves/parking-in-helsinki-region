@@ -23,9 +23,20 @@ body,
     width: 100vw;
 }
 
-p {
+p, 
+.leaflet-popup-content-wrapper, 
+.leaflet-popup-tip-container,
+.control-label col-sm-5,
+.leaflet-popup-content-wrapper .leaflet-popup-content {
     font-family: 'Montserrat', sans-serif;
 }
+
+
+/*MAKE TEXT IN MAP JUSTIFIED*/
+/*div {
+  text-align: justify;
+}*/
+
 
 li {
     font-family: 'Montserrat', sans-serif;
@@ -49,21 +60,6 @@ li:first-line {
     margin-bottom: 5px;
 }
 
-.leaflet-popup-content-wrapper {
-    font-family: 'Montserrat', sans-serif;
-}
-
-.leaflet-popup-content-wrapper .leaflet-popup-content {
-    font-family: 'Montserrat', sans-serif;
-}
-
-.leaflet-popup-tip-container {
-    font-family: 'Montserrat', sans-serif;
-}
-
-.control-label col-sm-5 {
-    font-family: 'Montserrat', sans-serif;
-}
 
 
 /*-------------------*/
@@ -91,16 +87,6 @@ li:first-line {
     margin-top: -2px;
     margin-bottom: 2px;
 }
-
-
-/*MAP VIEW PROPERTIES*/
-/*#mymap {
-    position: relative;
-    width: 100.0%;
-    height: 100.0%;
-    left: 0.0%;
-    top: 0.0%;
-}*/
 
 #mymap {
     z-index: 1;
@@ -176,16 +162,12 @@ input[type="radio"]{
     margin-bottom: 20px;
 }
 
-input {
+input, .parkspotcolumn {
     margin-top: 5px;
 }
 
 ul {
     margin-top: -1px;
-}
-
-.parkspotcolumn {
-    margin-top: 5px;
 }
 
 #parkspot {
@@ -398,7 +380,7 @@ div.sucimage {
     from { opacity: 0; }
     to   { opacity: 1; }
 }
-/* NB: I did fadeout effects with jquery*/
+/* NB: fadeout effect written with using jquery functions*/
 
 
 /*----------------------*/
@@ -427,19 +409,8 @@ div.sucimage {
 /*GEOCODER*/
 /*--------*/
 
-.leaflet-control-geocoder-form input, .leaflet-control-geocoder-form-no-error {
+.leaflet-control-geocoder-form input, 
+.leaflet-control-geocoder-form-no-error {
         font-family: 'Montserrat', sans-serif;
         margin-bottom: 5px;
 }
-
-
-/*MAKE TEXT IN MAP JUSTIFIED*/
-/*div {
-  text-align: justify;
-}*/
-
-/*div:after {
-  content: "";
-  display: inline-block;
-  width: 100%;
-}*/

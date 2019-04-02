@@ -29,6 +29,7 @@ p,
 .control-label col-sm-5,
 .leaflet-popup-content-wrapper .leaflet-popup-content {
     font-family: 'Montserrat', sans-serif;
+    line-height: 1.4;
 }
 
 
@@ -41,6 +42,7 @@ p,
 li {
     font-family: 'Montserrat', sans-serif;
     margin-left: 0em;
+    line-height: 1.3;
 }
 
 li:first-line {

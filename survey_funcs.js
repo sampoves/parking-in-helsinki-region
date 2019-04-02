@@ -114,25 +114,11 @@ function incompleteTest(input) {
 
 
 // This helps set value for parkspot in the popup survey
+// 020419 park_survey.js uses this. Not sure if this is useful anymore
 function onParkspotChange(event){
     currentParkspotValue = event.target.value;
     //console.log("parkspot value set to " + event.target.value);
 };
-
-
-//utilise leaflet-pip (point in Polygon) to find indtersections between
-//clicked latlngs and overlay geojson layers
-function findIntersection (latlng, geojsonlayer){
-    var hits = leafletPip.pointInLayer(latlng, geojsonlayer);
-    if (hits.length !== 0){
-        // If intersection is found, it should only find one feature.
-        // This case returns the name of that feature
-        return hits;
-    } else {
-        // In case of no intersections return a empty string
-        return "";
-    }
-}
 
 
 //This code launches jQuery info dialog when prompted. The language button and 

@@ -99,6 +99,17 @@ Helsinki Capital Region".
                         return false;
                     }
                 });
+                
+                //listen to clicks on geocoder button. Don't allow popup or
+                //infobox be open while searching. There is a slight bug when
+                //clicking on geocoder while infobox is open: geocoder immediately
+                //closes with infobox. Two clicks needed
+                $(".leaflet-control-geocoder").on("click", function() {
+                    mymap.closePopup();
+                    $("#tabsikkuna").dialog("close");
+                    infoButton.state('infoOpen');
+                    apu = 0;
+                });
             });
 
             //Show survey version in jQuery info window. Also, execute visitor
@@ -287,8 +298,6 @@ Helsinki Capital Region".
                                 } else {
                                     layer.setStyle(geojsonComplete);
                                 }
-                                //020419 try to fix doubleclick first time geojson popup
-                                //layer._leaflet_id = feature.id;
                             }
                 }).addTo(mymap);
 
@@ -511,7 +520,7 @@ Helsinki Capital Region".
                          bbox.getNorthWest(),
                          bbox.getSouthWest()
                     ]);
-                    mymap.fitBounds(poly.getBounds().pad(0.8));
+                    mymap.fitBounds(poly.getBounds().pad(0.6));
                 })
                 .addTo(mymap);
 

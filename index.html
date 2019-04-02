@@ -52,12 +52,10 @@ Helsinki Capital Region".
     //**kun geojsonilla popup auki, ja klikkaa tilelayeria eli pohjaa, joutuu 
     //klikkaamaan geojson-layeria kerran enemmän jotta popupin saa takaisin. 
     //kokeile korjaa
-    //**mieti kannataaks kehittää failed-ruutua ollenkaan!
-    //**uusi polygon geojson-layerilla, tarvii kaks klikkii. kokeile korjaa
+    //**mieti kannataaks kehittää lähetyksen failed-ruutua ollenkaan!
+    //**uusi polygon geojson-layerilla, tarvii kaks klikkii. pitäis korjaa
     //**Pitäisikö sittenkin kerätä ip-osoitteet käyttäjiltä? Sillä syyllä,
     //että näkee jos sama hlö on ilmoittanut saman pnoalueen useasti?
-    //**tee puhelinmoodi vapaaehtoiseksi
-    //**katso mitä muuta geokooderille voisi tehdä
 
     //OLIS KIVA -TODO
     //**SCRIPT omaan js-tiedostoon
@@ -69,6 +67,7 @@ Helsinki Capital Region".
     //kommentoitu, koska en osannut ratkaista pulmaa
     //**geojson-layeria ei pysty klikkailee kun infobox on auki, mutta
     //karttanäkymä zoomaa polygonin kohdalle
+    //**voisiko geokooderi etsiä pelkkää tutkimusaluetta?
 
     //MYSQL help:
     // http://howtolamp.com/lamp/mysql/5.6/basics/
@@ -252,7 +251,7 @@ Helsinki Capital Region".
                 voyagerOnlyLabels.addTo(mymap);
             }
             
-            //COOKIES: Has jQuery infobox been opened?
+            //COOKIES: Has jQuery infobox commanded to stay away at start?
             $(document).ready(function(){
                 if(getCookie("info_closed_once") === "yes"){
                     console.log("Cookie value found, hide survey information popup");
@@ -297,7 +296,8 @@ Helsinki Capital Region".
                                 } else {
                                     layer.setStyle(geojsonComplete);
                                 }
-                                
+                                //020419 try to fix doubleclick first time geojson popup
+                                //layer._leaflet_id = feature.id;
                             }
                 }).addTo(mymap);
 
@@ -382,10 +382,21 @@ Helsinki Capital Region".
                     };
 
                     //Only add data to "geojson" if user has never clicked on
-                    //the postal area being clicked
+                    //the postal area being clicked. Boolean true means that 
+                    //zipcode entered is unique.
                     if(usersZipCodes.addUniqueZipCode(
                             e.layer.feature.properties.posti_alue) === true){
+                        
+                        
+                        
                         geojson.addData(geojsonFeature);
+                        
+                        //console.log(e.latlng);
+                        //window.latlngPoint = e.latlng;
+                        //console.log(leafletPip.pointInLayer(e.latlng, geojson));
+                        //dislaya = leafletPip.pointInLayer(e.latlng, geojson);
+                        //layer.fireEvent('click');
+
                     } else {
                         //do nothin
                     }
@@ -393,6 +404,16 @@ Helsinki Capital Region".
                     //do nothin
                 }
             });
+            
+            //first click, geojson layer creation
+            geojson.on("layeradd", function(event){
+                laya = event.layer;
+                laya.fire("click");
+                console.log("blargh");
+                apu = 1;
+            });
+
+            
             
             // This bit here prevents the immediate opening of a new popup on
             // layer geojson if a popup is already open. This behaviour would
@@ -495,21 +516,11 @@ Helsinki Capital Region".
                 //Command delete is necessary to remove unwanted values in popup 
                 //when first placing popup on research area and then placing a 
                 //popup outside. This would result to an erroneous result
-                hitPostal = findIntersection(e.latlng, postal);
-                thisZip = hitPostal[0].feature.properties.posti_alue;
                 
-                if (hitPostal === ""){
-                    html = '<font size="2" color="red" style="line-height: 30px;"><center><strong tkey="lang_outsideResearch">Outside research area!</strong></center></font>';
-                } else if (hitPostal !== "") {
-                    //take note of the following line and its string formatting
-                    //`${variableName}`. Also take note that string formatting
-                    //needs grave accents ``.
-                    html = `<div tkey="lang_zipArea">Zip code area:</div> ${hitPostal[0].feature.properties.nimi}, ${hitPostal[0].feature.properties.posti_alue}`;
-                    delete hitPostal;
-                }
-
                 var pol = e.target,
-                        properties = e.target.feature.properties;
+                        properties = e.target.feature.properties;        
+                
+                html = `<div tkey="lang_zipArea">Zip code area:</div> ${pol.feature.properties.nimi}, ${pol.feature.properties.zipcode}`;
                 
                 if(pol.hasOwnProperty('_popup')){
                     pol.unbindPopup();
@@ -530,7 +541,7 @@ Helsinki Capital Region".
                 //This way we can communicate correctly with the function
                 //previousGeometrySame().
                 $("a.leaflet-popup-close-button").one('click', function(e){
-                    console.log("pressed x");   
+                    console.log("pressed x in popup dialog");
                     updateGeomColors();
                     arePopupsFinished();
                     showUI();
@@ -760,7 +771,7 @@ Helsinki Capital Region".
                     <li><a href="#tabs-3" tkey="lang_tab3">Käyttöohjeet</a></li>
                 </ul>
                 <div id="tabs-1" class="tabspanel">
-                    <p id="version"></p>
+                    <p id="version" tkey="lang_version"></p>
                     <p id ="mobilewarning"></p>
                     <H2 tkey="lang_welcome1">Tervetuloa kyselyyn!</H2>
                     <p tkey="lang_welcome2">Tämän kyselyn tarkoituksena on selvittää kuinka kauan henkilöauton pysäköinti kestää pääkaupunkiseudulla. Kyselyssä huomioidaan pysäköinnin koko prosessi: kuinka kauan pysäköintipaikkaa etsittiin, minne auto pysäköitiin ja missä oli vastaajan todellinen määränpää. Kyselyssä kerättyjä tietoja käytetään Helsingin yliopiston geoinformatiikan pro gradu -tutkimuksessa, josta voit lukea lisää allaolevasta "tarkempaa tietoa kyselystä" -kohdassa.</p>

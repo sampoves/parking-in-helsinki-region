@@ -355,7 +355,21 @@ Helsinki Capital Region".
             postal.on("mouseout", layerToNormal);
             geojson.on("mouseover", highlightGeojson);
             geojson.on("mouseout", geojsonToNormal);
-
+            
+            //This event opens popup when clicking on a new postal code area.
+            //fire() simulates a second click on the Polygon, as without this
+            //command one would need to click a new Polygon two times to open
+            //corresponding popup. This happened, because first user clicks
+            //on the layer "postal", which doesn't fire up function 
+            //layerClickHandler(). layerClickHandler() is only fired up when
+            //user clicks the second time on the Polygon, which now exists on
+            //a topmost layer "geojson".
+            geojson.on("layeradd", function(event){
+                thisLayer = event.layer;
+                thisLayer.fire("click");
+                apu = 1;
+            });
+            
             //On layer click on "postal", initialise "geojsonFeature" and add it 
             //to the "geojson" layer.
             postal.on("click", function (e) {
@@ -386,17 +400,7 @@ Helsinki Capital Region".
                     //zipcode entered is unique.
                     if(usersZipCodes.addUniqueZipCode(
                             e.layer.feature.properties.posti_alue) === true){
-                        
-                        
-                        
                         geojson.addData(geojsonFeature);
-                        
-                        //console.log(e.latlng);
-                        //window.latlngPoint = e.latlng;
-                        //console.log(leafletPip.pointInLayer(e.latlng, geojson));
-                        //dislaya = leafletPip.pointInLayer(e.latlng, geojson);
-                        //layer.fireEvent('click');
-
                     } else {
                         //do nothin
                     }
@@ -405,16 +409,8 @@ Helsinki Capital Region".
                 }
             });
             
-            //first click, geojson layer creation
-            geojson.on("layeradd", function(event){
-                laya = event.layer;
-                laya.fire("click");
-                console.log("blargh");
-                apu = 1;
-            });
 
-            
-            
+
             // This bit here prevents the immediate opening of a new popup on
             // layer geojson if a popup is already open. This behaviour would
             // temporarily screw up the display of inserted records and would
@@ -510,17 +506,17 @@ Helsinki Capital Region".
             //Listen to current click on geojson layer named "geojson"
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
             function layerClickHandler (e) {
+                //update situation with submit button
                 arePopupsFinished();
-                //POLYGON (CLICK) LOCATION INTERSECTED WITH OVERLAY LAYERS
-                //Check with conditional statement what to print on popup.
-                //Command delete is necessary to remove unwanted values in popup 
-                //when first placing popup on research area and then placing a 
-                //popup outside. This would result to an erroneous result
                 
+                // catch clicked Polygon
                 var pol = e.target,
-                        properties = e.target.feature.properties;        
+                        properties = e.target.feature.properties;   
                 
-                html = `<div tkey="lang_zipArea">Zip code area:</div> ${pol.feature.properties.nimi}, ${pol.feature.properties.zipcode}`;
+                // construct popup zip area code and name and the html element
+                currentZip = pol.feature.properties.zipcode;
+                currentAreaName = getAreaName(currentZip);
+                html = `<div tkey="lang_zipArea">Zip code area:</div> ${currentAreaName}, ${currentZip}`;
                 
                 if(pol.hasOwnProperty('_popup')){
                     pol.unbindPopup();

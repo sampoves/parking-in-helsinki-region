@@ -305,6 +305,23 @@ var ID = function () {
 };
 
 
+// layerClickHandler() uses this to match zipcodes in layer "geojson" with 
+// layer "postal" zipcodes. Important for showing names of postal code areas
+// in each popup window.
+function getAreaName(zipcode) {
+    for (var i in postal._layers){
+        currentItem = postal._layers[i];
+        if(zipcode === currentItem.feature.properties.posti_alue) {
+            // found postal area name corresponding to function parameter
+            return currentItem.feature.properties.nimi;
+        } else {
+            //nothin
+        }
+    }
+    //did not find anything corresponding inserted parameter
+    return null;
+}
+
 
 
 //------------------------

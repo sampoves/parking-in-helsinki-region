@@ -49,11 +49,7 @@ Helsinki Capital Region".
     //TÄRKEÄ TODO:
     //**Kirjoita ajantasaiset ohjeet Jquery UI -ikkunaan
     //**kysymysten lopullinen muoto pitää päättää
-    //**kun geojsonilla popup auki, ja klikkaa tilelayeria eli pohjaa, joutuu 
-    //klikkaamaan geojson-layeria kerran enemmän jotta popupin saa takaisin. 
-    //kokeile korjaa
     //**mieti kannataaks kehittää lähetyksen failed-ruutua ollenkaan!
-    //**uusi polygon geojson-layerilla, tarvii kaks klikkii. pitäis korjaa
     //**Pitäisikö sittenkin kerätä ip-osoitteet käyttäjiltä? Sillä syyllä,
     //että näkee jos sama hlö on ilmoittanut saman pnoalueen useasti?
 
@@ -69,10 +65,6 @@ Helsinki Capital Region".
     //karttanäkymä zoomaa polygonin kohdalle
     //**voisiko geokooderi etsiä pelkkää tutkimusaluetta?
 
-    //MYSQL help:
-    // http://howtolamp.com/lamp/mysql/5.6/basics/
-    // https://www.w3schools.com/php/php_mysql_insert.asp
-    // https://www.digitalocean.com/community/tutorials/a-basic-mysql-tutorial
             //--------------
             //INITIALISATION
             //--------------
@@ -112,7 +104,7 @@ Helsinki Capital Region".
 
             //Show survey version in jQuery info window. Also, execute visitor
             //counter code.
-            var survey_version = "Development version 1.4.2019. Database connection live.";
+            var survey_version = "Development version 2.4.2019. Database connection live.";
             window.onload = function() {
                 document.getElementById('version').innerHTML = survey_version;
                 
@@ -323,6 +315,21 @@ Helsinki Capital Region".
                         }
                 }).addTo(mymap);
             
+            //bottomPolygon only serves to catch clicks on areas that do not
+            //exist on layers postal and geojson. It enables user to click
+            //the sea, have a popup dissappear and go straigh back to zip code
+            //area clicking. See bottomPolygon.on("click")
+            var bottomPolygon = L.polygon([
+                    [60.6, 25.305884],
+                    [60.6, 24.37],
+                    [60.05, 24.37],
+                    [60.05, 25.305884]
+                ], {
+                    color: 'red',
+                    opacity: 0,
+                    fillOpacity: 0
+            }).addTo(mymap);
+            
             var postaldissolve = new L.GeoJSON.AJAX(
                     "pno_dissolve.geojson", {
                         style: styleArea
@@ -355,6 +362,14 @@ Helsinki Capital Region".
             postal.on("mouseout", layerToNormal);
             geojson.on("mouseover", highlightGeojson);
             geojson.on("mouseout", geojsonToNormal);
+            
+            //Catch clicks in the sea. Keep the helper variable "apu" up to date
+            //so that geojson layer never needs multiple clicks to open a popup
+            bottomPolygon.on("click", function(){
+                if(apu === 1){
+                    apu = 0;
+                }
+            });
             
             //This event opens popup when clicking on a new postal code area.
             //fire() simulates a second click on the Polygon, as without this

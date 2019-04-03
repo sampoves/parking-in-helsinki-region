@@ -91,7 +91,7 @@ Helsinki Capital Region".
             //button
             $(document).ready(function(){
                 sendBox.disable();
-                
+
                 //prevent sending form with enter key
                 $(window).keydown(function(event){
                     if(event.keyCode === 13) {
@@ -586,10 +586,10 @@ Helsinki Capital Region".
                 var parkTime = L.DomUtil.get('parktime');
                 parkTime.value = properties.parktime;
                 L.DomEvent.addListener(parkTime, "change", function (e){
-                    //This if statement prevents values larger than 120. It
+                    //This if statement prevents values larger than 99. It
                     //works in tandem with the input type number html element.
-                    if(parkTime.value > 120){
-                        properties.parktime = 120;
+                    if(parkTime.value > 99){
+                        properties.parktime = 99;
                     } else {
                         properties.parktime = e.target.value;
                     }

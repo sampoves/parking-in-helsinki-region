@@ -544,6 +544,7 @@ function submitButtonListener(){
                     my: "center", at: "center", of: window});
             });
         });
+
         usersZipCodes.clearZipCodes();
         geojson.clearLayers();
 
@@ -605,24 +606,20 @@ function preparePost() {
             parktime: parktimeValue
         };
         
-        // IT MAY BE BAD IDEA TO IMPLEMENT ERROR STATES. MAKE YOUR MIND
         $.post('insert_mysql.php', data, function(responseFromServer) {
             // Insert response from server to '#response' div
             //if received error message, count it
             if(responseFromServer.status === "error") {
                 errorRecords = errorRecords + 1;
+                $("div.sucimage").css("content", "url('images/error.jpg')");
             }
             
-            var responseHtml = '<div>Records sent: ' + (recordsSent+1) + '<br>Fails: ' + errorRecords + '<br>Status: ' + responseFromServer.status + '<br>Message: ' + responseFromServer.message + '</div>';
+            var responseHtml = '<div>Records sent: ' + (recordsSent + 1) + '<br>Fails: ' + errorRecords + '<br>Status: ' + responseFromServer.status + '</div>';
+            console.log('-- Message from server --\nStatus: ' + responseFromServer.status + '\nMessage: ' + responseFromServer.message);
             
             // only add one message from server. Add += if all wanted
             var responseDiv = document.getElementById('response');
             responseDiv.innerHTML = responseHtml;
-            //responseDiv.innerHTML += responseHtml;
-            
-            //this code is original
-            //$('#response').html(responseHtml);
-            //console.log(responseHtml);
             
         }, 'json').done(function(responseFromServer){
             //run this small function any time jquery post is finished
@@ -658,34 +655,7 @@ function prepareErrorPost() {
     $.post('insert_mysql.php', data, function(responseFromServer) {
           // Insert response from server to '#response' div
           var phpResponse = responseFromServer;
-          //var responseHtml = '<div>Full JSON object: ' + JSON.stringify(responseFromServer) + '</div>';
-          //responseHtml += '<div>Status: ' + responseFromServer.status + ', message: ' + responseFromServer.message + '</div>';
-          //$('#response').html(responseHtml);
+
           console.log(phpResponse);
-    }, 'json');
-}
-
-
-function preparePostTemplate(){
-
-    // Fetch data from UI
-    //var emailValue = $('#email').val();
-    var emailValue = "pelle.hermanni@pelle.com";
-
-    // Create object to be sent
-    var data = {email: emailValue};
-    
-    // Send data to server (PHP)
-    $.post('test.php', data, function(responseFromServer) {
-
-        // Insert response from server to '#response' div
-        var responseHtml = '<div>Full JSON object: ' + JSON.stringify(responseFromServer) + '</div>';
-        responseHtml += '<div>Status: ' + responseFromServer.status + ', message: ' + responseFromServer.message + '</div>';
-
-        //server response sent to #sucdialog, see index.html jquery content
-        $('#response').html(responseHtml);
-        
-        console.log(responseHtml);
-        
     }, 'json');
 }

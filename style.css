@@ -508,3 +508,36 @@ div.sucimage {
         font-family: 'Montserrat', sans-serif;
         margin-bottom: 5px;
 }
+
+
+/*--------------------------------------------*/
+/*NEEDLESSLY COMPLICATED EASYBUTTON ANIMATIONS*/
+/*--------------------------------------------*/
+.state-infoOpen,
+.state-infoClose,
+.state-fi,
+.state-en {
+    transition-duration: .5s;
+    transform: scale(1.3,1.3);
+    position: absolute;
+    display: block;
+    top: 0;
+    width: 100%;
+}
+
+.state-infoOpen,
+.state-infoClose,
+.state-fi,
+.state-en {
+    transform-origin: 50% 50%; 
+}
+
+.state-infoOpen.infoOpen-active,
+.state-fi.fi-active{
+    transform: scale(1,1); 
+}
+
+.state-infoClose.infoClose-active,
+.state-en.en-active{
+    transform: scale(1.3,1.3); 
+}

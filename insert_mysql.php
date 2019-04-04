@@ -67,7 +67,7 @@ try {
 	$time = $timestamp_arr[1];
 } catch(Exception $e) {
 	$response['status'] = 'error';
-	$response['message'] = sprintf('Invalid value in timestamp, can\'t parse. Value given %s, error: %s', $timestamp, $e->getMessage());
+	$response['message'] = sprintf('Invalid value in timestamp, can\'t parse. Value given: %s, error: %s', $timestamp, $e->getMessage());
 	exit(json_encode($response));
 }
 
@@ -79,13 +79,13 @@ if (count($date) == 3) {
     } else {
 		// problem with dates!
 		$response['status'] = 'error';
-		$response['message'] = sprintf('Invalid date in timestamp. Value given %s', $timestamp);
+		$response['message'] = sprintf('Invalid date in timestamp. Value given: %s', $timestamp);
 		exit(json_encode($response));
     }
 } else {
     // problem with date input
     $response['status'] = 'error';
-    $response['message'] = sprintf('Invalid input for date in timestamp. Value given %s', $timestamp);
+    $response['message'] = sprintf('Invalid input for date in timestamp. Value given: %s', $timestamp);
 	exit(json_encode($response));
 }
 
@@ -93,7 +93,7 @@ if (count($date) == 3) {
 if (!preg_match('/^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$/', $time)) {
     // problem with time regex
     $response['status'] = 'error';
-    $response['message'] = sprintf('Invalid value for time in timestamp. Value given %s', $timestamp);
+    $response['message'] = sprintf('Invalid value for time in timestamp. Value given: %s', $timestamp);
 	exit(json_encode($response));
 }
 
@@ -103,7 +103,7 @@ if (!preg_match('/^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$/', $time)) {
 if (!preg_match('/^[0-9]{5}$/', $zipcode)) {
     // problem with zip code regex. Only 0-9 allowed. Length 5.
     $response['status'] = 'error';
-    $response['message'] = sprintf('Invalid value for zipcode. Value given %s', $zipcode);
+    $response['message'] = sprintf('Invalid value for zipcode. Value given: %s', $zipcode);
 	exit(json_encode($response));
 }
 
@@ -112,7 +112,7 @@ if (!filter_var($sanitizedLikert, FILTER_VALIDATE_INT, array("options" => array(
     
     // Error found: given variable isn't allowed
     $response['status'] = 'error';
-    $response['message'] = sprintf('Invalid value for likert. Value given %s', $sanitizedLikert);
+    $response['message'] = sprintf('Invalid value for likert. Value given: %s', $sanitizedLikert);
     
     // Echo JSON and exit script
     exit(json_encode($response));
@@ -121,14 +121,14 @@ if (!filter_var($sanitizedLikert, FILTER_VALIDATE_INT, array("options" => array(
 // Validate input for parkspot
 if (!filter_var($sanitizedParkspot, FILTER_VALIDATE_INT, array("options" => array("min_range"=>1, "max_range"=>4)))) {
     $response['status'] = 'error';
-    $response['message'] = sprintf('Invalid value for parkspot. Value given %s', $sanitizedParkspot);
+    $response['message'] = sprintf('Invalid value for parkspot. Value given: %s', $sanitizedParkspot);
     exit(json_encode($response));
 }
 
 // Validate input for parktime
 if (!filter_var($sanitizedParktime, FILTER_VALIDATE_INT, array("options" => array("min_range"=>0, "max_range"=>99)))) {   
     $response['status'] = 'error';
-    $response['message'] = sprintf('Invalid value for parktime. Value given %s', $sanitizedParktime);
+    $response['message'] = sprintf('Invalid value for parktime. Value given: %s', $sanitizedParktime);
     exit(json_encode($response));
 }
 

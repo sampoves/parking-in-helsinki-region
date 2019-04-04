@@ -395,12 +395,9 @@ div.sucimage {
         padding-bottom: 25px; 
     }
     
+    #buttonsubmitall:enabled,
     #buttonsubmitall:disabled,
     #buttonsubmitall[disabled]{
-        width: 50%;
-        height: 130%;
-    }
-    #buttonsubmitall:enabled {
         width: 50%;
         height: 130%;
     }

@@ -11,7 +11,7 @@ var popupContent =
     //time to search parking
     '<div class="form-group">'+
         '<label class="control-label col-sm-5"><strong tkey="lang_search">Kuinka pitkään etsit pysäköintipaikkaa (minuuteissa)?:<br></strong></label>'+
-        '<input type="number" min="0" max="99" placeholder="Required" class="form-control" id="parktime" name="parktime" onkeyup="if(this.value > 99) this.value = 99; else if(this.value < 0) this.value = 0; else this.value = parseInt(this.value, 10);">'+
+        '<input type="number" min="0" max="99" placeholder="&#xf410;Required" class="form-control icon window-close" id="parktime" name="parktime" onkeyup="if(this.value > 99) this.value = 99; else if(this.value < 0) this.value = 0; else this.value = parseInt(this.value, 10);">'+
     '</div>'+
 
     //likert familiarity of parking area

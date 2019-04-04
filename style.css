@@ -33,6 +33,7 @@ p,
 }
 
 
+
 /*MAKE TEXT IN MAP JUSTIFIED*/
 /*div {
   text-align: justify;
@@ -60,6 +61,30 @@ li:first-line {
 
 .leaflet-bottom .leaflet-control {
     margin-bottom: 5px;
+}
+
+
+
+/*------------------*/
+/*FONT AWESOME ICONS*/
+/*------------------*/
+
+/* Common properties: All required to make icons render reliably */
+.icon::before {
+    font-family: "Font Awesome 5 Free";
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Reference individual icons */
+.window-close::before {
+    font-weight: 400; /*regular*/
+    content: "\f410"; /*icon unicode*/
+    font-size: 1.33em; /*resizing*/
+    margin-right: 10px; /*some space between icon and text*/
 }
 
 
@@ -190,6 +215,12 @@ select option {
 
 /*BUTTONS*/
 button {
+    /*text centering on button, useful with font awesome icons*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /*other settings*/
     width: 100%;
     font-family: 'Montserrat', sans-serif;
     font-size: 16px;
@@ -213,13 +244,15 @@ button:hover {
     color: white;
 }
 
-#button-closeinfo {
+#button-closeinfo,
+#button-changedevice {
     border: 2px solid #ff0000; /* Red */
     margin-top: 15px;
     font-family: 'Montserrat', sans-serif;
 }
 
-#button-closeinfo:hover {
+#button-closeinfo:hover,
+#button-changedevice:hover {
     background-color: #ff0000; /* Red */
     color: white;
     font-family: 'Montserrat', sans-serif;

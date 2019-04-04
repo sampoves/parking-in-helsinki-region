@@ -29,7 +29,7 @@ Helsinki Capital Region".
         <link rel="stylesheet" href="style.css">
         
         <!-- other stylesheets -->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.4.0/easy-button.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css"/>
@@ -49,9 +49,6 @@ Helsinki Capital Region".
     //TÄRKEÄ TODO:
     //**Kirjoita ajantasaiset ohjeet Jquery UI -ikkunaan
     //**kysymysten lopullinen muoto pitää päättää
-    //**mieti kannataaks kehittää lähetyksen failed-ruutua ollenkaan!
-    //**Pitäisikö sittenkin kerätä ip-osoitteet käyttäjiltä? Sillä syyllä,
-    //että näkee jos sama hlö on ilmoittanut saman pnoalueen useasti?
 
     //OLIS KIVA -TODO
     //**SCRIPT omaan js-tiedostoon
@@ -63,6 +60,10 @@ Helsinki Capital Region".
     //kommentoitu, koska en osannut ratkaista pulmaa
     //**geojson-layeria ei pysty klikkailee kun infobox on auki, mutta
     //karttanäkymä zoomaa polygonin kohdalle
+
+    //HUOMIOITA
+    //**Lähetys näyttää success-ruudussa lähetykset ja pieleen menneet, mutta
+    //ei reagoi niihin mitenkään, ruutu on aina success
 
             //--------------
             //INITIALISATION
@@ -86,11 +87,19 @@ Helsinki Capital Region".
             //codes. This prevents duplicate records for same zip code areas.
             usersZipCodes = new TrackZipCodes();
             
-            // DISABLE SUBMIT BUTTON AT START AND PREVENT ENTER
-            //first check up if geojson has nothing in it to disable submit
-            //button
+            // Once page has loaded, carry out some commands:
+            //- submit button is disabled by default
+            //- set postal geojson layer as topmost
+            //- prevent enter keystrokes (this would lead to accidental page 
+            //refreshes)
+            //- listen to clicks on geocoder button
             $(document).ready(function(){
+                
+                //disable submit button by default
                 sendBox.disable();
+                
+                //set postal on front by default
+                postal.bringToFront();
 
                 //prevent sending form with enter key
                 $(window).keydown(function(event){
@@ -809,7 +818,8 @@ Helsinki Capital Region".
                     <p tkey="lang_welcome5"><b>Huom!</b> Huomaathan, että <i>kyselyssä ei kartoiteta kotipihapysäköintiä tai sellaista pysäköintiä, jossa vastaajalla on käytössä henkilökohtainen pysäköintipaikka</i>.</p>
                     <p tkey="lang_welcome6">Kiitän vastauksestasi, <br>terveisin, Sampo Vesanen</p>
                     <p tkey="lang_welcome7">Kyselyyn liittyvissä asioissa ota minuun yhteyttä sähköpostitse: sampo.vesanen(at)helsinki.fi</p>
-                    <button id="button-closeinfo" type="button" tkey="lang_buttoncloseinfo">Stop showing this dialog box at startup</button>
+                    <button id="button-closeinfo" class="icon window-close" type="button" tkey="lang_buttoncloseinfo">Stop showing this dialog box at startup</button>
+                    <button id="button-changedevice" type="button" tkey="lang_buttonchangedevice">Change device settings. WARNING! Refreshes page, all non-submitted records will be lost!</button>
                 </div>
                 <div id="tabs-2" class="tabspanel">
                     <p tkey="lang_about1">Tämän kyselyn tarkoituksena on tutkia pysäköintiin kuluvan ajan alueellista vaihtelua pääkaupunkiseudulla. Kysely noudattaa Salosen ja Toivosen (2013) matka-aikojen mittaamiseen tarkoitettua ovelta ovelle -menetelmää, jonka osana pysäköimisprosessi on. Menetelmän mukaisesti tässä kyselyssä kysytään <b>1)</b> kuinka kauan pysäköintipaikan löytymiseen kului aikaa pysäköinnin etsimisen aloittamisesta, <b>2)</b> missä pysäköintipaikka sijaitsi sekä <b>3)</b> missä oli matkan lopullinen määränpää. Kyselyn tulokset ovat perustana geoinformatiikka-aiheiselle pro gradu -tutkielmalleni, jonka työnimi on <i>Parking of private cars and spatial accessibility in Greater Helsinki Area</i>. Tuloksia käytetään parantamaan Helsingin yliopistossa toimivan Accessibility Research Groupin kehittämää Helsingin seudun matka-aikamatriisimallia (Toivonen et al. 2015). Tällä hetkellä ryhmä käyttää matka-aikamatriisissa karkeaa arviota pysäköintiin kuluvasta ajasta (Kalenoja & Häyrynen 2003). Pro gradu -tutkielmani hypoteesina on, että pysäköintiprosessin kesto vaihtelee pääkaupunkiseudun eri osissa, ja tästä tutkimuksesta saatavat tulokset mahdollistavat alueellisen vaihtelun tutkimisen ja visualisoinnin. Pääset tutustumaan Digital Geography Labin tutkimukseen <a target="_blank" rel="noopener noreferrer" href="https://www.helsinki.fi/en/researchgroups/digital-geography-lab">täällä</a> (avautuu uuteen ikkunaan).</p>

@@ -11,7 +11,7 @@ var popupContent =
     //time to search parking
     '<div class="form-group">'+
         '<label class="control-label col-sm-5"><strong tkey="lang_search">Kuinka pitkään etsit pysäköintipaikkaa (minuuteissa)?:<br></strong></label>'+
-        '<input type="number" min="0" max="99" placeholder="&#xf410;Required" class="form-control icon window-close" id="parktime" name="parktime" onkeyup="if(this.value > 99) this.value = 99; else if(this.value < 0) this.value = 0; else this.value = parseInt(this.value, 10);">'+
+        '<input type="number" min="0" max="99" placeholder="&#xf017; Required (0-99)" class="form-control" id="parktime" name="parktime" onkeyup="if(this.value > 99) this.value = 99; else if(this.value < 0) this.value = 0; else this.value = parseInt(this.value, 10);">'+
     '</div>'+
 
     //likert familiarity of parking area
@@ -44,8 +44,8 @@ var popupContent =
     '</div>'+
     
     //submit button
-    '<button id="button-submit" type="button" tkey="lang_savechanges">Save Changes</button>'+
+    '<button id="button-submit" class="icon save" type="button" tkey="lang_savechanges">Save Changes</button>'+
             
     //delete current feature button
-    '<button id="button-delete" type="button" tkey="lang_deletefeature">Remove These Records</button>'+
+    '<button id="button-delete" class="icon trash-alt" type="button" tkey="lang_deletefeature">Remove These Records</button>'+
 '</form>';

@@ -16,6 +16,7 @@ var bounds = L.latLngBounds(corner1, corner2);
 //---------------------------------
 //
 //CartoDB dark_matter
+//https://github.com/CartoDB/basemap-styles
 var darkmatter = L.tileLayer(
         'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_nolabels/{z}/{x}/{y}.png',
     {
@@ -31,7 +32,6 @@ var darkmatter = L.tileLayer(
 });
 
 //OpenStreetMap
-//https://github.com/CartoDB/basemap-styles
 var OpenStreetMap_DE = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png', {
         minZoom: 0,
         maxZoom: 18,
@@ -181,7 +181,7 @@ var missingStuff =
 //HTML BUTTONS
 //------------
 var normalSubmit = 
-        "<button id='buttonsubmitall' type='button'><strong tkey='lang_submit'>Submit records</strong></button>";
+        "<button id='buttonsubmitall' class='icon cloud-upload-alt' type='button'><strong tkey='lang_submit'>Submit records</strong></button>";
 
 var disabledSubmit = 
-        "<button disabled id='buttonsubmitall' type='button'><strong tkey='lang_submit'>Submit data</strong></button>";
+        "<button disabled id='buttonsubmitall' class='icon cloud-upload-alt' type='button'><strong tkey='lang_submit'>Submit data</strong></button>";

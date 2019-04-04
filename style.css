@@ -69,7 +69,8 @@ li:first-line {
 /*FONT AWESOME ICONS*/
 /*------------------*/
 
-/* Common properties: All required to make icons render reliably */
+/* Common properties: All of these settings are required to make icons render 
+reliably */
 .icon::before {
     font-family: "Font Awesome 5 Free";
     display: inline-block;
@@ -87,6 +88,66 @@ li:first-line {
     margin-right: 10px; /*some space between icon and text*/
 }
 
+.mobile-alt::before {
+    font-weight: 900;
+    content: "\f3cd";
+    font-size: 1.33em;
+    margin-left: 10px; 
+    margin-right: 10px;
+}
+
+.desktop::before {
+    font-weight: 900;
+    content: "\f108";
+    font-size: 1.33em;
+    margin-left: 10px; 
+    margin-right: 10px;
+}
+
+.save::before {
+    font-weight: 400;
+    content: "\f0c7";
+    font-size: 1.33em;
+    margin-left: -10px; 
+    margin-right: 10px;
+}
+
+.trash-alt::before {
+    font-weight: 400;
+    content: "\f2ed";
+    font-size: 1.33em;
+    margin-left: -10px; 
+    margin-right: 10px;
+}
+
+.cloud-upload-alt::before {
+    font-weight: 900;
+    content: "\f382";
+    font-size: 1.33em;
+    margin-left: -10px; 
+    margin-right: 10px;
+}
+
+.clock::before {
+    font-weight: 900;
+    content: "\f017";
+    font-size: 1.33em;
+    margin-left: -10px; 
+    margin-right: 10px;
+}
+
+/*this works in tandem with unicode identifier in input type number in 
+park_survey.js*/
+input[type="number"]::placeholder {
+    font-family: 'Montserrat', sans-serif, "Font Awesome 5 Free";
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    font-weight: 400;
+    content: "\f017";
+}
 
 
 /*-------------------*/
@@ -317,6 +378,7 @@ input[type="number"] {
     font-size: 13pt;
     font-family: 'Montserrat', sans-serif;
 }
+
 
 /*-----------------------*/
 /*HTML CLOSE BUTTON STYLE*/

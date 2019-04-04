@@ -496,6 +496,10 @@ div.sucimage {
         width: 50%;
         height: 130%;
     }
+    .cloud-upload-alt::before {
+        margin-left: 10px;
+        margin-right: -10px;
+    }
 }
 
 

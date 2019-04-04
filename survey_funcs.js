@@ -170,23 +170,50 @@ function initialiseInfo(){
     // listen to "close this info window" button 
     var buttonCloseinfo = L.DomUtil.get('button-closeinfo');
     L.DomEvent.addListener(buttonCloseinfo, "click", function (e){
-            create_cookie("info_closed_once", "yes", 90, "/");
-            $("#tabsikkuna").dialog("close");
-            infoButton.state('infoOpen');
+        create_cookie("info_closed_once", "yes", 90, "/");
+        $("#tabsikkuna").dialog("close");
+        infoButton.state('infoOpen');
+    });
+    
+    //listen to change device settings button. This only creates or changes
+    //a cookie "device" and then reloads the whole page. mobileCheck() then
+    //determines the course of action
+    var buttonChangeDevice = L.DomUtil.get('button-changedevice');
+    L.DomEvent.addListener(buttonChangeDevice, "click", function (e){
+
+        if (getCookie("device") === "desktop") {
+            create_cookie("device", "mobile", 90, "/");
+        } else if (getCookie("device") === "mobile") {
+            create_cookie("device", "desktop", 90, "/");
+        } else {
+            if(L.Browser.mobile === false) {
+                create_cookie("device", "mobile", 90, "/");
+            } else {
+                create_cookie("device", "desktop", 90, "/");
+            }
+        }
+        location.reload();
     });
 }
 
 
 function mobileCheck() {
     //are we using mobile? If yes, resize.
-    //This function is far from useful. It makes mobilephone experience at least
-    //somewhat possible.
-    if($(window).width() < 800) {
+    //NB! This function is quite broken. It makes mobile phone experience 
+    //technically possible, but still quite unwieldy.
+    if((getCookie("device") === "mobile") || 
+            ((getCookie("device") !== "mobile") && 
+            ((getCookie("device") !== "desktop")) && ($(window).width() < 800))) {
         
-        $("#tabsikkuna").dialog({
-            height: $(window).height(),
-            width: $(window).width()
-        });
+//        $("#tabsikkuna").dialog({
+//            height: $(window).height() * 0.9,
+//            width: $(window).width() * 0.8
+//        });
+        
+        //if we are on mobile, this changes change device Font Awesome icon to
+        //desktop variant
+        $("#button-changedevice").toggleClass('mobile-alt desktop');
+        $('#tabsikkuna').css('overflow-y', 'auto');
         
         $(window).resize(function() {
             $('.ui-dialog').css({
@@ -201,9 +228,13 @@ function mobileCheck() {
         $(".ui-tabs-nav").parent().css('width', $(window).width());
         
         //text area
-        $('.tabspanel').css('height', '100%');
-        $('.tabspanel').css('width', '100%');
-        $('.tabspanel').css('overflow', 'auto');
+        $('.tabspanel').css('height', '90%');
+        $('.tabspanel').css('width', '80%');
+//        $('.tabspanel').css('overflow', 'auto');
+//        $('.tabsikkuna').css('overflow', 'scroll');
+//        $('.ui-tabs-panel').css('overflow', 'auto');
+        
+        
     } else {
         //nothin
     }
@@ -212,9 +243,12 @@ function mobileCheck() {
 
 function popupMobileCheck() {
     //are we using mobile? If yes, resize popup when it is opened.
-    //NB! This function is far from useful. It makes mobilephone experience at 
-    //least somewhat possible.
-    if($(window).width() < 800) {
+    //NB! This function is quite broken. It makes mobile phone experience 
+    //technically possible, but still quite unwieldy.
+    if((getCookie("device") === "mobile") || 
+            ((getCookie("device") !== "mobile") && 
+            ((getCookie("device") !== "desktop")) && ($(window).width() < 800))) {
+        
         //frame
         $(window).resize(function() {
                 $('.leaflet-popup-content-wrapper').css({

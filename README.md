@@ -23,3 +23,4 @@ This part is currently vacationing, it'll be back. Python script to refine and a
 Features scrapped during development
 * 280319 infobox cookie will not trigger from infobutton or x button. Only the red button at the bottom of introduction
 * 020419 findIntersection() function and streamlined zip code area name fetch in layerClickHandler()
+* 040419 discontinue use of sessionid, track ip instead

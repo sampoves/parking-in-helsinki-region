@@ -67,7 +67,7 @@ li:first-line {
 /*-------------------*/
 /*LAYER CONTROL STYLE*/
 /*-------------------*/
-.leaflet-control-layers-toggle{
+.leaflet-control-layers-toggle {
     width: auto;
     background-position:3px 50% ;
     background-size: 20px 20px;
@@ -142,16 +142,16 @@ li:first-line {
     vertical-align: middle;
 }
 
-.likert li:hover{
+.likert li:hover {
     background-color: #dfd;    
 }
 
-.likert li:checked + label{
+.likert li:checked + label {
     background-color:#bfb;
     border-color: #4c4;
 }
 
-input[type="radio"]{
+input[type="radio"] {
     width: 20px;
     height: 20px;
     margin-top: -1px;
@@ -258,29 +258,29 @@ button:hover {
 /*DISABLED VERSION OF SUBMITBUTTON*/
 /*--------------------------------*/
 #buttonsubmitall:disabled,
-#buttonsubmitall[disabled]{
-  border: 1px solid #999999;
-  background-color: #cccccc;
-  color: #666666;
-  width: 100%;
-  height: 100%;
-  font-size: 17pt;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
-  background-position: center;
-  transition: background 0.8s;
+#buttonsubmitall[disabled] {
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+    width: 100%;
+    height: 100%;
+    font-size: 17pt;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+    background-position: center;
+    transition: background 0.8s;
 }
 
 
 /*-----------------*/
 /*INPUT FIELD STUFF*/
 /*-----------------*/
-input[type="datetime-local"]{
+input[type="datetime-local"] {
     font-size: 13pt;
     width: 100%;
     font-family: 'Montserrat', sans-serif;
 }
 
-input[type="number"]{
+input[type="number"] {
     font-size: 13pt;
     font-family: 'Montserrat', sans-serif;
 }
@@ -336,7 +336,7 @@ div.sucimage {
 } 
 
 /*this width:450px here caused the end-of-march-infobox-bug*/
-.tabspanel{
+.tabspanel {
     height:500px; 
 /*    width:450px; */
     overflow:scroll;
@@ -350,11 +350,11 @@ div.sucimage {
     
 }*/
 
-.tabscontainer{
+.tabscontainer {
     width: 550px;
 }
 
-.tabspanel{
+.tabspanel {
     height: 500px;
     overflow: auto;
 }
@@ -397,7 +397,7 @@ div.sucimage {
     
     #buttonsubmitall:enabled,
     #buttonsubmitall:disabled,
-    #buttonsubmitall[disabled]{
+    #buttonsubmitall[disabled] {
         width: 50%;
         height: 130%;
     }

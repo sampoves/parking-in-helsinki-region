@@ -18,7 +18,7 @@ if(empty($_POST)) {
 }
 
 // Initialize array containing allowed variables
-$allowedDataVariables = ['timestamp', 'session', 'zipcode', 'likert', 'parkspot', 'parktime'];
+$allowedDataVariables = ['timestamp', 'zipcode', 'likert', 'parkspot', 'parktime'];
 
 // Initialize response array
 $response = ['status' => 'success', 'message' => '', 'amount' => 0];
@@ -41,11 +41,11 @@ foreach($_POST as $dataVariable => $dataValue) {
 }
 // Receive data from client side (JavaScript)
 $timestamp = $_POST['timestamp'];
-$session = $_POST['session'];
 $zipcode = $_POST['zipcode'];
 $likert = $_POST['likert'];
 $parkspot = $_POST['parkspot'];
 $parktime = $_POST['parktime'];
+
 
 
 // --------------
@@ -98,14 +98,6 @@ if (!preg_match('/^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$/', $time)) {
 }
 
 
-// Validate input for session ID (regex).
-if (!preg_match('/^[a-z0-9]{9}$/', $session)) {
-    // problem with time regex. Only lowercase letters and 0-9 allowed. Length 9.
-    $response['status'] = 'error';
-    $response['message'] = sprintf('Invalid value for session id. Value given %s', $session);
-	exit(json_encode($response));
-}
-
 
 // Validate input for zip code (regex).
 if (!preg_match('/^[0-9]{5}$/', $zipcode)) {
@@ -149,6 +141,9 @@ if (!filter_var($sanitizedParktime, FILTER_VALIDATE_INT, array("options" => arra
 include_once("./../config.php");
 include_once("./../insert.php");
 
+//retrieve user IP
+$ip = getUserIpAddr();
+
 // Check connection
 if ($conn->connect_error) {
 	$response['status'] = 'error';
@@ -157,7 +152,7 @@ if ($conn->connect_error) {
 }
 
 // Generate query string
-$sql = insertMySQL($timestamp, $session, $zipcode, $sanitizedLikert, $sanitizedParkspot, $sanitizedParktime);
+$sql = insertMySQL($timestamp, $ip, $zipcode, $sanitizedLikert, $sanitizedParkspot, $sanitizedParktime);
 
 
 

@@ -283,12 +283,12 @@ function formatTime() {
 //     var privateName = ID();
 //     var o = { 'public': 'foo' };
 //     o[privateName] = 'bar';
-var ID = function () {
-  // Math.random should be unique because of its seeding algorithm.
-  // Convert it to base 36 (numbers + letters), and grab the first 9 characters
-  // after the decimal.
-  return Math.random().toString(36).substr(2, 9);
-};
+//var ID = function () {
+//  // Math.random should be unique because of its seeding algorithm.
+//  // Convert it to base 36 (numbers + letters), and grab the first 9 characters
+//  // after the decimal.
+//  return Math.random().toString(36).substr(2, 9);
+//};
 
 
 // layerClickHandler() uses this to match zipcodes in layer "geojson" with 
@@ -578,9 +578,9 @@ function preparePost() {
     var submitTime = formatTime();
 
     //test if unique ID exists. If not, create
-    if(typeof sessionId === 'undefined'){
-        window.sessionId = ID();
-    }
+//    if(typeof sessionId === 'undefined'){
+//        window.sessionId = ID();
+//    }
     
     //helpers
     var recordsSent = 0;
@@ -591,7 +591,7 @@ function preparePost() {
         thisLayer = geojson._layers[i];
         
         timestampValue = submitTime;
-        sessionValue = window.sessionId;
+//        sessionValue = window.sessionId;
         zipcodeValue = thisLayer.feature.properties.zipcode;
         likertValue = thisLayer.feature.properties.likert;
         parkspotValue = thisLayer.feature.properties.parkspot;
@@ -599,7 +599,7 @@ function preparePost() {
         
         var data = {
             timestamp: timestampValue,
-            session: sessionValue,
+//            session: sessionValue,
             zipcode: zipcodeValue,
             likert: likertValue,
             parkspot: parkspotValue,

@@ -205,14 +205,11 @@ function mobileCheck() {
             ((getCookie("device") !== "mobile") && 
             ((getCookie("device") !== "desktop")) && ($(window).width() < 800))) {
         
-//        $("#tabsikkuna").dialog({
-//            height: $(window).height() * 0.9,
-//            width: $(window).width() * 0.8
-//        });
-        
         //if we are on mobile, this changes change device Font Awesome icon to
         //desktop variant
         $("#button-changedevice").toggleClass('mobile-alt desktop');
+        
+        //this makes scroll bars reappear
         $('#tabsikkuna').css('overflow-y', 'auto');
         
         $(window).resize(function() {
@@ -230,10 +227,6 @@ function mobileCheck() {
         //text area
         $('.tabspanel').css('height', '90%');
         $('.tabspanel').css('width', '80%');
-//        $('.tabspanel').css('overflow', 'auto');
-//        $('.tabsikkuna').css('overflow', 'scroll');
-//        $('.ui-tabs-panel').css('overflow', 'auto');
-        
         
     } else {
         //nothin
@@ -368,11 +361,22 @@ var translate = function(jsdata){
             var strTr = jsdata[$(this).attr('tkey')];
             $(this).html(strTr);
         });
-        //handle changing of thankyou.png
+        //handle
+        //- changing of thankyou.png
+        //- geocoder translations
+        //- jquery dialog title translations
         if(currentLang === "en"){
             $("div.sucimage").css("content", "url('images/thankyou.png')");
+            $("div.leaflet-control-geocoder-form").children(0).attr("placeholder", "Please enter a place or address");
+            $("div.leaflet-control-geocoder-form-no-error").text("Your query produced no results.");
+            $("#ui-id-1").text("Parking private cars in Helsinki Capital Region"); //infobox
+            $("#ui-id-5").text("Submit success!"); //success
         } else {
             $("div.sucimage").css("content", "url('images/thankyou_fi.png')");
+            $("div.leaflet-control-geocoder-form").children(0).attr("placeholder", "Syötä paikka tai osoite");
+            $("div.leaflet-control-geocoder-form-no-error").text("Hakusi ei tuottanut tuloksia.");
+            $("#ui-id-1").text("Henkilöautojen pysäköinti pääkaupunkiseudulla"); //infobox
+            $("#ui-id-5").text("Lähetys onnistui!"); //success
         }
 };
 
@@ -612,7 +616,7 @@ function preparePost() {
             //if received error message, count it
             if(responseFromServer.status === "error") {
                 errorRecords = errorRecords + 1;
-                $("div.sucimage").css("content", "url('images/error.jpg')");
+                //$("div.sucimage").css("content", "url('images/error.jpg')");
             }
             
             var responseHtml = '<div>Records sent: ' + (recordsSent + 1) + '<br>Fails: ' + errorRecords + '<br>Status: ' + responseFromServer.status + '</div>';

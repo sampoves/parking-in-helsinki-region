@@ -23,7 +23,7 @@ body,
     width: 100vw;
 }
 
-p, 
+p, h2, h3, h4,
 .leaflet-popup-content-wrapper, 
 .leaflet-popup-tip-container,
 .control-label col-sm-5,
@@ -410,6 +410,11 @@ div.sucimage {
    height: 100%;
    width: 100%;
 }​
+
+img {
+    border-radius: 80px;
+    float: left;
+}
 
 .response {
     font-family: 'Montserrat', sans-serif;

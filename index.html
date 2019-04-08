@@ -438,7 +438,7 @@ Helsinki Capital Region".
                     if(usersZipCodes.addUniqueZipCode(
                             e.layer.feature.properties.posti_alue) === true){
                         geojson.addData(geojsonFeature);
-                    }
+                    } 
                 }
             });
             
@@ -843,31 +843,30 @@ Helsinki Capital Region".
                     </ul>
                 </div>
                 <div id="tabs-3" class="tabspanel">
-                    <p tkey="lang_instr1">Lomake</p>
+                    <H2 tkey="lang_instr1">Lomakkeen täyttöohje</H2>
+                    <H3 tkey="lang_instr2">Kyselyn käyttöliittymä</H3>
+                    <H4 tkey="lang_instr3">Ruudun vasen yläkulma</H4>
+                    <img style="float: left; padding: 0 20px 20px 0;" src="images/zoom.png" alt="Zoom-buttons"><p tkey="lang_instr4"></p></img>
+                    <br>
+                    <img style="float: left; padding: 0 20px 20px 0;" src="images/lang.png" alt="Zoom-buttons"><p tkey="lang_instr5"></p></img>
+                    <p tkey="lang_instr5_4554">Pöytätietokoneella/kannettavalla: Karttanäkymä on välittömästi aktiivinen, voit vetää karttanäkymää yhdellä hiiren klikkauksella. Erillistä vahvistamisnappia ei ole, lomake tallentaa muistiin sen kohteen, johon sijaintinuoli viimeisimpänä jäi. Karttanäkymän koon muuttaminen tietokoneella ei valitettavasti onnistu.</p>
+                    <p tkey="lang_instr6">Älypuhelimella: Saat karttanäkymän esille näpäyttämällä karttaa kerran. Vedä sen jälkeen karttanäkymä oikeaan kohtaan. <b>Muista näpäyttää "ok" karttanäkymän oikeasta yläkulmasta.</b></p>
+                    <p tkey="lang_instr7">Käytä karttanäkymän työkaluja hyväksesi: voit esimerkiksi etsiä osoitteita tai paikkoja tai antaa lomakkeelle lupa paikantaa sijaintisi tähtäimen näköisestä napista. Talo-nappi palauttaa karttanäkymän alkupisteeseensä.</p>
+                    <p tkey="lang_instr8">Kysely ilmoittaa punaisella varoitustekstillä, jos valitsit pysäköintikohteeksi tai määränpääksi pääkaupunkiseudun ulkopuolisen kohteen.</p>
+                    <p tkey="lang_instr9">Muuta huomioitavaa</p>
                     <ul>
-                        <li tkey="lang_instr2">Lomakkeen kaikki kohdat ovat pakollisia. Anna ystävällisesti vastaus kaikkiin kohtiin.</li>
-                        <li tkey="lang_instr3">Kohteen valitseminen kartalta</li>
-                        <ul>
-                            <li tkey="lang_instr4">Pöytätietokoneella/kannettavalla: Karttanäkymä on välittömästi aktiivinen, voit vetää karttanäkymää yhdellä hiiren klikkauksella. Erillistä vahvistamisnappia ei ole, lomake tallentaa muistiin sen kohteen, johon sijaintinuoli viimeisimpänä jäi. Karttanäkymän koon muuttaminen tietokoneella ei valitettavasti onnistu.</li>
-                            <li tkey="lang_instr5">Älypuhelimella: Saat karttanäkymän esille näpäyttämällä karttaa kerran. Vedä sen jälkeen karttanäkymä oikeaan kohtaan. <b>Muista näpäyttää "ok" karttanäkymän oikeasta yläkulmasta.</b></li>
-                            <li tkey="lang_instr6">Käytä karttanäkymän työkaluja hyväksesi: voit esimerkiksi etsiä osoitteita tai paikkoja tai antaa lomakkeelle lupa paikantaa sijaintisi tähtäimen näköisestä napista. Talo-nappi palauttaa karttanäkymän alkupisteeseensä.</li>
-                            <li tkey="lang_instr7">Kysely ilmoittaa punaisella varoitustekstillä, jos valitsit pysäköintikohteeksi tai määränpääksi pääkaupunkiseudun ulkopuolisen kohteen.</li>
-                        </ul>
+                        <li tkey="lang_instr10">Voit täyttää tämän lomakkeen vaikka joka kerta, kun olet pysäköinyt autosi ja kävellyt määränpäähäsi pääkaupunkiseudulla. Lomakkeen voi täyttää joko heti matkan päätyttyä tai myöhemmin, ja jos yksityiskohdat ovat unohtuneet, ilmoita arvio.</li>
+                        <li tkey="lang_instr11">Huomaathan, että tätä kyselyä ei ole tarkoitus käyttää kotipihan pysäköinneissä, tai muissa sellaisissa pysäköinneissä, joissa vastaajalla on olemassa henkilökohtainen parkkipaikka ja pysäköintiin kuluva aika tiedetään. Kotipysäköinneistä poikkeuksena on asukaspysäköintiluvin kadunvarteen tehty pysäköinti.</li>
                     </ul>
-                    <p tkey="lang_instr8">Muuta huomioitavaa</p>
+                    <p tkey="lang_instr12">Tekniset yksityiskohdat</p>
                     <ul>
-                        <li tkey="lang_instr9">Voit täyttää tämän lomakkeen vaikka joka kerta, kun olet pysäköinyt autosi ja kävellyt määränpäähäsi pääkaupunkiseudulla. Lomakkeen voi täyttää joko heti matkan päätyttyä tai myöhemmin, ja jos yksityiskohdat ovat unohtuneet, ilmoita arvio.</li>
-                        <li tkey="lang_instr10">Huomaathan, että tätä kyselyä ei ole tarkoitus käyttää kotipihan pysäköinneissä, tai muissa sellaisissa pysäköinneissä, joissa vastaajalla on olemassa henkilökohtainen parkkipaikka ja pysäköintiin kuluva aika tiedetään. Kotipysäköinneistä poikkeuksena on asukaspysäköintiluvin kadunvarteen tehty pysäköinti.</li>
-                    </ul>
-                    <p tkey="lang_instr11">Tekniset yksityiskohdat</p>
-                    <ul>
-                        <li tkey="lang_instr12">Jos törmäät ongelmiin täyttäessäsi lomaketta, tarkista verkkoselaimesi ajantasaisuus</li>
-                        <li tkey="lang_instr13">Lomake on koekäytetty seuraavilla selaimilla. Suosittelen käyttämään jotain seuraavista:</li>
+                        <li tkey="lang_instr13">Jos törmäät ongelmiin täyttäessäsi lomaketta, tarkista verkkoselaimesi ajantasaisuus</li>
+                        <li tkey="lang_instr14">Lomake on koekäytetty seuraavilla selaimilla. Suosittelen käyttämään jotain seuraavista:</li>
                         <ul>
-                            <li tkey="lang_instr14">Älypuhelimella: Chrome (ainakin versio 71)</li>
-                            <li tkey="lang_instr15">Pöytätietokoneella/kannettavalla: Chrome (ainakin versio 71), Firefox (versio 64), Edge (versio 42)</li>
+                            <li tkey="lang_instr15">Älypuhelimella: Chrome (ainakin versio 71)</li>
+                            <li tkey="lang_instr16">Pöytätietokoneella/kannettavalla: Chrome (ainakin versio 71), Firefox (versio 64), Edge (versio 42)</li>
                         </ul>
-                        <li tkey="lang_instr16">Jos käytät älypuhelinta lomakkeen täyttämiseen ja ongelmasi eivät hälvene vaikka olet seurannut ylläolevia ohjeita, kokeile täyttää lomake pöytä- tai kannettavalla tietokoneella (vaihtoehtoisesti voit kokeilla puhelinta, jos tietokoneella lomake tuottaa ongelmia). Testieni mukaan tietokoneversio tästä lomakkeesta on käyttövarmempi kuin älypuhelimen.</li>
+                        <li tkey="lang_instr17">Jos käytät älypuhelinta lomakkeen täyttämiseen ja ongelmasi eivät hälvene vaikka olet seurannut ylläolevia ohjeita, kokeile täyttää lomake pöytä- tai kannettavalla tietokoneella (vaihtoehtoisesti voit kokeilla puhelinta, jos tietokoneella lomake tuottaa ongelmia). Testieni mukaan tietokoneversio tästä lomakkeesta on käyttövarmempi kuin älypuhelimen.</li>
                     </ul>
                 </div>
             </div>

@@ -46,14 +46,17 @@ Helsinki Capital Region".
         <div class="" id="mymap"></div>
             
         <script>
-    //TÄRKEÄ TODO TEST:
+    //TÄRKEÄ TODO:
     //**Kirjoita ajantasaiset ohjeet Jquery UI -ikkunaan
     //**kysymysten lopullinen muoto
 
     //OLIS KIVA -TODO
-    //**SCRIPT omaan js-tiedostoon
+    //**poista turhat else-lausekkeet
+    //**muuta sucdialog, sucimage -nimet
     //**Disabled submit button ei jostain syystä estä vetämistä tai mousezoomia
     //**tee parempi css ja muut määrittelyt kännyköille
+    //**popupeja ei oikein saa toista kertaa auki kun on tallentanut
+    //**koko kartan dragaaminen keskeytyy välillä
     ////**outoja draggaamisestoja. saattaa olla noi mun olemassaolevat määrittelyt
     ////**kokeile siirtää postal useammin ylimmäksi layeriksi
     //**geojson styling. Jokin erittäin outo juttu estää if-lauseita toimimasta
@@ -124,7 +127,7 @@ Helsinki Capital Region".
 
             //Show survey version in jQuery info window. Also, execute visitor
             //counter code.
-            var survey_version = "Development version 4.4.2019. Database connection live.";
+            var survey_version = "Development version 8.4.2019. Database connection live.";
             window.onload = function() {
                 document.getElementById('version').innerHTML = survey_version;
                 
@@ -132,17 +135,18 @@ Helsinki Capital Region".
                 if($(window).width() < 800) {
                 document.getElementById('mobilewarning').innerHTML = 
                         "It seems you are visiting the survey with a mobile \n\
-                        phone or a device with a relatively small screen. \n\
-                        Unfortunately the survey is not optimised for \n\
-                        mobile phones or other digital devices with a low screen\n\
-                        resolution, and it may behave unexpectedly. If \n\
-                        possible, please consider filling out this survey with \n\
-                        a desktop computer, or a tablet with sufficient screen \n\
-                        size.";
+                        phone or a device with a relatively small screen \n\
+                        (screen width less than 800 pixels. Unfortunately \n\
+                        the survey is not optimised for mobile phones or \n\
+                        other digital devices with a low screen resolution, \n\
+                        and it may behave unexpectedly. If  possible, please \n\
+                        consider filling out this survey on a desktop \n\
+                        computer, or a tablet with sufficient screen \n\
+                        size. Recommended minimum resolution is 1280x960.";
                 }
                 
                 //Execute visitor counter. Send dummy data to validate our post
-                //request.
+                //request (to bypass empty post request detection).
                 $.post('unique_visitors.php', {dummy: 1337}, function(responseFromServer) {
                     //PHP working its magic
                 }, "text").done(function(responseFromServer) {
@@ -434,11 +438,7 @@ Helsinki Capital Region".
                     if(usersZipCodes.addUniqueZipCode(
                             e.layer.feature.properties.posti_alue) === true){
                         geojson.addData(geojsonFeature);
-                    } else {
-                        //do nothin
                     }
-                } else {
-                    //do nothin
                 }
             });
             
@@ -543,6 +543,12 @@ Helsinki Capital Region".
             //Listen to current click on geojson layer named "geojson"
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
             function layerClickHandler (e) {
+                
+                //this attempts to fix mobile phone dragging breakdown
+                //Instead, this thing broke the popup system entirely. Nice
+                //work breaking it, me
+                //postal.bringToFront();
+                
                 //update situation with submit button
                 arePopupsFinished();
                 

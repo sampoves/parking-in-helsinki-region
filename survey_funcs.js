@@ -227,9 +227,6 @@ function mobileCheck() {
         //text area
         $('.tabspanel').css('height', '90%');
         $('.tabspanel').css('width', '80%');
-        
-    } else {
-        //nothin
     }
 }
 
@@ -262,8 +259,6 @@ function popupMobileCheck() {
         }).resize();
         $("#buttonsubmitall").css({"visibility": "hidden"});
         $(".leaflet-top").css({"visibility": "hidden"});
-    } else {
-        //nothin
     }
 }
 
@@ -301,8 +296,6 @@ function getAreaName(zipcode) {
         if(zipcode === currentItem.feature.properties.posti_alue) {
             // found postal area name corresponding to function parameter
             return currentItem.feature.properties.nimi;
-        } else {
-            //nothin
         }
     }
     //did not find anything corresponding inserted parameter
@@ -343,8 +336,6 @@ function changeOfLabels(){
         if(mymap.hasLayer(eval(currentItem))){
             mymap.removeLayer(eval(currentItem));
             console.log("removed " + currentItem);
-        } else {
-            //nothing
         }
     } 
 }
@@ -390,6 +381,7 @@ function languageCheckUp(){
         $.getJSON('en.json', translate);
     }
 }
+
 
 
 //-------
@@ -467,8 +459,6 @@ function arePopupsFinished(){
             value = theseProps[attr];
             if (value === null || value === ""){
                 howManyNulls += 1;
-            } else {
-                // do nothin
             }
         }
     };
@@ -514,7 +504,6 @@ function isGeojsonEmpty(){
         console.log("Layer 'geojson' is empty. Attempt to disable submit button:");
         if(submitButtonState() !== "disabled"){
             console.log("Le Success");
-            //sendBox.disable();
             document.getElementById("buttonsubmitall").disabled = true;
         } else {
             console.log("Submit button already disabled.");
@@ -523,7 +512,6 @@ function isGeojsonEmpty(){
         console.log("Layer 'geojson' is not empty. Attempt to enable submit button:");
         if(submitButtonState() !== "enabled"){
             console.log("Le Success");
-            //sendBox.update();
             document.getElementById("buttonsubmitall").disabled = false;
         } else {
             console.log("Submit button already enabled.");

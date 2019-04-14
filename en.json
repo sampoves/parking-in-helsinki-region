@@ -33,11 +33,21 @@
     "lang_instr9": "If you like, you may respond this survey every time you park your car and walk to your destination in Helsinki Capital Region. You may also respond at a later time and if details are already forgotten, please provide an estimation.",
     "lang_instr10": "Please make note that this survey is not meant for parkings which happen at home where one knows a parking spot is guaranteed and searching for one is unnecessary. An exception to this is parking with resident parking permit.",
     "lang_instr11": "Technical matters",
+        
+    "lang_survey1": "Using the survey",
+    "lang_survey2": "Kyselyn alkunäkymä on Helsingin keskustassa. Raahaa karttanäkymä haluamallesi alueelle, ja klikkaa postinumeroaluetta. Klikkauksesta ponnahtaa esille postinumeroalueen lomake, jonka oikeasta yläkulmasta voit tarkistaa postinumeroalueen suomenkielisen nimen ja numeron. Jokaisen postinumeroalueen kohdalla sinulta kysytään vastausta kolmeen kysymykseen:",
+    "lang_survey3": "<b>Kuinka kauan sinulla yleensä kestää pysäköidä ja saavuttaa kävellen määränpääsi tällä postinumeroalueella (minuuteissa)?</b>",
+    "lang_survey4": "<b>Kuinka tuttu tämä postinumeroalue on sinulle?</b>",
+    "lang_survey5": "<b>Minkätyyppiselle pysäköintipaikalle yleensä pysäköit tällä postinumeroalueella?</b>",
+    "lang_survey6": "Voit tallentaa lomakkeen vastauksen milloin vaan vihreällä <span class='greentext'>tallennha tiedot</span> -painikkeella, tai poistaa kaikki merkinnät kyseiseltä postinumeroalueelta punaisella 'Poista nämä tiedot'-painikkeella.",
+    "lang_survey7": "Kun olet kerran klikannut postinumeroaluetta, se saa karttanäkymässä oranssin värin. Oranssi väri merkitsee keskeneräisiä tietoja, ja kyseinen lomake ilmoittaa 'Kaikkiin kenttiin ei ole vastattu!'. Kun kaikkiin kysymyksiin on vastattu, muuttuu alue vihreäksi ja punainen ilmoitusteksti katoaa. <b>Huomaathan, että 'Lähetä tiedot'-painike aktivoituu vasta, kun kaikki klikatut alueet ovat vihreitä!</b>",
+        
     "lang_instr12": "If you experience problems while filling out the survey, first make sure your web browser is up-to-date.",
     "lang_instr13": "The survey has been tested to work the best with the following browsers:",
     "lang_instr14": "On mobile phone: Chrome (at least version 71)",
     "lang_instr15": "On desktop/laptop: Chrome (at least version 73), Firefox (version 64), Edge (version 42)",
     "lang_instr16": "If you are using mobile phone and your problems persist, please consider filling the survey out on a laptop/desktop computer (or vice versa). Testing indicates that the desktop version of this survey is the more robust than that on mobile phones.",
+    "lang_instr17": "jfkspfj",
  
     "lang_basemap": "Basemaps",
     "lang_overlay": "Overlay maps", 

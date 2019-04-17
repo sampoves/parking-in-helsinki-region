@@ -102,9 +102,6 @@ Helsinki Capital Region".
                 //disable submit button by default
                 sendBox.disable();
                 
-                //set postal on front by default
-                postal.bringToFront();
-
                 //prevent sending form with enter key
                 $(window).keydown(function(event){
                     if(event.keyCode === 13) {
@@ -127,7 +124,7 @@ Helsinki Capital Region".
 
             //Show survey version in jQuery info window. Also, execute visitor
             //counter code.
-            var survey_version = "Development version 14.4.2019. Database connection live.";
+            var survey_version = "Development version 17.4.2019. Database connection live.";
             window.onload = function() {
                 document.getElementById('version').innerHTML = survey_version;
                 
@@ -152,6 +149,9 @@ Helsinki Capital Region".
                 }, "text").done(function(responseFromServer) {
                     console.log(responseFromServer);
                 });
+                
+                //set postal on front by default
+                postal.bringToFront();
                 
             };
             
@@ -543,12 +543,7 @@ Helsinki Capital Region".
             //Listen to current click on geojson layer named "geojson"
             //this listener idea from: http://embed.plnkr.co/8qVoW5/
             function layerClickHandler (e) {
-                
-                //this attempts to fix mobile phone dragging breakdown
-                //Instead, this thing broke the popup system entirely. Nice
-                //work breaking it, me
-                //postal.bringToFront();
-                
+                                
                 //update situation with submit button
                 arePopupsFinished();
                 
@@ -681,11 +676,10 @@ Helsinki Capital Region".
             //
             //LANGUAGE BUTTON
             var langButton = L.easyButton({
-                type: 'animate',
                 states: [{
                     stateName: 'fi',
-                    icon: 'fas fa-language',
-                    title: "Vaihda kieli englanniksi",
+                    icon: '<b class="langbuttontext">FI</b>',
+                    title: "Change language to English",
                     onClick: function (btn, map){
                         console.log("Current language English. Cookie updated.");
                         $.getJSON('en.json', translate);
@@ -701,8 +695,8 @@ Helsinki Capital Region".
                     }
                 }, {
                     stateName: 'en',
-                    icon: 'fas fa-language',
-                    title: "Change language to Finnish",
+                    icon: '<b class="langbuttontext">EN</b>',
+                    title: "Vaihda kieli suomeksi",
                     onClick: function (btn, map){
                         console.log("Current language Finnish. Cookie updated.");
                         $.getJSON('fi.json', translate);

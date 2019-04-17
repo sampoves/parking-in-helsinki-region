@@ -314,9 +314,9 @@ function getAreaName(zipcode) {
 //Insert geojson layer of your choosing, then style to use if basemap is of 
 //light hue, and another style to use if basemap is of dark hue
 function stylingFunction(layerToStyle, styleDark, styleLight) {
-    console.log("stylinfunction run");
+    console.log("stylingfunction run");
     if(mymap.hasLayer(darkmatter)){
-        console.log("darkmatter succeee");
+        console.log("darkmatter succee");
         layerToStyle.setStyle(styleDark);
     } else if (mymap.hasLayer(OpenStreetMap_DE)){
         layerToStyle.setStyle(styleLight);
@@ -519,16 +519,17 @@ function isGeojsonEmpty(){
     }
 }
 
-// "Submit records" button functionality uses jQuery UI
-// Copying objects in JS is not straightforward and for that reason
-// AT THIS POINT send button will destroy all entries entered so far.
+// This is all the functionality of the "submit records" button
 function submitButtonListener(){
     var sendButtonSubmit = L.DomUtil.get('buttonsubmitall');
-    L.DomEvent.addListener(sendButtonSubmit, "click", function (e){
+    L.DomEvent.addListener(sendButtonSubmit, "click", function (e) {
         
         //The important part: send data to server
         preparePost();
         
+        //Create success window. Because the post operation is asynchronous,
+        //window creation will commence before preparePost() has finished
+        //running
         $(function() {
             $("#sucdialog").dialog({
                 position: {my: "center", at: "center", of: window},
@@ -555,8 +556,8 @@ function submitButtonListener(){
 };
 
 // Test submit button current state
-function submitButtonState(){
-    if(document.getElementById("buttonsubmitall").disabled === true){
+function submitButtonState() {
+    if(document.getElementById("buttonsubmitall").disabled === true) {
         return "disabled";
     } else {
         return "enabled";
@@ -570,6 +571,9 @@ function submitButtonState(){
 
 //for looping to send records to server record by record.
 function preparePost() {
+    
+    //store server responses to an array
+    window.responses = [];
     
     //make sure response is empty going in
     $("#response").html("");
@@ -601,7 +605,7 @@ function preparePost() {
         
         $.post('insert_mysql.php', data, function(responseFromServer) {
             // Insert response from server to '#response' div
-            //if received error message, count it
+            // if received error message, count it
             if(responseFromServer.status === "error") {
                 errorRecords = errorRecords + 1;
                 //$("div.sucimage").css("content", "url('images/error.jpg')");
@@ -609,8 +613,10 @@ function preparePost() {
             
             var responseHtml = '<div>Records sent: ' + (recordsSent + 1) + '<br>Fails: ' + errorRecords + '<br>Status: ' + responseFromServer.status + '</div>';
             console.log('-- Message from server --\nStatus: ' + responseFromServer.status + '\nMessage: ' + responseFromServer.message);
+            window.responses.push(responseFromServer.message.replace("New record created successfully. ", ""));
             
-            // only add one message from server. Add += if all wanted
+            // Only add one message from server. Add += if all messages are 
+            // wanted
             var responseDiv = document.getElementById('response');
             responseDiv.innerHTML = responseHtml;
             
@@ -619,6 +625,34 @@ function preparePost() {
             recordsSent = recordsSent + 1;
         });
     }
+}
+
+
+//Generates a HTML page that displays all previously sent records
+function showResponse() {
+    var content = "<!doctype html>" +
+            "<html lang='en'>" +
+            "<head>" +
+                "<meta charset='utf-8'>" +
+                "<title>Your park survey records</title>" +
+                "<meta name='description' content='Your park survey records'>" +
+                "<meta name='author' content='Sampo Vesanen'>" +
+                "<link rel='stylesheet' href='css/styles.css?v=1.0'>" +
+            "</head>" +
+            "<body>" +
+            "<H1>Your results</H1>";
+    
+    //iterate through server responses
+    for(i = 0; i < responses.length; i++){
+        content = content + "<p>" + responses[i] + "</p>";
+    }
+    
+    //add ending tags to the page being generated
+    content = content + "</body>" + "</html>";
+    
+    //open generated HTML page in a new window
+    var responseWindow = window.open();
+    responseWindow.document.body.innerHTML = content;
 }
 
 

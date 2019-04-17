@@ -162,7 +162,7 @@ $sql = insertMySQL($timestamp, $ip, $zipcode, $sanitizedLikert, $sanitizedParksp
 // Set some data to return (not necessary) and echo JSON
 // first test if query was completed
 if ($conn->query($sql) === TRUE) {
-	$response['message'] = sprintf('New record created successfully. Timestamp %s, Likert %s, parkspot %s, parktime %s', $timestamp, $sanitizedLikert, $sanitizedParkspot, $sanitizedParktime);
+	$response['message'] = sprintf('New record created successfully. Timestamp %s, postal code %s, likert %s, parkspot %s, parktime %s', $timestamp, $zipcode, $sanitizedLikert, $sanitizedParkspot, $sanitizedParktime);
 	$conn->close();
 	echo(json_encode($response));
 } else {

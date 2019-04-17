@@ -17,7 +17,6 @@ Helsinki Capital Region".
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js"></script>
-        <script src="https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js"></script>
         <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
         
         <!--import parking survey variables -->
@@ -40,7 +39,6 @@ Helsinki Capital Region".
         
         <meta name="viewport" content="width=device-width,
             initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-        
     </head>
     <body>
         <div class="" id="mymap"></div>
@@ -264,6 +262,15 @@ Helsinki Capital Region".
                     //function
                     $(initialiseInfo);
                     infoButton.state('infoClose');
+                    
+                    //This listens to the first time infobox is close with x.
+                    //Without this listener the infobutton does not update
+                    //correctly on the first closing.
+                    $(document).ready(function(){
+                        $(".ui-dialog-titlebar-close").one('click', function(e) {
+                            infoButton.state('infoOpen');
+                        });
+                    });
                 }
             });
             
@@ -706,7 +713,7 @@ Helsinki Capital Region".
                         
                         // Listen to x button in jQuery dialog to keep infobutton
                         // up to date
-                        $(".ui-dialog-titlebar-close").one('click', function(e){
+                        $(".ui-dialog-titlebar-close").one('click', function(e) {
                             btn.state('infoOpen');
                         });
                     }

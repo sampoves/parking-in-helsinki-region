@@ -24,7 +24,7 @@ Notes on where survey functionality is not optimal
 * GeoJSON layer styling
   - There are problems in the handling of if statements inside the styling function
   - The styling of GeoJSON layer `postaldissolve` is commented, because it was not working as expected
-  - For an unknown reason it seems that one feature in a GeoJSON layer always gets the default blue style at application start up. This is distracting if there are relatively few features present. For GeoJSON layuer `postal` this is not an issue, but for `postaldissolve` it is
+  - For an unknown reason it seems that one feature in a GeoJSON layer always gets the default blue style at application start up. This is distracting if there are relatively few features present. For GeoJSON layer `postal` this is not an issue, but for `postaldissolve` it is
 * some variable names may not be optimal ("sucimage")
 * Disabled submit records button attempts to prevent clicks and dragging on the button. For dragging this is not completely successful
 * One can't open by clicking on a feature on the GeoJSON layer `geojson`, but the map view is centered on that feature. Not optimal

@@ -15,6 +15,23 @@ GeoJSON data
 * pno_dissolve.geojson - Research area as the four municipalities
 * pno_research_area.geojson - Postal areas for the research area
 
+This survey makes use of
+* Libraries
+  - Leaflet 1.4.0
+  - EasyButton 2.4.0
+  - jQuery 3.3.1
+  - jQuery UI 1.12.1
+  - Leaflet.ajax 2.1.0
+  - Control.GeoCoder
+* Fonts and styles
+  - Font Awesome 5.8.1
+  - Montserrat - Google Fonts
+* Server side software
+  - Ubuntu 16.04
+  - Apache HTTP Server
+  - MySQL
+  - PHP
+
 Notes on where survey functionality is not optimal
 * The submit records button always results in a success. In other words, a failure screen is not developed in this survey. The normal survey use should be impervious to incorrect data being sent to the server. In any case, the success screen always shows serverside results how many successes and failures the post operation had
   - in the case a failure occurs, the survey proceeds as if nothing is wrong and deletes all user inputs from the map view. This is obviously not optimal in case of server errors or something else unexpected

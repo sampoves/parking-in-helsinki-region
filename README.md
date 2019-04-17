@@ -17,12 +17,12 @@ GeoJSON data
 
 This survey makes use of
 * Libraries
-  - Leaflet 1.4.0
-  - EasyButton 2.4.0
-  - jQuery 3.3.1
-  - jQuery UI 1.12.1
-  - Leaflet.ajax 2.1.0
-  - Control.GeoCoder
+  - [Leaflet](https://leafletjs.com) 1.4.0 by Vladimir Agafonkin
+  - [EasyButton](https://github.com/CliffCloud/Leaflet.EasyButton) 2.4.0 by CliffCloud
+  - [jQuery](https://jquery.com) 3.3.1
+  - [jQuery UI](https://jqueryui.com) 1.12.1
+  - [Leaflet-ajax](https://github.com/calvinmetcalf/leaflet-ajax) 2.1.0 by Calvin Metcalf
+  - [Leaflet Control Geocoder](https://github.com/perliedman/leaflet-control-geocoder) 1.7.0 by Per Liedman
 * Fonts and styles
   - Font Awesome 5.8.1
   - Montserrat - Google Fonts

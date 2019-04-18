@@ -533,11 +533,27 @@ function submitButtonListener(){
         $(function() {
             $("#sucdialog").dialog({
                 position: {my: "center", at: "center", of: window},
-                buttons: {
-                    "Close": function () {
-                        $(this).dialog("close");
+                buttons: [
+                    {
+                        text: "Close",
+                        //using addClass inside open parameter one can set
+                        //css features for the jQuery UI buttons
+                        open: function() {
+                            $(this).addClass("submitclose");
+                        },
+                        click: function () {
+                            $(this).dialog("close");
+                        }
+                    }, {
+                        text: "View your submission (opens in new window)",
+                        open: function() {
+                            $(this).addClass("viewresults");
+                        },
+                        click: function() {
+                            showResponse();
+                        }
                     }
-                }
+                ]
             });
             //retain dialog position on window resize
             $(window).resize(function() {
@@ -613,7 +629,7 @@ function preparePost() {
             
             var responseHtml = '<div>Records sent: ' + (recordsSent + 1) + '<br>Fails: ' + errorRecords + '<br>Status: ' + responseFromServer.status + '</div>';
             console.log('-- Message from server --\nStatus: ' + responseFromServer.status + '\nMessage: ' + responseFromServer.message);
-            window.responses.push(responseFromServer.message.replace("New record created successfully. ", ""));
+            window.responses.push(responseFromServer.message);
             
             // Only add one message from server. Add += if all messages are 
             // wanted
@@ -621,7 +637,7 @@ function preparePost() {
             responseDiv.innerHTML = responseHtml;
             
         }, 'json').done(function(responseFromServer){
-            //run this small function any time jquery post is finished
+            //run this small function any time jQuery post is finished
             recordsSent = recordsSent + 1;
         });
     }
@@ -644,6 +660,7 @@ function showResponse() {
     
     //iterate through server responses
     for(i = 0; i < responses.length; i++){
+        //str.replace("New record created successfully. ", "")
         content = content + "<p>" + responses[i] + "</p>";
     }
     

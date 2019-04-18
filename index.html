@@ -99,7 +99,7 @@ Helsinki Capital Region".
 
             //Show survey version in jQuery info window. Also, execute visitor
             //counter code.
-            var survey_version = "Development version 17.4.2019. Database connection live.";
+            var survey_version = "Development version 18.4.2019. Database connection live.";
             window.onload = function() {
                 document.getElementById('version').innerHTML = survey_version;
                 
@@ -126,7 +126,7 @@ Helsinki Capital Region".
                 });
                 
                 //set postal on front by default
-                postal.bringToFront();
+                //postal.bringToFront();
                 
             };
             
@@ -181,7 +181,7 @@ Helsinki Capital Region".
             //This is realised with first bringing postal on top, then geojson.
             mymap.on("overlayadd", function (event) {
                 postal.bringToFront();
-                geojson.bringToFront();
+                //geojson.bringToFront();
             });
             
             //on dragstart, check if popups are finished and button can be 
@@ -468,8 +468,8 @@ Helsinki Capital Region".
                 "Stamen terrain": Stamen_Terrain
             };
             var overlayMaps = {
-                "Postal areas": postal,
-                "Research area": postaldissolve
+                "Postal areas": postal
+                //"Research area": postaldissolve
             };
             
             // Add layer control

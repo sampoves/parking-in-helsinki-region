@@ -347,6 +347,32 @@ button:hover {
 /*    padding: 15px 13px 6px;*/
 }
 
+/*the following settings change success dialog button properties*/
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .submitclose {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .viewresults {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #a6bcaf;
+    font-size: 9pt;
+    color: black;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .viewresults:hover {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #91c1a5;
+    font-size: 9pt;
+    color: black;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .viewresults:hover:active {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #0ccc5a;
+    font-size: 9pt;
+    color: white;
+}
+
 
 /*--------------------------------*/
 /*DISABLED VERSION OF SUBMITBUTTON*/

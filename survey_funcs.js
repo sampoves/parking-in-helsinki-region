@@ -331,9 +331,9 @@ function changeOfLabels(){
     labelsList = ["darkmatterOnlyLabels", "StamenTerrainOnlyLabels", 
         "voyagerOnlyLabels"];
     
-    for (i = 0; i < labelsList.length; i++){
+    for (i = 0; i < labelsList.length; i++) {
         currentItem = labelsList[i];
-        if(mymap.hasLayer(eval(currentItem))){
+        if(mymap.hasLayer(eval(currentItem))) {
             mymap.removeLayer(eval(currentItem));
             console.log("removed " + currentItem);
         }
@@ -347,8 +347,8 @@ function changeOfLabels(){
 
 // Translator function
 // idea from here: https://github.com/dakk/jquery-multilang
-var translate = function(jsdata){	
-        $("[tkey]").each(function (index){
+var translate = function(jsdata) {	
+        $("[tkey]").each(function (index) {
             var strTr = jsdata[$(this).attr('tkey')];
             $(this).html(strTr);
         });
@@ -452,12 +452,12 @@ function arePopupsFinished(){
         theseProps = thisLayer.feature.properties;
         theseAttrs = Object.keys(theseProps);
 
-        for (var i = 0; i < theseAttrs.length; i += 1){
+        for (var i = 0; i < theseAttrs.length; i += 1) {
             //implement test whether layer is interactive or not
             //check submit button which changed interactivity to false
             attr = theseAttrs[i];
             value = theseProps[attr];
-            if (value === null || value === ""){
+            if (value === null || value === "") {
                 howManyNulls += 1;
             }
         }
@@ -465,7 +465,7 @@ function arePopupsFinished(){
     
     //if above for loop finished without any nulls, all popups are finished
     //and submit button can be enabled.
-    if ((howManyNulls === 0) && (isEmpty(geojson._layers) === false)){
+    if ((howManyNulls === 0) && (isEmpty(geojson._layers) === false)) {
         if(submitButtonState() !== "enabled"){
             console.log("All popups complete, enable submit button");
             //sendBox.update();
@@ -646,6 +646,7 @@ function preparePost() {
 
 //Generates a HTML page that displays all previously sent records
 function showResponse() {
+    
     var content = "<!doctype html>" +
             "<html lang='en'>" +
             "<head>" +
@@ -653,19 +654,49 @@ function showResponse() {
                 "<title>Your park survey records</title>" +
                 "<meta name='description' content='Your park survey records'>" +
                 "<meta name='author' content='Sampo Vesanen'>" +
-                "<link rel='stylesheet' href='css/styles.css?v=1.0'>" +
+                "<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>" +
+                "<style>" +
+                    "h1, h2, h3, p, ul, li {font-family: 'Montserrat', sans-serif;}" +
+                "</style>" +
             "</head>" +
             "<body>" +
             "<H1>Your results</H1>";
     
-    //iterate through server responses
-    for(i = 0; i < responses.length; i++){
-        //str.replace("New record created successfully. ", "")
-        content = content + "<p>" + responses[i] + "</p>";
+    //iterate through server responses. First check if responses exists
+    if(typeof responses === 'undefined' || responses.length === 0) {
+        content = content + "<p>No submissions found</p>";
+    } else {
+        content = content + "<p>Your submission consisted of " + 
+                responses.length + " postal code areas.</p>";
+        
+        for(i = 0; i < responses.length; i++) {
+            try {
+                thisResponse = responses[i].replace("New record created successfully. ", "");
+                splitResponse = thisResponse.split(", ");
+                thisZipCode = splitResponse[1].replace("postal code ", "");
+                content = content + 
+                        "<p>" + 
+                            "<h3>" + 
+                                (i + 1) + ", " + thisZipCode + ", " + getAreaName(thisZipCode) + 
+                            "</h3>" + 
+                            "<ul>" + 
+                                "<li>" + splitResponse[0] + "</li>" + 
+                                "<li>" + splitResponse[2] + "</li>" + 
+                                "<li>" + splitResponse[3] + "</li>" + 
+                                "<li>" + splitResponse[4] + "</li>" + 
+                            "</ul>" + 
+                        "</p>";
+            } catch(err) {
+                content = content + 
+                        "<h3>" + (i + 1) + ", erroneous result</h3>" + 
+                        "<p>Error message:</p>" + 
+                        "<ul><li>" + responses[i] + "</li></ul>";
+            }
+        }
     }
     
     //add ending tags to the page being generated
-    content = content + "</body>" + "</html>";
+    content = content + glossary + "</body>" + "</html>";
     
     //open generated HTML page in a new window
     var responseWindow = window.open();

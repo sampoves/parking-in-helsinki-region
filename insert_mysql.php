@@ -54,10 +54,11 @@ $parktime = $_POST['parktime'];
 // Remove illegal characters etc.
 // https://www.w3schools.com/PhP/filter_validate_int.asp
 
-//give timestamp a custom check, as no ready filters exist
+//give timestamp a custom check, as no ready filters exist. Also, parktime can't be
+//checked with FILTER_VALIDATE_INT, because it fails if value inputted is 0.
 $sanitizedLikert = filter_var($likert, FILTER_VALIDATE_INT);
 $sanitizedParkspot = filter_var($parkspot, FILTER_VALIDATE_INT);
-$sanitizedParktime = filter_var($parktime, FILTER_VALIDATE_INT);
+//$sanitizedParktime = filter_var($parktime, FILTER_VALIDATE_INT);
 
 
 // Set up validation for timestamp
@@ -126,9 +127,9 @@ if (!filter_var($sanitizedParkspot, FILTER_VALIDATE_INT, array("options" => arra
 }
 
 // Validate input for parktime
-if (!filter_var($sanitizedParktime, FILTER_VALIDATE_INT, array("options" => array("min_range"=>0, "max_range"=>99)))) {   
+if (!preg_match('/^([0-9]|[1-9][0-9])$/', $parktime)) {
     $response['status'] = 'error';
-    $response['message'] = sprintf('Invalid value for parktime. Value given: %s', $sanitizedParktime);
+    $response['message'] = sprintf('Invalid value for parktime. Value given: %s', $parktime);
     exit(json_encode($response));
 }
 
@@ -152,7 +153,7 @@ if ($conn->connect_error) {
 }
 
 // Generate query string
-$sql = insertMySQL($timestamp, $ip, $zipcode, $sanitizedLikert, $sanitizedParkspot, $sanitizedParktime);
+$sql = insertMySQL($timestamp, $ip, $zipcode, $sanitizedLikert, $sanitizedParkspot, $parktime);
 
 
 
@@ -162,7 +163,7 @@ $sql = insertMySQL($timestamp, $ip, $zipcode, $sanitizedLikert, $sanitizedParksp
 // Set some data to return (not necessary) and echo JSON
 // first test if query was completed
 if ($conn->query($sql) === TRUE) {
-	$response['message'] = sprintf('New record created successfully. Timestamp %s, postal code %s, likert %s, parkspot %s, parktime %s', $timestamp, $zipcode, $sanitizedLikert, $sanitizedParkspot, $sanitizedParktime);
+	$response['message'] = sprintf('New record created successfully. Timestamp %s, postal code %s, likert %s, parkspot %s, parktime %s', $timestamp, $zipcode, $sanitizedLikert, $sanitizedParkspot, $parktime);
 	$conn->close();
 	echo(json_encode($response));
 } else {

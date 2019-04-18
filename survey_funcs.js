@@ -647,29 +647,18 @@ function preparePost() {
 //Generates a HTML page that displays all previously sent records
 function showResponse() {
     
-    var content = "<!doctype html>" +
-            "<html lang='en'>" +
-            "<head>" +
-                "<meta charset='utf-8'>" +
-                "<title>Your park survey records</title>" +
-                "<meta name='description' content='Your park survey records'>" +
-                "<meta name='author' content='Sampo Vesanen'>" +
-                "<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>" +
-                "<style>" +
-                    "h1, h2, h3, p, ul, li {font-family: 'Montserrat', sans-serif;}" +
-                "</style>" +
-            "</head>" +
-            "<body>" +
-            "<H1>Your results</H1>";
-    
     //iterate through server responses. First check if responses exists
     if(typeof responses === 'undefined' || responses.length === 0) {
         content = content + "<p>No submissions found</p>";
+
+    //valid variable responses found
     } else {
         content = content + "<p>Your submission consisted of " + 
                 responses.length + " postal code areas.</p>";
         
         for(i = 0; i < responses.length; i++) {
+            
+            //prepare for exceptions
             try {
                 thisResponse = responses[i].replace("New record created successfully. ", "");
                 splitResponse = thisResponse.split(", ");
@@ -686,6 +675,9 @@ function showResponse() {
                                 "<li>" + splitResponse[4] + "</li>" + 
                             "</ul>" + 
                         "</p>";
+                
+            //if the server has sent an error, replace() won't work. Deploy
+            //this if this is the case.
             } catch(err) {
                 content = content + 
                         "<h3>" + (i + 1) + ", erroneous result</h3>" + 
@@ -694,8 +686,7 @@ function showResponse() {
             }
         }
     }
-    
-    //add ending tags to the page being generated
+    //add glossary and ending tags to the page being generated
     content = content + glossary + "</body>" + "</html>";
     
     //open generated HTML page in a new window

@@ -176,6 +176,22 @@ var geojsonCompHighlight = {
 var missingStuff = 
         '<font size="4" color="red" style="line-height: 30px;"><center><strong tkey="lang_incomplete">This entry is incomplete!</strong></center></font>';
 
+    
+var content = "<!doctype html>" +
+        "<html lang='en'>" +
+        "<head>" +
+            "<meta charset='utf-8'>" +
+            "<title>Your park survey records</title>" +
+            "<meta name='description' content='Your park survey records'>" +
+            "<meta name='author' content='Sampo Vesanen'>" +
+            "<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>" +
+            "<style>" +
+                "h1, h2, h3, p, ul, li {font-family: 'Montserrat', sans-serif;}" +
+            "</style>" +
+        "</head>" +
+        "<body>" +
+        "<H1>Your results</H1>";
+
 var glossary =
         "<br><br>" +
         "<p>" +

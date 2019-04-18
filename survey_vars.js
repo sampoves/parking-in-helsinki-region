@@ -176,6 +176,28 @@ var geojsonCompHighlight = {
 var missingStuff = 
         '<font size="4" color="red" style="line-height: 30px;"><center><strong tkey="lang_incomplete">This entry is incomplete!</strong></center></font>';
 
+var glossary =
+        "<br><br>" +
+        "<p>" +
+            "<h2>Glossary</h2>" +
+            "<p><b>likert</b> How familiar are you with this postal code area?</p>" +
+            "<ul>" +
+                "<li><b>1</b> Extremely familiar</li>" + 
+                "<li><b>2</b> Moderately familiar</li>" + 
+                "<li><b>3</b> Somewhat familiar</li>" + 
+                "<li><b>4</b> Slightly familiar</li>" + 
+                "<li><b>5</b> Not at all familiar</li>" + 
+            "</ul>" +
+            "<p><b>parkspot</b> What kind of parking spot do you usually take in this postal code area?</p>" +
+            "<ul>" +
+                "<li><b>1</b> Parking space on the side of the street</li>" + 
+                "<li><b>2</b> Parking lot</li>" + 
+                "<li><b>3</b> Parking garage</li>" + 
+                "<li><b>4</b> Other</li>" + 
+            "</ul>" +
+            "<p><b>parktime</b> is presented in minutes.</p>" +
+        "</p>";
+
 
 //------------
 //HTML BUTTONS

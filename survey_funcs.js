@@ -647,6 +647,22 @@ function preparePost() {
 //Generates a HTML page that displays all previously sent records
 function showResponse() {
     
+    //define content here to enable a clean slate each time function is run
+    var content = "<!doctype html>" +
+        "<html lang='en'>" +
+        "<head>" +
+            "<meta charset='utf-8'>" +
+            "<title>Your park survey records</title>" +
+            "<meta name='description' content='Your park survey records'>" +
+            "<meta name='author' content='Sampo Vesanen'>" +
+            "<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>" +
+            "<style>" +
+                "h1, h2, h3, p, ul, li {font-family: 'Montserrat', sans-serif;}" +
+            "</style>" +
+        "</head>" +
+        "<body>" +
+        "<H1>Your results</H1>";
+
     //iterate through server responses. First check if responses exists
     if(typeof responses === 'undefined' || responses.length === 0) {
         content = content + "<p>No submissions found</p>";

@@ -27,11 +27,14 @@ p, h2, h3, h4,
 .leaflet-popup-content-wrapper, 
 .leaflet-popup-tip-container,
 .control-label col-sm-5,
-.leaflet-popup-content-wrapper .leaflet-popup-content {
+.leaflet-popup-content-wrapper .leaflet-popup-content, #response {
     font-family: 'Montserrat', sans-serif;
     line-height: 1.4;
 }
 
+#response {
+    font-size: 11px;
+}
 
 
 /*MAKE TEXT IN MAP JUSTIFIED*/

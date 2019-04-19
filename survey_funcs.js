@@ -362,6 +362,8 @@ var translate = function(jsdata) {
             $("div.leaflet-control-geocoder-form").children(0).attr("placeholder", "Please enter a place or address");
             $("div.leaflet-control-geocoder-form-no-error").text("Your query produced no results.");
             $("#ui-id-1.ui-dialog-title").text("Parking private cars in Helsinki Capital Region"); //infobox
+            $(".submitclose").html("Close");
+            $(".viewresults").html("View your sent data (opens in new window)");
             $("#ui-id-5").text("Submit success!"); //success
             $(".form-control").attr("placeholder", "Insert value (0-99)");
         } else {
@@ -369,6 +371,8 @@ var translate = function(jsdata) {
             $("div.leaflet-control-geocoder-form").children(0).attr("placeholder", "Syötä paikka tai osoite");
             $("div.leaflet-control-geocoder-form-no-error").text("Hakusi ei tuottanut tuloksia.");
             $("#ui-id-1.ui-dialog-title").text("Henkilöautojen pysäköinti pääkaupunkiseudulla"); //infobox
+            $(".submitclose").html("Sulje");
+            $(".viewresults").html("Näytä raportti lähetetystä aineistosta (avautuu uuteen ikkunaan)");
             $("#ui-id-5").text("Lähetys onnistui!"); //success
             $(".form-control").attr("placeholder", "Syötä numero (0-99)");
         }
@@ -542,6 +546,7 @@ function submitButtonListener(){
                         //using addClass inside open parameter one can set
                         //css features for the jQuery UI buttons
                         open: function() {
+                            languageCheckUp(); //update language of buttons
                             $(this).addClass("submitclose");
                         },
                         click: function () {
@@ -632,7 +637,7 @@ function preparePost() {
                 //$("div.sucimage").css("content", "url('images/error.jpg')");
             }
             
-            var responseHtml = '<div>Records sent: ' + (recordsSent + 1) + '<br>Fails: ' + errorRecords + '<br>Status: ' + responseFromServer.status + '</div>';
+            var responseHtml = '<div><b>Response from server</b><br>Records sent: ' + (recordsSent + 1) + '<br>Fails: ' + errorRecords + '<br>Status: ' + responseFromServer.status + '</div>';
             console.log('-- Message from server --\nStatus: ' + responseFromServer.status + '\nMessage: ' + responseFromServer.message);
             window.responses.push(responseFromServer.message);
             
@@ -657,7 +662,7 @@ function showResponse() {
         glossary = glossary_en;
         title = "Your park survey records";
         pagetitle = "<H1>Your results</H1>";
-        nosubs = "<p>No submissions found</p>";
+        nosubs = "<p>No submissions found.</p>";
         yoursub = "<p>Your submission consisted of ";
         zipareas = " postal code areas.</p>";
         erroneous = ", erroneous result";
@@ -666,7 +671,7 @@ function showResponse() {
         glossary = glossary_fi;
         title = "Vastauksesi pysäköintikyselyyn";
         pagetitle = "<H1>Tuloksesi</H1>";
-        nosubs = "<p>Vastauksia ei löytynyt</p>";
+        nosubs = "<p>Vastauksia ei löytynyt.</p>";
         yoursub = "<p>Lähetyksesi sisälsi ";
         zipareas = " postinumeroaluetta.</p>";
         erroneous = ", virheellinen tulos";

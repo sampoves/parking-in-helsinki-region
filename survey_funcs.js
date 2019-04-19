@@ -356,20 +356,21 @@ var translate = function(jsdata) {
         //- changing of thankyou.png
         //- geocoder translations
         //- jquery dialog title translations
+        //- popup number field placeholders
         if(currentLang === "en"){
             $("div.sucimage").css("content", "url('images/thankyou.png')");
             $("div.leaflet-control-geocoder-form").children(0).attr("placeholder", "Please enter a place or address");
-            $(".form-control").attr("placeholder", "Insert value (0-99)");
             $("div.leaflet-control-geocoder-form-no-error").text("Your query produced no results.");
             $("#ui-id-1.ui-dialog-title").text("Parking private cars in Helsinki Capital Region"); //infobox
             $("#ui-id-5").text("Submit success!"); //success
+            $(".form-control").attr("placeholder", "Insert value (0-99)");
         } else {
             $("div.sucimage").css("content", "url('images/thankyou_fi.png')");
             $("div.leaflet-control-geocoder-form").children(0).attr("placeholder", "Syötä paikka tai osoite");
-            $(".form-control").attr("placeholder", "Syötä numero (0-99)");
             $("div.leaflet-control-geocoder-form-no-error").text("Hakusi ei tuottanut tuloksia.");
             $("#ui-id-1.ui-dialog-title").text("Henkilöautojen pysäköinti pääkaupunkiseudulla"); //infobox
             $("#ui-id-5").text("Lähetys onnistui!"); //success
+            $(".form-control").attr("placeholder", "Syötä numero (0-99)");
         }
 };
 
@@ -651,12 +652,30 @@ function preparePost() {
 //Generates a HTML page that displays all previously sent records
 function showResponse() {
     
+    if(currentLang === "en"){
+        glossary = glossary_en;
+        title = "Your park survey records";
+        nosubs = "<p>No submissions found</p>";
+        yoursub = "<p>Your submission consisted of ";
+        zipareas = " postal code areas.</p>";
+        erroneous = ", erroneous result";
+        errmessage = "<p>Error message:</p>";
+    } else {
+        glossary = glossary_fi;
+        title = "Vastauksesi pysäköintikyselyyn";
+        nosubs = "<p>Vastauksia ei löytynyt</p>";
+        yoursub = "<p>Lähetyksesi sisälsi ";
+        zipareas = " postinumeroaluetta.</p>";
+        erroneous = ", virheellinen tulos";
+        errmessage = "<p>Virheviesti:</p>";
+    }
+    
     //define content here to enable a clean slate each time function is run
     var content = "<!doctype html>" +
         "<html lang='en'>" +
         "<head>" +
             "<meta charset='utf-8'>" +
-            "<title>Your park survey records</title>" +
+            "<title>" + title + "</title>" +
             "<meta name='description' content='Your park survey records'>" +
             "<meta name='author' content='Sampo Vesanen'>" +
             "<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>" +
@@ -669,12 +688,11 @@ function showResponse() {
 
     //iterate through server responses. First check if responses exists
     if(typeof responses === 'undefined' || responses.length === 0) {
-        content = content + "<p>No submissions found</p>";
+        content = content + nosubs;
 
     //valid variable responses found
     } else {
-        content = content + "<p>Your submission consisted of " + 
-                responses.length + " postal code areas.</p>";
+        content = content + yoursub + responses.length + zipareas;
         
         for(i = 0; i < responses.length; i++) {
             
@@ -701,8 +719,8 @@ function showResponse() {
             //this if this is the case.
             } catch(err) {
                 content = content + 
-                        "<h3>" + (i + 1) + ", erroneous result</h3>" + 
-                        "<p>Error message:</p>" + 
+                        "<h3>" + (i + 1) + erroneous + "</h3>" + 
+                        errmessage + 
                         "<ul><li>" + responses[i] + "</li></ul>";
             }
         }

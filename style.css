@@ -82,14 +82,14 @@ reliably */
 
 /* Reference individual icons */
 .window-close::before {
-    font-weight: 400; /*regular*/
+    font-weight: 400; /*regular icon version*/
     content: "\f410"; /*icon unicode*/
     font-size: 1.33em; /*resizing*/
     margin-right: 10px; /*some space between icon and text*/
 }
 
 .mobile-alt::before {
-    font-weight: 900;
+    font-weight: 900; /*solid icon version*/
     content: "\f3cd";
     font-size: 1.33em;
     margin-left: 10px; 
@@ -128,16 +128,41 @@ reliably */
     margin-right: 10px;
 }
 
-.clock::before {
+.walking::before {
     font-weight: 900;
-    content: "\f017";
+    color: grey;
+    content: "\f554";
     font-size: 1.33em;
-    margin-left: -10px; 
+    margin-right: 15px;
+}
+
+.car::before {
+    font-weight: 900;
+    color: grey;
+    content: "\f1b9";
+    font-size: 1.33em;
     margin-right: 10px;
 }
 
-/*this works in tandem with unicode identifier in input type number in 
-park_survey.js*/
+.parking::before {
+    font-weight: 900;
+    color: grey;
+    content: "\f540";
+    font-size: 1.33em;
+    margin-right: 10px;
+}
+
+.question-circle::before {
+    font-weight: 400;
+    color: grey;
+    content: "\f059";
+    font-size: 1.33em;
+    margin-right: 10px;
+}
+
+/*This placeholder icon works in tandem with unicode identifier in input type 
+number in park_survey.js. This placeholder icon does not need other settings
+in this CSS file*/
 input[type="number"]::placeholder {
     font-family: 'Montserrat', sans-serif, "Font Awesome 5 Free";
     display: inline-block;
@@ -146,7 +171,7 @@ input[type="number"]::placeholder {
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
     font-weight: 400;
-    content: "\f017";
+    content: "\f017"; /*FA icon clock, regular*/
 }
 
 
@@ -264,7 +289,7 @@ ul {
     width: 100%;
 }
 
-#parktime {
+#parktime, #walktime {
     font-size: 18px;
     width: 100%;
 }

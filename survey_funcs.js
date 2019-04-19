@@ -359,12 +359,14 @@ var translate = function(jsdata) {
         if(currentLang === "en"){
             $("div.sucimage").css("content", "url('images/thankyou.png')");
             $("div.leaflet-control-geocoder-form").children(0).attr("placeholder", "Please enter a place or address");
+            $(".form-control").attr("placeholder", "Insert value (0-99)");
             $("div.leaflet-control-geocoder-form-no-error").text("Your query produced no results.");
             $("#ui-id-1.ui-dialog-title").text("Parking private cars in Helsinki Capital Region"); //infobox
             $("#ui-id-5").text("Submit success!"); //success
         } else {
             $("div.sucimage").css("content", "url('images/thankyou_fi.png')");
             $("div.leaflet-control-geocoder-form").children(0).attr("placeholder", "Syötä paikka tai osoite");
+            $(".form-control").attr("placeholder", "Syötä numero (0-99)");
             $("div.leaflet-control-geocoder-form-no-error").text("Hakusi ei tuottanut tuloksia.");
             $("#ui-id-1.ui-dialog-title").text("Henkilöautojen pysäköinti pääkaupunkiseudulla"); //infobox
             $("#ui-id-5").text("Lähetys onnistui!"); //success

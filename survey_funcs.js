@@ -102,7 +102,7 @@ function incompleteTest(input) {
         }
     } catch(err){
         if(!input.properties.likert || !input.properties.parkspot || 
-                !input.properties.parktime || !feature.properties.walktime){
+                !input.properties.parktime || !input.properties.walktime){
             //is incomplete
             return true;
         } else {
@@ -652,9 +652,11 @@ function preparePost() {
 //Generates a HTML page that displays all previously sent records
 function showResponse() {
     
+    //prepare language variants of the results page
     if(currentLang === "en"){
         glossary = glossary_en;
         title = "Your park survey records";
+        pagetitle = "<H1>Your results</H1>";
         nosubs = "<p>No submissions found</p>";
         yoursub = "<p>Your submission consisted of ";
         zipareas = " postal code areas.</p>";
@@ -663,6 +665,7 @@ function showResponse() {
     } else {
         glossary = glossary_fi;
         title = "Vastauksesi pysäköintikyselyyn";
+        pagetitle = "<H1>Tuloksesi</H1>";
         nosubs = "<p>Vastauksia ei löytynyt</p>";
         yoursub = "<p>Lähetyksesi sisälsi ";
         zipareas = " postinumeroaluetta.</p>";
@@ -683,8 +686,7 @@ function showResponse() {
                 "h1, h2, h3, p, ul, li {font-family: 'Montserrat', sans-serif;}" +
             "</style>" +
         "</head>" +
-        "<body>" +
-        "<H1>Your results</H1>";
+        "<body>" + pagetitle;
 
     //iterate through server responses. First check if responses exists
     if(typeof responses === 'undefined' || responses.length === 0) {
@@ -726,7 +728,7 @@ function showResponse() {
         }
     }
     //add glossary and ending tags to the page being generated
-    content = content + glossary + "</body>" + "</html>";
+    content = content + glossary + "</body></html>";
     
     //open generated HTML page in a new window
     var responseWindow = window.open();

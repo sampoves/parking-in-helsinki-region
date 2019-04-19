@@ -176,10 +176,10 @@ var geojsonCompHighlight = {
 var missingStuff = 
         '<font size="4" color="red" style="line-height: 30px;"><center><strong tkey="lang_incomplete">This entry is incomplete!</strong></center></font>';
 
-var glossary_en =
+var key_en =
         "<br><br>" +
         "<p>" +
-            "<h2>Glossary</h2>" +
+            "<h2>Key</h2>" +
             "<p><b>likert</b> How familiar are you with this postal code area?</p>" +
             "<ul>" +
                 "<li><b>1</b> Extremely familiar</li>" + 
@@ -195,30 +195,60 @@ var glossary_en =
                 "<li><b>3</b> Parking garage</li>" + 
                 "<li><b>4</b> Other</li>" + 
             "</ul>" +
-            "<p><b>parktime</b> and <b>walktime</b> are presented in minutes.</p>" +
+            "<p><b>parktime</b> How long does it usually take for you to find a parking spot and park your car in this postal code area (in minutes)?<br><b>walktime</b> How long does it usually take for you to walk from your parking spot to your destination in this postal code area (in minutes)?</p>" +
         "</p>";
 
-var glossary_fi =
+var key_fi =
         "<br><br>" +
         "<p>" +
-            "<h2>Glossaari!!</h2>" +
-            "<p><b>likert</b> How familiar are you with this postal code area?</p>" +
+            "<h2>Selite</h2>" +
+            "<p><b>likert</b> Kuinka tuttu tämä postinumeroalue on sinulle?</p>" +
             "<ul>" +
-                "<li><b>1</b> Extremely familiar</li>" + 
-                "<li><b>2</b> Moderately familiar</li>" + 
-                "<li><b>3</b> Somewhat familiar</li>" + 
-                "<li><b>4</b> Slightly familiar</li>" + 
-                "<li><b>5</b> Not at all familiar</li>" + 
+                "<li><b>1</b> Hyvin tuttu</li>" + 
+                "<li><b>2</b> Kohtalaisen tuttu</li>" + 
+                "<li><b>3</b> Jossain määrin tuttu</li>" + 
+                "<li><b>4</b> Vähän tuttu</li>" + 
+                "<li><b>5</b> Ei ollenkaan tuttu</li>" + 
             "</ul>" +
-            "<p><b>parkspot</b> What kind of parking spot do you usually take in this postal code area?</p>" +
+            "<p><b>parkspot</b> Minkätyyppiselle pysäköintipaikalle yleensä pysäköit tällä postinumeroalueella?</p>" +
             "<ul>" +
-                "<li><b>1</b> Parking space on the side of the street</li>" + 
-                "<li><b>2</b> Parking lot</li>" + 
-                "<li><b>3</b> Parking garage</li>" + 
-                "<li><b>4</b> Other</li>" + 
+                "<li><b>1</b> Kadunvarsipaikka</li>" + 
+                "<li><b>2</b> Pysäköintialue (parkkipaikka)</li>" + 
+                "<li><b>3</b> Pysäköintihalli</li>" + 
+                "<li><b>4</b> Muu</li>" + 
             "</ul>" +
-            "<p><b>parktime</b> and <b>walktime</b> are presented in minutes.</p>" +
+            "<p><b>parktime</b> Kuinka kauan sinulla yleensä kestää löytää pysäköintipaikka ja pysäköidä tällä postinumeroalueella (minuuteissa)?<br><b>walktime</b> Kuinka kauan sinulla yleensä kestää kävellä pysäköintipaikalta määränpäähäsi tällä postinumeroalueella (minuuteissa)?</p>" +
         "</p>";
+
+var familiar_fi = {
+    "likert 1": "hyvin tuttu",
+    "likert 2": "kohtalaisen tuttu",
+    "likert 3": "jossain määrin tuttu",
+    "likert 4": "vähän tuttu",
+    "likert 5": "ei ollenkaan tuttu"
+};
+
+var familiar_en = {
+    "likert 1": "extremely familiar",
+    "likert 2": "moderately familiar",
+    "likert 3": "somewhat familiar",
+    "likert 4": "slightly familiar",
+    "likert 5": "not at all familiar"
+};
+
+var parking_fi = {
+    "parkspot 1": "kadunvarsipaikka",
+    "parkspot 2": "pysäköintialue (parkkipaikka)",
+    "parkspot 3": "pysäköintihalli",
+    "parkspot 4": "muu"
+};
+
+var parking_en = {
+    "parkspot 1": "parking space on the side of the street",
+    "parkspot 2": "parking lot",
+    "parkspot 3": "parking garage",
+    "parkspot 4": "other"
+};
 
 
 //------------

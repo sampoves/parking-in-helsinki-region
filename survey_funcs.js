@@ -357,11 +357,12 @@ var translate = function(jsdata) {
         //- geocoder translations
         //- jquery dialog title translations
         //- popup number field placeholders
+        //- success dialog box button translations
         if(currentLang === "en"){
             $("div.sucimage").css("content", "url('images/thankyou.png')");
             $("div.leaflet-control-geocoder-form").children(0).attr("placeholder", "Please enter a place or address");
             $("div.leaflet-control-geocoder-form-no-error").text("Your query produced no results.");
-            $("#ui-id-1.ui-dialog-title").text("Parking private cars in Helsinki Capital Region"); //infobox
+            $("#ui-id-4.ui-dialog-title").text("Parking private cars in Helsinki Capital Region"); //infobox
             $(".submitclose").html("Close");
             $(".viewresults").html("View your sent data (opens in new window)");
             $("#ui-id-5").text("Submit success!"); //success
@@ -370,7 +371,7 @@ var translate = function(jsdata) {
             $("div.sucimage").css("content", "url('images/thankyou_fi.png')");
             $("div.leaflet-control-geocoder-form").children(0).attr("placeholder", "Syötä paikka tai osoite");
             $("div.leaflet-control-geocoder-form-no-error").text("Hakusi ei tuottanut tuloksia.");
-            $("#ui-id-1.ui-dialog-title").text("Henkilöautojen pysäköinti pääkaupunkiseudulla"); //infobox
+            $("#ui-id-4.ui-dialog-title").text("Henkilöautojen pysäköinti pääkaupunkiseudulla"); //infobox
             $(".submitclose").html("Sulje");
             $(".viewresults").html("Näytä raportti lähetetystä aineistosta (avautuu uuteen ikkunaan)");
             $("#ui-id-5").text("Lähetys onnistui!"); //success
@@ -659,23 +660,29 @@ function showResponse() {
     
     //prepare language variants of the results page
     if(currentLang === "en"){
-        glossary = glossary_en;
+        key = key_en;
+        familiar = familiar_en;
+        parking = parking_en;       
         title = "Your park survey records";
-        pagetitle = "<H1>Your results</H1>";
+        pagetitle = "Your results";
+        timestamp = "Timestamp";
         nosubs = "<p>No submissions found.</p>";
         yoursub = "<p>Your submission consisted of ";
         zipareas = " postal code areas.</p>";
         erroneous = ", erroneous result";
-        errmessage = "<p>Error message:</p>";
+        errmessage = "Error message:";
     } else {
-        glossary = glossary_fi;
+        key = key_fi;
+        familiar = familiar_fi;
+        parking = parking_fi;
         title = "Vastauksesi pysäköintikyselyyn";
-        pagetitle = "<H1>Tuloksesi</H1>";
+        pagetitle = "Tuloksesi";
+        timestamp = "Lähetetty";
         nosubs = "<p>Vastauksia ei löytynyt.</p>";
         yoursub = "<p>Lähetyksesi sisälsi ";
         zipareas = " postinumeroaluetta.</p>";
         erroneous = ", virheellinen tulos";
-        errmessage = "<p>Virheviesti:</p>";
+        errmessage = "Virheviesti:";
     }
     
     //define content here to enable a clean slate each time function is run
@@ -683,7 +690,7 @@ function showResponse() {
         "<html lang='en'>" +
         "<head>" +
             "<meta charset='utf-8'>" +
-            "<title>" + title + "</title>" +
+            `<title>${title}</title>` +
             "<meta name='description' content='Your park survey records'>" +
             "<meta name='author' content='Sampo Vesanen'>" +
             "<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>" +
@@ -691,18 +698,20 @@ function showResponse() {
                 "h1, h2, h3, p, ul, li {font-family: 'Montserrat', sans-serif;}" +
             "</style>" +
         "</head>" +
-        "<body>" + pagetitle;
+        "<body>" + `<H1>${pagetitle}</H1>`;
 
     //iterate through server responses. First check if responses exists
     if(typeof responses === 'undefined' || responses.length === 0) {
-        content = content + nosubs;
+        content = content + nosubs +
+                `<p>${timestamp} ${formatTime()}</p>`;
 
     //valid variable responses found
     } else {
-        content = content + yoursub + responses.length + zipareas;
+        content = content + yoursub + responses.length + zipareas +
+                `<p>${timestamp} ${formatTime()}</p>`;
         
         for(i = 0; i < responses.length; i++) {
-            
+
             //prepare for exceptions
             try {
                 thisResponse = responses[i].replace("New record created successfully. ", "");
@@ -711,14 +720,13 @@ function showResponse() {
                 content = content + 
                         "<p>" + 
                             "<h3>" + 
-                                (i + 1) + ", " + thisZipCode + ", " + getAreaName(thisZipCode) + 
+                                (i + 1) + `, ${thisZipCode}, ${getAreaName(thisZipCode)}` + 
                             "</h3>" + 
                             "<ul>" + 
-                                "<li>" + splitResponse[0] + "</li>" + 
-                                "<li>" + splitResponse[2] + "</li>" + 
-                                "<li>" + splitResponse[3] + "</li>" + 
-                                "<li>" + splitResponse[4] + "</li>" + 
-                                "<li>" + splitResponse[5] + "</li>" + 
+                                `<li>${splitResponse[2]}, ${familiar[splitResponse[2]]}</li>` + 
+                                `<li>${splitResponse[3]}, ${parking[splitResponse[3]]}</li>` + 
+                                `<li>${splitResponse[4]}</li>` + 
+                                `<li>${splitResponse[5]}</li>` + 
                             "</ul>" + 
                         "</p>";
                 
@@ -726,14 +734,14 @@ function showResponse() {
             //this if this is the case.
             } catch(err) {
                 content = content + 
-                        "<h3>" + (i + 1) + erroneous + "</h3>" + 
-                        errmessage + 
-                        "<ul><li>" + responses[i] + "</li></ul>";
+                        "<h3>" + (i + 1) + `${erroneous}</h3>` + 
+                        `<p>${errmessage}</p>` + 
+                        `<ul><li>${responses[i]}</li></ul>`;
             }
         }
     }
     //add glossary and ending tags to the page being generated
-    content = content + glossary + "</body></html>";
+    content = content + key + "</body></html>";
     
     //open generated HTML page in a new window
     var responseWindow = window.open();

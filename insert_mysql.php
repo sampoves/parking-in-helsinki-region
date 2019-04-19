@@ -45,6 +45,7 @@ $zipcode = $_POST['zipcode'];
 $likert = $_POST['likert'];
 $parkspot = $_POST['parkspot'];
 $parktime = $_POST['parktime'];
+$walktime = $_POST['walktime'];
 
 
 
@@ -58,7 +59,6 @@ $parktime = $_POST['parktime'];
 //checked with FILTER_VALIDATE_INT, because it fails if value inputted is 0.
 $sanitizedLikert = filter_var($likert, FILTER_VALIDATE_INT);
 $sanitizedParkspot = filter_var($parkspot, FILTER_VALIDATE_INT);
-//$sanitizedParktime = filter_var($parktime, FILTER_VALIDATE_INT);
 
 
 // Set up validation for timestamp
@@ -133,6 +133,13 @@ if (!preg_match('/^([0-9]|[1-9][0-9])$/', $parktime)) {
     exit(json_encode($response));
 }
 
+// Validate input for walktime
+if (!preg_match('/^([0-9]|[1-9][0-9])$/', $walktime)) {
+    $response['status'] = 'error';
+    $response['message'] = sprintf('Invalid value for walktime. Value given: %s', $walktime);
+    exit(json_encode($response));
+}
+
 
 // ------------------
 // DATABASE INSERTION
@@ -153,7 +160,7 @@ if ($conn->connect_error) {
 }
 
 // Generate query string
-$sql = insertMySQL($timestamp, $ip, $zipcode, $sanitizedLikert, $sanitizedParkspot, $parktime);
+$sql = insertMySQL($timestamp, $ip, $zipcode, $sanitizedLikert, $sanitizedParkspot, $parktime, $walktime);
 
 
 
@@ -163,7 +170,7 @@ $sql = insertMySQL($timestamp, $ip, $zipcode, $sanitizedLikert, $sanitizedParksp
 // Set some data to return (not necessary) and echo JSON
 // first test if query was completed
 if ($conn->query($sql) === TRUE) {
-	$response['message'] = sprintf('New record created successfully. Timestamp %s, postal code %s, likert %s, parkspot %s, parktime %s', $timestamp, $zipcode, $sanitizedLikert, $sanitizedParkspot, $parktime);
+	$response['message'] = sprintf('New record created successfully. Timestamp %s, postal code %s, likert %s, parkspot %s, parktime %s, walktime %s', $timestamp, $zipcode, $sanitizedLikert, $sanitizedParkspot, $parktime, $walktime);
 	$conn->close();
 	echo(json_encode($response));
 } else {

@@ -59,7 +59,8 @@
     "lang_deletefeature": "Poista nämä tiedot",
     "lang_incomplete": "Kaikkiin kenttiin ei ole vastattu!",
     
-    "lang_search": "Kuinka kauan sinulla yleensä kestää pysäköidä ja saavuttaa kävellen määränpääsi tällä postinumeroalueella (minuuteissa)?",    
+    "lang_search": "Kuinka kauan sinulla yleensä kestää pysäköidä ja saavuttaa kävellen määränpääsi tällä postinumeroalueella (minuuteissa)?",
+    "lang_walktime": "How long to walk",
     "lang_likert": "Kuinka tuttu tämä postinumeroalue on sinulle?",
     "likert1": "Hyvin tuttu",
     "likert2": "Kohtalaisen tuttu",

@@ -93,7 +93,7 @@ function incompleteTest(input) {
     try {
         feature = input.layer.feature;
         if(!feature.properties.likert || !feature.properties.parkspot || 
-                !feature.properties.parktime){
+                !feature.properties.parktime || !feature.properties.walktime){
             //is incomplete
             return true;
         } else {
@@ -102,7 +102,7 @@ function incompleteTest(input) {
         }
     } catch(err){
         if(!input.properties.likert || !input.properties.parkspot || 
-                !input.properties.parktime){
+                !input.properties.parktime || !feature.properties.walktime){
             //is incomplete
             return true;
         } else {
@@ -610,13 +610,15 @@ function preparePost() {
         likertValue = thisLayer.feature.properties.likert;
         parkspotValue = thisLayer.feature.properties.parkspot;
         parktimeValue = thisLayer.feature.properties.parktime;
+        walktimeValue = thisLayer.feature.properties.walktime;
         
         var data = {
             timestamp: timestampValue,
             zipcode: zipcodeValue,
             likert: likertValue,
             parkspot: parkspotValue,
-            parktime: parktimeValue
+            parktime: parktimeValue,
+            walktime: walktimeValue
         };
         
         $.post('insert_mysql.php', data, function(responseFromServer) {
@@ -689,6 +691,7 @@ function showResponse() {
                                 "<li>" + splitResponse[2] + "</li>" + 
                                 "<li>" + splitResponse[3] + "</li>" + 
                                 "<li>" + splitResponse[4] + "</li>" + 
+                                "<li>" + splitResponse[5] + "</li>" + 
                             "</ul>" + 
                         "</p>";
                 

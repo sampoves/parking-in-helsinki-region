@@ -195,7 +195,7 @@ var glossary =
                 "<li><b>3</b> Parking garage</li>" + 
                 "<li><b>4</b> Other</li>" + 
             "</ul>" +
-            "<p><b>parktime</b> is presented in minutes.</p>" +
+            "<p><b>parktime</b> and <b>walktime</b> are presented in minutes.</p>" +
         "</p>";
 
 

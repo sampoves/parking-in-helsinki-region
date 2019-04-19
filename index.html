@@ -99,7 +99,7 @@ Helsinki Capital Region".
 
             //Show survey version in jQuery info window. Also, execute visitor
             //counter code.
-            var survey_version = "Development version 18.4.2019. Database connection live.";
+            var survey_version = "Development version 19.4.2019. Database connection live.";
             window.onload = function() {
                 document.getElementById('version').innerHTML = survey_version;
                 
@@ -411,6 +411,7 @@ Helsinki Capital Region".
                             "properties": {
                                 "zipcode": layer.feature.properties.posti_alue,
                                 "parktime": null,
+                                "walktime": null,
                                 "likert": null,
                                 "parkspot": null
                             }
@@ -587,6 +588,20 @@ Helsinki Capital Region".
                         properties.parktime = 99;
                     } else {
                         properties.parktime = e.target.value;
+                    }
+                });
+                
+                //WALKING TIME
+                L.DomUtil.get('walktime').textContent = properties.walktime;
+                var walkTime = L.DomUtil.get('walktime');
+                walkTime.value = properties.walktime;
+                L.DomEvent.addListener(walkTime, "change", function (e){
+                    //This if statement prevents values larger than 99. It
+                    //works in tandem with the input type number html element.
+                    if(walkTime.value > 99){
+                        properties.walktime = 99;
+                    } else {
+                        properties.walktime = e.target.value;
                     }
                 });
                 

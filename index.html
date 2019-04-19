@@ -426,9 +426,13 @@ Helsinki Capital Region".
                 
                 // If statement tests if the following class is open. It gets
                 // value 1 if it is, otherwise 0. This prevents inadvertent
-                // additions of Polygons when clicking away from the popup
+                // additions of Polygons when clicking away from the popup.
+                // The following if statement also prevents creating new 
+                // Polygons when a jQuery dialog box is open, be it infobox or 
+                // successbox.
                 if(($(".leaflet-popup-content-wrapper").length === 0) && 
-                        ($("#tabsikkuna").is(":visible") === false)){
+                        (($("#tabsikkuna").is(":visible") === false) && 
+                        ($("#sucdialog").is(":visible") === false))) {
                     var layer = e.layer;
                     var pol = layer.toGeoJSON();
                     var geom = pol.geometry;
@@ -467,10 +471,10 @@ Helsinki Capital Region".
             // clicking save changes, x button and delete records.
             apu = 0;
             geojson.on("click", function(e){
-                //210319 hasty fix to prevent opening popup when infobox open. If
-                //something unexpected happens, remove this first if statement
-                //and bring the else statement to front
-                if($("#tabsikkuna").is(":visible") === true){
+                //This prevents opening popups when infobox or success dialog
+                //is open. Only works with click on layer geojson
+                if(($("#tabsikkuna").is(":visible") === true) || 
+                        ($("#sucdialog").is(":visible") === true)) {
                     mymap.closePopup();
                     apu = 0;
                 } else {

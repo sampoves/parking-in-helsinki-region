@@ -135,12 +135,21 @@ Helsinki Capital Region".
             //------------
             //MYMAP EVENTS
             //------------
-            //
-            //pane for label tile layers. This will keep tile layer labels on
-            //top of geojson Polygons
+            
+            //Pane for label tile layers. This will keep tile layer labels on
+            //top of GeoJSON Polygons
             mymap.createPane('labels');
             mymap.getPane('labels').style.zIndex = 650;
             mymap.getPane('labels').style.pointerEvents = 'none';
+            
+            //Due to a unknown issue in this code GeoJSON layer postaldissolve
+            //would get a higher zIndex than postal in most of the times when
+            //loading the survey. This relegates postaldissolve to its own map
+            //pane which is located in a low level in the zIndex hierarchy.
+            mymap.createPane('researcharea');
+            mymap.getPane('researcharea').style.zIndex = 201;
+            mymap.getPane('researcharea').style.pointerEvents = 'none';
+            
             
             //events to listen for baselayer or overlay change for to use of 
             //cookies
@@ -209,7 +218,7 @@ Helsinki Capital Region".
                 px.y -= e.popup._container.clientHeight / 2; 
                 
                 // Pan to new center, if helper variable apu is 0 (a popup is
-                // not open)
+                // not open
                 if (apu === 0) {
                     mymap.panTo(mymap.unproject(px), {animate: true});
                 }
@@ -355,6 +364,7 @@ Helsinki Capital Region".
             
             var postaldissolve = new L.GeoJSON.AJAX(
                     "pno_dissolve.geojson", {
+                        pane: 'researcharea',
                         style: styleArea
 //                        style: function(layer){
 //                            if(mymap.hasLayer(darkmatter)){

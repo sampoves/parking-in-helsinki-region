@@ -548,7 +548,7 @@ Helsinki Capital Region".
                 //check if all values are inserted and print text in popUp
                 //if this is the case
                 if(!properties.likert || !properties.parkspot || 
-                        !properties.parktime){
+                        !properties.parktime || !properties.walktime){
                     pol.bindPopup(html + popupContent + missingStuff);
                 } else {
                     pol.bindPopup(html + popupContent);

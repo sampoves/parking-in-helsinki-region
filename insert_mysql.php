@@ -18,7 +18,7 @@ if(empty($_POST)) {
 }
 
 // Initialize array containing allowed variables
-$allowedDataVariables = ['timestamp', 'zipcode', 'likert', 'parkspot', 'parktime'];
+$allowedDataVariables = ['timestamp', 'zipcode', 'likert', 'parkspot', 'parktime', 'walktime'];
 
 // Initialize response array
 $response = ['status' => 'success', 'message' => '', 'amount' => 0];

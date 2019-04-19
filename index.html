@@ -196,7 +196,24 @@ Helsinki Capital Region".
                 arePopupsFinished();
             });
 
-
+            //With the 190419 addition of walktime, the topmost part of survey 
+            //popup, zipcode, would easily get cut off screen. This event will 
+            //make sure that will not happen.
+            //Code by Dan Mandle, https://stackoverflow.com/a/23960984/9455395
+            mymap.on('popupopen', function(e) {
+                // Find the pixel location on the map where the popup anchor is
+                var px = mymap.project(e.popup._latlng);
+                
+                // Find the height of the popup container, divide by 2, subtract 
+                // from the Y axis of marker location
+                px.y -= e.popup._container.clientHeight / 2; 
+                
+                // Pan to new center, if helper variable apu is 0 (a popup is
+                // not open)
+                if (apu === 0) {
+                    mymap.panTo(mymap.unproject(px), {animate: true});
+                }
+            });
 
             //-------
             //COOKIES

@@ -36,6 +36,11 @@ p, h2, h3, h4,
     font-size: 11px;
 }
 
+.caption {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+}
+
 
 /*MAKE TEXT IN MAP JUSTIFIED*/
 /*div {
@@ -162,6 +167,23 @@ reliably */
     font-size: 1.33em;
     margin-right: 10px;
 }
+
+.atlas::before {
+    font-weight: 900;
+    color: grey;
+    content: "\f558";
+    font-size: 1.33em;
+    margin-right: 10px;
+}
+
+.pencil-alt::before {
+    font-weight: 900;
+    color: grey;
+    content: "\f303";
+    font-size: 1.33em;
+    margin-right: 10px;
+}
+
 
 /*This placeholder icon works in tandem with unicode identifier in input type 
 number in park_survey.js. This placeholder icon does not need other settings

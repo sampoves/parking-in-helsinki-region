@@ -150,6 +150,9 @@ function initialiseInfo(){
         //this hides info dialog main scroll bars.
         //only div scroll bars remain
         open: function (event, ui) {
+            // This function call exists only to ensure that we have the right 
+            // survey screenshot
+            languageCheckUp(); 
             $('#tabsikkuna').css('overflow', 'hidden');
         },
         //add fadeout animation when closing. Fadein is done with CSS!
@@ -354,12 +357,14 @@ var translate = function(jsdata) {
         });
         //handle
         //- changing of thankyou.png
+        //- changing of survey screenshot in infobox
         //- geocoder translations
         //- jquery dialog title translations
         //- popup number field placeholders
         //- success dialog box button translations
         if(currentLang === "en"){
             $("div.sucimage").css("content", "url('images/thankyou.png')");
+            $("#survey_screen").attr("src", "images/survey_en.png");
             $("div.leaflet-control-geocoder-form").children(0).attr("placeholder", "Please enter a place or address");
             $("div.leaflet-control-geocoder-form-no-error").text("Your query produced no results.");
             $("#ui-id-4.ui-dialog-title").text("Parking private cars in Helsinki Capital Region"); //infobox
@@ -369,6 +374,7 @@ var translate = function(jsdata) {
             $(".form-control").attr("placeholder", "Insert value (0-99)");
         } else {
             $("div.sucimage").css("content", "url('images/thankyou_fi.png')");
+            $("#survey_screen").attr("src", "images/survey_fi.png");
             $("div.leaflet-control-geocoder-form").children(0).attr("placeholder", "Syötä paikka tai osoite");
             $("div.leaflet-control-geocoder-form-no-error").text("Hakusi ei tuottanut tuloksia.");
             $("#ui-id-4.ui-dialog-title").text("Henkilöautojen pysäköinti pääkaupunkiseudulla"); //infobox

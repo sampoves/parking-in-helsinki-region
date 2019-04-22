@@ -77,6 +77,8 @@ Helsinki Capital Region".
                 //disable submit button by default
                 sendBox.disable();
                 
+                window.unfinishedPopups = 0;
+                
                 //prevent sending form with enter key
                 $(window).keydown(function(event){
                     if(event.keyCode === 13) {
@@ -99,7 +101,7 @@ Helsinki Capital Region".
 
             //Show survey version in jQuery info window. Also, execute visitor
             //counter code.
-            var survey_version = "Development version 20.4.2019. Database connection live.";
+            var survey_version = "Development version 22.4.2019. Database connection live.";
             window.onload = function() {
                 document.getElementById('version').innerHTML = survey_version;
                 
@@ -198,11 +200,13 @@ Helsinki Capital Region".
             mymap.on("dragstart", function (e) {
                 updateGeomColors();
                 arePopupsFinished();
+                unfinishedBox.update();
             });
             
             mymap.on("click", function (e) {
                 updateGeomColors();
                 arePopupsFinished();
+                unfinishedBox.update();
             });
 
             //With the 190419 addition of walktime, the topmost part of survey 
@@ -594,6 +598,7 @@ Helsinki Capital Region".
                     console.log("pressed x in popup dialog");
                     updateGeomColors();
                     arePopupsFinished();
+                    unfinishedBox.update();
                     showUI();
                     
                     //the following value "apu" manipulates geojson.on("click"). 
@@ -669,6 +674,7 @@ Helsinki Capital Region".
                     updateGeomColors();
                     pol.closePopup();
                     arePopupsFinished();
+                    unfinishedBox.update();
                     showUI();
                     
                     //the following value "apu" manipulates geojson.on("click"). 
@@ -688,6 +694,7 @@ Helsinki Capital Region".
                     usersZipCodes.removeZipCode(window.currentZip);
                     geojson.removeLayer(pol);
                     arePopupsFinished();
+                    unfinishedBox.update();
                     showUI();
 
                     //the following value "apu" manipulates geojson.on("click").  
@@ -825,6 +832,37 @@ Helsinki Capital Region".
                 mymap.dragging.enable();
                 mymap.scrollWheelZoom.enable();
             });
+            
+            
+            // Implement a div that appears above Submit records button when
+            // the user has unfinished zip code areas active on the map
+            var unfinishedBox = L.control({position: 'bottomright'});
+            unfinishedBox.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'unfinished');
+                this.update();
+                return this._div;
+            };
+            
+            //unfinishedBox updates through checking if the function
+            //usersZipCodes.queryIncompleteness() returns empty or not
+            unfinishedBox.update = function () {
+                if(usersZipCodes.queryIncompleteness2() === "<p></p>") {
+                    $("div.unfinished").fadeOut("fast");
+                    //$("div.unfinished").css({"visibility": "hidden"}); //abrupt dissappearing
+                } else {
+                    $("div.unfinished").fadeIn("fast");
+                    //$("div.unfinished").css({"visibility": "visible"}); //abrupt appearing
+                    // Contents of the div
+                    this._div.innerHTML = 
+                            "<div class='transbox'><p>" + 
+                            "<i class='icon comment'></i>" +
+                            "<b class='redtext'>You have unfinished areas</b>" + 
+                            usersZipCodes.queryIncompleteness2() + 
+                            "</p></div>";
+                }
+            };
+            unfinishedBox.addTo(mymap);
+            
         </script>
         
         <!--JQUERY UI CONTENT-->

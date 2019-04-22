@@ -408,7 +408,9 @@ function languageCheckUp(){
 class TrackZipCodes {
     constructor() {
         this.zipCodeList = [];
+        this.incompleteList = [];
     }
+    
     addUniqueZipCode(zipCode) {
         // Append zip code to list if is not in list
         if(this.zipCodeList.includes(zipCode)){
@@ -445,6 +447,116 @@ class TrackZipCodes {
         } else {
             return false;
         }
+    }
+    
+    queryIncompleteness(zipcode) {
+
+        howManyNulls = 0;
+    
+        //iterate through all layers to find zipcodes
+        for (var i in geojson._layers){
+            thisLayer = geojson._layers[i];
+            theseProps = thisLayer.feature.properties;
+            theseAttrs = Object.keys(theseProps);
+            
+            //if a layer's zipcode matches, then iterate through that layer's
+            //other attributes to find possible nulls
+            if(zipcode === theseProps.zipcode) {
+                for (var i = 0; i < theseAttrs.length; i += 1) {
+                    //implement test whether layer is interactive or not
+                    //check submit button which changed interactivity to false
+                    attr = theseAttrs[i];
+                    value = theseProps[attr];
+                    if (value === null || value === "") {
+                        howManyNulls += 1;
+                    }
+                }
+            }
+        };
+        //this triggers if incompleteness is detected
+        if(howManyNulls !== 0) {
+            if(this.incompleteList.includes(zipcode)){
+                console.log(`${zipcode} already tagged as incomplete`);
+                return false;
+            } else {
+                this.incompleteList.push(zipcode);
+                console.log(`${zipcode} tagged as incomplete`);
+                return true;
+            }
+        //the zipcode is complete if this triggers
+        } else {
+            try {
+                //if successful, try to find zipcode for deletion
+                this.removeIncomplete(zipcode);
+
+            } catch(err) {
+                console.log(`${zipcode} is not incomplete`);
+            }
+        }
+    }
+    
+    removeIncomplete(zipcode) {
+        if(this.incompleteList.includes(zipcode)){
+            this.incompleteList.splice(this.incompleteList.indexOf(zipcode), 1 );
+            console.log(`Removed ${zipcode} from incomplete list`);
+        } else {
+            console.log(`Did not find zip code ${zipcode} in incomplete list`);
+        }
+    }
+    
+    listAllIncomplete() {
+        if(this.incompleteList.length === 0) {
+            return "";
+        } else {
+            var result = "These are incomplete:<br>";
+
+            for (var i in this.incompleteList) {
+                var thisValue = this.incompleteList[i];
+                result = result + `${thisValue}, ${getAreaName(thisValue)}<br>`;
+            }
+            return result;
+        }
+    }
+    
+    //FINAL, works, delete the first version
+    queryIncompleteness2() {
+
+        var result = "<p>";
+
+        if (this.zipCodeList.length !== 0) {
+            for (var i in this.zipCodeList) {
+                
+                var thisZip = this.zipCodeList[i];
+
+                //iterate through all layers to find zipcodes
+                for (var i in geojson._layers){
+                    howManyNulls = 0;
+                    thisLayer = geojson._layers[i];
+                    theseProps = thisLayer.feature.properties;
+                    theseAttrs = Object.keys(theseProps);
+
+                    //if a layer's zipcode matches, then iterate through that layer's
+                    //other attributes to find possible nulls
+                    if(thisZip === theseProps.zipcode) {
+
+                        for (var i = 0; i < theseAttrs.length; i += 1) {
+                            //implement test whether layer is interactive or not
+                            //check submit button which changed interactivity to false
+                            attr = theseAttrs[i];
+                            value = theseProps[attr];
+
+                            if (value === null || value === "") {
+                                howManyNulls += 1;
+                            }
+                        }
+                    }
+                    if(howManyNulls !== 0) {
+                        result = result + `${thisZip}, ${getAreaName(thisZip)}<br>`;
+                    }
+                };
+            }
+        }
+        return result + "</p>";
     }
 }
 

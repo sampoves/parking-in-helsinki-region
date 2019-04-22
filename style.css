@@ -184,6 +184,14 @@ reliably */
     margin-right: 10px;
 }
 
+.comment::before {
+    font-weight: 400;
+    color: grey;
+    content: "\f075";
+    font-size: 1.33em;
+    margin-right: 5px;
+}
+
 
 /*This placeholder icon works in tandem with unicode identifier in input type 
 number in park_survey.js. This placeholder icon does not need other settings
@@ -267,6 +275,26 @@ input[type="number"]::placeholder {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0);
     border-radius: 5px;
 }
+
+
+
+/*Unfinished box 210419*/
+div.transbox {
+    padding: 5px 10px;
+    margin: 22px;
+    background-color: #ffffff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+    border-radius: 5px;
+    opacity: 0.8;
+    filter: alpha(opacity=60); /* For IE8 and earlier */
+}
+
+div.transbox p {
+  margin: 2%;
+  font-weight: bold;
+  color: #000000;
+}
+
 
 
 /*-----------------------------------------*/

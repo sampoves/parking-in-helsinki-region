@@ -44,6 +44,9 @@ Helsinki Capital Region".
         <div class="" id="mymap"></div>
             
         <script>
+            // $(".form-group").css("font-size", "7pt")
+            // miten saada kaikille popup toimimaan? tarjoa pienen popupin toiminto?
+            
             //--------------
             //INITIALISATION
             //--------------
@@ -584,12 +587,15 @@ Helsinki Capital Region".
                 //if this is the case
                 if(!properties.likert || !properties.parkspot || 
                         !properties.parktime || !properties.walktime){
-                    pol.bindPopup(html + popupContent + missingStuff);
+                    mediumPopup(pol, html + popupContent + missingStuff);
+                    //popupSize(pol, html + popupContent + missingStuff);
                 } else {
-                    pol.bindPopup(html + popupContent);
+                    smallPopup(pol, html + popupContent);
+                    //popupSize(pol, html + popupContent);
                 }
-                pol.openPopup();
-                popupMobileCheck();
+                
+                //pol.openPopup();
+                //popupMobileCheck();
                 
                 //use jQuery to listen to current popup and its close button.
                 //This way we can communicate correctly with the function
@@ -846,7 +852,7 @@ Helsinki Capital Region".
             //unfinishedBox updates through checking if the function
             //usersZipCodes.queryIncompleteness() returns empty or not
             unfinishedBox.update = function () {
-                if(usersZipCodes.queryIncompleteness2() === "<p></p>") {
+                if(usersZipCodes.queryIncompleteness() === "<p></p>") {
                     $("div.unfinished").fadeOut("fast");
                     //$("div.unfinished").css({"visibility": "hidden"}); //abrupt dissappearing
                 } else {
@@ -857,7 +863,7 @@ Helsinki Capital Region".
                             "<div class='transbox'><p>" + 
                             "<i class='icon comment'></i>" +
                             "<b class='redtext'>You have unfinished areas</b>" + 
-                            usersZipCodes.queryIncompleteness2() + 
+                            usersZipCodes.queryIncompleteness() + 
                             "</p></div>";
                 }
             };
@@ -890,6 +896,7 @@ Helsinki Capital Region".
                     <p tkey="lang_welcome6">Kiitän vastauksestasi, <br>terveisin, Sampo Vesanen</p>
                     <p tkey="lang_welcome7">Kyselyyn liittyvissä asioissa ota minuun yhteyttä sähköpostitse: sampo.vesanen(at)helsinki.fi</p>
                     <button id="button-closeinfo" class="icon window-close" type="button" tkey="lang_buttoncloseinfo">Stop showing this dialog box at startup</button>
+                    <button id="button-changepopupsize" class="icon window-close" type="button" tkey="lang_changepopupsize">Change popup size</button>
                     <button id="button-changedevice" class="icon mobile-alt" type="button" tkey="lang_buttonchangedevice">Change device settings. WARNING! Refreshes page, all non-submitted records will be lost!</button>
                 </div>
                 <div id="tabs-2" class="tabspanel">

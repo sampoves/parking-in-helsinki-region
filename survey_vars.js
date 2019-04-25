@@ -174,7 +174,7 @@ var geojsonCompHighlight = {
 // TEXT STRINGS
 //-------------
 var missingStuff = 
-        '<font size="4" color="red" style="line-height: 30px;"><center><strong tkey="lang_incomplete">This entry is incomplete!</strong></center></font>';
+        '<font size="4" color="red" style="line-height: 30px;"><center><strong id="incomplete" tkey="lang_incomplete">This entry is incomplete!</strong></center></font>';
 
 var key_en =
         "<br><br>" +

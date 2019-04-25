@@ -41,13 +41,6 @@ p, h2, h3, h4,
     font-size: 13px;
 }
 
-
-/*MAKE TEXT IN MAP JUSTIFIED*/
-/*div {
-  text-align: justify;
-}*/
-
-
 li {
     font-family: 'Montserrat', sans-serif;
     margin-left: 0em;
@@ -352,7 +345,9 @@ select option {
     font-family: 'Montserrat', sans-serif;
 }
 
+/*-------*/
 /*BUTTONS*/
+/*-------*/
 button {
     /*text centering on button, useful with font awesome icons*/
     display: flex;
@@ -384,14 +379,16 @@ button:hover {
 }
 
 #button-closeinfo,
-#button-changedevice {
+#button-changedevice,
+#button-changepopupsize {
     border: 2px solid #ff0000; /* Red */
     margin-top: 15px;
     font-family: 'Montserrat', sans-serif;
 }
 
 #button-closeinfo:hover,
-#button-changedevice:hover {
+#button-changedevice:hover,
+#button-changepopupsize:hover {
     background-color: #ff0000; /* Red */
     color: white;
     font-family: 'Montserrat', sans-serif;

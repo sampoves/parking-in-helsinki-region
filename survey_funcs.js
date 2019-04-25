@@ -86,6 +86,82 @@ function updateGeomColors() {
 //MISCELLANEOUS FUNCTIONS
 //-----------------------
 
+//attempt to resize popup. First, check if on mobile. If so, make popup narrow.
+//In other cases, give possibility to insert popup maxwidth parameter.
+function popupSize(pol, popupContent, maximumWidth) {
+    if((getCookie("device") === "mobile") || 
+            ((getCookie("device") !== "mobile") && 
+            ((getCookie("device") !== "desktop")) && ($(window).width() < 800))) {
+        pol.bindPopup(popupContent, {
+            maxWidth: 250
+        });
+        $("#buttonsubmitall").css({"visibility": "hidden"});
+        $(".leaflet-top").css({"visibility": "hidden"});
+        
+    } else if (typeof maximumWidth === 'undefined') {
+        pol.bindPopup(popupContent);
+    }  else {
+        pol.bindPopup(popupContent, {
+            maxWidth: maximumWidth
+        });
+    }
+}
+
+function popupCSS(smallText, textContent, buttons, largeText) {
+    $(".form-group").css("font-size", smallText);
+    $(".leaflet-popup-content").css("font-size", textContent);
+    $("input").css("font-size", textContent);
+    $("select").css("font-size", textContent);
+    $("option").css("font-size", textContent);
+    $("button#button-submit").css("font-size", buttons);
+    $("button#button-delete").css("font-size", buttons);
+    $("strong#incomplete").css("font-size", largeText);
+}
+
+function smallPopup(pol, popupContent, maximumWidth) {
+    popupSize(pol, popupContent, 200);
+    pol.openPopup();
+    
+    //frame adjustments
+    $(".form-group").css("margin", "1px 0px 10px");
+    $(".leaflet-popup-content").css("margin", "7px 13px");
+    
+    //likert scale adjustments
+    $("ul#likert.likert").css("padding", "0px 0px 0px 20px");
+    $("input[type='radio']").css("width", "10px");
+    $("input[type='radio']").css("height", "10px");
+    $("input[type='radio']").css("margin-top", "1px");
+    $("li").css("margin", "6px 0px 0px");
+    
+    //text adjustments
+    popupCSS("6pt", "7pt", "8pt", "9pt");
+}
+
+function mediumPopup(pol, popupContent, maximumWidth) {
+    popupSize(pol, popupContent, 250);
+    pol.openPopup();
+    
+    //frame adjustments
+    $(".form-group").css("margin", "3px 0px 15px");
+    $(".leaflet-popup-content").css("margin", "10px 16px");
+    
+    //likert scale adjustments
+    $("ul#likert.likert").css("padding", "0px 0px 0px 30px");
+    $("input[type='radio']").css("width", "15px");
+    $("input[type='radio']").css("height", "15px");
+    $("input[type='radio']").css("margin-top", "2px");
+    
+    //text adjustments
+    popupCSS("7pt", "8pt", "9pt", "10pt");
+}
+
+//default size popup, "large"
+function defaultPopup(pol, popupContent) {
+    popupSize(pol, popupContent);
+    pol.openPopup();
+}
+
+
 //Is the feature and its records in question incomplete?
 function incompleteTest(input) {
     //Accept two type of inputs: try{} is event of a layer, and catch(err){} is
@@ -448,53 +524,7 @@ class TrackZipCodes {
             return false;
         }
     }
-    
-    queryIncompleteness(zipcode) {
-
-        howManyNulls = 0;
-    
-        //iterate through all layers to find zipcodes
-        for (var i in geojson._layers){
-            thisLayer = geojson._layers[i];
-            theseProps = thisLayer.feature.properties;
-            theseAttrs = Object.keys(theseProps);
-            
-            //if a layer's zipcode matches, then iterate through that layer's
-            //other attributes to find possible nulls
-            if(zipcode === theseProps.zipcode) {
-                for (var i = 0; i < theseAttrs.length; i += 1) {
-                    //implement test whether layer is interactive or not
-                    //check submit button which changed interactivity to false
-                    attr = theseAttrs[i];
-                    value = theseProps[attr];
-                    if (value === null || value === "") {
-                        howManyNulls += 1;
-                    }
-                }
-            }
-        };
-        //this triggers if incompleteness is detected
-        if(howManyNulls !== 0) {
-            if(this.incompleteList.includes(zipcode)){
-                console.log(`${zipcode} already tagged as incomplete`);
-                return false;
-            } else {
-                this.incompleteList.push(zipcode);
-                console.log(`${zipcode} tagged as incomplete`);
-                return true;
-            }
-        //the zipcode is complete if this triggers
-        } else {
-            try {
-                //if successful, try to find zipcode for deletion
-                this.removeIncomplete(zipcode);
-
-            } catch(err) {
-                console.log(`${zipcode} is not incomplete`);
-            }
-        }
-    }
-    
+        
     removeIncomplete(zipcode) {
         if(this.incompleteList.includes(zipcode)){
             this.incompleteList.splice(this.incompleteList.indexOf(zipcode), 1 );
@@ -518,8 +548,9 @@ class TrackZipCodes {
         }
     }
     
-    //FINAL, works, delete the first version
-    queryIncompleteness2() {
+    //Query incompleteness of postal areas contained in this.zipCodeList.
+    //Return incompleted postal areas as a html p element
+    queryIncompleteness() {
 
         var result = "<p>";
 
@@ -559,6 +590,7 @@ class TrackZipCodes {
         return result + "</p>";
     }
 }
+
 
 
 //-----------------------

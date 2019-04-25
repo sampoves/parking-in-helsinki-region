@@ -10,8 +10,6 @@
     "lang_welcome5": "<b>NB!</b> Please note that <i>this survey does not study parking to respondent's home yard or to a place where respondent has a personal parking spot</i>.",
     "lang_welcome6": "I value your answer greatly. <br>Sincerely, Sampo Vesanen",
     "lang_welcome7": "For matters related to this survey, please contact me at: sampo.vesanen(at)helsinki.fi.",
-    "lang_buttoncloseinfo": "Stop showing this dialog box on survey startup",
-    "lang_buttonchangedevice": "Change device settings. WARNING! Refreshes page, all non-submitted records will be lost!",
  
     "lang_aboutH2": "<i class='icon atlas'></i>More on the subject",
     "lang_about1": "The aim of this survey is to find out characteristics about private car parking in Helsinki Capital Region with the central question being 'what are the spatial differences between regions of Helsinki Capital Region in parking times?'. The survey complies with 'door-to-door' approach – meant to measure travel times and distances – introduced in Salonen & Toivonen (2013), where the parking process is a part of the whole.",
@@ -54,8 +52,16 @@
     "lang_instr16": "If you are using mobile phone and your problems persist, please consider filling the survey out on a laptop/desktop computer (or vice versa). Testing indicates that the desktop version of this survey is the more robust than that on mobile phones.",
     "lang_instr17": "jfkspfj",
  
+    "lang_settings1": "<i class='icon wrench' style='margin-right: 10px;'></i>Settings",
+    "lang_settings2": "fdfd",
+    "lang_settings3": "fdfd",
+    "lang_settings4": "fdfd",
+    "lang_buttoncloseinfo": "Stop showing this dialog box on survey startup",
+    "lang_buttonchangedevice": "Change device settings. WARNING! Refreshes page, all non-submitted records will be lost!",
+    "lang_changepopupsize": "Popup size: ",
+ 
     "lang_basemap": "Basemaps",
-    "lang_overlay": "Overlay maps", 
+    "lang_overlay": "Overlay map", 
     "lang_postal": "Zip code areas",
     "lang_research": "Research area",
     

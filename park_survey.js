@@ -26,11 +26,11 @@ var popupContent =
         '<div class="likertcolumn">'+
             '<ul class="likert" id="likert">'+
                 //<label></label> makes possible to click on radio button texts as well as the radio button
-                '<label><li><input value="1" name="likert" type="radio"><span tkey="likert1">Extremely familiar</span></li></label>' +
-                '<label><li><input value="2" name="likert" type="radio"><span tkey="likert2">Moderately familiar</span></li></label>' +
-                '<label><li><input value="3" name="likert" type="radio"><span tkey="likert3">Somewhat familiar</span></li></label>' +
-                '<label><li><input value="4" name="likert" type="radio"><span tkey="likert4">Slightly familiar</span></li></label>' +
-                '<label><li><input value="5" name="likert" type="radio"><span tkey="likert5">Not at all familiar</span></li></label>' +
+                '<label><li><input id="likert" value="1" name="likert" type="radio"><span tkey="likert1">Extremely familiar</span></li></label>' +
+                '<label><li><input id="likert" value="2" name="likert" type="radio"><span tkey="likert2">Moderately familiar</span></li></label>' +
+                '<label><li><input id="likert" value="3" name="likert" type="radio"><span tkey="likert3">Somewhat familiar</span></li></label>' +
+                '<label><li><input id="likert" value="4" name="likert" type="radio"><span tkey="likert4">Slightly familiar</span></li></label>' +
+                '<label><li><input id="likert" value="5" name="likert" type="radio"><span tkey="likert5">Not at all familiar</span></li></label>' +
             '</ul>'+
         '</div>'+
     '</div>'+

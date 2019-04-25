@@ -10,9 +10,7 @@
     "lang_welcome5": "<b>Huom!</b> Huomaathan, että <i>kyselyssä ei kartoiteta kotipihapysäköintiä tai sellaista pysäköintiä, jossa vastaajalla on käytössä henkilökohtainen pysäköintipaikka</i>. Jätäthän tällaiset pysäköinnit huomiotta tätä kyselyä täyttäessäsi.",
     "lang_welcome6": "Kiitän vastauksestasi, <br>terveisin, Sampo Vesanen",
     "lang_welcome7": "Kyselyyn liittyvissä asioissa ota minuun yhteyttä sähköpostitse: sampo.vesanen(at)helsinki.fi.",
-    "lang_buttoncloseinfo": "Älä näytä tätä ruutua kyselysivulle saavuttuani",
-    "lang_buttonchangedevice": "Vaihda laiteasetuksia. VAROITUS! Avaa sivun uudelleen, tämä poistaa kaikki lähettämättömät vastauksesi!",
- 
+
     "lang_aboutH2": "<i class='icon atlas'></i>Lisää aiheesta",
     "lang_about1": "Tämän kyselyn tarkoituksena on tutkia henkilöauton pysäköintiin kuluvan ajan alueellista vaihtelua pääkaupunkiseudulla. Kyselyn lähtökohtana on Salosen ja Toivosen (2013) matka-aikojen mittaamiseen tarkoitettu ovelta ovelle -menetelmä, jonka osana henkilöauton pysäköimisprosessi on.",
     "lang_door2door": "Kuva 1. Henkilöautomatka esitettynä ovelta-ovelle-menetelmässä. Punainen alleviivaus merkitsee pysäköinnin osuutta prosessissa. Mukautettu Salosen ja Toivosen artikkelista (2013).",
@@ -54,8 +52,16 @@
     "lang_instr16": "Kysely <b>ei toimi</b> odotetulla tavalla seuraavilla selaimilla:<span class='redtext'><b> Internet Explorer (versio 11), Microsoft Edge (versio 42)</b></span>",
     "lang_instr17": "Kyselyn toimivuutta ei valitettavasti voida taata taskuun mahtuvilla laitteilla. Jos tästäkin huolimatta tahdot kokeilla lähettää pysäköintitietoja puhelimellasi, kyselyyn on tehty joitain puhelinkäyttöä helpottavia ominaisuuksia. Varoituksen sana, näiden ominaisuuksien toteutus on kaukana optimaalisesta. Vaihda laiteasetuksia -painike löytyy Tervetuloa-välilehden alaosasta. Suosittelen lähettämään valmistuneet postinumeroalueet muutaman valmiin alueen joukkoina yhden suuren lähetyksen sijaan.",
 
+    "lang_settings1": "<i class='icon wrench' style='margin-right: 10px;'></i>Asetuksia",
+    "lang_settings2": "fsdfdfd",
+    "lang_settings3": "fdffdsd",
+    "lang_settings4": "fdffd",
+    "lang_buttoncloseinfo": "Älä näytä tätä ruutua kyselysivulle saavuttuani",
+    "lang_buttonchangedevice": "Vaihda laiteasetuksia. VAROITUS! Avaa sivun uudelleen, tämä poistaa kaikki lähettämättömät vastauksesi!",
+    "lang_changepopupsize": "Ponnahdusikkunan koko: ",
+
     "lang_basemap": "Taustakartat",
-    "lang_overlay": "Aluejaot",
+    "lang_overlay": "Aluejako",
     "lang_postal": "Postinumeroalueet",
     "lang_research": "Tutkimusalue",
     

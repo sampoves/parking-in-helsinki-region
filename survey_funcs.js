@@ -82,9 +82,10 @@ function updateGeomColors() {
 }
 
 
-//-----------------------
-//MISCELLANEOUS FUNCTIONS
-//-----------------------
+
+//---------------------------
+//POPUP RELATED FUNCTIONALITY
+//---------------------------
 
 //attempt to resize popup. First, check if on mobile. If so, make popup narrow.
 //In other cases, give possibility to insert popup maxwidth parameter.
@@ -106,12 +107,14 @@ function popupSize(pol, popupContent, maximumWidth) {
     }
 }
 
+//this function changes font sizes of a popup. Must be run every time after
+//a popup is opened to have an effect on anything
 function popupCSS(smallText, textContent, buttons, largeText) {
     $(".form-group").css("font-size", smallText);
     $(".leaflet-popup-content").css("font-size", textContent);
-    $("input").css("font-size", textContent);
-    $("select").css("font-size", textContent);
-    $("option").css("font-size", textContent);
+    $("input#walktime, input#parktime").css("font-size", textContent);
+    $("select").css("font-size", textContent); //dropdown
+    $("option").css("font-size", textContent); //dropdown
     $("button#button-submit").css("font-size", buttons);
     $("button#button-delete").css("font-size", buttons);
     $("strong#incomplete").css("font-size", largeText);
@@ -123,13 +126,14 @@ function smallPopup(pol, popupContent, maximumWidth) {
     
     //frame adjustments
     $(".form-group").css("margin", "1px 0px 10px");
-    $(".leaflet-popup-content").css("margin", "7px 13px");
+    $(".leaflet-popup-content").css("margin", "6px 12px");
+    $("button#button-delete").css("margin", "5px 0px 0px");
     
     //likert scale adjustments
     $("ul#likert.likert").css("padding", "0px 0px 0px 20px");
-    $("input[type='radio']").css("width", "10px");
-    $("input[type='radio']").css("height", "10px");
-    $("input[type='radio']").css("margin-top", "1px");
+    $("input#likert[type='radio']").css("width", "10px");
+    $("input#likert[type='radio']").css("height", "10px");
+    $("input#likert[type='radio']").css("margin-top", "1px");
     $("li").css("margin", "6px 0px 0px");
     
     //text adjustments
@@ -143,12 +147,13 @@ function mediumPopup(pol, popupContent, maximumWidth) {
     //frame adjustments
     $(".form-group").css("margin", "3px 0px 15px");
     $(".leaflet-popup-content").css("margin", "10px 16px");
+    $("button#button-delete").css("margin", "10px 0px 0px");
     
     //likert scale adjustments
     $("ul#likert.likert").css("padding", "0px 0px 0px 30px");
-    $("input[type='radio']").css("width", "15px");
-    $("input[type='radio']").css("height", "15px");
-    $("input[type='radio']").css("margin-top", "2px");
+    $("input#likert[type='radio']").css("width", "15px");
+    $("input#likert[type='radio']").css("height", "15px");
+    $("input#likert[type='radio']").css("margin-top", "2px");
     
     //text adjustments
     popupCSS("7pt", "8pt", "9pt", "10pt");
@@ -160,6 +165,11 @@ function defaultPopup(pol, popupContent) {
     pol.openPopup();
 }
 
+
+
+//-----------------------
+//MISCELLANEOUS FUNCTIONS
+//-----------------------
 
 //Is the feature and its records in question incomplete?
 function incompleteTest(input) {
@@ -254,28 +264,26 @@ function initialiseInfo(){
     });
     
     // listen to "close this info window" button 
-    var buttonResizepopup = L.DomUtil.get('button-changepopupsize');
-    L.DomEvent.addListener(buttonResizepopup, "click", function (e){
+    document.getElementById("button-changepopupsize").onclick = function (e){
         
         if (getCookie("popupsize") === "default") {
             create_cookie("popupsize", "small", 90, "/");
             $("div.popupsize").attr("content", "small");
             console.log("Changed popup size to small");
-            return;
             
         } else if (getCookie("popupsize") === "small") {
             create_cookie("popupsize", "medium", 90, "/");
             $("div.popupsize").attr("content", "medium");
             console.log("Changed popup size to medium");
-            return;
             
         } else if (getCookie("popupsize") === "medium") {
             create_cookie("popupsize", "default", 90, "/");
-            $("div.popupsize").attr("content", "default");
-            console.log("Changed popup size to default (large)");
-            return;
+            $("div.popupsize").attr("content", "large (default)");
+            console.log("Changed popup size to large (default)");
         }
-    });
+        //translate popup size value
+        cssPopupsizeValue();
+    };
     
     //listen to change device settings button. This only creates or changes
     //a cookie "device" and then reloads the whole page. mobileCheck() then
@@ -425,40 +433,67 @@ function changeOfLabels(){
 
 // Translator function
 // idea from here: https://github.com/dakk/jquery-multilang
-var translate = function(jsdata) {	
-        $("[tkey]").each(function (index) {
-            var strTr = jsdata[$(this).attr('tkey')];
-            $(this).html(strTr);
-        });
-        //handle
-        //- changing of thankyou.png
-        //- changing of survey screenshot in infobox
-        //- geocoder translations
-        //- jquery dialog title translations
-        //- popup number field placeholders
-        //- success dialog box button translations
-        if(currentLang === "en"){
-            $("div.sucimage").css("content", "url('images/thankyou.png')");
-            $("#survey_screen").attr("src", "images/survey_en.png");
-            $("div.leaflet-control-geocoder-form").children(0).attr("placeholder", "Please enter a place or address");
-            $("div.leaflet-control-geocoder-form-no-error").text("Your query produced no results.");
-            $("#ui-id-4.ui-dialog-title").text("Parking private cars in Helsinki Capital Region"); //infobox
-            $(".submitclose").html("Close");
-            $(".viewresults").html("View your sent data (opens in new window)");
-            $("#ui-id-5").text("Submit success!"); //success
-            $(".form-control").attr("placeholder", "Insert value (0-99)");
-        } else {
-            $("div.sucimage").css("content", "url('images/thankyou_fi.png')");
-            $("#survey_screen").attr("src", "images/survey_fi.png");
-            $("div.leaflet-control-geocoder-form").children(0).attr("placeholder", "Syötä paikka tai osoite");
-            $("div.leaflet-control-geocoder-form-no-error").text("Hakusi ei tuottanut tuloksia.");
-            $("#ui-id-4.ui-dialog-title").text("Henkilöautojen pysäköinti pääkaupunkiseudulla"); //infobox
-            $(".submitclose").html("Sulje");
-            $(".viewresults").html("Näytä raportti lähetetystä aineistosta (avautuu uuteen ikkunaan)");
-            $("#ui-id-5").text("Lähetys onnistui!"); //success
-            $(".form-control").attr("placeholder", "Syötä numero (0-99)");
-        }
+var translate = function(jsdata) {
+    $("[tkey]").each(function (index) {
+        var strTr = jsdata[$(this).attr('tkey')];
+        $(this).html(strTr);
+    });
+    //handle
+    //- changing of thankyou.png
+    //- changing of survey screenshot in infobox
+    //- geocoder translations
+    //- jquery dialog title translations
+    //- popup number field placeholders
+    //- success dialog box button translations
+    if(currentLang === "en"){
+        $("div.sucimage").css("content", "url('images/thankyou.png')");
+        $("#survey_screen").attr("src", "images/survey_en.png");
+        $("div.leaflet-control-geocoder-form").children(0).attr("placeholder", "Please enter a place or address");
+        $("div.leaflet-control-geocoder-form-no-error").text("Your query produced no results.");
+        $("#ui-id-5.ui-dialog-title").text("Parking private cars in Helsinki Capital Region"); //infobox
+        $(".submitclose").html("Close");
+        $(".viewresults").html("View your sent data (opens in new window)");
+        $("#ui-id-6").text("Submit success!"); //success
+        $(".form-control").attr("placeholder", "Insert value (0-99)");
+        cssPopupsizeValue();
+        
+    } else {
+        $("div.sucimage").css("content", "url('images/thankyou_fi.png')");
+        $("#survey_screen").attr("src", "images/survey_fi.png");
+        $("div.leaflet-control-geocoder-form").children(0).attr("placeholder", "Syötä paikka tai osoite");
+        $("div.leaflet-control-geocoder-form-no-error").text("Hakusi ei tuottanut tuloksia.");
+        $("#ui-id-5.ui-dialog-title").text("Henkilöautojen pysäköinti pääkaupunkiseudulla"); //infobox
+        $(".submitclose").html("Sulje");
+        $(".viewresults").html("Näytä raportti lähetetystä aineistosta (avautuu uuteen ikkunaan)");
+        $("#ui-id-6").text("Lähetys onnistui!"); //success
+        $(".form-control").attr("placeholder", "Syötä numero (0-99)");
+        cssPopupsizeValue();
+    }
 };
+
+//As the value about popup size, shown in Settings tab, is stored in css, we
+//need this complicated way to translate it
+function cssPopupsizeValue() {
+    var popupsize = $(document).find(".popupsize").attr("content");
+    if(currentLang === "en") {
+        if (popupsize === "suuri (oletus)") {
+            $(document).find(".popupsize").attr("content", "large (default)");
+        } else if (popupsize === "keskikokoinen") {
+            $(document).find(".popupsize").attr("content", "medium");
+        } else if (popupsize === "pieni") {
+            $(document).find(".popupsize").attr("content", "small");
+        }
+    } else {
+        //English
+        if (popupsize === "large (default)") {
+            $(document).find(".popupsize").attr("content", "suuri (oletus)");
+        } else if (popupsize === "medium") {
+            $(document).find(".popupsize").attr("content", "keskikokoinen");
+        } else if (popupsize === "small") {
+            $(document).find(".popupsize").attr("content", "pieni");
+        }
+    }
+}
 
 // this function can be used with events and such where language does not update
 // automatically. This is true, for example, when updating submit button or

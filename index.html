@@ -104,7 +104,7 @@ Helsinki Capital Region".
 
             //Show survey version in jQuery info window. Also, execute visitor
             //counter code.
-            var survey_version = "Development version 22.4.2019. Database connection live.";
+            var survey_version = "Development version 26.4.2019. Database connection live.";
             window.onload = function() {
                 document.getElementById('version').innerHTML = survey_version;
                 
@@ -256,28 +256,26 @@ Helsinki Capital Region".
             });
             
             
-            //COOKIES POPUPSIZE
+            //COOKIES POPUP SIZE. SURVEY REMEMBERS WHICH SIZE USER HAS SELECTED
             $(document).ready(function() {
                 if (getCookie("popupsize") === "default") {
-                    $("div.popupsize").attr("content", "default");
-                    //window.popupsize = "default";
+                    $("div.popupsize").attr("content", "large (default)");
                     console.log("Popup size value default detected");
 
                 } else if (getCookie("popupsize") === "small") {
                     $("div.popupsize").attr("content", "small");
-                    //window.popupsize = "small";
                     console.log("Popup size value small detected");
 
                 } else if (getCookie("popupsize") === "medium") {
                     $("div.popupsize").attr("content", "medium");
-                    //window.popupsize = "medium";
                     console.log("Popup size value medium detected");
                 } else {
                     create_cookie("popupsize", "default", 90, "/");
                     $("div.popupsize").attr("content", "default");
-                    //window.popupsize = "medium";
                     console.log("Popup size value not found, set default size");
                 }
+                //translate popup size value
+                cssPopupsizeValue();
             });
             
 
@@ -603,7 +601,7 @@ Helsinki Capital Region".
                 // construct popup zip area code and name and the html element
                 currentZip = pol.feature.properties.zipcode;
                 currentAreaName = getAreaName(currentZip);
-                zipdiv = `<div tkey="lang_zipArea">Zip code area:</div> ${currentAreaName}, ${currentZip}`;
+                html = `<div tkey="lang_zipArea">Zip code area:</div> ${currentAreaName}, ${currentZip}`;
                 
                 if(pol.hasOwnProperty('_popup')){
                     pol.unbindPopup();
@@ -613,12 +611,22 @@ Helsinki Capital Region".
                 //if this is the case
                 if(!properties.likert || !properties.parkspot || 
                         !properties.parktime || !properties.walktime){
-                    pol.bindPopup(zipdiv + popupContent + missingStuff);
+                    if (getCookie("popupsize") === "default") {
+                        defaultPopup(pol, html + popupContent + missingStuff);
+                    } else if(getCookie("popupsize") === "medium") {
+                        mediumPopup(pol, html + popupContent + missingStuff);
+                    } else if (getCookie("popupsize") === "small") {
+                        smallPopup(pol, html + popupContent + missingStuff);
+                    }
                 } else {
-                    pol.bindPopup(zipdiv + popupContent);
+                    if (getCookie("popupsize") === "default") {
+                        defaultPopup(pol, html + popupContent);
+                    } else if (getCookie("popupsize") === "medium") {
+                        mediumPopup(pol, html + popupContent);
+                    } else if (getCookie("popupsize") === "small") {
+                        smallPopup(pol, html + popupContent);
+                    }
                 }
-                
-                pol.openPopup();
                 
                 //use jQuery to listen to current popup and its close button.
                 //This way we can communicate correctly with the function
@@ -975,9 +983,18 @@ Helsinki Capital Region".
                 </div>
                 <div id="tabs-4" class="tabspanel">
                     <H2 tkey="lang_settings1">Settings</H2>
-                    <button id="button-closeinfo" class="icon window-close" type="button" tkey="lang_buttoncloseinfo">Stop showing this dialog box at startup</button>
-                    <button id="button-changepopupsize" class="icon window-close" type="button" tkey="lang_changepopupsize"><div class="popupsize">Popup size: </div></button>
-                    <button id="button-changedevice" class="icon mobile-alt" type="button" tkey="lang_buttonchangedevice">Change device settings. WARNING! Refreshes page, all non-submitted records will be lost!</button>
+                    <div style="background: 15px #e8e8e8; padding: 10px;margin: 20px;border-radius: 5px;box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.2);">
+                        <p tkey="lang_settings2">fdfd</p>
+                        <button id="button-closeinfo" class="icon window-close" type="button" tkey="lang_buttoncloseinfo">Stop showing this dialog box at startup</button>
+                    </div>
+                    <div style="background: 15px #e8e8e8; padding: 10px;margin: 20px;border-radius: 5px;box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.2);">
+                        <p tkey="lang_settings3">fdfdfdfd</p>
+                        <button id="button-changepopupsize" class="icon expand-arrows-alt" type="button"><div class="popupsize" tkey="lang_changepopupsize">Popup size: </div></button>
+                    </div>
+                    <div style="background: 15px #e8e8e8; padding: 10px;margin: 20px;border-radius: 5px;box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.2);">
+                        <p tkey="lang_settings4">fdfdfdfd</p>
+                        <button id="button-changedevice" class="icon mobile-alt" type="button" tkey="lang_buttonchangedevice">Change device settings. WARNING! Refreshes page, all non-submitted records will be lost!</button>
+                    </div>
                 </div>
             </div>
         </div>

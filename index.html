@@ -254,6 +254,32 @@ Helsinki Capital Region".
                     });
                 }
             });
+            
+            
+            //COOKIES POPUPSIZE
+            $(document).ready(function() {
+                if (getCookie("popupsize") === "default") {
+                    $("div.popupsize").attr("content", "default");
+                    //window.popupsize = "default";
+                    console.log("Popup size value default detected");
+
+                } else if (getCookie("popupsize") === "small") {
+                    $("div.popupsize").attr("content", "small");
+                    //window.popupsize = "small";
+                    console.log("Popup size value small detected");
+
+                } else if (getCookie("popupsize") === "medium") {
+                    $("div.popupsize").attr("content", "medium");
+                    //window.popupsize = "medium";
+                    console.log("Popup size value medium detected");
+                } else {
+                    create_cookie("popupsize", "default", 90, "/");
+                    $("div.popupsize").attr("content", "default");
+                    //window.popupsize = "medium";
+                    console.log("Popup size value not found, set default size");
+                }
+            });
+            
 
             //COOKIES: SET USER SETTINGS STRAIGHT WITH COOKIE VALUES
             //use .addTo() to give mymap the correct cookie value
@@ -577,7 +603,7 @@ Helsinki Capital Region".
                 // construct popup zip area code and name and the html element
                 currentZip = pol.feature.properties.zipcode;
                 currentAreaName = getAreaName(currentZip);
-                html = `<div tkey="lang_zipArea">Zip code area:</div> ${currentAreaName}, ${currentZip}`;
+                zipdiv = `<div tkey="lang_zipArea">Zip code area:</div> ${currentAreaName}, ${currentZip}`;
                 
                 if(pol.hasOwnProperty('_popup')){
                     pol.unbindPopup();
@@ -587,14 +613,12 @@ Helsinki Capital Region".
                 //if this is the case
                 if(!properties.likert || !properties.parkspot || 
                         !properties.parktime || !properties.walktime){
-                    defaultPopup(pol, html + popupContent + missingStuff);
-                    //popupSize(pol, html + popupContent + missingStuff);
+                    pol.bindPopup(zipdiv + popupContent + missingStuff);
                 } else {
-                    defaultPopup(pol, html + popupContent);
-                    //popupSize(pol, html + popupContent);
+                    pol.bindPopup(zipdiv + popupContent);
                 }
                 
-                //pol.openPopup();
+                pol.openPopup();
                 
                 //use jQuery to listen to current popup and its close button.
                 //This way we can communicate correctly with the function

@@ -253,6 +253,30 @@ function initialiseInfo(){
         infoButton.state('infoOpen');
     });
     
+    // listen to "close this info window" button 
+    var buttonResizepopup = L.DomUtil.get('button-changepopupsize');
+    L.DomEvent.addListener(buttonResizepopup, "click", function (e){
+        
+        if (getCookie("popupsize") === "default") {
+            create_cookie("popupsize", "small", 90, "/");
+            $("div.popupsize").attr("content", "small");
+            console.log("Changed popup size to small");
+            return;
+            
+        } else if (getCookie("popupsize") === "small") {
+            create_cookie("popupsize", "medium", 90, "/");
+            $("div.popupsize").attr("content", "medium");
+            console.log("Changed popup size to medium");
+            return;
+            
+        } else if (getCookie("popupsize") === "medium") {
+            create_cookie("popupsize", "default", 90, "/");
+            $("div.popupsize").attr("content", "default");
+            console.log("Changed popup size to default (large)");
+            return;
+        }
+    });
+    
     //listen to change device settings button. This only creates or changes
     //a cookie "device" and then reloads the whole page. mobileCheck() then
     //determines the course of action

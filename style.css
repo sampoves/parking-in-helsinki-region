@@ -185,6 +185,13 @@ reliably */
     margin-right: 5px;
 }
 
+.wrench::before {
+    font-weight: 900;
+    color: grey;
+    content: "\f0ad";
+    font-size: 1.0em;
+}
+
 
 /*This placeholder icon works in tandem with unicode identifier in input type 
 number in park_survey.js. This placeholder icon does not need other settings
@@ -393,6 +400,10 @@ button:hover {
     color: white;
     font-family: 'Montserrat', sans-serif;
 }
+
+.popupsize::after {
+   content: "default";
+}​
 
 
 /*--------------*/

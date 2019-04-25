@@ -95,8 +95,7 @@ function popupSize(pol, popupContent, maximumWidth) {
         pol.bindPopup(popupContent, {
             maxWidth: 250
         });
-        $("#buttonsubmitall").css({"visibility": "hidden"});
-        $(".leaflet-top").css({"visibility": "hidden"});
+        hideUI();
         
     } else if (typeof maximumWidth === 'undefined') {
         pol.bindPopup(popupContent);
@@ -310,42 +309,18 @@ function mobileCheck() {
 }
 
 
-function popupMobileCheck() {
-    //are we using mobile? If yes, resize popup when it is opened.
-    //NB! This function is quite broken. It makes mobile phone experience 
-    //technically possible, but still quite unwieldy.
-    if((getCookie("device") === "mobile") || 
-            ((getCookie("device") !== "mobile") && 
-            ((getCookie("device") !== "desktop")) && ($(window).width() < 800))) {
-        
-        //frame
-        $(window).resize(function() {
-                $('.leaflet-popup-content-wrapper').css({
-                        'width': $(window).width(),
-                        'height': $(window).height(),
-                        'left': '0px',
-                        'top':'0px'
-                });
-        }).resize();
-        //content
-        $(window).resize(function() {
-                $('.leaflet-popup-content').css({
-                        'width': $(window).width(),
-                        'height': $(window).height(),
-                        'left': '0px',
-                        'top':'0px'
-                });
-        }).resize();
-        $("#buttonsubmitall").css({"visibility": "hidden"});
-        $(".leaflet-top").css({"visibility": "hidden"});
-    }
-}
-
-
 // Mobile phone popup hides map elements. This restores them.
 function showUI() {
+    $("div.transbox").css({"visibility": "visible"});
     $(".leaflet-top").css({"visibility": "visible"});
     $("#buttonsubmitall").css({"visibility": "visible"});
+}
+
+// hides UI elements.
+function hideUI() {
+    $("div.transbox").css({"visibility": "hidden"});
+    $("#buttonsubmitall").css({"visibility": "hidden"});
+    $(".leaflet-top").css({"visibility": "hidden"});
 }
 
 

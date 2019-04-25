@@ -587,15 +587,14 @@ Helsinki Capital Region".
                 //if this is the case
                 if(!properties.likert || !properties.parkspot || 
                         !properties.parktime || !properties.walktime){
-                    mediumPopup(pol, html + popupContent + missingStuff);
+                    defaultPopup(pol, html + popupContent + missingStuff);
                     //popupSize(pol, html + popupContent + missingStuff);
                 } else {
-                    smallPopup(pol, html + popupContent);
+                    defaultPopup(pol, html + popupContent);
                     //popupSize(pol, html + popupContent);
                 }
                 
                 //pol.openPopup();
-                //popupMobileCheck();
                 
                 //use jQuery to listen to current popup and its close button.
                 //This way we can communicate correctly with the function
@@ -884,6 +883,7 @@ Helsinki Capital Region".
                     <li><a href="#tabs-1" tkey="lang_tab1">Tervetuloa kyselyyn!</a></li>
                     <li><a href="#tabs-2" tkey="lang_tab2">Tutkimuksesta</a></li>
                     <li><a href="#tabs-3" tkey="lang_tab3">Käyttöohjeet</a></li>
+                    <li><a href="#tabs-4"><i class='icon wrench'></i></a></li>
                 </ul>
                 <div id="tabs-1" class="tabspanel">
                     <p id="version" tkey="lang_version"></p>
@@ -896,8 +896,6 @@ Helsinki Capital Region".
                     <p tkey="lang_welcome6">Kiitän vastauksestasi, <br>terveisin, Sampo Vesanen</p>
                     <p tkey="lang_welcome7">Kyselyyn liittyvissä asioissa ota minuun yhteyttä sähköpostitse: sampo.vesanen(at)helsinki.fi</p>
                     <button id="button-closeinfo" class="icon window-close" type="button" tkey="lang_buttoncloseinfo">Stop showing this dialog box at startup</button>
-                    <button id="button-changepopupsize" class="icon window-close" type="button" tkey="lang_changepopupsize">Change popup size</button>
-                    <button id="button-changedevice" class="icon mobile-alt" type="button" tkey="lang_buttonchangedevice">Change device settings. WARNING! Refreshes page, all non-submitted records will be lost!</button>
                 </div>
                 <div id="tabs-2" class="tabspanel">
                     <H2 tkey="lang_aboutH2">More on the subject</H2>
@@ -950,6 +948,12 @@ Helsinki Capital Region".
                         </ul>
                         <li tkey="lang_instr17">Jos käytät älypuhelinta lomakkeen täyttämiseen ja ongelmasi eivät hälvene vaikka olet seurannut ylläolevia ohjeita, kokeile täyttää lomake pöytä- tai kannettavalla tietokoneella (vaihtoehtoisesti voit kokeilla puhelinta, jos tietokoneella lomake tuottaa ongelmia). Testieni mukaan tietokoneversio tästä lomakkeesta on käyttövarmempi kuin älypuhelimen.</li>
                     </ul>
+                </div>
+                <div id="tabs-4" class="tabspanel">
+                    <H2 tkey="lang_settings1">Settings</H2>
+                    <button id="button-closeinfo" class="icon window-close" type="button" tkey="lang_buttoncloseinfo">Stop showing this dialog box at startup</button>
+                    <button id="button-changepopupsize" class="icon window-close" type="button" tkey="lang_changepopupsize"><div class="popupsize">Popup size: </div></button>
+                    <button id="button-changedevice" class="icon mobile-alt" type="button" tkey="lang_buttonchangedevice">Change device settings. WARNING! Refreshes page, all non-submitted records will be lost!</button>
                 </div>
             </div>
         </div>

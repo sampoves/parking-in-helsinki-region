@@ -39,7 +39,8 @@ My wish is also to provide this survey to anybody who might benefit from it in t
 * Basic Leaflet functionality 
   - Zoom in and out controls
   - Layer control
-    - Three base layer choices (Stamen Terrain, CartoDB dark_matter, OpenStreetMap)
+    - Three base map tile layer choices (Stamen Terrain, CartoDB dark_matter, OpenStreetMap)
+    - Different styling for postal code areas GeoJSON layer depending on the base map tile layer
     - Possibility to switch off postal code areas layer
 * Info screen
   - Tab-based dialog window
@@ -50,6 +51,8 @@ My wish is also to provide this survey to anybody who might benefit from it in t
     - Enter or leave an experimental mobile mode
 * Multilingual
   - All strings translated between English and Finnish with the press of a button
+  - Most of the translated strings are easily edited in their respective json files
+    - Rest of translations are located inside the function `translate()`
 * Search functionality
   - Search for locations and addresses in the research area
 * Cookies

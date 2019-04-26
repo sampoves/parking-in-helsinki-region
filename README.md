@@ -67,6 +67,8 @@ My wish is also to provide this survey to anybody who might benefit from it in t
 * The map itself
   - Keep track of unfinished postal code areas and show a notification if any are found
   - Track postal code area state as orange, unfinished and green, finished
+  - Prevent popup being open at the same time as info screen
+  - If a popup is open, a new one can be only opened once the last is closed (this one is important for how the values are saved to each postal code area) 
 * The survey popup
   - Show a "this entry is unfinished" text if postal area questions are unfinished
   - Prevent illegal values in input number fields

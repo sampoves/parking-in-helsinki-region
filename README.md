@@ -11,18 +11,23 @@ My wish is also to provide this survey to anybody who might benefit from it in t
 
 
 ## Project contents
-### Leaflet.js Parking survey consists of
-* index.html - main HTML framework, jQuery HTML content and a lot of JavaScript
-* park_survey.js - L.Popup requires HTML code as a variable. This file contains the Popup parking survey in HTML as a variable
-* survey_funcs.js - Contains custom functions used by js script located in index.html
-* survey_vars.js - Contains many static variables which are delegated here to declutter index.html
-* style.css - Survey style sheet
-* en.json - English language strings
-* fi.json - Finnish language strings
+### Located in /var/www/, the survey file structure is as follows
 
-### GeoJSON data
-* pno_dissolve.geojson - Research area as the four municipalities
-* pno_research_area.geojson - Postal areas for the research area
+- /var/www/
+  - insert.php
+  - config.php
+  - /var/www/html/
+    - index.html - main HTML framework, jQuery HTML content and a lot of JavaScript
+    - park_survey.js - L.Popup requires HTML code as a variable. This file contains the Popup parking survey in HTML as a variable
+    - survey_funcs.js - Contains custom functions used by js script located in index.html
+    - survey_vars.js - Contains many static variables which are delegated here to declutter index.html
+    - style.css - Survey style sheet
+    - en.json - English language strings
+    - fi.json - Finnish language strings
+    - pno_dissolve.geojson - Research area as the four municipalities
+    - pno_research_area.geojson - Postal areas for the research area
+    - /var/www/html/images
+
 
 ## Detailed description of code
 

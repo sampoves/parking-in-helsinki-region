@@ -33,7 +33,48 @@ My wish is also to provide this survey to anybody who might benefit from it in t
 
 ## Main features of the survey
 
-* gfdssf
+### Front end
+* Basic Leaflet functionality 
+  - Zoom in and out controls
+  - Layer control
+    - Three base layer choices (Stamen Terrain, CartoDB dark_matter, OpenStreetMap)
+    - Possibility to switch off postal code areas layer
+* Info screen
+  - Tab-based dialog window
+  - Detailed information about the scientific side of the survey and user instructions
+  - Settings tab with the possibility to
+    - Prevent info screen from popping up each time user visits the survey
+    - Change the size of survey popup (small/medium/large (default))
+    - Enter or leave an experimental mobile mode
+* Multilingual
+  - All strings translated between English and Finnish with the press of a button
+* Search functionality
+  - Search for locations and addresses in the research area
+* Cookies
+  - Remember user preferences for
+    - Language choice
+    - Basemap choice
+    - Popup size
+    - Whether to open info screen at startup
+* Somewhat passable mobile compatibility
+  - Enter an experimental mobile mode where jQuery dialog boxes are fitted for the entire screen
+  - Adjust popup size
+* The map view
+  - hgfhgf
+
+
+### Server side
+* Validation of received response
+  - Deny empty POST requests, redirect to index.html
+  - Only accept specific variables in the `$_POST`
+  - Validation of received values with `filter_var()` or regex `preg_match`
+  - Setting up MySQL database connection and table insert out of users' view
+  - Reporting of success or failure
+* Visitor counter
+  - Deny empty POST requests, redirect to index.html
+  - Setting up MySQL database connection and table insert out of users' view
+
+
 
 ## Detailed description of code
 

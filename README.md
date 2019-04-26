@@ -17,11 +17,13 @@ My wish is also to provide this survey to anybody who might benefit from it in t
   - insert.php - MySQL insertion function. Keep out of survey users' view
   - config.php - set up connection to MySQL database. Keep out of survey users' view
   - /var/www/html/
-    - index.html - main HTML framework, jQuery HTML content and a lot of JavaScript
-    - park_survey.js - L.Popup requires HTML code as a variable. This file contains the Popup parking survey in HTML as a variable
-    - survey_funcs.js - Contains custom functions used by js script located in index.html
+    - index.html - Main HTML framework, jQuery HTML content and a lot of JavaScript
+    - park_survey.js - L.Popup requires HTML code as a variable. This file contains the parking survey popup in HTML as a variable
+    - survey_funcs.js - Contains custom functions used by the script located in index.html
     - survey_vars.js - Contains many static variables which are delegated here to declutter index.html
     - style.css - Survey style sheet
+    - insert_mysql.php - Receive user response on server side, validation of response
+    - unique_visitors.php - Visitor counter
     - en.json - English language strings
     - fi.json - Finnish language strings
     - pno_dissolve.geojson - Research area as the four municipalities

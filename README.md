@@ -14,23 +14,26 @@ My wish is also to provide this survey to anybody who might benefit from it in t
 ### Located in /var/www/, the survey file structure is as follows
 
 - /var/www/
-  - insert.php - MySQL insertion function. Keep out of survey users' view
-  - config.php - set up connection to MySQL database. Keep out of survey users' view
+  - _insert.php_ - MySQL insertion function. Keep out of survey users' view
+  - _config.php_ - set up connection to MySQL database. Keep out of survey users' view
   - /var/www/html/
-    - index.html - Main HTML framework, jQuery HTML content and a lot of JavaScript
-    - park_survey.js - L.Popup requires HTML code as a variable. This file contains the parking survey popup in HTML as a variable
-    - survey_funcs.js - Contains custom functions used by the script located in index.html
-    - survey_vars.js - Contains many static variables which are delegated here to declutter index.html
-    - style.css - Survey style sheet
-    - insert_mysql.php - Receive user response on server side, validation of response
-    - unique_visitors.php - Visitor counter
-    - en.json - English language strings
-    - fi.json - Finnish language strings
-    - pno_dissolve.geojson - Research area as the four municipalities
-    - pno_research_area.geojson - Postal areas for the research area
+    - _index.html_ - Main HTML framework, jQuery HTML content and a lot of JavaScript
+    - _park_survey.js_ - L.Popup requires HTML code as a variable. This file contains the parking survey popup in HTML as a variable
+    - _survey_funcs.js_ - Contains custom functions used by the script located in index.html
+    - _survey_vars.js_ - Contains many static variables which are delegated here to declutter index.html
+    - _style.css_ - Survey style sheet
+    - _insert_mysql.php_ - Receive user response on server side, validation of response
+    - _unique_visitors.php_ - Visitor counter
+    - _en.json_ - English language strings
+    - _fi.json_ - Finnish language strings
+    - _pno_dissolve.geojson_ - Research area as the four municipalities
+    - _pno_research_area.geojson_ - Postal areas for the research area
     - /var/www/html/images
       - project images, such as thank you messages and images for instructions
 
+## Main features of the survey
+
+* gfdssf
 
 ## Detailed description of code
 

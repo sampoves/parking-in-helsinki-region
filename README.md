@@ -1,10 +1,14 @@
 # Leaflet-based web map survey: parking-in-helsinki-region
-Current project:
-Leaflet.js based web survey to acquire information about parking in Helsinki Capital Region.
+This is a Leaflet based web map survey to acquire responses in form of areas. The project was created for a master's thesis in the field of geoinformatics for the University of Helsinki. In this survey users respond a few questions about their usual parking habits in Helsinki Capital Region.
 
 ## About
 
-plaalplala
+After developing the research plan for my MSc thesis it quickly became apparent that I need to gather research data with a spatial dimension and in a large scale. Considering this it struck me by surprise that no web map surveys exist which could serve my purpose. Sure, there are commercial ways to go about this, but these easily cost hundreds of euros/dollars so that really wasn't an option. For the reasons of budget and a requirement to produce a modern user survey, I set out to program my own web map survey.
+
+A short word of a disclaimer: This is exactly the first time I have ever programmed JavaScript or used Leaflet in any meaningful manner. In addition, this project had me involved for the first time with web server management, Ubuntu command shell, Apache, MySQL and PHP. I have been in the programming scene barely two years and for these reasons it is certain that you will find all sorts of unoptimised code, novice level code structuring and so forth. I have, however, learned so much from this project and I wish to take my skills further.
+
+My wish is also to provide this survey to anybody who might benefit for it in their unrelated projects or if someone just needs to set up a similar research survey. Hopefully this will be of use to you.
+
 
 ## Project contents
 ### Leaflet.js Parking survey consists of

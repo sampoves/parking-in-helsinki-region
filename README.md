@@ -61,13 +61,14 @@ My wish is also to provide this survey to anybody who might benefit from it in t
 * Somewhat passable mobile compatibility
   - Enter an experimental mobile mode where jQuery dialog boxes are fitted for the entire screen
   - Adjust popup size
+  - Hide user interface buttons when popup is open. Bring interface back with x, save changes or delete these records buttons
 
 #### The map view
 * The map itself
   - Keep track of unfinished postal code areas and show a notification if any are found
-  - Track postal code area state as orange, unfinished and green, finished. Show a "this entry is unfinished" text if unfinished
-  
+  - Track postal code area state as orange, unfinished and green, finished
 * The survey popup
+  - Show a "this entry is unfinished" text if postal area questions are unfinished
   - Prevent illegal values in input number fields
   - Save functionality with "save changes" button, x button or clicking away from the popup
   - Deletion of the data in current postal code area

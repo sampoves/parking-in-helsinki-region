@@ -2,6 +2,10 @@
 Current project:
 Leaflet.js based web survey to acquire information about parking in Helsinki Capital Region.
 
+## About
+
+plaalplala
+
 ## Project contents
 ### Leaflet.js Parking survey consists of
 * index.html - main HTML framework, jQuery HTML content and a lot of JavaScript
@@ -15,6 +19,10 @@ Leaflet.js based web survey to acquire information about parking in Helsinki Cap
 ### GeoJSON data
 * pno_dissolve.geojson - Research area as the four municipalities
 * pno_research_area.geojson - Postal areas for the research area
+
+## Detailed description of code
+
+fdsafdopfd
 
 ## Libraries and software
 ### This survey makes use of

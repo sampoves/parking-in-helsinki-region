@@ -27,10 +27,10 @@ This survey makes use of
   - Font Awesome 5.8.1
   - Montserrat - Google Fonts
 * Server side software
-  - Ubuntu 16.04
-  - Apache HTTP Server
-  - MySQL
-  - PHP
+  - Ubuntu 16.04.6 LTS
+  - Apache HTTP Server 2.4.18 (Ubuntu)
+  - MySQL 5.7.25-0ubuntu0.16.04.2
+  - PHP 7.0.33-0ubuntu0.16.04.3
 
 Notes on where survey functionality is not optimal
 * The submit records button always results in a success. In other words, a failure screen is not developed in this survey. The normal survey use should be impervious to incorrect data being sent to the server. In any case, the success screen always shows serverside results how many successes and failures the post operation had

@@ -34,6 +34,8 @@ My wish is also to provide this survey to anybody who might benefit from it in t
 ## Main features of the survey
 
 ### Front end
+
+#### User experience functionality
 * Basic Leaflet functionality 
   - Zoom in and out controls
   - Layer control
@@ -59,9 +61,20 @@ My wish is also to provide this survey to anybody who might benefit from it in t
 * Somewhat passable mobile compatibility
   - Enter an experimental mobile mode where jQuery dialog boxes are fitted for the entire screen
   - Adjust popup size
-* The map view
-  - hgfhgf
 
+#### The map view
+* The map itself
+  - Keep track of unfinished postal code areas and show a notification if any are found
+  - Track postal code area state as orange, unfinished and green, finished. Show a "this entry is unfinished" text if unfinished
+  
+* The survey popup
+  - Prevent illegal values in input number fields
+  - Save functionality with "save changes" button, x button or clicking away from the popup
+  - Deletion of the data in current postal code area
+* Submitting records
+  - Only make "submit records" button active once all postal code areas are finished
+  - Once "submit records" button is pressed, show the amount of successful and failed sent records (if survey is used as intended, failed records should always be zero)
+  - Give user possibility to view sent records in a report produced to a new browser tab
 
 ### Server side
 * Validation of received response

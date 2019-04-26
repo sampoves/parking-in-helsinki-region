@@ -50,6 +50,6 @@ Leaflet.js based web survey to acquire information about parking in Helsinki Cap
 
 ## Features scrapped during development
 * 280319 infobox cookie will not trigger from infobutton or x button. Only the red button at the bottom of introduction
-* 020419 findIntersection() function and streamlined zip code area name fetch in layerClickHandler()
-* 040419 discontinue use of sessionid, track ip instead
+* 020419 `findIntersection()` function and streamlined zip code area name fetch in `layerClickHandler()`
+* 040419 discontinue use of `sessionid`, track ip instead
 * 170419 discontinue language button animations in favor of country code icons

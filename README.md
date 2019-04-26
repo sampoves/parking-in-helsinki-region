@@ -14,8 +14,9 @@ My wish is also to provide this survey to anybody who might benefit from it in t
 ### Located in /var/www/, the survey file structure is as follows
 
 - /var/www/
-  - insert.php
-  - config.php
+  - insert.php - MySQL insertion function. Keep out of survey users' view
+  - config.php - set up connection to MySQL database. Keep out of survey users' view
+  
   - /var/www/html/
     - index.html - main HTML framework, jQuery HTML content and a lot of JavaScript
     - park_survey.js - L.Popup requires HTML code as a variable. This file contains the Popup parking survey in HTML as a variable
@@ -26,7 +27,9 @@ My wish is also to provide this survey to anybody who might benefit from it in t
     - fi.json - Finnish language strings
     - pno_dissolve.geojson - Research area as the four municipalities
     - pno_research_area.geojson - Postal areas for the research area
+    
     - /var/www/html/images
+      - project images, such as thank you messages and images for instructions
 
 
 ## Detailed description of code

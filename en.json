@@ -84,7 +84,8 @@
     "parkspot1": "Parking space on the side of the street",
     "parkspot2": "Parking lot",
     "parkspot3": "Parking garage",
-    "parkspot4": "Other",
+    "parkspot4": "Private or reserved parking spot",
+    "parkspot5": "Other",
     
     "lang_unfinishedbox": "You have unfinished areas",
     "lang_submit": "Submit records",

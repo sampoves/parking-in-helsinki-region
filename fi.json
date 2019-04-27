@@ -82,9 +82,10 @@
     "lang_parkspot": "<i class='icon parking'></i>Minkätyyppiselle pysäköintipaikalle yleensä pysäköit tällä postinumeroalueella?",
     "parkspotd": " -- valitse vaihtoehto -- ",
     "parkspot1": "Kadunvarsipaikka",
-    "parkspot2": "Pysäköintialue (parkkipaikka)",
+    "parkspot2": "Pysäköintialue",
     "parkspot3": "Pysäköintihalli",
-    "parkspot4": "Muu",
+    "parkspot4": "Yksityinen tai varattu autopaikka",
+    "parkspot5": "Muu",
     
     "lang_unfinishedbox": "Oheiset postinumeroalueet ovat kesken",
     "lang_submit": "Lähetä tiedot",

@@ -44,7 +44,8 @@ var popupContent =
                 '<li><option value="1" name="parkspot" tkey="parkspot1">Parking space on the side of the street</option></li>' +
                 '<li><option value="2" name="parkspot" tkey="parkspot2">Parking lot</option></li>' +
                 '<li><option value="3" name="parkspot" tkey="parkspot3">Parking garage</option></li>' +
-                '<li><option value="4" name="parkspot" tkey="parkspot4">Other</option></li>' +
+                '<li><option value="4" name="parkspot" tkey="parkspot4">Private or reserved parking spot</option></li>' +
+                '<li><option value="5" name="parkspot" tkey="parkspot5">Other</option></li>' +
             '</select>' + 
         '</div>' +
     '</div>' +

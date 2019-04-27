@@ -120,7 +120,7 @@ if (!filter_var($sanitizedLikert, FILTER_VALIDATE_INT, array("options" => array(
 }
 
 // Validate input for parkspot
-if (!filter_var($sanitizedParkspot, FILTER_VALIDATE_INT, array("options" => array("min_range"=>1, "max_range"=>4)))) {
+if (!filter_var($sanitizedParkspot, FILTER_VALIDATE_INT, array("options" => array("min_range"=>1, "max_range"=>5)))) {
     $response['status'] = 'error';
     $response['message'] = sprintf('Invalid value for parkspot. Value given: %s', $sanitizedParkspot);
     exit(json_encode($response));

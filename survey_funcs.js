@@ -263,7 +263,7 @@ function initialiseInfo(){
         infoButton.state('infoOpen');
     });
     
-    // listen to "close this info window" button 
+    // listen to "close this info window" button
     document.getElementById("button-changepopupsize").onclick = function (e){
         
         if (getCookie("popupsize") === "default") {
@@ -339,6 +339,7 @@ function mobileCheck() {
         $('.tabspanel').css('width', '80%');
         
         //unfinished areas box
+        //due to frequent updates these will not hold
         //$("div.transbox").css("font-size", "8px");
         //$("div.transbox").css("padding", "2px 5px");
         
@@ -354,7 +355,7 @@ function showUI() {
     $("#buttonsubmitall").css({"visibility": "visible"});
 }
 
-// hides UI elements.
+// hides UI elements
 function hideUI() {
     UIState = false;
     $("div.transbox").css({"visibility": "hidden"});
@@ -574,21 +575,7 @@ class TrackZipCodes {
             console.log(`Did not find zip code ${zipcode} in incomplete list`);
         }
     }
-    
-    listAllIncomplete() {
-        if(this.incompleteList.length === 0) {
-            return "";
-        } else {
-            var result = "These are incomplete:<br>";
-
-            for (var i in this.incompleteList) {
-                var thisValue = this.incompleteList[i];
-                result = result + `${thisValue}, ${getAreaName(thisValue)}<br>`;
-            }
-            return result;
-        }
-    }
-    
+        
     //Query incompleteness of postal areas contained in this.zipCodeList.
     //Return incompleted postal areas as a html p element
     queryIncompleteness() {

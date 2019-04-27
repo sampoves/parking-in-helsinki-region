@@ -412,10 +412,6 @@ button:hover {
     font-family: 'Montserrat', sans-serif;
 }
 
-/*this weirdly changes submitall button size*/
-.popupsize::after {
-   content: attr(content);
-}​
 
 
 
@@ -692,3 +688,10 @@ div.sucimage {
     color: #4CAF50;
     font-weight: bold;
 }
+
+/*-------------------------*/
+/*Translation of popup size*/
+/*-------------------------*/
+.popupsize::after {
+   content: attr(content);
+}​

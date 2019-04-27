@@ -68,6 +68,7 @@ Helsinki Capital Region".
             //initialise TrackZipCodes object for keeping track of unique zip
             //codes. This prevents duplicate records for same zip code areas.
             usersZipCodes = new TrackZipCodes();
+            window.UIState = true;
             
             // Once page has loaded, carry out some commands:
             //- submit button is disabled by default
@@ -104,7 +105,7 @@ Helsinki Capital Region".
 
             //Show survey version in jQuery info window. Also, execute visitor
             //counter code.
-            var survey_version = "Development version 26.4.2019. Database connection live.";
+            var survey_version = "Development version 27.4.2019. Database connection live.";
             window.onload = function() {
                 document.getElementById('version').innerHTML = survey_version;
                 
@@ -883,19 +884,23 @@ Helsinki Capital Region".
             //unfinishedBox updates through checking if the function
             //usersZipCodes.queryIncompleteness() returns empty or not
             unfinishedBox.update = function () {
-                if(usersZipCodes.queryIncompleteness() === "<p></p>") {
-                    $("div.unfinished").fadeOut("fast");
-                    //$("div.unfinished").css({"visibility": "hidden"}); //abrupt dissappearing
-                } else {
-                    $("div.unfinished").fadeIn("fast");
-                    //$("div.unfinished").css({"visibility": "visible"}); //abrupt appearing
-                    // Contents of the div
-                    this._div.innerHTML = 
-                            "<div class='transbox'><p>" + 
-                            "<i class='icon comment'></i>" +
-                            "<b class='redtext'>You have unfinished areas</b>" + 
-                            usersZipCodes.queryIncompleteness() + 
-                            "</p></div>";
+                
+                //UIState checks if hideUI() has been triggered
+                if(UIState === true) {
+                    if(usersZipCodes.queryIncompleteness() === "<p></p>") {
+                        $("div.unfinished").fadeOut("fast");
+                        //$("div.unfinished").css({"visibility": "hidden"}); //abrupt dissappearing
+                    } else {
+                        $("div.unfinished").fadeIn("fast");
+                        //$("div.unfinished").css({"visibility": "visible"}); //abrupt appearing
+                        // Contents of the div
+                        this._div.innerHTML = 
+                                "<div class='transbox'><p>" + 
+                                "<i class='icon comment'></i>" +
+                                "<b class='redtext'>You have unfinished areas</b>" + 
+                                usersZipCodes.queryIncompleteness() + 
+                                "</p></div>";
+                    }
                 }
             };
             unfinishedBox.addTo(mymap);

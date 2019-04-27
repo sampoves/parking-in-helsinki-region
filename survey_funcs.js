@@ -337,12 +337,18 @@ function mobileCheck() {
         //text area
         $('.tabspanel').css('height', '90%');
         $('.tabspanel').css('width', '80%');
+        
+        //unfinished areas box
+        //$("div.transbox").css("font-size", "8px");
+        //$("div.transbox").css("padding", "2px 5px");
+        
     }
 }
 
 
 // Mobile phone popup hides map elements. This restores them.
 function showUI() {
+    UIState = true;
     $("div.transbox").css({"visibility": "visible"});
     $(".leaflet-top").css({"visibility": "visible"});
     $("#buttonsubmitall").css({"visibility": "visible"});
@@ -350,6 +356,7 @@ function showUI() {
 
 // hides UI elements.
 function hideUI() {
+    UIState = false;
     $("div.transbox").css({"visibility": "hidden"});
     $("#buttonsubmitall").css({"visibility": "hidden"});
     $(".leaflet-top").css({"visibility": "hidden"});

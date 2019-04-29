@@ -114,16 +114,17 @@ Helsinki Capital Region".
                 
                 //insert warning text if visiting with mobile phone
                 if($(window).width() < 800) {
-                document.getElementById('mobilewarning').innerHTML = 
-                        "It seems you are visiting the survey with a mobile \n\
-                        phone or a device with a relatively small screen \n\
-                        (screen width less than 800 pixels. Unfortunately \n\
-                        the survey is not optimised for mobile phones or \n\
-                        other digital devices with a low screen resolution, \n\
-                        and it may behave unexpectedly. If  possible, please \n\
-                        consider filling out this survey on a desktop \n\
-                        computer, or a tablet with sufficient screen \n\
-                        size. Recommended minimum resolution is 1280x960.";
+                    create_cookie("device", "mobile", 90, "/");
+                    document.getElementById('mobilewarning').innerHTML = 
+                            "It seems you are visiting the survey with a mobile \n\
+                            phone or a device with a relatively small screen \n\
+                            (screen width less than 800 pixels. Unfortunately \n\
+                            the survey is not optimised for mobile phones or \n\
+                            other digital devices with a low screen resolution, \n\
+                            and it may behave unexpectedly. If  possible, please \n\
+                            consider filling out this survey on a desktop \n\
+                            computer, or a tablet with sufficient screen \n\
+                            size. Recommended minimum resolution is 1280x960.";
                 }
                 
                 //Execute visitor counter. Send dummy data to validate our post

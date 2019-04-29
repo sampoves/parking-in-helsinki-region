@@ -96,6 +96,8 @@ function popupSize(pol, popupContent, maximumWidth) {
         pol.bindPopup(popupContent, {
             maxWidth: 250
         });
+        //this works with document.eventListener. When popup is created, this
+        //hides UI. Then eventlistener listens when to show UI again.
         hideUI();
         
     } else if (typeof maximumWidth === 'undefined') {

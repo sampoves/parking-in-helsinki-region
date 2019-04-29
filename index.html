@@ -141,6 +141,24 @@ Helsinki Capital Region".
             //MYMAP EVENTS
             //------------
             
+            //this listens to all clicks in the document and if the following
+            //if statements are true, then we are on mobile mode and UI is
+            //hidden. After a click wait 200ms and then test the statements.
+            //If everything passes, show UI again. This should take make sure
+            //user is not left without UI at any moment.
+            "click touchend touchstart".split(" ").forEach(function(e){
+                document.addEventListener(e, function (event) {
+                    setTimeout(function(){
+                        if((UIState === false) && 
+                                ($(".leaflet-popup-content-wrapper").length === 0) && 
+                                (getCookie("device") === "mobile")) {
+                            showUI();
+                        }
+                    }, 200);
+                });
+            });
+
+            
             //Pane for label tile layers. This will keep tile layer labels on
             //top of GeoJSON Polygons
             mymap.createPane('labels');
@@ -635,7 +653,7 @@ Helsinki Capital Region".
                     updateGeomColors();
                     arePopupsFinished();
                     unfinishedBox.update();
-                    showUI();
+                    //showUI();
                     
                     //the following value "apu" manipulates geojson.on("click"). 
                     //It allows user to exit popup dialog with x, and then 
@@ -711,7 +729,7 @@ Helsinki Capital Region".
                     pol.closePopup();
                     arePopupsFinished();
                     unfinishedBox.update();
-                    showUI();
+                    //showUI();
                     
                     //the following value "apu" manipulates geojson.on("click"). 
                     //It allows user to exit popup dialog with x, and then 
@@ -731,7 +749,7 @@ Helsinki Capital Region".
                     geojson.removeLayer(pol);
                     arePopupsFinished();
                     unfinishedBox.update();
-                    showUI();
+                    //showUI();
 
                     //the following value "apu" manipulates geojson.on("click").  
                     //It allows user to exit popup dialog with x, and then 
@@ -874,7 +892,7 @@ Helsinki Capital Region".
             // the user has unfinished zip code areas active on the map
             var unfinishedBox = L.control({position: 'bottomright'});
             unfinishedBox.onAdd = function (map) {
-                this._div = L.DomUtil.create('div', 'unfinished');                
+                this._div = L.DomUtil.create('div', 'unfinished');
                 this.update();
                 return this._div;
             };

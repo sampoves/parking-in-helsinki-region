@@ -108,7 +108,7 @@ Helsinki Capital Region".
 
             //Show survey version in jQuery info window. Also, execute visitor
             //counter code.
-            var survey_version = "Development version 27.4.2019. Database connection live.";
+            var survey_version = "Development version 29.4.2019. Database connection live.";
             window.onload = function() {
                 document.getElementById('version').innerHTML = survey_version;
                 
@@ -133,10 +133,6 @@ Helsinki Capital Region".
                 }, "text").done(function(responseFromServer) {
                     console.log(responseFromServer);
                 });
-                
-                //set postal on front by default
-                //postal.bringToFront();
-                
             };
             
 
@@ -199,7 +195,6 @@ Helsinki Capital Region".
             //This is realised with first bringing postal on top, then geojson.
             mymap.on("overlayadd", function (event) {
                 postal.bringToFront();
-                //geojson.bringToFront();
             });
             
             //on dragstart, check if popups are finished and button can be 
@@ -879,7 +874,7 @@ Helsinki Capital Region".
             // the user has unfinished zip code areas active on the map
             var unfinishedBox = L.control({position: 'bottomright'});
             unfinishedBox.onAdd = function (map) {
-                this._div = L.DomUtil.create('div', 'unfinished');
+                this._div = L.DomUtil.create('div', 'unfinished');                
                 this.update();
                 return this._div;
             };
@@ -892,10 +887,9 @@ Helsinki Capital Region".
                 if(UIState === true) {
                     if(usersZipCodes.queryIncompleteness() === "<p></p>") {
                         $("div.unfinished").fadeOut("fast");
-                        //$("div.unfinished").css({"visibility": "hidden"}); //abrupt dissappearing
                     } else {
                         $("div.unfinished").fadeIn("fast");
-                        //$("div.unfinished").css({"visibility": "visible"}); //abrupt appearing
+                        
                         // Contents of the div
                         this._div.innerHTML = 
                                 "<div class='transbox'><p>" + 
@@ -907,7 +901,6 @@ Helsinki Capital Region".
                 }
             };
             unfinishedBox.addTo(mymap);
-            
         </script>
         
         <!--JQUERY UI CONTENT-->

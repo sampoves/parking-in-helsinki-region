@@ -170,14 +170,23 @@ function defaultPopup(pol, popupContent) {
     pol.openPopup();
 }
 
+
+// Strip all layers of geojson of click events to prevent user clicking on 
+// layer geojson which would produce a popup
 function disableClicksOnLayer() {
     for (var i in geojson._layers){
         thisLayer = geojson._layers[i];
+        
+        // remove openPopup click handler (actually all click handlers)
         thisLayer.off("click");
+        
+        // Do nothing on click. This is not necessary, but now marker
+        // doesn't act like part of underlying map
         thisLayer.on('click', function() {return;});
     }
 }
 
+// Enable normal behaviour of each layer in geojson
 function enableClicksOnLayer() {
     for (var i in geojson._layers){
         thisLayer = geojson._layers[i];
@@ -230,7 +239,6 @@ function onParkspotChange(event){
 function initialiseInfo(){
     //make popups close if info is opened. "apu" manipulates geojson.on("click")
     mymap.closePopup();
-    //apu = 0;
     
     $("#tabs").tabs({
         //show and hide applies fadein and fadeout effects for tab panels in
@@ -357,7 +365,7 @@ function mobileCheck() {
         $('.tabspanel').css('width', '80%');
         
         //unfinished areas box
-        //due to frequent updates these will not hold
+        //due to frequent updates these will not hold. Comment these out
         //$("div.transbox").css("font-size", "8px");
         //$("div.transbox").css("padding", "2px 5px");
         
@@ -373,7 +381,7 @@ function showUI() {
     $("#buttonsubmitall").css({"visibility": "visible"});
 }
 
-// hides UI elements
+// Hides UI elements
 function hideUI() {
     UIState = false;
     $("div.transbox").css({"visibility": "hidden"});
@@ -464,7 +472,7 @@ var translate = function(jsdata) {
         var strTr = jsdata[$(this).attr('tkey')];
         $(this).html(strTr);
     });
-    //handle
+    // Handle the following actions
     //- changing of thankyou.png
     //- changing of survey screenshot in infobox
     //- geocoder translations

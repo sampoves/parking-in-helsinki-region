@@ -701,8 +701,9 @@ Helsinki Capital Region".
                 }
 
                 //SAVE BUTTON
-                var buttonSubmit = L.DomUtil.get('button-submit');
-                L.DomEvent.addListener(buttonSubmit, "click", function (e){
+                //var buttonSubmit = L.DomUtil.get('button-submit');
+                //L.DomEvent.addListener(buttonSubmit, "click", function (e){
+                $("button#button-submit").one('click', function(e) {
                     updateGeomColors();
                     enableClicksOnLayer();
                     pol.closePopup();
@@ -711,13 +712,14 @@ Helsinki Capital Region".
                 });
                 
                 //DELETE BUTTON
-                var buttonDelete = L.DomUtil.get('button-delete');
-                L.DomEvent.addListener(buttonDelete, "click", function (e){
-
+                //var buttonDelete = L.DomUtil.get('button-delete');
+                //L.DomEvent.addListener(buttonDelete, "click", function (e){
+                $("button#button-delete").one('click', function(e) {
                     //Using class TrackZipCodes we are able to keep track of
                     //zip codes user has clicked on. They can also be removed,
                     //which is important for the functionality of this survey.
                     usersZipCodes.removeZipCode(window.currentZip);
+                    enableClicksOnLayer();
                     geojson.removeLayer(pol);
                     arePopupsFinished();
                     unfinishedBox.update();

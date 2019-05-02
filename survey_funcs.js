@@ -30,7 +30,6 @@ function getCookie(name) {
 //--------------------------------------------
 function highlightLayer(e) {
     thisTarget = e.layer._leaflet_id;
-    //window.currentPno = e.layer.feature.properties.nimi + ", " + e.layer.feature.properties.posti_alue;
     if((mymap.hasLayer(OpenStreetMap_DE)) || (mymap.hasLayer(Stamen_Terrain))){
         mymap._layers[thisTarget].setStyle(postalHighlightDark);
     } else if (mymap.hasLayer(darkmatter)){
@@ -94,17 +93,21 @@ function popupSize(pol, popupContent, maximumWidth) {
             ((getCookie("device") !== "mobile") && 
             ((getCookie("device") !== "desktop")) && ($(window).width() < 800))) {
         pol.bindPopup(popupContent, {
-            maxWidth: 250
+            maxWidth: 250,
+            closeOnClick: false
         });
         //this works with document.eventListener. When popup is created, this
         //hides UI. Then eventlistener listens when to show UI again.
         hideUI();
         
     } else if (typeof maximumWidth === 'undefined') {
-        pol.bindPopup(popupContent);
+        pol.bindPopup(popupContent, {
+            closeOnClick: false
+        });
     }  else {
         pol.bindPopup(popupContent, {
-            maxWidth: maximumWidth
+            maxWidth: maximumWidth,
+            closeOnClick: false
         });
     }
 }
@@ -167,7 +170,20 @@ function defaultPopup(pol, popupContent) {
     pol.openPopup();
 }
 
+function disableClicksOnLayer() {
+    for (var i in geojson._layers){
+        thisLayer = geojson._layers[i];
+        thisLayer.off("click");
+        thisLayer.on('click', function() {return;});
+    }
+}
 
+function enableClicksOnLayer() {
+    for (var i in geojson._layers){
+        thisLayer = geojson._layers[i];
+        thisLayer.on('click', layerClickHandler); //resume normal behaviour
+    }
+}
 
 //-----------------------
 //MISCELLANEOUS FUNCTIONS
@@ -214,7 +230,7 @@ function onParkspotChange(event){
 function initialiseInfo(){
     //make popups close if info is opened. "apu" manipulates geojson.on("click")
     mymap.closePopup();
-    apu = 0;
+    //apu = 0;
     
     $("#tabs").tabs({
         //show and hide applies fadein and fadeout effects for tab panels in

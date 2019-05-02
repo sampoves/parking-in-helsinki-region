@@ -50,6 +50,11 @@ Helsinki Capital Region".
         <div class="" id="mymap"></div>
             
         <script>
+            
+        // NOTES 020519: Newest addition to the survey is the parameter
+        // closePopupOnClick in mymap. If unexpected events happen during use,
+        // blame whis parameter first.
+            
             //--------------
             //INITIALISATION
             //--------------
@@ -65,7 +70,10 @@ Helsinki Capital Region".
                 layers: [],
                 worldCopyJump: false,
                 crs: L.CRS.EPSG3857,
-                zoomControl: true
+                zoomControl: true,
+                //attempt to manage weird behaviour of touch events on mobile
+                //by only allowing popups to be closed with buttons
+                closePopupOnClick: false 
             });
             
             //initialise TrackZipCodes object for keeping track of unique zip
@@ -86,7 +94,8 @@ Helsinki Capital Region".
                 
                 window.unfinishedPopups = 0;
                 
-                //prevent sending form with enter key
+                //prevent functionality of enter. Also prevents mobile numpad
+                //enter functions.
                 $(window).keydown(function(event){
                     if(event.keyCode === 13) {
                         event.preventDefault();
@@ -102,13 +111,13 @@ Helsinki Capital Region".
                     mymap.closePopup();
                     $("#tabsikkuna").dialog("close");
                     infoButton.state('infoOpen');
-                    apu = 0;
+                    //apu = 0;
                 });
             });
 
             //Show survey version in jQuery info window. Also, execute visitor
             //counter code.
-            var survey_version = "Development version 29.4.2019. Database connection live.";
+            var survey_version = "Development version 2.5.2019. Database connection live.";
             window.onload = function() {
                 document.getElementById('version').innerHTML = survey_version;
                 
@@ -235,6 +244,7 @@ Helsinki Capital Region".
             //make sure that will not happen.
             //Code by Dan Mandle, https://stackoverflow.com/a/23960984/9455395
             mymap.on('popupopen', function(e) {
+
                 // Find the pixel location on the map where the popup anchor is
                 var px = mymap.project(e.popup._latlng);
                 
@@ -244,9 +254,9 @@ Helsinki Capital Region".
                 
                 // Pan to new center, if helper variable apu is 0 (a popup is
                 // not open
-                if (apu === 0) {
-                    mymap.panTo(mymap.unproject(px), {animate: true});
-                }
+                //if (apu === 0) {
+                mymap.panTo(mymap.unproject(px), {animate: true});
+                //}
             });
 
             //-------
@@ -360,9 +370,12 @@ Helsinki Capital Region".
                 "type": "FeatureCollection",
                 "features": []
                 },{
+                    closePopupOnClick: false,
                     onEachFeature:
                             function (feature, layer){
-                                layer.on('click', layerClickHandler);
+                                if($(".leaflet-popup-content-wrapper").length === 0) {
+                                    layer.on('click', layerClickHandler);
+                                };
 
                                 //incompleteTest() accepts onEachFeature "feature"
                                 //or layer event
@@ -400,16 +413,16 @@ Helsinki Capital Region".
             //exist on layers postal and geojson. It enables user to click
             //the sea, have a popup dissappear and go straigh back to zip code
             //area clicking. See bottomPolygon.on("click")
-            var bottomPolygon = L.polygon([
-                    [60.6, 25.305884],
-                    [60.6, 24.37],
-                    [60.05, 24.37],
-                    [60.05, 25.305884]
-                ], {
-                    color: 'red',
-                    opacity: 0,
-                    fillOpacity: 0
-            }).addTo(mymap);
+//            var bottomPolygon = L.polygon([
+//                    [60.6, 25.305884],
+//                    [60.6, 24.37],
+//                    [60.05, 24.37],
+//                    [60.05, 25.305884]
+//                ], {
+//                    color: 'red',
+//                    opacity: 0,
+//                    fillOpacity: 0
+//            }).addTo(mymap);
             
             var postaldissolve = new L.GeoJSON.AJAX(
                     "pno_dissolve.geojson", {
@@ -447,11 +460,11 @@ Helsinki Capital Region".
             
             //Catch clicks in the sea. Keep the helper variable "apu" up to date
             //so that geojson layer never needs multiple clicks to open a popup
-            bottomPolygon.on("click", function(){
-                if(apu === 1){
-                    apu = 0;
-                }
-            });
+//            bottomPolygon.on("click", function(){
+//                if(apu === 1){
+//                    apu = 0;
+//                }
+//            });
             
             //This event opens popup when clicking on a new postal code area.
             //fire() simulates a second click on the Polygon, as without this
@@ -464,15 +477,19 @@ Helsinki Capital Region".
             geojson.on("layeradd", function(event){
                 thisLayer = event.layer;
                 thisLayer.fire("click");
-                apu = 1;
+                //apu = 1;
             });
+            
+            //tässä kohtaa rupesin poistelee apuu
             
             //On layer click on "postal", initialise "geojsonFeature" and add it 
             //to the "geojson" layer.
             postal.on("click", function (e) {
                 //"apu" manipulates geojson.on("click")
-                apu = 0;
-                
+//                if($(".leaflet-popup-content-wrapper").length === 0) {
+//                    apu = 0;
+//                }
+                               
                 // If statement tests if the following class is open. It gets
                 // value 1 if it is, otherwise 0. This prevents inadvertent
                 // additions of Polygons when clicking away from the popup.
@@ -518,20 +535,21 @@ Helsinki Capital Region".
             // can be opened and 1 if it is not allowed. Apu is manipulated not
             // only here. We need to change its value on postal click and when
             // clicking save changes, x button and delete records.
-            apu = 0;
+            //apu = 0;
             geojson.on("click", function(e){
                 //This prevents opening popups when infobox or success dialog
                 //is open. Only works with click on layer geojson
                 if(($("#tabsikkuna").is(":visible") === true) || 
                         ($("#sucdialog").is(":visible") === true)) {
                     mymap.closePopup();
-                    apu = 0;
+                    //apu = 0;
                 } else {
-                    if(($(".leaflet-popup-content-wrapper").length !== 0) && (apu === 1)){
-                        apu = 0;
-                        mymap.closePopup();
+                    if($(".leaflet-popup-content-wrapper").length !== 0){
+                        geojson.off("click");
+                        //apu = 0;
+                        //mymap.closePopup();
                     } else {
-                        apu = 1;
+                        //apu = 1;
                     }
                 }
             });
@@ -645,12 +663,24 @@ Helsinki Capital Region".
                         smallPopup(pol, html + popupContent);
                     }
                 }
+                //strip current layer of click events to prevent user clicking
+                //on layer geojson
+                disableClicksOnLayer();
+//                for (var i in geojson._layers){
+//                    thisLayer = geojson._layers[i];
+//                    thisLayer.off("click");
+//                    thisLayer.on('click', function() {return;});
+//                }
+                
+                //pol.off('click');
+                //pol.on('click', function() {return;});
                 
                 //use jQuery to listen to current popup and its close button.
                 //This way we can communicate correctly with the function
                 //previousGeometrySame().
                 $("a.leaflet-popup-close-button").one('click', function(e){
-                    console.log("pressed x in popup dialog");
+                    console.log("Pressed x in popup dialog");
+                    enableClicksOnLayer(); //resume normal behaviour
                     updateGeomColors();
                     arePopupsFinished();
                     unfinishedBox.update();
@@ -660,7 +690,7 @@ Helsinki Capital Region".
                     //It allows user to exit popup dialog with x, and then 
                     //immediately click on the same polygon to open the same 
                     //popup.
-                    apu = 0;
+                    //apu = 0;
                 });
 
                 // keep language up to date with var currentLang. currentLang
@@ -727,6 +757,15 @@ Helsinki Capital Region".
                 var buttonSubmit = L.DomUtil.get('button-submit');
                 L.DomEvent.addListener(buttonSubmit, "click", function (e){
                     updateGeomColors();
+                    
+                    enableClicksOnLayer();
+//                    for (var i in geojson._layers){
+//                        thisLayer = geojson._layers[i];
+//                        thisLayer.on('click', layerClickHandler); //resume normal behaviour
+//                    }
+                    
+                    
+                    //pol.on('click', layerClickHandler); //resume normal behaviour
                     pol.closePopup();
                     arePopupsFinished();
                     unfinishedBox.update();
@@ -736,7 +775,7 @@ Helsinki Capital Region".
                     //It allows user to exit popup dialog with x, and then 
                     //immediately click on the same polygon to open the same 
                     //popup.
-                    apu = 0;
+                    //apu = 0;
                 });
                 
                 //DELETE BUTTON
@@ -756,7 +795,7 @@ Helsinki Capital Region".
                     //It allows user to exit popup dialog with x, and then 
                     //immediately click on the same polygon to open the same 
                     //popup.
-                    apu = 0;                    
+                    //apu = 0;                    
                 });
             }
     
@@ -831,7 +870,7 @@ Helsinki Capital Region".
                     title: 'Close info',
                     onClick: function (btn, map) {
                         //"apu" manipulates geojson.on("click")
-                        apu = 0;
+                        //apu = 0;
                         $("#tabsikkuna").dialog("close");
                         btn.state('infoOpen');
                     }

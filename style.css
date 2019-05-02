@@ -14,6 +14,7 @@
 body {
     margin: 0px;
     padding: 0px;
+    overscroll-behavior: contain; /*disable pull-down-to-refresh on Chrome*/
 }
 
 html,

@@ -127,7 +127,7 @@ Helsinki Capital Region".
                             "It seems you are visiting the survey with a mobile \n\
                             phone or a device with a relatively small screen \n\
                             (screen width less than 800 pixels. Unfortunately \n\
-                            the survey is not optimised for mobile phones or \n\
+                            the survey is not well optimised for mobile phones or \n\
                             other digital devices with a low screen resolution, \n\
                             and it may behave unexpectedly. If  possible, please \n\
                             consider filling out this survey on a desktop \n\
@@ -625,8 +625,8 @@ Helsinki Capital Region".
                     }
                 }
                 
-                //strip current layer of click events to prevent user clicking
-                //on layer geojson
+                //strip layer geojson of click events to prevent user clicking
+                //on the layer and producing unwanted survey behaviour.
                 disableClicksOnLayer();
                 
                 //use jQuery to listen to current popup and its close button.
@@ -703,7 +703,9 @@ Helsinki Capital Region".
                 //SAVE BUTTON
                 //var buttonSubmit = L.DomUtil.get('button-submit');
                 //L.DomEvent.addListener(buttonSubmit, "click", function (e){
-                $("button#button-submit").one('click', function(e) {
+                $("button#button-submit").on('click', function(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
                     updateGeomColors();
                     enableClicksOnLayer();
                     pol.closePopup();
@@ -714,7 +716,9 @@ Helsinki Capital Region".
                 //DELETE BUTTON
                 //var buttonDelete = L.DomUtil.get('button-delete');
                 //L.DomEvent.addListener(buttonDelete, "click", function (e){
-                $("button#button-delete").one('click', function(e) {
+                $("button#button-delete").on('click', function(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
                     //Using class TrackZipCodes we are able to keep track of
                     //zip codes user has clicked on. They can also be removed,
                     //which is important for the functionality of this survey.

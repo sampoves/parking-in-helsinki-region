@@ -363,6 +363,9 @@ select option {
 /*-------*/
 /*BUTTONS*/
 /*-------*/
+/*attempting to fix button problems on mobile*/
+/*https://css-tricks.com/slightly-careful-sub-elements-clickable-things/*/
+
 button {
     /*text centering on button, useful with font awesome icons*/
     display: flex;
@@ -370,6 +373,7 @@ button {
     justify-content: center;
     
     /*other settings*/
+    line-height: 25px;
     width: 100%;
     font-family: 'Montserrat', sans-serif;
     font-size: 16px;
@@ -377,6 +381,10 @@ button {
     border: 2px solid #4CAF50; /* Green */
     color: black;
     transition: background 0.6s;
+}
+
+button > * {
+  pointer-events: none;
 }
 
 button:hover {

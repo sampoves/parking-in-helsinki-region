@@ -87,6 +87,12 @@
     "parkspot4": "Private or reserved parking spot",
     "parkspot5": "Other",
     
+    "lang_timeofday": "<i class='icon clock'></i>At what time of the day do you usually park in this postal code area?",
+    "timeofday1": "Weekday, rush hour (07:00-09:00 and 15:00-17:00)",
+    "timeofday2": "Weekday, other than rush hour",
+    "timeofday3": "Weekend",
+    "timeofday4": "None of the above, no usual time",
+    
     "lang_unfinishedbox": "You have unfinished areas",
     "lang_submit": "Submit records",
     "lang_thanks": "Thank you for taking the time to respond to this survey!"

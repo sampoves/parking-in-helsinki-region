@@ -87,6 +87,12 @@
     "parkspot4": "Yksityinen tai varattu autopaikka",
     "parkspot5": "Muu",
     
+    "lang_timeofday": "<i class='icon clock'></i>Mihin viikon- ja vuorokaudenaikaan yleensä pysäköit tälle postinumeroaluelle?",
+    "timeofday1": "Arkipäivä, ruuhka-aikaan (07:00-09:00 ja 15:00-17:00)",
+    "timeofday2": "Arkipäivä, muuna kuin ruuhka-aikana",
+    "timeofday3": "Viikonloppu",
+    "timeofday4": "Ei mikään ylläolevista, ei yleisintä aikaa",
+    
     "lang_unfinishedbox": "Oheiset postinumeroalueet ovat kesken",
     "lang_submit": "Lähetä tiedot",
     "lang_thanks": "Kiitos vastauksestasi!"

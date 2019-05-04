@@ -199,18 +199,12 @@ reliably */
     margin-right: 10px;
 }
 
-/*This placeholder icon works in tandem with unicode identifier in input type 
-number in park_survey.js. This placeholder icon does not need other settings
-in this CSS file*/
-input[type="number"]::placeholder {
-    font-family: 'Montserrat', sans-serif, "Font Awesome 5 Free";
-    display: inline-block;
-    font-style: normal;
-    font-variant: normal;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
+.clock::before {
     font-weight: 400;
-    content: "\f017"; /*FA icon clock, regular*/
+    color: grey;
+    content: "\f017";
+    font-size: 1.33em;
+    margin-right: 10px;
 }
 
 
@@ -336,7 +330,7 @@ input[type="radio"] {
     margin-bottom: 20px;
 }
 
-input, .parkspotcolumn {
+input, .parkspotcolumn, .timeofdaycolumn {
     margin-top: 5px;
 }
 
@@ -344,7 +338,7 @@ ul {
     margin-top: -1px;
 }
 
-#parkspot {
+#parkspot, #timeofday {
     font-size: 18px;
     font-family: 'Montserrat', sans-serif;
     width: 100%;

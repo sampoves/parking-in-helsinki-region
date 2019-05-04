@@ -480,7 +480,8 @@ Helsinki Capital Region".
                                 "parktime": null,
                                 "walktime": null,
                                 "likert": null,
-                                "parkspot": null
+                                "parkspot": null,
+                                "timeofday": null
                             }
                     };
 
@@ -607,7 +608,8 @@ Helsinki Capital Region".
                 //check if all values are inserted and print text in popUp
                 //if this is the case
                 if(!properties.likert || !properties.parkspot || 
-                        !properties.parktime || !properties.walktime){
+                        !properties.parktime || !properties.walktime ||
+                        !properties.timeofday){
                     if (getCookie("popupsize") === "default") {
                         defaultPopup(pol, html + popupContent + missingStuff);
                     } else if(getCookie("popupsize") === "medium") {
@@ -697,6 +699,24 @@ Helsinki Capital Region".
                     parkSpot.value = properties.parkspot;
                     L.DomEvent.addListener(parkSpot, "change", function (e){
                         properties.parkspot = e.target.value;
+                    });
+                }
+                
+                //TIME OF DAY
+                if(typeof currentTimeOfDayValue !== 'undefined'){
+                    $(L.DomUtil.get('timeofday')).find(
+                            "option[value='" + currentTimeOfDayValue + "']").attr('selected', true);
+                    var timeOfDay = L.DomUtil.get('timeofday');
+                    timeOfDay.value = properties.timeofday;
+                    L.DomEvent.addListener(timeOfDay, "change", function(e){
+                        properties.timeofday = e.target.value;
+                    });
+                } else {
+                    L.DomUtil.get('timeofday').value = properties.timeofday;
+                    var timeOfDay = L.DomUtil.get('timeofday');
+                    timeOfDay.value = properties.timeofday;
+                    L.DomEvent.addListener(timeOfDay, "change", function (e){
+                        properties.timeofday = e.target.value;
                     });
                 }
 

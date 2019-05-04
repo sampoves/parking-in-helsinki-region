@@ -205,7 +205,8 @@ function incompleteTest(input) {
     try {
         feature = input.layer.feature;
         if(!feature.properties.likert || !feature.properties.parkspot || 
-                !feature.properties.parktime || !feature.properties.walktime){
+                !feature.properties.parktime || !feature.properties.walktime ||
+                !feature.properties.timeofday){
             //is incomplete
             return true;
         } else {
@@ -214,7 +215,8 @@ function incompleteTest(input) {
         }
     } catch(err){
         if(!input.properties.likert || !input.properties.parkspot || 
-                !input.properties.parktime || !input.properties.walktime){
+                !input.properties.parktime || !input.properties.walktime ||
+                !input.properties.timeofday){
             //is incomplete
             return true;
         } else {
@@ -226,9 +228,14 @@ function incompleteTest(input) {
 
 
 // This helps set value for parkspot in the popup survey
-// 020419 park_survey.js uses this. Not sure if this is useful anymore
 function onParkspotChange(event){
     currentParkspotValue = event.target.value;
+    //console.log("parkspot value set to " + event.target.value);
+};
+
+// This helps set value for timeofday in the popup survey
+function onTimeOfDayChange(event){
+    currentTimeOfDayValue = event.target.value;
     //console.log("parkspot value set to " + event.target.value);
 };
 
@@ -824,6 +831,7 @@ function preparePost() {
         parkspotValue = thisLayer.feature.properties.parkspot;
         parktimeValue = thisLayer.feature.properties.parktime;
         walktimeValue = thisLayer.feature.properties.walktime;
+        timeofdayValue = thisLayer.feature.properties.timeofday;
         
         var data = {
             timestamp: timestampValue,
@@ -831,7 +839,8 @@ function preparePost() {
             likert: likertValue,
             parkspot: parkspotValue,
             parktime: parktimeValue,
-            walktime: walktimeValue
+            walktime: walktimeValue,
+            timeofday: timeofdayValue
         };
         
         $.post('insert_mysql.php', data, function(responseFromServer) {

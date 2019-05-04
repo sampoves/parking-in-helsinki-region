@@ -383,17 +383,13 @@ function mobileCheck() {
 // Mobile phone popup hides map elements. This restores them.
 function showUI() {
     UIState = true;
-    $("div.transbox").css({"display": "block"});
-    $(".leaflet-top").css({"display": "block"});
-    $("#buttonsubmitall").css({"display": "flex"});
+    $("div.transbox, div.sendbox, div.leaflet-top").css({"display": "block"});
 }
 
 // Hides UI elements
 function hideUI() {
     UIState = false;
-    $("div.transbox").css({"display": "none"});
-    $("#buttonsubmitall").css({"display": "none"});
-    $(".leaflet-top").css({"display": "none"});
+    $("div.transbox, div.sendbox, div.leaflet-top").css({"display": "none"});
 }
 
 

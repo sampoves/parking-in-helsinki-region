@@ -18,11 +18,13 @@ function create_cookie(name, value, days2expire, path) {
                      'path=' + path + ';';
 }
 
+
 function getCookie(name) {
     var value = "; " + document.cookie;
     var parts = value.split("; " + name + "=");
     if (parts.length === 2) return parts.pop().split(";").shift();
 }
+
 
 
 //--------------------------------------------
@@ -37,6 +39,7 @@ function highlightLayer(e) {
     }    
 }
 
+
 function layerToNormal(e) {
     thisTarget = e.layer._leaflet_id;
     if((mymap.hasLayer(OpenStreetMap_DE)) || (mymap.hasLayer(Stamen_Terrain))){
@@ -45,6 +48,7 @@ function layerToNormal(e) {
         mymap._layers[thisTarget].setStyle(stylePostal);
     }  
 }
+
 
 function highlightGeojson(e) {
     thisTarget = e.layer._leaflet_id;
@@ -57,6 +61,7 @@ function highlightGeojson(e) {
     }
 }
 
+
 function geojsonToNormal(e) {
     thisTarget = e.layer._leaflet_id;
     if(mymap.hasLayer(geojson)) {
@@ -67,6 +72,7 @@ function geojsonToNormal(e) {
         }
     }
 }
+
 
 //run for loop which tests incompleteness of geojson layers.
 function updateGeomColors() {
@@ -112,6 +118,7 @@ function popupSize(pol, popupContent, maximumWidth) {
     }
 }
 
+
 //this function changes font sizes of a popup. Must be run every time after
 //a popup is opened to have an effect on anything
 function popupCSS(smallText, textContent, buttons, largeText) {
@@ -124,6 +131,7 @@ function popupCSS(smallText, textContent, buttons, largeText) {
     $("button#button-delete").css("font-size", buttons);
     $("strong#incomplete").css("font-size", largeText);
 }
+
 
 function smallPopup(pol, popupContent, maximumWidth) {
     popupSize(pol, popupContent, 200);
@@ -145,6 +153,7 @@ function smallPopup(pol, popupContent, maximumWidth) {
     popupCSS("6pt", "7pt", "8pt", "9pt");
 }
 
+
 function mediumPopup(pol, popupContent, maximumWidth) {
     popupSize(pol, popupContent, 250);
     pol.openPopup();
@@ -163,6 +172,7 @@ function mediumPopup(pol, popupContent, maximumWidth) {
     //text adjustments
     popupCSS("7pt", "8pt", "9pt", "10pt");
 }
+
 
 //default size popup, "large"
 function defaultPopup(pol, popupContent) {
@@ -186,6 +196,7 @@ function disableClicksOnLayer() {
     }
 }
 
+
 // Enable normal behaviour of each layer in geojson
 function enableClicksOnLayer() {
     for (var i in geojson._layers){
@@ -193,6 +204,8 @@ function enableClicksOnLayer() {
         thisLayer.on('click', layerClickHandler); //resume normal behaviour
     }
 }
+
+
 
 //-----------------------
 //MISCELLANEOUS FUNCTIONS
@@ -232,6 +245,7 @@ function onParkspotChange(event){
     currentParkspotValue = event.target.value;
     //console.log("parkspot value set to " + event.target.value);
 };
+
 
 // This helps set value for timeofday in the popup survey
 function onTimeOfDayChange(event){
@@ -386,12 +400,12 @@ function showUI() {
     $("div.transbox, div.sendbox, div.leaflet-top").css({"display": "block"});
 }
 
+
 // Hides UI elements
 function hideUI() {
     UIState = false;
     $("div.transbox, div.sendbox, div.leaflet-top").css({"display": "none"});
 }
-
 
 
 //format a tidy string format date for mysql insertion. Formats all parts with
@@ -448,6 +462,7 @@ function stylingFunction(layerToStyle, styleDark, styleLight) {
     };
 }
 
+
 //this function checks which label layers are active at that moment. It will
 //deactivate any that it finds.
 function changeOfLabels(){
@@ -462,6 +477,7 @@ function changeOfLabels(){
         }
     } 
 }
+
 
 
 //------------------
@@ -508,6 +524,7 @@ var translate = function(jsdata) {
     }
 };
 
+
 //As the value about popup size, shown in Settings tab, is stored in css, we
 //need this complicated way to translate it
 function cssPopupsizeValue() {
@@ -531,6 +548,7 @@ function cssPopupsizeValue() {
         }
     }
 }
+
 
 // this function can be used with events and such where language does not update
 // automatically. This is true, for example, when updating submit button or
@@ -713,6 +731,7 @@ function isEmpty(obj) {
     return true;
 }
 
+
 // Is geojson layer empty? If yes, disable submit button. Otherwise, enable
 function isGeojsonEmpty(){
     if(isEmpty(geojson._layers) === true){
@@ -733,6 +752,7 @@ function isGeojsonEmpty(){
         }
     }
 }
+
 
 // This is all the functionality of the "submit records" button
 function submitButtonListener(){
@@ -787,6 +807,7 @@ function submitButtonListener(){
     });
 };
 
+
 // Test submit button current state
 function submitButtonState() {
     if(document.getElementById("buttonsubmitall").disabled === true) {
@@ -797,9 +818,10 @@ function submitButtonState() {
 }
 
 
-//------------------
-//DATABASE FUNCTIONS
-//------------------
+
+//---------------------------------
+//DATABASE AND SUBMISSION FUNCTIONS
+//---------------------------------
 
 //for looping to send records to server record by record.
 function preparePost() {

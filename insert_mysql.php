@@ -18,7 +18,7 @@ if(empty($_POST)) {
 }
 
 // Initialize array containing allowed variables
-$allowedDataVariables = ['timestamp', 'zipcode', 'likert', 'parkspot', 'parktime', 'walktime'];
+$allowedDataVariables = ['timestamp', 'zipcode', 'likert', 'parkspot', 'parktime', 'walktime', 'timeofday'];
 
 // Initialize response array
 $response = ['status' => 'success', 'message' => '', 'amount' => 0];
@@ -46,6 +46,7 @@ $likert = $_POST['likert'];
 $parkspot = $_POST['parkspot'];
 $parktime = $_POST['parktime'];
 $walktime = $_POST['walktime'];
+$timeofday = $_POST['timeofday'];
 
 
 
@@ -59,6 +60,7 @@ $walktime = $_POST['walktime'];
 //checked with FILTER_VALIDATE_INT, because it fails if value inputted is 0.
 $sanitizedLikert = filter_var($likert, FILTER_VALIDATE_INT);
 $sanitizedParkspot = filter_var($parkspot, FILTER_VALIDATE_INT);
+$sanitizedTimeofday = filter_var($timeofday, FILTER_VALIDATE_INT);
 
 
 // Set up validation for timestamp
@@ -140,6 +142,14 @@ if (!preg_match('/^([0-9]|[1-9][0-9])$/', $walktime)) {
     exit(json_encode($response));
 }
 
+// Validate input for time of day
+if (!filter_var($sanitizedTimeofday, FILTER_VALIDATE_INT, array("options" => array("min_range"=>1, "max_range"=>4)))) {
+    $response['status'] = 'error';
+    $response['message'] = sprintf('Invalid value for timeofday. Value given: %s', $sanitizedTimeofday);
+    exit(json_encode($response));
+}
+
+
 
 // ------------------
 // DATABASE INSERTION
@@ -160,7 +170,7 @@ if ($conn->connect_error) {
 }
 
 // Generate query string
-$sql = insertMySQL($timestamp, $ip, $zipcode, $sanitizedLikert, $sanitizedParkspot, $parktime, $walktime);
+$sql = insertMySQL($timestamp, $ip, $zipcode, $sanitizedLikert, $sanitizedParkspot, $parktime, $walktime, $sanitizedTimeofday);
 
 
 
@@ -170,7 +180,7 @@ $sql = insertMySQL($timestamp, $ip, $zipcode, $sanitizedLikert, $sanitizedParksp
 // Set some data to return (not necessary) and echo JSON
 // first test if query was completed
 if ($conn->query($sql) === TRUE) {
-	$response['message'] = sprintf('New record created successfully. Timestamp %s, postal code %s, likert %s, parkspot %s, parktime %s, walktime %s', $timestamp, $zipcode, $sanitizedLikert, $sanitizedParkspot, $parktime, $walktime);
+	$response['message'] = sprintf('New record created successfully. Timestamp %s, postal code %s, likert %s, parkspot %s, parktime %s, walktime %s, timeofday %s', $timestamp, $zipcode, $sanitizedLikert, $sanitizedParkspot, $parktime, $walktime, $sanitizedTimeofday);
 	$conn->close();
 	echo(json_encode($response));
 } else {

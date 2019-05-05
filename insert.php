@@ -1,8 +1,8 @@
 <?php
 // MySQL insert, generate MySQL database command privately
 //https://www.w3schools.com/php/php_mysql_insert.asp
-function insertMySQL($timestamp, $ip, $zipcode, $likert, $parkspot, $parktime, $walktime) {
-	$sql = "INSERT INTO records (timestamp, ip, zipcode, likert, parkspot, parktime, walktime) VALUES ('" .$timestamp. "','" .$ip. "','" .$zipcode. "'," .$likert. "," .$parkspot. "," .$parktime. "," .$walktime. ")";
+function insertMySQL($timestamp, $ip, $zipcode, $likert, $parkspot, $parktime, $walktime, $timeofday) {
+	$sql = "INSERT INTO records (timestamp, ip, zipcode, likert, parkspot, parktime, walktime, timeofday) VALUES ('" .$timestamp. "','" .$ip. "','" .$zipcode. "'," .$likert. "," .$parkspot. "," .$parktime. "," .$walktime. "," .$timeofday. ")";
 	return $sql;
 }
 

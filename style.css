@@ -207,6 +207,12 @@ reliably */
     margin-right: 10px;
 }
 
+.play::before {
+    font-weight: 900;
+    content: "\f04b";
+    font-size: 1.33em;
+    margin-right: 10px;
+}
 
 /*-------------------*/
 /*LAYER CONTROL STYLE*/
@@ -378,16 +384,23 @@ button {
     transition: background 0.6s;
 }
 
-button > * {
-  pointer-events: none;
-}
-
 button:hover {
   background-color: #4CAF50; /* Green */
   color: white;
   transition: background 0.6s;
 /*  transition: color 0.6s ease-in-out;*/
-  
+}
+
+#button-accesssurvey {
+    border: 2px solid #4CAF50; /* Green */
+    margin-top: 30px;
+    line-height: 35px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#button-accesssurvey:hover {
+    background-color: #4CAF50; /* Green */
+    color: white;
 }
 
 #button-delete {

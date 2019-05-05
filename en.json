@@ -57,6 +57,7 @@
     "lang_settings3": "fdfd",
     "lang_settings4": "fdfd",
     "lang_buttoncloseinfo": "Stop showing this dialog box on survey startup",
+    "lang_accesssurvey": "Close this dialog and access survey",
     "lang_buttonchangedevice": "Change device settings. WARNING! Refreshes page, all non-submitted records will be lost!",
     "lang_changepopupsize": "Popup size: ",
  

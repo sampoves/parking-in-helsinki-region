@@ -893,7 +893,8 @@ function showResponse() {
     if(currentLang === "en"){
         key = key_en;
         familiar = familiar_en;
-        parking = parking_en;       
+        parking = parking_en;
+        parktimeofday = timeofday_en;
         title = "Your park survey records";
         pagetitle = "Your results";
         timestamp = "Timestamp";
@@ -906,6 +907,7 @@ function showResponse() {
         key = key_fi;
         familiar = familiar_fi;
         parking = parking_fi;
+        parktimeofday = timeofday_fi;
         title = "Vastauksesi pysäköintikyselyyn";
         pagetitle = "Tuloksesi";
         timestamp = "Lähetetty";
@@ -954,10 +956,11 @@ function showResponse() {
                                 (i + 1) + `, ${thisZipCode}, ${getAreaName(thisZipCode)}` + 
                             "</h3>" + 
                             "<ul>" + 
-                                `<li>${splitResponse[2]}, ${familiar[splitResponse[2]]}</li>` + 
-                                `<li>${splitResponse[3]}, ${parking[splitResponse[3]]}</li>` + 
                                 `<li>${splitResponse[4]}</li>` + 
                                 `<li>${splitResponse[5]}</li>` + 
+                                `<li>${splitResponse[2]}, ${familiar[splitResponse[2]]}</li>` + 
+                                `<li>${splitResponse[3]}, ${parking[splitResponse[3]]}</li>` + 
+                                `<li>${splitResponse[6]}, ${parktimeofday[splitResponse[6]]}</li>` +
                             "</ul>" + 
                         "</p>";
                 

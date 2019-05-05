@@ -180,6 +180,8 @@ var key_en =
         "<br><br>" +
         "<p>" +
             "<h2>Key</h2>" +
+            "<p><b>parktime</b> How long does it usually take for you to find a parking spot and park your car in this postal code area (in minutes)?<br>" + 
+            "<b>walktime</b> How long does it usually take for you to walk from your parking spot to your destination in this postal code area (in minutes)?</p>" +
             "<p><b>likert</b> How familiar are you with this postal code area?</p>" +
             "<ul>" +
                 "<li><b>1</b> Extremely familiar</li>" + 
@@ -193,15 +195,24 @@ var key_en =
                 "<li><b>1</b> Parking space on the side of the street</li>" + 
                 "<li><b>2</b> Parking lot</li>" + 
                 "<li><b>3</b> Parking garage</li>" + 
-                "<li><b>4</b> Other</li>" + 
+                "<li><b>4</b> Private or reserved spot</li>" + 
+                "<li><b>5</b> Other</li>" + 
             "</ul>" +
-            "<p><b>parktime</b> How long does it usually take for you to find a parking spot and park your car in this postal code area (in minutes)?<br><b>walktime</b> How long does it usually take for you to walk from your parking spot to your destination in this postal code area (in minutes)?</p>" +
+            "<p><b>timeofday</b> At what time of the day do you usually park in this postal code area?</p>" +
+            "<ul>" +
+                "<li><b>1</b> Weekday, rush hour (07:00-09:00 and 15:00-17:00)</li>" + 
+                "<li><b>2</b> Weekday, other than rush hour</li>" + 
+                "<li><b>3</b> Weekend</li>" + 
+                "<li><b>4</b> None of the above, no usual time</li>" + 
+            "</ul>" +
         "</p>";
 
 var key_fi =
         "<br><br>" +
         "<p>" +
             "<h2>Selite</h2>" +
+            "<p><b>parktime</b> Kuinka kauan sinulla yleensä kestää löytää pysäköintipaikka ja pysäköidä tällä postinumeroalueella (minuuteissa)?<br>" + 
+            "<b>walktime</b> Kuinka kauan sinulla yleensä kestää kävellä pysäköintipaikalta määränpäähäsi tällä postinumeroalueella (minuuteissa)?</p>" +
             "<p><b>likert</b> Kuinka tuttu tämä postinumeroalue on sinulle?</p>" +
             "<ul>" +
                 "<li><b>1</b> Hyvin tuttu</li>" + 
@@ -213,11 +224,18 @@ var key_fi =
             "<p><b>parkspot</b> Minkätyyppiselle pysäköintipaikalle yleensä pysäköit tällä postinumeroalueella?</p>" +
             "<ul>" +
                 "<li><b>1</b> Kadunvarsipaikka</li>" + 
-                "<li><b>2</b> Pysäköintialue (parkkipaikka)</li>" + 
+                "<li><b>2</b> Pysäköintialue</li>" + 
                 "<li><b>3</b> Pysäköintihalli</li>" + 
-                "<li><b>4</b> Muu</li>" + 
+                "<li><b>4</b> Yksityinen tai varattu autopaikka</li>" + 
+                "<li><b>5</b> Muu</li>" + 
             "</ul>" +
-            "<p><b>parktime</b> Kuinka kauan sinulla yleensä kestää löytää pysäköintipaikka ja pysäköidä tällä postinumeroalueella (minuuteissa)?<br><b>walktime</b> Kuinka kauan sinulla yleensä kestää kävellä pysäköintipaikalta määränpäähäsi tällä postinumeroalueella (minuuteissa)?</p>" +
+            "<p><b>timeofday</b> Mihin viikon- ja vuorokaudenaikaan yleensä pysäköit tälle postinumeroaluelle?</p>" +
+            "<ul>" +
+                "<li><b>1</b> Arkipäivä, ruuhka-aikaan (07:00-09:00 ja 15:00-17:00)</li>" + 
+                "<li><b>2</b> Arkipäivä, muuna kuin ruuhka-aikana</li>" + 
+                "<li><b>3</b> Viikonloppu" + 
+                "<li><b>4</b> Ei mikään ylläolevista, ei yleisintä aikaa</li>" + 
+            "</ul>" +
         "</p>";
 
 var familiar_fi = {
@@ -238,16 +256,32 @@ var familiar_en = {
 
 var parking_fi = {
     "parkspot 1": "kadunvarsipaikka",
-    "parkspot 2": "pysäköintialue (parkkipaikka)",
+    "parkspot 2": "pysäköintialue",
     "parkspot 3": "pysäköintihalli",
-    "parkspot 4": "muu"
+    "parkspot 4": "yksityinen tai varattu autopaikka",
+    "parkspot 5": "muu"
 };
 
 var parking_en = {
     "parkspot 1": "parking space on the side of the street",
     "parkspot 2": "parking lot",
     "parkspot 3": "parking garage",
-    "parkspot 4": "other"
+    "parkspot 4": "private or reserved parking spot",
+    "parkspot 5": "other"
+};
+
+var timeofday_fi = {
+    "timeofday 1": "arkipäivä, ruuhka-aikaan (07:00-09:00 ja 15:00-17:00)",
+    "timeofday 2": "arkipäivä, muuna kuin ruuhka-aikana",
+    "timeofday 3": "viikonloppu",
+    "timeofday 4": "ei mikään ylläolevista, ei yleisintä aikaa"
+};
+
+var timeofday_en = {
+    "timeofday 1": "weekday, rush hour (07:00-09:00 and 15:00-17:00)",
+    "timeofday 2": "weekday, other than rush hour",
+    "timeofday 3": "weekend",
+    "timeofday 4": "none of the above, no usual time"
 };
 
 

@@ -277,8 +277,9 @@ reliably */
 }
 
 
-
-/*Unfinished box 210419*/
+/*-----------------------------*/
+/*You have unfinished areas box*/
+/*-----------------------------*/
 div.transbox {
     padding: 5px 10px;
     margin: 22px;
@@ -291,7 +292,7 @@ div.transbox {
 }
     
 div.transbox p {
-    margin: 2%;
+    margin: 0%;
     font-weight: bold;
     color: #000000;
     transition:all 0.2s ease-in-out;

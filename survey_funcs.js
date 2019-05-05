@@ -258,8 +258,14 @@ function onTimeOfDayChange(event){
 //a cookie script make use of this. Secondary purpose is to prevent code 
 //repetition.
 function initialiseInfo(){
-    //make popups close if info is opened. "apu" manipulates geojson.on("click")
+    
+    // Close any popups when info dialog is opened.
     mymap.closePopup();
+    
+    if($(".leaflet-popup-content-wrapper").length !== 0) {
+        console.log("jauts");
+        enableClicksOnLayer();
+    }
     
     $("#tabs").tabs({
         //show and hide applies fadein and fadeout effects for tab panels in
@@ -358,12 +364,10 @@ function mobileCheck() {
     //are we using mobile? If yes, resize.
     //NB! This function is quite broken. It makes mobile phone experience 
     //technically possible, but still quite unwieldy.
-    if((getCookie("device") === "mobile") || 
-            ((getCookie("device") !== "mobile") && 
-            ((getCookie("device") !== "desktop")) && ($(window).width() < 800))) {
+    if(getCookie("device") === "mobile") {
         
-        //if we are on mobile, this changes change device Font Awesome icon to
-        //desktop variant
+        // If we are on mobile, this changes change device Font Awesome icon to
+        // desktop variant
         $("#button-changedevice").toggleClass('mobile-alt desktop');
         
         //this makes scroll bars reappear
@@ -384,12 +388,6 @@ function mobileCheck() {
         //text area
         $('.tabspanel').css('height', '90%');
         $('.tabspanel').css('width', '80%');
-        
-        //unfinished areas box
-        //due to frequent updates these will not hold. Comment these out
-        //$("div.transbox").css("font-size", "8px");
-        //$("div.transbox").css("padding", "2px 5px");
-        
     }
 }
 
@@ -791,6 +789,11 @@ function submitButtonListener(){
                     }
                 ]
             });
+            
+            // Are we on mobile? If yes, resize jQuery dialog to fullscreen
+            // size
+            mobileCheck();
+            
             //retain dialog position on window resize
             $(window).resize(function() {
                 $("#sucdialog").dialog("option", "position", {

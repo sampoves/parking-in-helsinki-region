@@ -19,7 +19,7 @@ Helsinki Capital Region".
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js"></script>
         <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
         
-        <!--favicon from Clipart Library:
+        <!--favicon provided by Clipart Library:
         http://clipart-library.com/clipart/LidobpK4T.htm-->
         <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -66,8 +66,8 @@ Helsinki Capital Region".
                 worldCopyJump: false,
                 crs: L.CRS.EPSG3857,
                 zoomControl: true,
-                // Attempt to manage weird behaviour of touch events on mobile
-                // by only allowing popups to be closed with buttons
+                // Allow popups to be closed only with buttons. This improves
+                // mobile user experience
                 closePopupOnClick: false 
             });
             
@@ -127,7 +127,8 @@ Helsinki Capital Region".
                             phone or a device with a relatively small screen \n\
                             (screen width less than 800 pixels). Please be advised \n\
                             that some bugs remain in the survey user experience \n\
-                            when using a mobile phone. Please see the tab \"user \n\
+                            when using handheld devices, especially if using\n\
+                            Apple products. Please see the tab \"user \n\
                             instructions\" for more information.";
             
                     // If there is no value in cookie "device", set it in mobile.
@@ -136,6 +137,17 @@ Helsinki Capital Region".
                     if(typeof getCookie("device") === "undefined") {
                         create_cookie("device", "mobile", 90, "/");
                     }
+                    
+                //detect visits with mobile phone which have larger screen than
+                //800 pixels wide.
+                } else if (L.browser === "mobile") {
+                    document.getElementById('mobilewarning').innerHTML = 
+                            "<br>It seems you are visiting the survey with a mobile \n\
+                            device. Please be advised that some bugs remain in \n\
+                            the survey user experience when using handheld \n\
+                            devices, especially if using Apple products. \n\
+                            Please see the tab \"user instructions\" for \n\
+                            more information.";
                 }
                 
                 //Execute visitor counter. Send dummy data to validate our post
@@ -390,11 +402,11 @@ Helsinki Capital Region".
                 }).addTo(mymap);
 
             // IMPORT POLYGON GEOJSONS
-            // Note: bug suspicion. Laying out style function like here seems to
-            // work unexpectedly. It always picks one geometry where the style
-            // defaults to blue. This is acceptable for postal, but not for
-            // postaldissolve. For this reason the code is commented in
-            // postaldissolve's style parameter.
+            // Note: bug suspicion in Leaflet 1.4.0. Laying out style function 
+            // like here seems to work unexpectedly. It always picks one 
+            // geometry where the style defaults to blue. This is acceptable 
+            // for postal, but not for postaldissolve. For this reason the code 
+            // is commented in postaldissolve's style parameter.
             var postal = new L.GeoJSON.AJAX(
                     "pno_research_area.geojson", {
                         attribution: 'Postal code areas &copy; <a href="http://urn.fi/urn:nbn:fi:csc-kata20180425144903846834">Statistics Finland</a>, <a href="http://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>',

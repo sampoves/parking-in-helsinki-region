@@ -136,3 +136,7 @@ fdsafdopfd
 * 020419 `findIntersection()` function and streamlined zip code area name fetch in `layerClickHandler()`
 * 040419 discontinue use of `sessionid`, track ip instead
 * 170419 discontinue language button animations in favor of country code icons
+
+## Data used in this survey
+
+The postal code areas (postal.geojson) and the research area (postaldissolve.geojson) are adapted from Statistic Finland's [Paavo - open data by postal code area, 2018](http://urn.fi/urn:nbn:fi:csc-kata20180425144903846834). This data is licensed in [Creative Commons Attribution 4.0 International](http://creativecommons.org/licenses/by/4.0).

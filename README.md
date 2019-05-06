@@ -137,6 +137,8 @@ fdsafdopfd
 * 040419 discontinue use of `sessionid`, track ip instead
 * 170419 discontinue language button animations in favor of country code icons
 
-## Data used in this survey
+## Data and asset attribution
 
 The postal code areas (pno_dissolve.geojson) and the research area (pno_research_area.geojson) are adapted from Statistic Finland's [Paavo - open data by postal code area, 2018](http://urn.fi/urn:nbn:fi:csc-kata20180425144903846834). This data is licensed in [Creative Commons Attribution 4.0 International](http://creativecommons.org/licenses/by/4.0).
+
+The survey uses a favicon provided by [Clipart Library](http://clipart-library.com/clipart/LidobpK4T.htm).

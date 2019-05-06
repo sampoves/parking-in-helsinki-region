@@ -66,13 +66,15 @@ Helsinki Capital Region".
                 worldCopyJump: false,
                 crs: L.CRS.EPSG3857,
                 zoomControl: true,
-                //attempt to manage weird behaviour of touch events on mobile
-                //by only allowing popups to be closed with buttons
+                // Attempt to manage weird behaviour of touch events on mobile
+                // by only allowing popups to be closed with buttons
                 closePopupOnClick: false 
             });
             
-            //initialise TrackZipCodes object for keeping track of unique zip
-            //codes. This prevents duplicate records for same zip code areas.
+            // Initialise TrackZipCodes object for keeping track of unique zip
+            // codes. This prevents duplicate records for same zip code areas.
+            // UIState keeps track for unfinished areas dialog box whether
+            // UI has been hidden or not.
             usersZipCodes = new TrackZipCodes();
             window.UIState = true;
             
@@ -112,7 +114,7 @@ Helsinki Capital Region".
             //Show survey version in jQuery info window and determine whether
             //to start survey in mobile mode or not. Also, execute visitor
             //counter code.
-            var survey_version = "Survey version 5.5.2019";
+            var survey_version = "Survey version 6.5.2019";
             window.onload = function() {
                 document.getElementById('version').innerHTML = survey_version;
                 
@@ -124,7 +126,7 @@ Helsinki Capital Region".
                             "<br>It seems you are visiting the survey with a mobile \n\
                             phone or a device with a relatively small screen \n\
                             (screen width less than 800 pixels). Please be advised \n\
-                            that some bugs may remain in the survey user experience \n\
+                            that some bugs remain in the survey user experience \n\
                             when using a mobile phone. Please see the tab \"user \n\
                             instructions\" for more information.";
             
@@ -395,7 +397,7 @@ Helsinki Capital Region".
             // postaldissolve's style parameter.
             var postal = new L.GeoJSON.AJAX(
                     "pno_research_area.geojson", {
-                        attribution: 'Postal areas &copy; <a href="http://urn.fi/urn:nbn:fi:csc-kata20180425144903846834">Statistics Finland</a>',
+                        attribution: 'Postal code areas &copy; <a href="http://urn.fi/urn:nbn:fi:csc-kata20180425144903846834">Statistics Finland</a>, <a href="http://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>',
                         //style function listens to baselayer change and chooses
                         //GeoJSON layer postal style accordingly
                         style: function(feature){
@@ -940,7 +942,7 @@ Helsinki Capital Region".
                     <p tkey="lang_welcome5"><b>Huom!</b> Huomaathan, että <i>kyselyssä ei kartoiteta kotipihapysäköintiä tai sellaista pysäköintiä, jossa vastaajalla on käytössä henkilökohtainen pysäköintipaikka</i>.</p>
                     <p tkey="lang_welcome6">Kiitän vastauksestasi, <br>terveisin, Sampo Vesanen</p>
                     <p tkey="lang_welcome7">Kyselyyn liittyvissä asioissa ota minuun yhteyttä sähköpostitse: sampo.vesanen(at)helsinki.fi</p>
-                    <button id="button-closeinfo" class="icon window-close" type="button" tkey="lang_buttoncloseinfo">Stop showing this dialog box at startup</button>
+                    <button id="button-accesssurvey" class="icon play" type="button" tkey="lang_accesssurvey"></button>
                 </div>
                 <div id="tabs-2" class="tabspanel">
                     <H2 tkey="lang_aboutH2">More on the subject</H2>

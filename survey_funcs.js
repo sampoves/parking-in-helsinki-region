@@ -310,18 +310,15 @@ function initialiseInfo(){
     // are we on mobile?
     mobileCheck();
     
-    // listen to "access survey" button, only visible on mobile. Put this in
-    // try-catch statement as the id is not always present
-    try {
-        var buttonAccesssurvey = L.DomUtil.get('button-accesssurvey');
-        L.DomEvent.addListener(buttonAccesssurvey, "click", function (e) {
-            $("#tabsikkuna").dialog("close");
-            infoButton.state('infoOpen');
-        });
-    } catch(err) {
-        //do nothin
-    }
-    
+    // listen to "close this info dialog and access survey" button. This
+    // primarily exists to help mobile phone users who at this point can't
+    // see anything else than the info dialog
+    var buttonAccesssurvey = L.DomUtil.get('button-accesssurvey');
+    L.DomEvent.addListener(buttonAccesssurvey, "click", function (e) {
+        $("#tabsikkuna").dialog("close");
+        infoButton.state('infoOpen');
+    });
+
     // listen to "close this info window for good" button 
     var buttonCloseinfo = L.DomUtil.get('button-closeinfo');
     L.DomEvent.addListener(buttonCloseinfo, "click", function (e) {
@@ -402,13 +399,6 @@ function mobileCheck() {
         //text area
         $('.tabspanel').css('height', '90%');
         $('.tabspanel').css('width', '80%');
-        
-        // Add mobile context sensitive "close info dialog window" button to
-        // make it more clear how to access survey. Add if statement to only
-        // make button appear once
-        if(typeof $("#button-accesssurvey").val() === "undefined") {
-            $('<button id="button-accesssurvey" class="icon play" type="button" tkey="lang_accesssurvey"></button>').insertBefore("#button-closeinfo");
-        }
     }
 }
 

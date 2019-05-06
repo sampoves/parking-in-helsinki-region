@@ -267,9 +267,9 @@ reliably */
 }
 
 
-/*-------------*/
-/*SENDBOX STYLE*/
-/*-------------*/
+/*------------------------------------------*/
+/*SENDBOX, submit records button area, STYLE*/
+/*------------------------------------------*/
 .sendbox {
     z-index: 2;
     width: 330px;
@@ -432,10 +432,14 @@ button:hover {
 
 
 
-
 /*--------------*/
 /*SUBMIT RECORDS*/
 /*--------------*/
+/*#buttonsubmitall has a Material Design style button animation but it is
+currently out of use because of the need for enabled-disabled states. This
+breaks the animation. See the original code at
+https://refork.com/x35b*/
+
 #buttonsubmitall:enabled {
     background-color: darkgreen;
     background-position: center;

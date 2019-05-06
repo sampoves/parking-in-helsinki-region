@@ -6,7 +6,9 @@
  */
 
 //BOUNDS VARIABLES FOR MYMAP
-var corner1 = [60.6, 24.37];
+// the bounds reach quite up north of the research area to accommodate popup
+// visibility when user has zoomed out map view
+var corner1 = [60.7, 24.37];
 var corner2 = [60.05, 25.305884];
 var bounds = L.latLngBounds(corner1, corner2);
 

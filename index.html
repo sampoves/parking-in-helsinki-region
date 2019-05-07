@@ -123,13 +123,7 @@ Helsinki Capital Region".
                 if($(window).width() < 800) {
                     
                     document.getElementById('mobilewarning').innerHTML = 
-                            "<br>It seems you are visiting the survey with a mobile \n\
-                            phone or a device with a relatively small screen \n\
-                            (screen width less than 800 pixels). Please be advised \n\
-                            that some bugs remain in the survey user experience \n\
-                            when using handheld devices, especially if using\n\
-                            Apple products. Please see the tab \"user \n\
-                            instructions\" for more information.";
+                            mobilewarning_smallscreen;
             
                     // If there is no value in cookie "device", set it in mobile.
                     // Now a mobile user will see the mobile version at first,
@@ -142,12 +136,7 @@ Helsinki Capital Region".
                 //800 pixels wide.
                 } else if (L.browser === "mobile") {
                     document.getElementById('mobilewarning').innerHTML = 
-                            "<br>It seems you are visiting the survey with a mobile \n\
-                            device. Please be advised that some bugs remain in \n\
-                            the survey user experience when using handheld \n\
-                            devices, especially if using Apple products. \n\
-                            Please see the tab \"user instructions\" for \n\
-                            more information.";
+                            mobilewarning_general;
                 }
                 
                 //Execute visitor counter. Send dummy data to validate our post
@@ -986,7 +975,8 @@ Helsinki Capital Region".
                     <img style="float: left; padding: 0 20px 20px 0;" src="images/layers.png" alt="Layer control button"><p tkey="lang_instr8"></p></img>
                     <img style="float: left; padding: 0 20px 20px 0;" src="images/geocoder.png" alt="Search area button"><p tkey="lang_instr9"></p></img>
                     <H4 tkey="lang_instr10">Ruudun oikea alakulma</H4>
-                    <p tkey="lang_instr11">Tätä napsauttamalla tiedot lähtevät liikkeelle</p>
+                    <p tkey="lang_instr11"></p>
+                    <p tkey="lang_instr12"></p>
                     <H3 tkey="lang_survey1"></H3>
                     <img id="survey_screen" style="float: left; padding: 0 20px 20px 0;" src="images/survey_fi.png" alt="Survey popup">
                         <p tkey="lang_survey2"></p>
@@ -996,16 +986,19 @@ Helsinki Capital Region".
                         <p tkey="lang_survey6"></p>
                         <p tkey="lang_survey7"></p>
                         <p tkey="lang_survey8"></p>
+                        <p tkey="lang_survey9"></p>
                     </img>
-                    <H3 tkey="lang_instr12">Tekniset yksityiskohdat</H3>
+                    <H3 tkey="lang_tech1">Tekniset yksityiskohdat</H3>
                     <ul>
-                        <li tkey="lang_instr13">Jos törmäät ongelmiin täyttäessäsi lomaketta, tarkista verkkoselaimesi ajantasaisuus</li>
-                        <li tkey="lang_instr14">Lomake on koekäytetty seuraavilla selaimilla. Suosittelen käyttämään jotain seuraavista:</li>
+                        <li tkey="lang_tech2">Jos törmäät ongelmiin täyttäessäsi lomaketta, tarkista verkkoselaimesi ajantasaisuus</li>
+                        <li tkey="lang_tech3">Lomake on koekäytetty seuraavilla selaimilla. Suosittelen käyttämään jotain seuraavista:</li>
                         <ul>
-                            <li tkey="lang_instr15">Älypuhelimella: Chrome (ainakin versio 71)</li>
-                            <li tkey="lang_instr16">Pöytätietokoneella/kannettavalla: Chrome (ainakin versio 71), Firefox (versio 64), Edge (versio 42)</li>
+                            <li tkey="lang_tech4">Älypuhelimella: Chrome (ainakin versio 71)</li>
+                            <li tkey="lang_tech5"></li>
+                            <li tkey="lang_tech6">Pöytätietokoneella/kannettavalla: Chrome (ainakin versio 71), Firefox (versio 64), Edge (versio 42)</li>
                         </ul>
-                        <li tkey="lang_instr17">Jos käytät älypuhelinta lomakkeen täyttämiseen ja ongelmasi eivät hälvene vaikka olet seurannut ylläolevia ohjeita, kokeile täyttää lomake pöytä- tai kannettavalla tietokoneella (vaihtoehtoisesti voit kokeilla puhelinta, jos tietokoneella lomake tuottaa ongelmia). Testieni mukaan tietokoneversio tästä lomakkeesta on käyttövarmempi kuin älypuhelimen.</li>
+                        <br>
+                        <li tkey="lang_tech7">Jos käytät älypuhelinta lomakkeen täyttämiseen ja ongelmasi eivät hälvene vaikka olet seurannut ylläolevia ohjeita, kokeile täyttää lomake pöytä- tai kannettavalla tietokoneella (vaihtoehtoisesti voit kokeilla puhelinta, jos tietokoneella lomake tuottaa ongelmia). Testieni mukaan tietokoneversio tästä lomakkeesta on käyttövarmempi kuin älypuhelimen.</li>
                     </ul>
                 </div>
                 <div id="tabs-4" class="tabspanel">

@@ -313,8 +313,8 @@ function initialiseInfo(){
     // listen to "close this info dialog and access survey" button. This
     // primarily exists to help mobile phone users who at this point can't
     // see anything else than the info dialog
-    var buttonAccesssurvey = L.DomUtil.get('button-accesssurvey');
-    L.DomEvent.addListener(buttonAccesssurvey, "click", function (e) {
+    var buttonAccessSurvey = L.DomUtil.get('button-accesssurvey');
+    L.DomEvent.addListener(buttonAccessSurvey, "click", function (e) {
         $("#tabsikkuna").dialog("close");
         infoButton.state('infoOpen');
     });
@@ -372,6 +372,13 @@ function initialiseInfo(){
 
 
 function mobileCheck() {
+    
+    //this attempts to make sure infoscreen always starts up in mobile mode
+    //if cookie "device" does not exist and screen width is less than 800px
+    if((typeof getCookie("device") === "undefined") && ($(window).width() < 800)) {
+        create_cookie("device", "mobile", 90, "/");
+    }
+    
     //are we using mobile? If yes, resize.
     //NB! This function is quite broken. It makes mobile phone experience 
     //technically possible, but still quite unwieldy.

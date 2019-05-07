@@ -114,7 +114,7 @@ Helsinki Capital Region".
             //Show survey version in jQuery info window and determine whether
             //to start survey in mobile mode or not. Also, execute visitor
             //counter code.
-            var survey_version = "Survey version 6.5.2019";
+            var survey_version = "Survey version 7.5.2019";
             window.onload = function() {
                 document.getElementById('version').innerHTML = survey_version;
                 
@@ -654,7 +654,7 @@ Helsinki Capital Region".
                 // is updated in beginning of this script file when determining
                 // cookie language value and when user presses langbutton
                 languageCheckUp();
-                                
+
                 //PARKING TIME
                 L.DomUtil.get('parktime').textContent = properties.parktime;
                 var parkTime = L.DomUtil.get('parktime');
@@ -756,6 +756,21 @@ Helsinki Capital Region".
                     arePopupsFinished();
                     unfinishedBox.update();
                 });
+                
+                // Make sure that placeholder option is seen if no value is
+                // detected in select element "parkspot" or "timeofday". Does
+                // this fix Apple problems?
+                // this would have been easiest to do in pure html, but the
+                // listeners in this function required select tags to have
+                // ids. These ids in turn made the placeholders not appear
+                // at all on Chrome and would lead Safari to show the first
+                // select option as default, leading to problems.
+                if(properties.parkspot === null) {
+                    document.getElementById('parkspot').selectedIndex = 0;
+                }
+                if (properties.timeofday === null) {
+                    document.getElementById('timeofday').selectedIndex = 0;
+                }
             }
     
     

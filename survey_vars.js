@@ -178,18 +178,16 @@ var geojsonCompHighlight = {
 var mobilewarning_smallscreen = "<br>It seems you are visiting the survey with a mobile \n\
                     phone or a device with a relatively small screen \n\
                     (screen width less than 800 pixels). Please be advised \n\
-                    that some bugs remain in the survey user experience \n\
-                    when using handheld devices, especially if using\n\
-                    Apple products. Please see the tab \"user \n\
+                    that some bugs may remain in the survey user experience \n\
+                    when using handheld devices. See the tab \"user \n\
                     instructions\" for more information. The tab marked \n\
                     with the wrench icon contains useful settings for \n\
                     mobile phone users.";
 
 var mobilewarning_general = "<br>It seems you are visiting the survey with a mobile \n\
-                    device. Please be advised that some bugs remain in \n\
+                    device. Please be advised that some bugs may remain in \n\
                     the survey user experience when using handheld \n\
-                    devices, especially if using Apple products. \n\
-                    Please see the tab \"user instructions\" for \n\
+                    devices. See the tab \"user instructions\" for \n\
                     more information. The tab marked \n\
                     with the wrench icon contains useful settings for \n\
                     mobile phone users.";

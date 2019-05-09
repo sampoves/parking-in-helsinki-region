@@ -424,6 +424,28 @@ function hideUI() {
 }
 
 
+// Test the state of UI. The intention is to test the state of UI each time user
+// clicks save changes, delete records or presses x on popup when on mobile
+// mobile mode. First of all, set a timer for the whole function. This enables
+// us to test after 200ms if popup elements are still open or not. We run this
+// function as the last command in the three events detailed above. If using
+// desktop version of the survey, testUIstate() does nothing.
+function testUIstate() {
+    setTimeout(function(){
+        if((UIState === false) && 
+                ($(".leaflet-popup-content-wrapper").length === 0) && 
+                (getCookie("device") === "mobile")) {
+            showUI();
+            unfinishedBox.update();
+        } else {
+            // this else condition updates unfinishedBox when using desktop
+            // version and user has deleted an area.
+            unfinishedBox.update();
+        }
+    }, 200);
+}
+
+
 //format a tidy string format date for mysql insertion. Formats all parts with
 //leading zeroes.
 function formatTime() {

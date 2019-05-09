@@ -114,7 +114,7 @@ Helsinki Capital Region".
             //Show survey version in jQuery info window and determine whether
             //to start survey in mobile mode or not. Also, execute visitor
             //counter code.
-            var survey_version = "Survey version 7.5.2019";
+            var survey_version = "Survey version 9.5.2019";
             window.onload = function() {
                 document.getElementById('version').innerHTML = survey_version;
                 
@@ -161,13 +161,7 @@ Helsinki Capital Region".
             //user is not left without UI at any moment.
             "click touchend touchstart".split(" ").forEach(function(e){
                 document.addEventListener(e, function (event) {
-                    setTimeout(function(){
-                        if((UIState === false) && 
-                                ($(".leaflet-popup-content-wrapper").length === 0) && 
-                                (getCookie("device") === "mobile")) {
-                            showUI();
-                        }
-                    }, 200);
+                    testUIstate();
                 });
             });
 
@@ -233,7 +227,7 @@ Helsinki Capital Region".
             mymap.on("dragstart", function (e) {
                 updateGeomColors();
                 arePopupsFinished();
-                unfinishedBox.update();
+                //unfinishedBox.update();
             });
             
             mymap.on("click", function (e) {
@@ -647,13 +641,14 @@ Helsinki Capital Region".
                     enableClicksOnLayer(); //resume normal behaviour
                     updateGeomColors();
                     arePopupsFinished();
-                    unfinishedBox.update();
+                    testUIstate();
                 });
 
                 // keep language up to date with var currentLang. currentLang
                 // is updated in beginning of this script file when determining
                 // cookie language value and when user presses langbutton
                 languageCheckUp();
+
 
                 //PARKING TIME
                 L.DomUtil.get('parktime').textContent = properties.parktime;
@@ -738,7 +733,7 @@ Helsinki Capital Region".
                     enableClicksOnLayer();
                     pol.closePopup();
                     arePopupsFinished();
-                    unfinishedBox.update();
+                    testUIstate();
                 });
                 
                 //DELETE BUTTON
@@ -754,7 +749,7 @@ Helsinki Capital Region".
                     enableClicksOnLayer();
                     geojson.removeLayer(pol);
                     arePopupsFinished();
-                    unfinishedBox.update();
+                    testUIstate();
                 });
                 
                 // Make sure that placeholder option is seen if no value is

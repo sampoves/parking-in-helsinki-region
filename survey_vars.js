@@ -175,22 +175,36 @@ var geojsonCompHighlight = {
 //-------------
 // TEXT STRINGS
 //-------------
-var mobilewarning_smallscreen = "<br>It seems you are visiting the survey with a mobile \n\
-                    phone or a device with a relatively small screen \n\
-                    (screen width less than 800 pixels). Please be advised \n\
-                    that some bugs may remain in the survey user experience \n\
-                    when using handheld devices. See the tab \"user \n\
-                    instructions\" for more information. The tab marked \n\
-                    with the wrench icon contains useful settings for \n\
-                    mobile phone users.";
+var mobilewarning_smallscreen = "<i class='icon info-circle'></i>Hi! It \n\
+        seems you are visiting the survey with a mobile phone or a device \n\
+        with a relatively small screen (screen width less than 800 pixels). \n\
+        If you encounter any problems with using the survey, please see the \n\
+        tab marked with the wrench icon. It contains useful settings \n\
+        for mobile phone users such as possibility to adjust\n\
+        survey popup window size. Thank you for your answers to the survey!";
 
-var mobilewarning_general = "<br>It seems you are visiting the survey with a mobile \n\
-                    device. Please be advised that some bugs may remain in \n\
-                    the survey user experience when using handheld \n\
-                    devices. See the tab \"user instructions\" for \n\
-                    more information. The tab marked \n\
-                    with the wrench icon contains useful settings for \n\
-                    mobile phone users.";
+var mobilewarning_general = "<i class='icon info-circle'></i>Hi! It seems \n\
+        you are visiting the survey with a mobile phone. If you encounter \n\
+        any problems with using the survey, please see the tab marked with \n\
+        the wrench icon. It contains useful settings for mobile phone users \n\
+        such as possibility to adjust survey popup window size. Thank you \n\
+        for your answers to the survey!";
+
+var mobilewarning_smallscreen_fi = "<i class='icon info-circle'></i>Hei! \n\
+        Käytät ilmeisesti älypuhelinta tai muuta laitetta, jossa on \n\
+        suhteellisen alhainen ruututarkkuus (ruudun leveys \n\
+        vähemmän kuin 800 pikseliä). Jos kohtaat ongelmia kyselyä\n\
+        täyttäessäsi, tarkistathan jakoavain-ikonilla varustetun\n\
+        välilehden. Löydät sieltä hyödyllisiä asetuksia \n\
+        parhaimman mobiilikokemuksen saavuttamiseksi. Kiitos \n\
+        vastauksistasi!";
+
+var mobilewarning_general_fi = "<i class='icon info-circle'></i>Hei! Käytät \n\
+        ilmeisesti älypuhelinta. Jos kohtaat ongelmia kyselyä täyttäessäsi, \n\
+        tarkistathan jakoavain-ikonilla varustetun välilehden. Löydät sieltä \n\
+        hyödyllisiä asetuksia parhaimman mobiilikokemuksen saavuttamiseksi. \n\
+        Kiitos vastauksistasi!";
+
 
 var missingStuff = 
         '<font size="4" color="red" style="line-height: 30px;"><center><strong id="incomplete" tkey="lang_incomplete">This entry is incomplete!</strong></center></font>';

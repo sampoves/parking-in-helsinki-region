@@ -546,6 +546,15 @@ var translate = function(jsdata) {
         $(".viewresults").html("View your sent data (opens in new window)");
         $("#ui-id-6").text("Submit success!"); //success
         $(".form-control").attr("placeholder", "Insert value (0-99)");
+        
+        //mobilewarning text in infobox
+        if($("#mobilewarning").text() !== "") {
+            if($(window).width() < 800) {
+                $("#mobilewarning").html(mobilewarning_smallscreen);
+            } else if (L.browser === "mobile") {
+                $("#mobilewarning").html(mobilewarning_general);
+            }
+        }
         cssPopupsizeValue();
         
     } else {
@@ -558,6 +567,15 @@ var translate = function(jsdata) {
         $(".viewresults").html("Näytä raportti lähetetystä aineistosta (avautuu uuteen ikkunaan)");
         $("#ui-id-6").text("Lähetys onnistui!"); //success
         $(".form-control").attr("placeholder", "Syötä numero (0-99)");
+        
+        //mobilewarning text in infobox
+        if($("#mobilewarning").text() !== "") {
+            if($(window).width() < 800) {
+                $("#mobilewarning").html(mobilewarning_smallscreen_fi);
+            } else if (L.browser === "mobile") {
+                $("#mobilewarning").html(mobilewarning_general_fi);
+            }
+        }
         cssPopupsizeValue();
     }
 };

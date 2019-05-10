@@ -114,16 +114,25 @@ Helsinki Capital Region".
             //Show survey version in jQuery info window and determine whether
             //to start survey in mobile mode or not. Also, execute visitor
             //counter code.
-            var survey_version = "Survey version 9.5.2019";
+            var survey_version = "Survey version 10.5.2019";
             window.onload = function() {
                 document.getElementById('version').innerHTML = survey_version;
+                
+                // Handle correct translation of mobilewarning
+                if(currentLang === "fi") {
+                    smallscreen = mobilewarning_smallscreen_fi;
+                    general = mobilewarning_general_fi;
+                } else {
+                    smallscreen = mobilewarning_smallscreen;
+                    general = mobilewarning_general;
+                }
                 
                 // If user's window width is less than 800, show message about
                 // how to proceed
                 if($(window).width() < 800) {
                     
                     document.getElementById('mobilewarning').innerHTML = 
-                            mobilewarning_smallscreen;
+                            smallscreen;
             
                     // If there is no value in cookie "device", set it in mobile.
                     // Now a mobile user will see the mobile version at first,
@@ -136,7 +145,12 @@ Helsinki Capital Region".
                 //800 pixels wide.
                 } else if (L.browser === "mobile") {
                     document.getElementById('mobilewarning').innerHTML = 
-                            mobilewarning_general;
+                            general;
+                } else {
+                    // This condition is fulfilled, if user's screen is large
+                    // enough and browser is not mobile. This is to make sure
+                    // infobox will not show an empty speech bubble
+                    $("#mobilewarning").css("display", "none");
                 }
                 
                 //Execute visitor counter. Send dummy data to validate our post

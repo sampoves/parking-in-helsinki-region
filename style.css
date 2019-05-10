@@ -214,6 +214,15 @@ reliably */
     margin-right: 10px;
 }
 
+.info-circle::before {
+    font-weight: 900;
+    content: "\f05a";
+    font-size: 1.66em;
+    margin-bottom: -10px; /*prevent spreading line height below icon*/
+    margin-right: 5px;
+}
+
+
 /*-------------------*/
 /*LAYER CONTROL STYLE*/
 /*-------------------*/
@@ -259,11 +268,33 @@ reliably */
     margin-bottom: -4px;
 }
 
+/*Speech bubble code by leaverou
+http://leaverou.github.io/bubbly/*/
 #mobilewarning {
+    position: relative; /*enable bubble tip*/
     font-size: small;
-    color: red;
-    margin-top: -4px;
+    background-color: #2996ff; /*kind of same blue as tabs*/
+    color: white;
+    padding: 5px 5px 8px 8px;
+    border-radius: .4em;
+    margin-top: 16px;
     margin-bottom: -4px;
+}
+
+/*bubble tip*/
+#mobilewarning:after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: 18px solid transparent;
+	border-right-color: #2996ff; /*speech bubble tip*/
+	border-left: 0;
+	border-bottom: 0;
+	margin-top: -9px;
+	margin-left: -18px;
 }
 
 

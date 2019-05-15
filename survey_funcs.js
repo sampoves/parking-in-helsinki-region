@@ -309,7 +309,28 @@ function initialiseInfo(){
     
     // are we on mobile?
     mobileCheck();
+
+    // Listen to the small flag buttons. NB! These operations are exact copies of
+    // langButton actions! A place for later improvement surely
+    document.getElementById("button-fi").onclick = function (e){
+        console.log("Current language Finnish. Cookie updated.");
+        $.getJSON('fi.json', translate);
+        window.currentLang = "fi";
+        lCtrl.update();
+        langButton.state('fi');
+        create_cookie("lang", "fi", 90, "/");
+    };
     
+    document.getElementById("button-en").onclick = function (e){
+        console.log("Current language English. Cookie updated.");
+        $.getJSON('en.json', translate);
+        window.currentLang = "en";
+        lCtrl.update();
+        langButton.state('en');
+        create_cookie("lang", "en", 90, "/");
+    };
+
+
     // listen to "close this info dialog and access survey" button. This
     // primarily exists to help mobile phone users who at this point can't
     // see anything else than the info dialog

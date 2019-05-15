@@ -222,6 +222,14 @@ reliably */
     margin-right: 5px;
 }
 
+.globe::before {
+    font-weight: 900;
+    content: "\f0ac";
+    font-size: 1.66em;
+    margin-bottom: -10px; /*prevent spreading line height below icon*/
+    margin-right: 5px;
+}
+
 
 /*-------------------*/
 /*LAYER CONTROL STYLE*/
@@ -258,9 +266,9 @@ reliably */
 }
 
 
-/*---------------------------------------*/
-/*VERSION AND WARNING TEXT IN INFO DIALOG*/
-/*---------------------------------------*/
+/*------------------------------------------------------------*/
+/*VERSION TEXT AND WARNING AND LANGUAGE BUBBLES IN INFO DIALOG*/
+/*------------------------------------------------------------*/
 #version {
     font-size: small;
     color: grey;
@@ -283,18 +291,78 @@ http://leaverou.github.io/bubbly/*/
 
 /*bubble tip*/
 #mobilewarning:after {
-	content: '';
-	position: absolute;
-	left: 0;
-	top: 50%;
-	width: 0;
-	height: 0;
-	border: 18px solid transparent;
-	border-right-color: #2996ff; /*speech bubble tip*/
-	border-left: 0;
-	border-bottom: 0;
-	margin-top: -9px;
-	margin-left: -18px;
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: 18px solid transparent;
+    border-right-color: #2996ff; /*speech bubble tip*/
+    border-left: 0;
+    border-bottom: 0;
+    margin-top: -9px;
+    margin-left: -18px;
+}
+
+/*Super inefficient CSS, please bear with me. The following two ids are
+repetition of the two above*/
+#yourlang {
+    position: relative; /*enable bubble tip*/
+    font-size: small;
+    line-height: 30px;
+    background-color: #fe3e8f; /*kind of same blue as tabs*/
+    color: white;
+    padding: 8px 8px 5px 8px;
+    border-radius: .4em;
+    margin-top: 14px;
+    margin-bottom: 4px;
+}
+
+/*bubble tip*/
+#yourlang:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: 18px solid transparent;
+    border-left-color: #fe3e8f;
+    border-right: 0;
+    border-bottom: 0;
+    margin-top: -9px;
+    margin-right: -18px;
+}
+
+
+/*-----------------------*/
+/*FLAG BUTTON CONTROLLING*/
+/*-----------------------*/
+.lang_img {
+    height: 2em;
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-bottom: -5px;
+    background: #eee;
+    border: 1px solid transparent;
+    float: right;
+}
+
+.lang_img:hover {
+    border-radius: 4.4em;
+    background: #e1e1e1;
+    border: 1px solid #d0d0d0;
+    -webkit-filter: brightness(160%); /* Safari 6.0 - 9.0 */
+    filter: brightness(160%);
+    transition:all 0.4s ease-in-out;
+}
+
+.lang_img:active {
+    transform: scale(0.8, 0.8);
+    -ms-transform: scale(0.8, 0.8);
+    -webkit-transform: scale(0.8, 0.8);
+    transition: 0.2s;
 }
 
 

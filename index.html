@@ -114,7 +114,7 @@ Helsinki Capital Region".
             //Show survey version in jQuery info window and determine whether
             //to start survey in mobile mode or not. Also, execute visitor
             //counter code.
-            var survey_version = "Survey version 10.5.2019";
+            var survey_version = "Survey version 15.5.2019";
             window.onload = function() {
                 document.getElementById('version').innerHTML = survey_version;
                 
@@ -317,12 +317,12 @@ Helsinki Capital Region".
                         // popup size a bit smaller at first, making it easier 
                         // to understand how to use the survey.
                         create_cookie("popupsize", "medium", 90, "/");
-                        console.log("Popup size value not found, user using mobile, set medium size");
+                        console.log("Popup size value not found, user on mobile, set medium size");
                     } else {
                         // We are on desktop
                         create_cookie("popupsize", "default", 90, "/");
                         $("div.popupsize").attr("content", "default");
-                        console.log("Popup size value not found, user using desktop, set default size");
+                        console.log("Popup size value not found, user on desktop, set default size");
                     }
                 }
                 //translate popup size value
@@ -815,9 +815,7 @@ Helsinki Capital Region".
                         btn.state('en');
 
                         // update cookie value each time langbutton is pressed
-                        var cookie_name = "lang";
-                        var cookie_value = "en";
-                        create_cookie(cookie_name, cookie_value, 90, "/");
+                        create_cookie("lang", "en", 90, "/");
                     }
                 }, {
                     stateName: 'en',
@@ -829,11 +827,7 @@ Helsinki Capital Region".
                         window.currentLang = "fi"; // inform layerClickHandler()
                         lCtrl.update();
                         btn.state('fi');
-                        
-                        // update cookie value each time langbutton is pressed
-                        var cookie_name = "lang";
-                        var cookie_value = "fi";
-                        create_cookie(cookie_name, cookie_value, 90, "/");
+                        create_cookie("lang", "fi", 90, "/");
                         
                     }
                 }]
@@ -971,7 +965,11 @@ Helsinki Capital Region".
                 </ul>
                 <div id="tabs-1" class="tabspanel">
                     <p id="version" tkey="lang_version"></p>
-                    <p id ="mobilewarning"></p>
+                    <p id="mobilewarning"></p>
+                    <p id="yourlang"><span tkey="lang_lang">Hei! Valitse kielesi:</span>
+                        <img class="lang_img" id="button-en" src="images/gb.png" alt="Switch to English">
+                        <img class="lang_img" id="button-fi" src="images/fi.png" alt="Vaihda suomen kieleen">
+                    </p>
                     <H2 tkey="lang_welcome1">Tervetuloa kyselyyn!</H2>
                     <p tkey="lang_welcome2">Tämän kyselyn tarkoituksena on selvittää kuinka kauan henkilöauton pysäköinti kestää pääkaupunkiseudulla. Kyselyssä huomioidaan pysäköinnin koko prosessi: kuinka kauan pysäköintipaikkaa etsittiin, minne auto pysäköitiin ja missä oli vastaajan todellinen määränpää. Kyselyssä kerättyjä tietoja käytetään Helsingin yliopiston geoinformatiikan pro gradu -tutkimuksessa, josta voit lukea lisää allaolevasta "tarkempaa tietoa kyselystä" -kohdassa.</p>
                     <p tkey="lang_welcome3">Tämä kysely tähtää vaivattomuuteen: Jos et muista pysäköinnin tarkkaa aikaa tai paikkaa, voit syöttää näistä arvion. Voit täyttää kyselyn vaikka jokaisen pääkaupunkiseudulla tapahtuneen henkilöautomatkasi päätteeksi, tai täyttää lomakkeen yhdeltä istumalta monta kertaa.</p>

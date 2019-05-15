@@ -308,16 +308,20 @@ http://leaverou.github.io/bubbly/*/
 /*Super inefficient CSS, please bear with me. The following two ids are
 repetition of the two above*/
 #yourlang {
-    position: relative; /*enable bubble tip*/
-    overflow: hidden; /*this helps langbuttons remain inside yourlang on small screens*/
+    position: relative;
     font-size: small;
     line-height: 30px;
-    background-color: #fe3e8f; /*kind of same blue as tabs*/
+    background-color: #fe3e8f;
     color: white;
     padding: 8px 8px 5px 8px;
     border-radius: .4em;
     margin-top: 14px;
-    margin-bottom: 4px;
+    margin-bottom: 18px;
+    /*The flag images don't properly float right on small screens without
+    also floating the parent element. With these two parameters we prevent
+    flags being placed outside this parent*/
+    float: right;
+    width: 95%;
 }
 
 /*bubble tip*/

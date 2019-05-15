@@ -309,9 +309,21 @@ Helsinki Capital Region".
                     $("div.popupsize").attr("content", "medium");
                     console.log("Popup size value medium detected");
                 } else {
-                    create_cookie("popupsize", "default", 90, "/");
-                    $("div.popupsize").attr("content", "default");
-                    console.log("Popup size value not found, set default size");
+                    //if no popupsize value is detected, test if we are on
+                    //small screen or other mobile phone. 
+                    if(($(window).width() < 800) || (L.browser === "mobile")) {
+                        // If statement is true, we are on mobile or other device
+                        // with a small screen. An user will now see the 
+                        // popup size a bit smaller at first, making it easier 
+                        // to understand how to use the survey.
+                        create_cookie("popupsize", "medium", 90, "/");
+                        console.log("Popup size value not found, user using mobile, set medium size");
+                    } else {
+                        // We are on desktop
+                        create_cookie("popupsize", "default", 90, "/");
+                        $("div.popupsize").attr("content", "default");
+                        console.log("Popup size value not found, user using desktop, set default size");
+                    }
                 }
                 //translate popup size value
                 cssPopupsizeValue();

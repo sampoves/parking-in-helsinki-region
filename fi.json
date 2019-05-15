@@ -58,7 +58,7 @@
 
     "lang_settings1": "<i class='icon wrench' style='margin-right: 10px;'></i>Asetuksia",
     "lang_settings2": "<b>Estä inforuudun avautuminen kyselysivun mukana.</b> Napauttamalla tätä painiketta inforuutu ei enää aukea kyselyn yhteydessä. Tieto tästä tallentuu evästeeseen. Poista kyselyn evästeet, niin toiminnallisuus palautuu ennalleen.",
-    "lang_settings3": "<b>Postinumeroalueen kyselyikkunan koko.</b> Valitse tästä postinumeroalueen kyselyikkunan koko. Pöytätietokoneille suositellaan oletuskokoa (suuri), mutta mobiilikäyttäjien kannattaa kokeilla pientä ja keskisuurta vaihtoehtoa.",
+    "lang_settings3": "<b>Postinumeroalueen kyselyikkunan koko.</b> Valitse tästä postinumeroalueen kyselyikkunan koko. Pöytätietokoneille ja läppäreille oletuskoko on \"suuri\", ja mobiilikäyttäjille \"keskikokoinen\". Mobiilikäyttäjien kannattaa kokeilla myös pienintä vaihtoehtoa, nimitykseltään yksinkertaisesti \"pieni\".",
     "lang_settings4": "<b>Mobiilitilan valinta.</b> Kun painikkeen ikoni esittää puhelinta &nbsp;<i class='icon mobile-alt'></i>, saat klikkauksella puhelintilan käyttöön. Puhelintila levittää tämän inforuudun koko laitteen ruudun kokoiseksi. Klikkaamalla painiketta silloin, kun ikonina on näyttöpääte &nbsp;<i class='icon desktop'></i>, palaavat asetukset normaaleihin pöytätietokoneasetuksiin. Mobiilitila tulee automaattisesti päälle pieniruutuisille laitteille, mutta tällä painikkeella valinnan voi kiertää.",
     "lang_buttoncloseinfo": "Älä näytä tätä ruutua kyselysivulle saavuttuani",
     "lang_accesssurvey": "Sulje tämä inforuutu ja aloita kysely",

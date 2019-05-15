@@ -58,7 +58,7 @@
 
     "lang_settings1": "<i class='icon wrench' style='margin-right: 10px;'></i>Settings",
     "lang_settings2": "<b>Prevent opening of this information screen at survey startup.</b> After pressing this button the information screen will not show up automatically anymore. To revert this action, please delete the cookies used by the survey.",
-    "lang_settings3": "<b>Postal code area popup size.</b> Use this button to choose the size of the postal code area popup. For desktop and laptop computers default size (large) is recommended. Mobile device users may benefit greatly from choosing the small or medium size.",
+    "lang_settings3": "<b>Postal code area popup size.</b> Use this button to choose the size of the postal code area popup. For desktop and laptop computers default size is \"large\". For mobile device users default size is \"medium\". Mobile users may benefit from using the smallest option, \"small\".",
     "lang_settings4": "<b>Switch mobile mode on/off.</b> When the button icon below represents a mobile phone &nbsp;<i class='icon mobile-alt'></i>, clicking will turn on a special mobile device mode. The Mobile device mode will resize this information window to fit your mobile device screen, reducing the need for horizontal gestures. If you click the button below when its icon is a computer monitor &nbsp;<i class='icon desktop'></i>, the desktop mode is returned. The mobile device mode will be enabled as default for mobile devices with a small screen. You can bypass that choice made for you using this setting.",
     "lang_buttoncloseinfo": "Stop showing this dialog box on survey startup",
     "lang_accesssurvey": "Close this dialog and access survey",

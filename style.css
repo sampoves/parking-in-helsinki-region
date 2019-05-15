@@ -309,6 +309,7 @@ http://leaverou.github.io/bubbly/*/
 repetition of the two above*/
 #yourlang {
     position: relative; /*enable bubble tip*/
+    overflow: hidden; /*this helps langbuttons remain inside yourlang on small screens*/
     font-size: small;
     line-height: 30px;
     background-color: #fe3e8f; /*kind of same blue as tabs*/
@@ -343,7 +344,6 @@ repetition of the two above*/
     height: 2em;
     margin-right: 5px;
     margin-left: 5px;
-    margin-bottom: -5px;
     background: #eee;
     border: 1px solid transparent;
     float: right;

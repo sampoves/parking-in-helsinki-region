@@ -4,7 +4,7 @@
     "lang_tab3": "User instructions",
     
     "lang_welcome1": "<i class='icon car'></i>Welcome to the survey!",
-    "lang_lang": "<i class='icon globe'></i>Please choose your language:",
+    "lang_lang": "<i class='icon globe'></i>Select your language:",
     "lang_welcome2": "The aim of this survey is to find out how long is the process of parking a private car in Helsinki Capital Region. In this survey parking a private car consists of the following parts: once one has arrived to the general area they want to park to, how long was the parking spot searched for and after parking, how long it took to reach one's final destination by foot. The results of this survey will be used in a University of Helsinki Master's thesis in the field of geoinformatics. You can learn more about the thesis and this survey research in the tab 'About the research'.",
     "lang_welcome3": "In this survey you are asked to pinpoint postal code areas in Helsinki Capital Region where you have parked a private car during the last two years. This can be one time or multiple times. For each postal code area you are then asked to answer to five questions concerning your parking in that area. The scope is general, you will not be answering about a specific parking event, but how your parking experience <i>usually</i> is. In this web application you may add as many postal code areas you wish and be done with the survey in one session, or send smaller batches. Please only answer once for any postal code area.",
     "lang_welcome4": "The survey is open until 30th June 2019.",

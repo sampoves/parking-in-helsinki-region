@@ -317,11 +317,12 @@ Helsinki Capital Region".
                         // popup size a bit smaller at first, making it easier 
                         // to understand how to use the survey.
                         create_cookie("popupsize", "medium", 90, "/");
+                        $("div.popupsize").attr("content", "medium");
                         console.log("Popup size value not found, user on mobile, set medium size");
                     } else {
                         // We are on desktop
                         create_cookie("popupsize", "default", 90, "/");
-                        $("div.popupsize").attr("content", "default");
+                        $("div.popupsize").attr("content", "large (default)");
                         console.log("Popup size value not found, user on desktop, set default size");
                     }
                 }

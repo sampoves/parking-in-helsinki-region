@@ -308,6 +308,7 @@ http://leaverou.github.io/bubbly/*/
 /*Super inefficient CSS, please bear with me. The following two ids are
 repetition of the two above*/
 #yourlang {
+    display: block;
     position: relative;
     font-size: small;
     line-height: 30px;
@@ -317,11 +318,13 @@ repetition of the two above*/
     border-radius: .4em;
     margin-top: 14px;
     margin-bottom: 18px;
+    margin-left: auto;
+    margin-right: auto;
     /*The flag images don't properly float right on small screens without
     also floating the parent element. With these two parameters we prevent
     flags being placed outside this parent*/
     float: right;
-    width: 95%;
+    width: 97%;
 }
 
 /*bubble tip*/
@@ -345,7 +348,7 @@ repetition of the two above*/
 /*FLAG BUTTON CONTROLLING*/
 /*-----------------------*/
 .lang_img {
-    height: 2em;
+    height: 2.1em;
     margin-right: 5px;
     margin-left: 5px;
     background: #eee;

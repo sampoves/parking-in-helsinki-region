@@ -25,12 +25,29 @@ body,
 }
 
 p, h2, h3, h4,
-.leaflet-popup-content-wrapper, 
 .leaflet-popup-tip-container,
 .control-label col-sm-5,
 .leaflet-popup-content-wrapper .leaflet-popup-content, #response {
     font-family: 'Montserrat', sans-serif;
     line-height: 1.4;
+}
+
+/*These attributes enable popup scrollbar when required*/
+.leaflet-popup-content-wrapper {
+    max-height: 80vh;
+    overflow: auto;
+}
+
+.leaflet-popup-close-button {
+    /*position: relative;*/
+    left: 88%; /* prevent x button overlapping potential scroll bar in popup*/
+
+/*    note 160519 test out these later:*/
+/*    display: inline-block;
+    box-sizing: border-box;
+    float: left;
+    padding: 120px 35px 0px 0px;
+    padding-top: 70px; */
 }
 
 #response {
@@ -631,20 +648,20 @@ input[type="number"] {
 /*HTML CLOSE BUTTON STYLE*/
 /*-----------------------*/
 #close {
-    float:right;
+    float: right;
     font-size: 20px;
-    display:inline-block;
-    padding:5px 5px;
+    display: inline-block;
+    padding: 5px 5px;
     background: rgba(255, 255, 255, 0.0);
     cursor: pointer;
 }
 
 #close:hover {
-    float:right;
-    display:inline-block;
-    padding:5px 5px;
-    background:#ccc;
-    color:#fff;
+    float: right;
+    display: inline-block;
+    padding: 5px 5px;
+    background: #ccc;
+    color: #fff;
     cursor: pointer;
 }
 

@@ -97,37 +97,37 @@ My wish is also to provide this survey to anybody who might benefit from it in t
 
 ## Detailed description of code
 
-### MySQL datatable structure
+### MySQL table structure
 
-These are the MySQL tables as described by the statement `DESCRIBE`.
+These are the MySQL tables used in the survey as described by the statement `DESCRIBE`.
 
 #### Records
 
 `DESCRIBE records;`
 
-| Field | Type | Null | Key | Extra
-| ------------- | ------------- | ------------- | ------------- | ------------- |
-| id  | int(11) | NO | PRI | AUTO_INCREMENT |
-| timestamp | varchar(19) | YES | | |
-| ip | TEXT | YES | | |
-| zipcode | varchar(5) | YES | | |
-| likert | int(1) | YES | | |
-| parkspot | int(1) | YES | | |
-| parktime | int(2) | YES | | |
-| walktime | int(2) | YES | | |
-| timeofday | int(1) | YES | | |
+| Field | Type | Null | Key | Default | Extra
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+| id  | int(11) | NO | PRI | *NULL* | AUTO_INCREMENT |
+| timestamp | varchar(19) | YES | | *NULL* | |
+| ip | TEXT | YES | | *NULL* | |
+| zipcode | varchar(5) | YES | | *NULL* | |
+| likert | int(1) | YES | | *NULL* | |
+| parkspot | int(1) | YES | | *NULL* | |
+| parktime | int(2) | YES | | *NULL* | |
+| walktime | int(2) | YES | | *NULL* | |
+| timeofday | int(1) | YES | | *NULL* | |
 
 #### Visitors
 
 `DESCRIBE visitors;`
 
-| Field | Type | Null | Key | Extra
-| ------------- | ------------- | ------------- | ------------- | ------------- |
-| id  | int(11) | NO | PRI | AUTO_INCREMENT |
-| ip | TEXT | YES | | |
-| ts_first | DATETIME | YES | | |
-| ts_latest | DATETIME | YES | | |
-| count | int(11) | YES | | |
+| Field | Type | Null | Key | Default | Extra
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+| id  | int(11) | NO | PRI | *NULL* | AUTO_INCREMENT |
+| ip | TEXT | YES | | *NULL* | |
+| ts_first | DATETIME | YES | | *NULL* | |
+| ts_latest | DATETIME | YES | | *NULL* | |
+| count | int(11) | YES | | *NULL* | |
 
 ## Libraries and software
 ### This survey makes use of

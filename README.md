@@ -97,7 +97,37 @@ My wish is also to provide this survey to anybody who might benefit from it in t
 
 ## Detailed description of code
 
-fdsafdopfd
+### MySQL datatable structure
+
+These are the MySQL tables as described by the statement `DESCRIBE`.
+
+#### Records
+
+`DESCRIBE records;`
+
+| Field | Type | Null | Key | Extra
+| ------------- | ------------- | ------------- | ------------- | ------------- |
+| id  | int(11) | NO | PRI | AUTO_INCREMENT |
+| timestamp | varchar(19) | YES | | |
+| ip | TEXT | YES | | |
+| zipcode | varchar(5) | YES | | |
+| likert | int(1) | YES | | |
+| parkspot | int(1) | YES | | |
+| parktime | int(2) | YES | | |
+| walktime | int(2) | YES | | |
+| timeofday | int(1) | YES | | |
+
+#### Visitors
+
+`DESCRIBE visitors;`
+
+| Field | Type | Null | Key | Extra
+| ------------- | ------------- | ------------- | ------------- | ------------- |
+| id  | int(11) | NO | PRI | AUTO_INCREMENT |
+| ip | TEXT | YES | | |
+| ts_first | DATETIME | YES | | |
+| ts_latest | DATETIME | YES | | |
+| count | int(11) | YES | | |
 
 ## Libraries and software
 ### This survey makes use of

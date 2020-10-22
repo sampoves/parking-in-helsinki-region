@@ -2,6 +2,8 @@
 
 This is a Leaflet based web map survey used to acquire user responses in form of areas (in Leaflet terms, polygons). The project was created for a master's thesis in the field of geoinformatics for the University of Helsinki. In this survey users respond a few questions about their usual parking habits in Helsinki Capital Region.
 
+**This survey application may be viewed at https://parking-survey.socialsawblade.fi**.
+
 ## Contents
 
 * [About](#about)

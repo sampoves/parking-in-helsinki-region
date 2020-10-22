@@ -13,8 +13,8 @@ This is a Leaflet based web map survey used to acquire user responses in form of
     * [Server side](#server-side)
 * [Detailed description of code](#detailed-description-of-code)
   * [MySQL table structure](#mysql-table-structure)
-  * [Records](#records)
-  * [Visitors](#visitors)
+      * [Table records](#records)
+      * [Table visitors](#visitors)
 * [Software and services used in this project](#Software-and-services-used-in-this-project)
 * [Known issues](#known-issues)
 * [Features scrapped during development](#features-scrapped-during-development)
@@ -119,7 +119,7 @@ Located in /var/www/, the survey file structure is as follows:
 
 These are the MySQL tables used in the survey as described by the statement `DESCRIBE`.
 
-#### Records
+#### Table `records`
 
 `DESCRIBE records;`
 
@@ -135,7 +135,7 @@ These are the MySQL tables used in the survey as described by the statement `DES
 | walktime | int(2) | YES | | *NULL* | |
 | timeofday | int(1) | YES | | *NULL* | |
 
-#### Visitors
+#### Table `visitors`
 
 `DESCRIBE visitors;`
 

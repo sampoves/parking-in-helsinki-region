@@ -1,5 +1,24 @@
-# Leaflet-based web map survey: parking-in-helsinki-region
+# Leaflet based web map survey: Parking private cars in Helsinki Capital Region
+
 This is a Leaflet based web map survey used to acquire user responses in form of areas (in Leaflet terms, polygons). The project was created for a master's thesis in the field of geoinformatics for the University of Helsinki. In this survey users respond a few questions about their usual parking habits in Helsinki Capital Region.
+
+## Contents
+
+* [About](#about)
+* [Project contents](#project-contents)
+* [Main survey features](#main-survey-features)
+    * [Front end](#front-end)
+    * [User experience functionality](#user-experience-functionality)
+    * [The map view](#the-map-view)
+    * [Server side](#server-side)
+* [Detailed description of code](#detailed-description-of-code)
+  * [MySQL table structure](#mysql-table-structure)
+  * [Records](#records)
+  * [Visitors](#visitors)
+* [Software and services used in this project](#Software-and-services-used-in-this-project)
+* [Known issues](#known-issues)
+* [Features scrapped during development](#features-scrapped-during-development)
+* [Attributions](#attributions)
 
 ## About
 
@@ -9,9 +28,9 @@ A short word of a disclaimer: As I started this project it was exactly the first
 
 My wish is also to provide this survey to anybody who might benefit from it in their unrelated projects or if someone just needs to set up a similar research survey. Hopefully this will be a time saver for you.
 
-
 ## Project contents
-### Located in /var/www/, the survey file structure is as follows
+
+Located in /var/www/, the survey file structure is as follows:
 
 - /var/www/
   - _insert.php_ - MySQL insertion function. Keep out of survey users' view
@@ -31,11 +50,12 @@ My wish is also to provide this survey to anybody who might benefit from it in t
     - /var/www/html/images
       - project images, such as thank you messages and images for instructions
 
-## Main features of the survey
+## Main survey features
 
 ### Front end
 
 #### User experience functionality
+
 * Basic Leaflet functionality 
   - Zoom in and out controls
   - Layer control
@@ -93,8 +113,6 @@ My wish is also to provide this survey to anybody who might benefit from it in t
   - Deny empty POST requests, redirect to index.html
   - Setting up MySQL database connection and table insert out of users' view
 
-
-
 ## Detailed description of code
 
 ### MySQL table structure
@@ -129,8 +147,10 @@ These are the MySQL tables used in the survey as described by the statement `DES
 | ts_latest | DATETIME | YES | | *NULL* | |
 | count | int(11) | YES | | *NULL* | |
 
-## Libraries and software
-### This survey makes use of
+## Software and services used in this project
+
+This survey makes use of various software and services:
+
 * Libraries
   - [Leaflet](https://leafletjs.com) 1.4.0 by Vladimir Agafonkin
   - [EasyButton](https://github.com/CliffCloud/Leaflet.EasyButton) 2.4.0 by CliffCloud
@@ -141,13 +161,14 @@ These are the MySQL tables used in the survey as described by the statement `DES
 * Fonts and styles
   - Font Awesome 5.8.1
   - Montserrat - Google Fonts
-* Server side software
+* Server side software (LAMP stack)
   - Ubuntu 16.04.6 LTS
   - Apache HTTP Server 2.4.18 (Ubuntu)
   - MySQL 5.7.25-0ubuntu0.16.04.2
   - PHP 7.0.33-0ubuntu0.16.04.3
 
-## Notes on where survey functionality is not optimal
+## Known issues
+
 * The submit records button always results in a success. In other words, a failure screen is not developed in this survey. The normal survey use should be impervious to incorrect data being sent to the server. In any case, the success screen always shows serverside results how many successes and failures the post operation had
   - in the case a failure occurs, the survey proceeds as if nothing is wrong and deletes all user inputs from the map view. This is obviously not optimal in case of server errors or something else unexpected
 * Survey code in JavaScript and CSS are very un-optimised for mobilephones
@@ -162,12 +183,13 @@ These are the MySQL tables used in the survey as described by the statement `DES
 * One can't open by clicking on a feature on the GeoJSON layer `geojson`, but the map view is centered on that feature. Not optimal
 
 ## Features scrapped during development
+
 * 280319 infobox cookie will not trigger from infobutton or x button. Only the red button at the bottom of introduction
 * 020419 `findIntersection()` function and streamlined zip code area name fetch in `layerClickHandler()`
 * 040419 discontinue use of `sessionid`, track ip instead
 * 170419 discontinue language button animations in favor of country code icons
 
-## Data and asset attribution
+## Attributions
 
 The postal code areas (pno_dissolve.geojson) and the research area (pno_research_area.geojson) are adapted from Statistics Finland's [Paavo - open data by postal code area, 2018](http://urn.fi/urn:nbn:fi:csc-kata20180425144903846834). This data is licensed in [Creative Commons Attribution 4.0 International](http://creativecommons.org/licenses/by/4.0).
 

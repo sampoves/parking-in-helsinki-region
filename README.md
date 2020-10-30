@@ -4,7 +4,7 @@ This is a Leaflet based web map survey used to acquire user responses in form of
 
 **This survey application may be viewed at https://parking-survey.socialsawblade.fi**.
 
-This application was developed for the use of my Master's thesis for the University of Helsinki. The thesis available in PDF format at the Digital Repository of the University of Helsinki: https://ethesis.helsinki.fi/en/ **(NB: the thesis not yet published)**
+This application was developed for the use of my Master's thesis for the University of Helsinki. The thesis is available as PDF at the Digital Repository of the University of Helsinki: **http://urn.fi/URN:NBN:fi:hulib-202010304366**
 
 ## Contents
 
